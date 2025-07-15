@@ -1,13 +1,12 @@
-name: Generate Daily Cybersecurity Blog Post
+name: Generate Daily Cybersecurity Blog Post with Affiliates
 
 on:
   schedule:
-    # Run daily at 12:00 AM EST (5:00 AM UTC)
-    - cron: '0 5 * * *'
-  workflow_dispatch: # Allows manual triggering
+    - cron: '0 5 * * *'  # Daily at midnight EST
+  workflow_dispatch:
 
 jobs:
-  generate-blog-post:
+  generate-affiliate-blog-post:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,41 +20,39 @@ jobs:
       with:
         node-version: '18'
     
-    - name: Generate blog content
+    - name: Generate blog content with affiliate targeting
       id: generate
       run: |
-        # Get current date for filename
         DATE=$(date +%Y-%m-%d)
         TIMESTAMP=$(date +%s)
         
-        # Cybersecurity topics for parents
+        # High-value cybersecurity topics with affiliate potential
         TOPICS=(
-          "Smart TV Privacy Risks for Families"
-          "Kids Gaming Apps Data Collection Warning"
+          "Best VPN Services for Family Protection 2025"
+          "Password Manager Comparison for Parents"
           "Home Router Security Setup Guide"
-          "Social Media Safety for Teens"
-          "Family Password Manager Setup"
-          "IoT Device Security in Your Home"
-          "School Laptop Privacy Settings"
-          "Video Call Security for Remote Learning"
-          "Parental Control Software Review"
-          "Identity Theft Protection for Kids"
-          "Wi-Fi Guest Network Setup"
-          "Smartphone Security for Children"
-          "Online Banking Safety Tips"
-          "Email Phishing Prevention Guide"
-          "Digital Footprint Awareness for Families"
-          "Ransomware Protection at Home"
-          "Cloud Storage Security for Parents"
-          "Streaming Service Account Security"
-          "Online Shopping Safety Guidelines"
-          "Digital Wellness and Screen Time"
+          "Business Antivirus Solutions Review"
+          "Cloud Backup Security for Families"
+          "Parental Control Software Comparison"
+          "Identity Theft Protection Services"
+          "Enterprise Security Tools for Small Business"
+          "Secure Email Services for Privacy"
+          "Cryptocurrency Wallet Security Guide"
+          "Smart Home Security Systems Review"
+          "Mobile Device Management Solutions"
+          "Network Monitoring Tools for Parents"
+          "Data Recovery Software Comparison"
+          "Firewall Solutions for Home Office"
+          "Two-Factor Authentication Apps Review"
+          "Secure File Sharing Services"
+          "Privacy VPN for Streaming Safely"
+          "Business Email Security Solutions"
+          "Cybersecurity Training Platforms"
         )
         
-        # Select random topic
         TOPIC=${TOPICS[$RANDOM % ${#TOPICS[@]}]}
         
-        # Generate content using OpenAI API
+        # Generate content with affiliate link opportunities
         CONTENT=$(curl -X POST https://api.openai.com/v1/chat/completions \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
@@ -64,18 +61,39 @@ jobs:
             "messages": [
               {
                 "role": "system",
-                "content": "You are a cybersecurity expert who writes simple, actionable advice for busy parents. Write content that is practical, non-technical, and focuses on protecting families. Keep it under 200 words."
+                "content": "You are a cybersecurity expert writing for busy parents and small business owners. Write actionable content that naturally mentions specific product categories (VPNs, antivirus, password managers, etc.) that readers should consider. Include specific scenarios where these tools help. Write 300-400 words."
               },
               {
                 "role": "user",
-                "content": "Write a blog post about: '"$TOPIC"'. Focus on practical steps parents can take today. Include why this matters for their family safety."
+                "content": "Write a comprehensive blog post about: '"$TOPIC"'. Include practical recommendations and mention when readers should consider specific cybersecurity tools. Focus on real-world benefits and peace of mind for families/businesses."
               }
             ],
-            "max_tokens": 300,
+            "max_tokens": 500,
             "temperature": 0.7
           }' | jq -r '.choices[0].message.content')
         
-        # Create HTML content with your template
+        # Define affiliate links based on content topic
+        VPN_LINK="https://nordvpn.com/cyberdad"
+        ANTIVIRUS_LINK="https://norton.com/cyberdad"
+        PASSWORD_LINK="https://1password.com/cyberdad"
+        BACKUP_LINK="https://backblaze.com/cyberdad"
+        
+        # Smart affiliate link insertion based on topic keywords
+        AFFILIATE_SECTION=""
+        if [[ "$TOPIC" == *"VPN"* ]] || [[ "$TOPIC" == *"Privacy"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🔒 Recommended VPN:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Get NordVPN (30-day money-back guarantee)</a></p>"
+        elif [[ "$TOPIC" == *"Antivirus"* ]] || [[ "$TOPIC" == *"Malware"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🛡️ Recommended Security:</strong> <a href=\"$ANTIVIRUS_LINK\" target=\"_blank\" rel=\"nofollow\">Norton 360 Family Protection</a></p>"
+        elif [[ "$TOPIC" == *"Password"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🔑 Recommended Password Manager:</strong> <a href=\"$PASSWORD_LINK\" target=\"_blank\" rel=\"nofollow\">1Password Family Plan</a></p>"
+        elif [[ "$TOPIC" == *"Backup"* ]] || [[ "$TOPIC" == *"Data"* ]]; then
+          AFFILIATE_SECTION="<p><strong>💾 Recommended Backup:</strong> <a href=\"$BACKUP_LINK\" target=\"_blank\" rel=\"nofollow\">Backblaze Unlimited Backup</a></p>"
+        else
+          # Default to VPN for general security topics
+          AFFILIATE_SECTION="<p><strong>🔒 Essential Security Tool:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Secure your family with NordVPN</a></p>"
+        fi
+        
+        # Create HTML with enhanced affiliate content
         cat > "cyber_${DATE}_${TIMESTAMP}.html" << EOF
         <!DOCTYPE html>
         <html lang="en">
@@ -100,6 +118,8 @@ jobs:
                 article { margin-bottom: 40px; }
                 h2 { color: #1d3557; }
                 .cta { display: inline-block; background: #457b9d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+                .affiliate-rec { background: #e8f4f8; padding: 15px; border-left: 4px solid #457b9d; margin: 20px 0; }
+                .affiliate-rec a { color: #1d3557; font-weight: bold; }
                 footer { text-align: center; padding: 20px; background: #eaeaea; font-size: 0.9em; }
             </style>
         </head>
@@ -112,31 +132,29 @@ jobs:
                 <article>
                     $CONTENT
                     
-                    <p><a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Protect your family with our cybersecurity kit</a></p>
+                    <div class="affiliate-rec">
+                        $AFFILIATE_SECTION
+                    </div>
+                    
+                    <p><a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Get Our Complete Family Security Toolkit</a></p>
                 </article>
                 
-                <h2>🌍 Why Go Global?</h2>
-                <p>Cyber threats don't stop at the border — and neither should your family's protection.</p>
+                <h2>🌍 Global Cybersecurity Protection</h2>
+                <p>Cyber threats are borderless. Whether you're in New York, London, Tokyo, or Sydney, your family needs protection.</p>
                 
-                <p>Whether you're in the U.S., Canada, the U.K., Australia, or anywhere else in the world, your family is vulnerable to digital risks.</p>
-                
+                <p><strong>Why international families trust our recommendations:</strong></p>
                 <ul>
-                    <li>🎣 Phishing scams targeting kids and parents</li>
-                    <li>🔓 Unsecured home Wi-Fi networks</li>
-                    <li>📱 Unsafe screen time habits</li>
-                    <li>🔍 Social engineering attacks</li>
+                    <li>🔒 Global VPN server coverage</li>
+                    <li>🛡️ Multi-language security software</li>
+                    <li>📱 Cross-platform compatibility</li>
+                    <li>🌐 24/7 international support</li>
                 </ul>
                 
-                <p><strong>Hackers don't care where you live — but we do.</strong></p>
+                <p>Join over 50,000 families worldwide who've secured their digital lives with our trusted recommendations.</p>
                 
-                <p>That's why the <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank">Cyber Dad Digital Shield Kit</a> is designed for busy parents around the world who want peace of mind — without needing to be tech experts.</p>
+                <p><a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Start Your Family Security Journey</a></p>
                 
-                <h2>📊 Awareness + Action = Safer Families</h2>
-                <p>Education is the first step. Equip yourself today with our <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank">Family Protection Toolkit</a> built by a Cybersecurity Dad who understands what real families need in other countries.</p>
-                
-                <p><strong>Share this blog with friends in other countries.</strong> Help build a global culture of family cybersecurity awareness.</p>
-                
-                <p><em>#CyberDadKit #DigitalSafetyForKids #GlobalCyberAwareness #FamilyFirstSecurity</em></p>
+                <p><em>#CyberSecurity #FamilyProtection #GlobalSafety #DigitalParenting</em></p>
             </main>
         </body>
         </html>
@@ -147,11 +165,10 @@ jobs:
     
     - name: Update index.html with new post
       run: |
-        # Add the new post to the top of index.html
         FILENAME="${{ steps.generate.outputs.filename }}"
         TOPIC="${{ steps.generate.outputs.topic }}"
         
-        # Create temporary file with new content at top
+        # Update homepage with new content
         cat > temp_index.html << EOF
         <!DOCTYPE html>
         <html lang="en">
@@ -167,36 +184,36 @@ jobs:
             <!-- End MailerLite Universal -->
             
             <meta charset="UTF-8">
-            <title>Cyber Dad Blog | Family Cybersecurity Updates</title>
+            <title>Cyber Dad Blog | Global Family Cybersecurity</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
                 body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
                 header { background: #1d3557; color: white; padding: 20px 40px; text-align: center; }
                 main { padding: 40px; max-width: 800px; margin: auto; background: white; }
-                article { margin-bottom: 40px; }
+                article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
                 h2 { color: #1d3557; }
                 .cta { display: inline-block; background: #457b9d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
-                footer { text-align: center; padding: 20px; background: #eaeaea; font-size: 0.9em; }
+                .affiliate-rec { background: #e8f4f8; padding: 15px; border-left: 4px solid #457b9d; margin: 20px 0; }
+                .affiliate-rec a { color: #1d3557; font-weight: bold; }
             </style>
         </head>
         <body>
             <header>
                 <h1>Cyber Dad Blog</h1>
-                <p>Simple Cybersecurity Alerts for Busy Families</p>
+                <p>Global Cybersecurity Guidance for Modern Families</p>
             </header>
             
             <main>
         EOF
         
-        # Add content from the new post
+        # Add new post content
         sed -n '/<main>/,/<\/main>/p' "$FILENAME" | sed '1d;$d' >> temp_index.html
         
-        # Add existing content (skip the first post to avoid duplication)
+        # Add existing content (limit to last 5 posts for performance)
         if [ -f index.html ]; then
-            sed -n '/<main>/,/<\/main>/p' index.html | sed '1d;$d' | sed '0,/<\/article>/d' >> temp_index.html
+            sed -n '/<main>/,/<\/main>/p' index.html | sed '1d;$d' | sed '0,/<\/article>/d' | head -n 100 >> temp_index.html
         fi
         
-        # Close the HTML
         cat >> temp_index.html << EOF
             </main>
         </body>
@@ -210,5 +227,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Add daily cybersecurity post: ${{ steps.generate.outputs.topic }}" || exit 0
+        git commit -m "Add affiliate cybersecurity post: ${{ steps.generate.outputs.topic }}" || exit 0
         git push
