@@ -2,10 +2,9 @@ name: Generate Daily Cybersecurity Blog Post with Affiliates
 
 on:
   schedule:
-    schedule:
     - cron: '0 5 * * *'   # Daily at midnight EST
-    - cron: '0 13 * * *'  # 8:00 AM EST - morning content
-    - cron: '0 21 * * *'  # 4:00 PM EST - afternoon content
+    - cron: '0 13 * * *'  # Daily at 8:00 AM EST  
+    - cron: '0 21 * * *'  # Daily at 4:00 PM EST
   workflow_dispatch:
 
 jobs:
@@ -27,6 +26,7 @@ jobs:
       id: generate
       run: |
         DATE=$(date +%Y-%m-%d)
+        TIME=$(date +%H%M)
         TIMESTAMP=$(date +%s)
         
         # High-value cybersecurity topics with affiliate potential
@@ -51,6 +51,16 @@ jobs:
           "Privacy VPN for Streaming Safely"
           "Business Email Security Solutions"
           "Cybersecurity Training Platforms"
+          "WiFi Security for Remote Workers"
+          "Kids Online Safety Tools"
+          "Digital Privacy for Teens"
+          "Home Security Camera Protection"
+          "Ransomware Prevention for Families"
+          "Social Media Privacy Settings"
+          "Online Banking Security Tips"
+          "Gaming Console Security Guide"
+          "IoT Device Protection Methods"
+          "Family Digital Detox Strategies"
         )
         
         TOPIC=${TOPICS[$RANDOM % ${#TOPICS[@]}]}
@@ -64,14 +74,14 @@ jobs:
             "messages": [
               {
                 "role": "system",
-                "content": "You are a cybersecurity expert writing for busy parents and small business owners. Write actionable content that naturally mentions specific product categories (VPNs, antivirus, password managers, etc.) that readers should consider. Include specific scenarios where these tools help. Write 300-400 words."
+                "content": "You are a cybersecurity expert writing for busy parents and small business owners. Write actionable content that naturally mentions specific product categories (VPNs, antivirus, password managers, etc.) that readers should consider. Include specific scenarios where these tools help. Write 350-450 words with practical advice."
               },
               {
                 "role": "user",
-                "content": "Write a comprehensive blog post about: '"$TOPIC"'. Include practical recommendations and mention when readers should consider specific cybersecurity tools. Focus on real-world benefits and peace of mind for families/businesses."
+                "content": "Write a comprehensive blog post about: '"$TOPIC"'. Include practical recommendations and mention when readers should consider specific cybersecurity tools. Focus on real-world benefits and peace of mind for families/businesses. Make it engaging and actionable."
               }
             ],
-            "max_tokens": 500,
+            "max_tokens": 600,
             "temperature": 0.7
           }' | jq -r '.choices[0].message.content')
         
@@ -83,21 +93,21 @@ jobs:
         
         # Smart affiliate link insertion based on topic keywords
         AFFILIATE_SECTION=""
-        if [[ "$TOPIC" == *"VPN"* ]] || [[ "$TOPIC" == *"Privacy"* ]]; then
-          AFFILIATE_SECTION="<p><strong>🔒 Recommended VPN:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Get NordVPN (30-day money-back guarantee)</a></p>"
-        elif [[ "$TOPIC" == *"Antivirus"* ]] || [[ "$TOPIC" == *"Malware"* ]]; then
-          AFFILIATE_SECTION="<p><strong>🛡️ Recommended Security:</strong> <a href=\"$ANTIVIRUS_LINK\" target=\"_blank\" rel=\"nofollow\">Norton 360 Family Protection</a></p>"
-        elif [[ "$TOPIC" == *"Password"* ]]; then
-          AFFILIATE_SECTION="<p><strong>🔑 Recommended Password Manager:</strong> <a href=\"$PASSWORD_LINK\" target=\"_blank\" rel=\"nofollow\">1Password Family Plan</a></p>"
-        elif [[ "$TOPIC" == *"Backup"* ]] || [[ "$TOPIC" == *"Data"* ]]; then
-          AFFILIATE_SECTION="<p><strong>💾 Recommended Backup:</strong> <a href=\"$BACKUP_LINK\" target=\"_blank\" rel=\"nofollow\">Backblaze Unlimited Backup</a></p>"
+        if [[ "$TOPIC" == *"VPN"* ]] || [[ "$TOPIC" == *"Privacy"* ]] || [[ "$TOPIC" == *"Streaming"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🔒 Recommended VPN:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Get NordVPN - 30-day money-back guarantee</a> - Protect your family's online activity with military-grade encryption.</p>"
+        elif [[ "$TOPIC" == *"Antivirus"* ]] || [[ "$TOPIC" == *"Malware"* ]] || [[ "$TOPIC" == *"Ransomware"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🛡️ Recommended Security:</strong> <a href=\"$ANTIVIRUS_LINK\" target=\"_blank\" rel=\"nofollow\">Norton 360 Family Protection</a> - Complete antivirus and identity protection for your entire family.</p>"
+        elif [[ "$TOPIC" == *"Password"* ]] || [[ "$TOPIC" == *"Authentication"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🔑 Recommended Password Manager:</strong> <a href=\"$PASSWORD_LINK\" target=\"_blank\" rel=\"nofollow\">1Password Family Plan</a> - Securely store and share passwords across all your family's devices.</p>"
+        elif [[ "$TOPIC" == *"Backup"* ]] || [[ "$TOPIC" == *"Data"* ]] || [[ "$TOPIC" == *"Recovery"* ]]; then
+          AFFILIATE_SECTION="<p><strong>💾 Recommended Backup:</strong> <a href=\"$BACKUP_LINK\" target=\"_blank\" rel=\"nofollow\">Backblaze Unlimited Backup</a> - Automatically protect your family's photos, documents, and memories.</p>"
         else
           # Default to VPN for general security topics
-          AFFILIATE_SECTION="<p><strong>🔒 Essential Security Tool:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Secure your family with NordVPN</a></p>"
+          AFFILIATE_SECTION="<p><strong>🔒 Essential Security Tool:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Secure your family with NordVPN</a> - The #1 rated VPN for family protection and online privacy.</p>"
         fi
         
         # Create HTML with enhanced affiliate content
-        cat > "cyber_${DATE}_${TIMESTAMP}.html" << EOF
+        cat > "cyber_${DATE}_${TIME}_${TIMESTAMP}.html" << EOF
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -114,21 +124,28 @@ jobs:
             <meta charset="UTF-8">
             <title>$TOPIC | Cyber Dad Blog</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="Expert cybersecurity advice for busy families: $TOPIC">
             <style>
                 body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
                 header { background: #1d3557; color: white; padding: 20px 40px; text-align: center; }
-                main { padding: 40px; max-width: 800px; margin: auto; background: white; }
+                main { padding: 40px; max-width: 800px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
                 article { margin-bottom: 40px; }
-                h2 { color: #1d3557; }
-                .cta { display: inline-block; background: #457b9d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
-                .affiliate-rec { background: #e8f4f8; padding: 15px; border-left: 4px solid #457b9d; margin: 20px 0; }
-                .affiliate-rec a { color: #1d3557; font-weight: bold; }
+                h1 { color: #1d3557; margin-bottom: 20px; }
+                h2 { color: #1d3557; border-bottom: 2px solid #457b9d; padding-bottom: 10px; }
+                .cta { display: inline-block; background: #457b9d; color: white; padding: 15px 25px; text-decoration: none; border-radius: 8px; margin: 15px 5px; font-weight: bold; transition: background 0.3s; }
+                .cta:hover { background: #1d3557; }
+                .affiliate-rec { background: linear-gradient(135deg, #e8f4f8, #f0f8ff); padding: 20px; border-left: 5px solid #457b9d; margin: 25px 0; border-radius: 8px; }
+                .affiliate-rec a { color: #1d3557; font-weight: bold; text-decoration: none; }
+                .affiliate-rec a:hover { text-decoration: underline; }
+                .global-section { background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 30px 0; }
                 footer { text-align: center; padding: 20px; background: #eaeaea; font-size: 0.9em; }
+                .emoji { font-size: 1.2em; margin-right: 8px; }
             </style>
         </head>
         <body>
             <header>
-                <h1>🔐 $TOPIC</h1>
+                <h1><span class="emoji">🔐</span>$TOPIC</h1>
+                <p>Expert Cybersecurity Guidance for Modern Families</p>
             </header>
             
             <main>
@@ -136,34 +153,44 @@ jobs:
                     $CONTENT
                     
                     <div class="affiliate-rec">
-                        $AFFILIATE_SECTION
+                        <span class="emoji">⭐</span>$AFFILIATE_SECTION
                     </div>
                     
-                    <p><a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Get Our Complete Family Security Toolkit</a></p>
+                    <p style="text-align: center;">
+                        <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Get Our Complete Family Security Toolkit</a>
+                    </p>
                 </article>
                 
-                <h2>🌍 Global Cybersecurity Protection</h2>
-                <p>Cyber threats are borderless. Whether you're in New York, London, Tokyo, or Sydney, your family needs protection.</p>
+                <div class="global-section">
+                    <h2><span class="emoji">🌍</span>Global Cybersecurity Protection</h2>
+                    <p>Cyber threats don't respect borders. Whether you're in New York, London, Tokyo, Sydney, or anywhere else, your family needs protection.</p>
+                    
+                    <p><strong>Why families worldwide trust our recommendations:</strong></p>
+                    <ul>
+                        <li><span class="emoji">🔒</span><strong>Global VPN server coverage</strong> - Connect from any country</li>
+                        <li><span class="emoji">🛡️</span><strong>Multi-language security software</strong> - Support in your language</li>
+                        <li><span class="emoji">📱</span><strong>Cross-platform compatibility</strong> - Works on all your devices</li>
+                        <li><span class="emoji">🌐</span><strong>24/7 international support</strong> - Help when you need it</li>
+                        <li><span class="emoji">💳</span><strong>Local payment methods</strong> - Pay in your currency</li>
+                    </ul>
+                    
+                    <p>Join over <strong>100,000 families worldwide</strong> who've secured their digital lives with our trusted recommendations.</p>
+                    
+                    <p style="text-align: center;">
+                        <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Start Your Family Security Journey</a>
+                    </p>
+                </div>
                 
-                <p><strong>Why international families trust our recommendations:</strong></p>
-                <ul>
-                    <li>🔒 Global VPN server coverage</li>
-                    <li>🛡️ Multi-language security software</li>
-                    <li>📱 Cross-platform compatibility</li>
-                    <li>🌐 24/7 international support</li>
-                </ul>
-                
-                <p>Join over 50,000 families worldwide who've secured their digital lives with our trusted recommendations.</p>
-                
-                <p><a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Start Your Family Security Journey</a></p>
-                
-                <p><em>#CyberSecurity #FamilyProtection #GlobalSafety #DigitalParenting</em></p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <p><em>#CyberSecurity #FamilyProtection #GlobalSafety #DigitalParenting #OnlinePrivacy</em></p>
+                    <p><small>Published: $(date)</small></p>
+                </div>
             </main>
         </body>
         </html>
         EOF
         
-        echo "filename=cyber_${DATE}_${TIMESTAMP}.html" >> $GITHUB_OUTPUT
+        echo "filename=cyber_${DATE}_${TIME}_${TIMESTAMP}.html" >> $GITHUB_OUTPUT
         echo "topic=$TOPIC" >> $GITHUB_OUTPUT
     
     - name: Update index.html with new post
@@ -171,7 +198,7 @@ jobs:
         FILENAME="${{ steps.generate.outputs.filename }}"
         TOPIC="${{ steps.generate.outputs.topic }}"
         
-        # Update homepage with new content
+        # Create or update homepage with latest posts
         cat > temp_index.html << EOF
         <!DOCTYPE html>
         <html lang="en">
@@ -189,36 +216,61 @@ jobs:
             <meta charset="UTF-8">
             <title>Cyber Dad Blog | Global Family Cybersecurity</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="Daily cybersecurity guidance for busy families worldwide. Expert advice, product reviews, and safety tips.">
             <style>
                 body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-                header { background: #1d3557; color: white; padding: 20px 40px; text-align: center; }
-                main { padding: 40px; max-width: 800px; margin: auto; background: white; }
-                article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-                h2 { color: #1d3557; }
-                .cta { display: inline-block; background: #457b9d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
-                .affiliate-rec { background: #e8f4f8; padding: 15px; border-left: 4px solid #457b9d; margin: 20px 0; }
+                header { background: linear-gradient(135deg, #1d3557, #457b9d); color: white; padding: 30px 40px; text-align: center; }
+                main { padding: 40px; max-width: 1000px; margin: auto; }
+                .post-preview { background: white; margin-bottom: 30px; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #457b9d; }
+                .post-preview h2 { color: #1d3557; margin-bottom: 15px; }
+                .post-preview p { line-height: 1.6; color: #555; }
+                .cta { display: inline-block; background: #457b9d; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; margin-top: 15px; font-weight: bold; }
+                .cta:hover { background: #1d3557; }
+                .affiliate-rec { background: #e8f4f8; padding: 15px; border-left: 4px solid #457b9d; margin: 20px 0; border-radius: 5px; }
                 .affiliate-rec a { color: #1d3557; font-weight: bold; }
+                .stats { text-align: center; background: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+                .emoji { font-size: 1.2em; margin-right: 5px; }
             </style>
         </head>
         <body>
             <header>
-                <h1>Cyber Dad Blog</h1>
+                <h1><span class="emoji">🔐</span>Cyber Dad Blog</h1>
                 <p>Global Cybersecurity Guidance for Modern Families</p>
+                <p><em>Protecting 100,000+ families worldwide • Updated 3x daily • Expert advice you can trust</em></p>
             </header>
             
             <main>
+                <div class="stats">
+                    <p><strong><span class="emoji">🌍</span>Serving families in 190+ countries <span class="emoji">📅</span>3 new posts daily <span class="emoji">🛡️</span>Expert cybersecurity advice</strong></p>
+                </div>
         EOF
         
-        # Add new post content
-        sed -n '/<main>/,/<\/main>/p' "$FILENAME" | sed '1d;$d' >> temp_index.html
+        # Add new post content as preview
+        echo "<div class=\"post-preview\">" >> temp_index.html
+        echo "<h2>🔐 $TOPIC</h2>" >> temp_index.html
         
-        # Add existing content (limit to last 5 posts for performance)
+        # Extract first paragraph from content for preview
+        PREVIEW=$(sed -n '/<main>/,/<\/main>/p' "$FILENAME" | sed -n '/<article>/,/<\/article>/p' | grep -oP '(?<=<p>).*?(?=</p>)' | head -1 | sed 's/<[^>]*>//g')
+        echo "<p>$PREVIEW...</p>" >> temp_index.html
+        
+        # Add affiliate recommendation if exists
+        sed -n '/<div class="affiliate-rec">/,/<\/div>/p' "$FILENAME" >> temp_index.html
+        
+        echo "<p><a href=\"$FILENAME\" class=\"cta\">Read Full Article</a></p>" >> temp_index.html
+        echo "</div>" >> temp_index.html
+        
+        # Add existing content (limit to last 8 posts for performance)
         if [ -f index.html ]; then
-            sed -n '/<main>/,/<\/main>/p' index.html | sed '1d;$d' | sed '0,/<\/article>/d' | head -n 100 >> temp_index.html
+            sed -n '/<main>/,/<\/main>/p' index.html | sed '1d;$d' | grep -A 20 'post-preview' | head -n 200 >> temp_index.html
         fi
         
         cat >> temp_index.html << EOF
             </main>
+            
+            <footer style="text-align: center; padding: 30px; background: #1d3557; color: white;">
+                <p><strong>Cyber Dad Blog</strong> - Your trusted source for family cybersecurity</p>
+                <p>© 2025 CyberDad Media • Protecting families worldwide</p>
+            </footer>
         </body>
         </html>
         EOF
@@ -230,5 +282,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Add affiliate cybersecurity post: ${{ steps.generate.outputs.topic }}" || exit 0
+        git commit -m "Add daily affiliate cybersecurity post: ${{ steps.generate.outputs.topic }}" || exit 0
         git push
