@@ -1,0 +1,214 @@
+name: Generate Daily Cybersecurity Blog Post
+
+on:
+  schedule:
+    # Run daily at 12:00 AM EST (5:00 AM UTC)
+    - cron: '0 5 * * *'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  generate-blog-post:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Generate blog content
+      id: generate
+      run: |
+        # Get current date for filename
+        DATE=$(date +%Y-%m-%d)
+        TIMESTAMP=$(date +%s)
+        
+        # Cybersecurity topics for parents
+        TOPICS=(
+          "Smart TV Privacy Risks for Families"
+          "Kids Gaming Apps Data Collection Warning"
+          "Home Router Security Setup Guide"
+          "Social Media Safety for Teens"
+          "Family Password Manager Setup"
+          "IoT Device Security in Your Home"
+          "School Laptop Privacy Settings"
+          "Video Call Security for Remote Learning"
+          "Parental Control Software Review"
+          "Identity Theft Protection for Kids"
+          "Wi-Fi Guest Network Setup"
+          "Smartphone Security for Children"
+          "Online Banking Safety Tips"
+          "Email Phishing Prevention Guide"
+          "Digital Footprint Awareness for Families"
+          "Ransomware Protection at Home"
+          "Cloud Storage Security for Parents"
+          "Streaming Service Account Security"
+          "Online Shopping Safety Guidelines"
+          "Digital Wellness and Screen Time"
+        )
+        
+        # Select random topic
+        TOPIC=${TOPICS[$RANDOM % ${#TOPICS[@]}]}
+        
+        # Generate content using OpenAI API
+        CONTENT=$(curl -X POST https://api.openai.com/v1/chat/completions \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+          -d '{
+            "model": "gpt-4",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are a cybersecurity expert who writes simple, actionable advice for busy parents. Write content that is practical, non-technical, and focuses on protecting families. Keep it under 200 words."
+              },
+              {
+                "role": "user",
+                "content": "Write a blog post about: '"$TOPIC"'. Focus on practical steps parents can take today. Include why this matters for their family safety."
+              }
+            ],
+            "max_tokens": 300,
+            "temperature": 0.7
+          }' | jq -r '.choices[0].message.content')
+        
+        # Create HTML content with your template
+        cat > "cyber_${DATE}_${TIMESTAMP}.html" << EOF
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <!-- MailerLite Universal -->
+            <script>
+            (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+            .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+            n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+            (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+            ml('account', '1632070');
+            </script>
+            <!-- End MailerLite Universal -->
+            
+            <meta charset="UTF-8">
+            <title>$TOPIC | Cyber Dad Blog</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+                header { background: #1d3557; color: white; padding: 20px 40px; text-align: center; }
+                main { padding: 40px; max-width: 800px; margin: auto; background: white; }
+                article { margin-bottom: 40px; }
+                h2 { color: #1d3557; }
+                .cta { display: inline-block; background: #457b9d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+                footer { text-align: center; padding: 20px; background: #eaeaea; font-size: 0.9em; }
+            </style>
+        </head>
+        <body>
+            <header>
+                <h1>🔐 $TOPIC</h1>
+            </header>
+            
+            <main>
+                <article>
+                    $CONTENT
+                    
+                    <p><a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="cta">Protect your family with our cybersecurity kit</a></p>
+                </article>
+                
+                <h2>🌍 Why Go Global?</h2>
+                <p>Cyber threats don't stop at the border — and neither should your family's protection.</p>
+                
+                <p>Whether you're in the U.S., Canada, the U.K., Australia, or anywhere else in the world, your family is vulnerable to digital risks.</p>
+                
+                <ul>
+                    <li>🎣 Phishing scams targeting kids and parents</li>
+                    <li>🔓 Unsecured home Wi-Fi networks</li>
+                    <li>📱 Unsafe screen time habits</li>
+                    <li>🔍 Social engineering attacks</li>
+                </ul>
+                
+                <p><strong>Hackers don't care where you live — but we do.</strong></p>
+                
+                <p>That's why the <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank">Cyber Dad Digital Shield Kit</a> is designed for busy parents around the world who want peace of mind — without needing to be tech experts.</p>
+                
+                <h2>📊 Awareness + Action = Safer Families</h2>
+                <p>Education is the first step. Equip yourself today with our <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank">Family Protection Toolkit</a> built by a Cybersecurity Dad who understands what real families need in other countries.</p>
+                
+                <p><strong>Share this blog with friends in other countries.</strong> Help build a global culture of family cybersecurity awareness.</p>
+                
+                <p><em>#CyberDadKit #DigitalSafetyForKids #GlobalCyberAwareness #FamilyFirstSecurity</em></p>
+            </main>
+        </body>
+        </html>
+        EOF
+        
+        echo "filename=cyber_${DATE}_${TIMESTAMP}.html" >> $GITHUB_OUTPUT
+        echo "topic=$TOPIC" >> $GITHUB_OUTPUT
+    
+    - name: Update index.html with new post
+      run: |
+        # Add the new post to the top of index.html
+        FILENAME="${{ steps.generate.outputs.filename }}"
+        TOPIC="${{ steps.generate.outputs.topic }}"
+        
+        # Create temporary file with new content at top
+        cat > temp_index.html << EOF
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <!-- MailerLite Universal -->
+            <script>
+            (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+            .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+            n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+            (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+            ml('account', '1632070');
+            </script>
+            <!-- End MailerLite Universal -->
+            
+            <meta charset="UTF-8">
+            <title>Cyber Dad Blog | Family Cybersecurity Updates</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+                header { background: #1d3557; color: white; padding: 20px 40px; text-align: center; }
+                main { padding: 40px; max-width: 800px; margin: auto; background: white; }
+                article { margin-bottom: 40px; }
+                h2 { color: #1d3557; }
+                .cta { display: inline-block; background: #457b9d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+                footer { text-align: center; padding: 20px; background: #eaeaea; font-size: 0.9em; }
+            </style>
+        </head>
+        <body>
+            <header>
+                <h1>Cyber Dad Blog</h1>
+                <p>Simple Cybersecurity Alerts for Busy Families</p>
+            </header>
+            
+            <main>
+        EOF
+        
+        # Add content from the new post
+        sed -n '/<main>/,/<\/main>/p' "$FILENAME" | sed '1d;$d' >> temp_index.html
+        
+        # Add existing content (skip the first post to avoid duplication)
+        if [ -f index.html ]; then
+            sed -n '/<main>/,/<\/main>/p' index.html | sed '1d;$d' | sed '0,/<\/article>/d' >> temp_index.html
+        fi
+        
+        # Close the HTML
+        cat >> temp_index.html << EOF
+            </main>
+        </body>
+        </html>
+        EOF
+        
+        mv temp_index.html index.html
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Add daily cybersecurity post: ${{ steps.generate.outputs.topic }}" || exit 0
+        git push
