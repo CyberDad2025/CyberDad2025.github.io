@@ -2,7 +2,10 @@ name: Generate Daily Cybersecurity Blog Post with Affiliates
 
 on:
   schedule:
-    - cron: '0 5 * * *'  # Daily at midnight EST
+    schedule:
+    - cron: '0 5 * * *'   # Daily at midnight EST
+    - cron: '0 13 * * *'  # 8:00 AM EST - morning content
+    - cron: '0 21 * * *'  # 4:00 PM EST - afternoon content
   workflow_dispatch:
 
 jobs:
