@@ -1,0 +1,66 @@
+name: Pinterest Traffic Blitz
+
+on:
+  schedule:
+    # Run 5 times daily at strategic hours (EST)
+    - cron: '0 11 * * *'  # 7 AM EST - Morning parents
+    - cron: '0 16 * * *'  # 12 PM EST - Lunch break  
+    - cron: '0 20 * * *'  # 4 PM EST - After school
+    - cron: '0 23 * * *'  # 7 PM EST - Family time
+    - cron: '0 2 * * *'   # 10 PM EST - Evening planning
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  pinterest-blitz:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install openai requests pillow
+        
+    - name: Determine content type based on time
+      id: content-type
+      run: |
+        hour=$(date +%H)
+        if [ $hour -ge 6 ] && [ $hour -lt 12 ]; then
+          echo "type=morning" >> $GITHUB_OUTPUT
+        elif [ $hour -ge 12 ] && [ $hour -lt 17 ]; then
+          echo "type=midday" >> $GITHUB_OUTPUT
+        elif [ $hour -ge 17 ] && [ $hour -lt 20 ]; then
+          echo "type=afternoon" >> $GITHUB_OUTPUT
+        elif [ $hour -ge 20 ] && [ $hour -lt 23 ]; then
+          echo "type=evening" >> $GITHUB_OUTPUT
+        else
+          echo "type=night" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Run Pinterest Traffic Blitz
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+        PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
+        CONTENT_TYPE: ${{ steps.content-type.outputs.type }}
+      run: |
+        python scripts/pinterest_traffic_blitz.py
+        
+    - name: Log successful run
+      run: |
+        echo "Pinterest blitz completed at $(date) - Content type: ${{ steps.content-type.outputs.type }}" >> logs/pinterest_blitz.log
+        
+    - name: Commit logs
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "Pinterest Blitz Bot"
+        git add logs/pinterest_blitz.log || true
+        git commit -m "Pinterest blitz: ${{ steps.content-type.outputs.type }} content - $(date)" || true
+        git push || true
