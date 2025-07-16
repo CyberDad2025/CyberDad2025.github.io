@@ -1,5 +1,4 @@
 // netlify/functions/generate-blog.js
-const { schedule } = require('@netlify/functions');
 
 // Pinterest-optimized topics (short titles under 30 chars)
 const TOPICS = [
@@ -292,8 +291,5 @@ async function commitToGitHub(filename, content) {
   return await response.json();
 }
 
-// Export both the scheduled function and a manual handler
+// Export the function
 exports.handler = generateBlogPost;
-
-// Optional: Schedule function (if you want to use Netlify's built-in scheduling)
-// exports.handler = schedule('0 10,18,2 * * *', generateBlogPost);
