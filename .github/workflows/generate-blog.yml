@@ -29,41 +29,44 @@ jobs:
         TIME=$(date +%H%M)
         TIMESTAMP=$(date +%s)
         
-        # High-value cybersecurity topics with affiliate potential
+        # Pinterest-optimized topics (short titles under 30 chars)
         TOPICS=(
-          "Best VPN Services for Family Protection 2025"
-          "Password Manager Comparison for Parents"
-          "Home Router Security Setup Guide"
-          "Business Antivirus Solutions Review"
-          "Cloud Backup Security for Families"
-          "Parental Control Software Comparison"
-          "Identity Theft Protection Services"
-          "Enterprise Security Tools for Small Business"
-          "Secure Email Services for Privacy"
-          "Cryptocurrency Wallet Security Guide"
-          "Smart Home Security Systems Review"
-          "Mobile Device Management Solutions"
-          "Network Monitoring Tools for Parents"
-          "Data Recovery Software Comparison"
-          "Firewall Solutions for Home Office"
-          "Two-Factor Authentication Apps Review"
-          "Secure File Sharing Services"
-          "Privacy VPN for Streaming Safely"
-          "Business Email Security Solutions"
-          "Cybersecurity Training Platforms"
-          "WiFi Security for Remote Workers"
-          "Kids Online Safety Tools"
-          "Digital Privacy for Teens"
-          "Home Security Camera Protection"
-          "Ransomware Prevention for Families"
-          "Social Media Privacy Settings"
-          "Online Banking Security Tips"
-          "Gaming Console Security Guide"
-          "IoT Device Protection Methods"
-          "Family Digital Detox Strategies"
+          "Best VPN for Families"
+          "Password Manager Guide"
+          "Home Router Security"
+          "Antivirus for Parents"
+          "Cloud Backup Safety"
+          "Parental Control Apps"
+          "Identity Theft Prevention"
+          "Small Business Security"
+          "Secure Email Services"
+          "Crypto Wallet Protection"
+          "Smart Home Security"
+          "Mobile Device Safety"
+          "Network Monitoring"
+          "Data Recovery Tools"
+          "Home Office Firewall"
+          "2FA Apps Review"
+          "Secure File Sharing"
+          "VPN for Streaming"
+          "Email Security Tips"
+          "Cybersecurity Training"
+          "WiFi Security Guide"
+          "Kids Online Safety"
+          "Teen Digital Privacy"
+          "Security Camera Setup"
+          "Ransomware Prevention"
+          "Social Media Privacy"
+          "Banking Security Tips"
+          "Gaming Console Safety"
+          "IoT Device Protection"
+          "Digital Family Detox"
         )
         
         TOPIC=${TOPICS[$RANDOM % ${#TOPICS[@]}]}
+        
+        # Create Pinterest-friendly title (guaranteed under 100 characters)
+        PINTEREST_TITLE="🔐 $TOPIC | CyberDad"
         
         # Generate content with affiliate link opportunities
         CONTENT=$(curl -X POST https://api.openai.com/v1/chat/completions \
@@ -94,16 +97,16 @@ jobs:
         # Smart affiliate link insertion based on topic keywords
         AFFILIATE_SECTION=""
         if [[ "$TOPIC" == *"VPN"* ]] || [[ "$TOPIC" == *"Privacy"* ]] || [[ "$TOPIC" == *"Streaming"* ]]; then
-          AFFILIATE_SECTION="<p><strong>🔒 Recommended VPN:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Get NordVPN - 30-day money-back guarantee</a> - Protect your family's online activity with military-grade encryption.</p>"
+          AFFILIATE_SECTION="<p><strong>🔒 Recommended VPN:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Get NordVPN - 30-day money-back guarantee</a></p>"
         elif [[ "$TOPIC" == *"Antivirus"* ]] || [[ "$TOPIC" == *"Malware"* ]] || [[ "$TOPIC" == *"Ransomware"* ]]; then
-          AFFILIATE_SECTION="<p><strong>🛡️ Recommended Security:</strong> <a href=\"$ANTIVIRUS_LINK\" target=\"_blank\" rel=\"nofollow\">Norton 360 Family Protection</a> - Complete antivirus and identity protection for your entire family.</p>"
-        elif [[ "$TOPIC" == *"Password"* ]] || [[ "$TOPIC" == *"Authentication"* ]]; then
-          AFFILIATE_SECTION="<p><strong>🔑 Recommended Password Manager:</strong> <a href=\"$PASSWORD_LINK\" target=\"_blank\" rel=\"nofollow\">1Password Family Plan</a> - Securely store and share passwords across all your family's devices.</p>"
+          AFFILIATE_SECTION="<p><strong>🛡️ Recommended Security:</strong> <a href=\"$ANTIVIRUS_LINK\" target=\"_blank\" rel=\"nofollow\">Norton 360 Family Protection</a></p>"
+        elif [[ "$TOPIC" == *"Password"* ]] || [[ "$TOPIC" == *"2FA"* ]]; then
+          AFFILIATE_SECTION="<p><strong>🔑 Recommended Password Manager:</strong> <a href=\"$PASSWORD_LINK\" target=\"_blank\" rel=\"nofollow\">1Password Family Plan</a></p>"
         elif [[ "$TOPIC" == *"Backup"* ]] || [[ "$TOPIC" == *"Data"* ]] || [[ "$TOPIC" == *"Recovery"* ]]; then
-          AFFILIATE_SECTION="<p><strong>💾 Recommended Backup:</strong> <a href=\"$BACKUP_LINK\" target=\"_blank\" rel=\"nofollow\">Backblaze Unlimited Backup</a> - Automatically protect your family's photos, documents, and memories.</p>"
+          AFFILIATE_SECTION="<p><strong>💾 Recommended Backup:</strong> <a href=\"$BACKUP_LINK\" target=\"_blank\" rel=\"nofollow\">Backblaze Unlimited Backup</a></p>"
         else
           # Default to VPN for general security topics
-          AFFILIATE_SECTION="<p><strong>🔒 Essential Security Tool:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Secure your family with NordVPN</a> - The #1 rated VPN for family protection and online privacy.</p>"
+          AFFILIATE_SECTION="<p><strong>🔒 Essential Security Tool:</strong> <a href=\"$VPN_LINK\" target=\"_blank\" rel=\"nofollow\">Secure your family with NordVPN</a></p>"
         fi
         
         # Create HTML with enhanced affiliate content
@@ -122,12 +125,12 @@ jobs:
             <!-- End MailerLite Universal -->
             
             <meta charset="UTF-8">
-            <title>$TOPIC | Cyber Dad Blog</title>
+            <title>$PINTEREST_TITLE</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta name="description" content="Expert cybersecurity advice for busy families: $TOPIC">
             <style>
                 body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-                header { background: #1d3557; color: white; padding: 20px 40px; text-align: center; }
+                header { background: linear-gradient(135deg, #1d3557, #457b9d); color: white; padding: 30px 40px; text-align: center; }
                 main { padding: 40px; max-width: 800px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
                 article { margin-bottom: 40px; }
                 h1 { color: #1d3557; margin-bottom: 20px; }
@@ -192,11 +195,13 @@ jobs:
         
         echo "filename=cyber_${DATE}_${TIME}_${TIMESTAMP}.html" >> $GITHUB_OUTPUT
         echo "topic=$TOPIC" >> $GITHUB_OUTPUT
+        echo "pinterest_title=$PINTEREST_TITLE" >> $GITHUB_OUTPUT
     
     - name: Update index.html with new post
       run: |
         FILENAME="${{ steps.generate.outputs.filename }}"
         TOPIC="${{ steps.generate.outputs.topic }}"
+        PINTEREST_TITLE="${{ steps.generate.outputs.pinterest_title }}"
         
         # Create or update homepage with latest posts
         cat > temp_index.html << EOF
@@ -236,7 +241,7 @@ jobs:
             <header>
                 <h1><span class="emoji">🔐</span>Cyber Dad Blog</h1>
                 <p>Global Cybersecurity Guidance for Modern Families</p>
-                <p><em>Protecting 100,000+ families worldwide • Updated 3x daily • Expert advice you can trust</em></p>
+                <p><em>Serving families in 190+ countries • Updated 3x daily • Expert advice you can trust</em></p>
             </header>
             
             <main>
