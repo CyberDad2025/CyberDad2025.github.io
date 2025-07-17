@@ -72,7 +72,7 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
       
     {% else %}
       
-      {% comment %} Secure fallback if no posts exist {% endcomment %}
+      {% comment %} Clean fallback if no posts exist {% endcomment %}
       <div class="no-posts-fallback">
         <div class="fallback-content">
           <h3>🚀 Fresh Content Coming Soon!</h3>
@@ -145,7 +145,7 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
       </a>
     </div>
     
-    <p class="store-benefits">💡 Instant digital downloads • Expert-designed • Family-tested • Money-back guarantee</p>
+    <p class="store-benefits">💡 Instant digital downloads • Expert-designed • Family-tested</p>
   </div>
 
   <!-- Security Tools Section -->
@@ -199,15 +199,6 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
 
   <!-- Footer Info -->
   <div class="blog-footer">
-    <!-- HIDDEN: Automation status for internal use only -->
-    <div class="automation-status" style="display: none;" id="internal-automation-data">
-      <h3>🤖 Internal System Status</h3>
-      <p>✅ Content management: Professional cybersecurity guidance</p>
-      <p>✅ Publishing schedule: Regular updates throughout the day</p>
-      <p>✅ Social media presence: Active optimization</p>
-      <p>✅ Quality assurance: Expert-reviewed content</p>
-    </div>
-    
     <div class="about-cyberdad">
       <h3>👨‍💻 About Cyber Dad</h3>
       <p>Dedicated to helping families navigate the digital world safely. From password management to secure browsing, we provide practical cybersecurity guidance that busy parents can actually implement.</p>
@@ -235,224 +226,8 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
   </div>
 </div>
 
-<!-- SECURITY & SALES AUTOMATION SCRIPTS -->
-<script>
-// ===== CYBERDAD SITE SECURITY & SALES SYSTEM =====
-const CYBERDAD_CONFIG = {
-  // ✅ UPDATED WITH ACTUAL STORE URLS
-  etsyStoreUrl: "https://www.etsy.com/shop/CyberDadPrints",
-  payhipStoreUrl: "https://payhip.com/CyberDadKit",
-  
-  // Security settings
-  hideAutomationDetails: true,
-  enableSecureAdmin: true,
-  logSecurityEvents: true
-};
-
-// Security function to replace technical terms with customer-friendly language
-function sanitizeContent() {
-  const replacements = {
-    'Blog posts generated automatically 3x daily': 'Fresh content published regularly',
-    'Update frequency: 9:00 AM, 1:00 PM, 8:00 PM EST': 'Content updated multiple times daily',
-    'Pinterest traffic optimization: Active': 'Social media optimized',
-    'automation': 'content management',
-    'generated automatically': 'professionally curated',
-    'API': 'service',
-    'script': 'system'
-  };
-
-  Object.entries(replacements).forEach(([technical, friendly]) => {
-    document.body.innerHTML = document.body.innerHTML.replace(
-      new RegExp(technical, 'gi'), 
-      friendly
-    );
-  });
-
-  if (CYBERDAD_CONFIG.logSecurityEvents) {
-    console.log('✅ Content sanitized for public view');
-  }
-}
-
-// Function to update store URLs
-function updateStoreLinks() {
-  const storeLinks = document.querySelectorAll('a[href*="CyberDadPrints"], a[href*="CyberDadKit"]');
-  storeLinks.forEach(link => {
-    if (link.href.includes('etsy.com')) {
-      link.href = CYBERDAD_CONFIG.etsyStoreUrl;
-    } else if (link.href.includes('payhip.com')) {
-      link.href = CYBERDAD_CONFIG.payhipStoreUrl;
-    }
-  });
-
-  if (CYBERDAD_CONFIG.logSecurityEvents) {
-    console.log(`🔗 Updated ${storeLinks.length} store links`);
-  }
-}
-
-// Secure admin access function
-function createSecureAdmin() {
-  if (!CYBERDAD_CONFIG.enableSecureAdmin) return;
-
-  const adminPanel = document.createElement('div');
-  adminPanel.id = 'cyberdad-secure-admin';
-  adminPanel.style.cssText = `
-    position: fixed;
-    top: -350px;
-    right: 20px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: #00ff00;
-    padding: 25px;
-    border-radius: 15px;
-    z-index: 99999;
-    transition: top 0.4s ease;
-    max-width: 400px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    border: 3px solid #00ff00;
-    box-shadow: 0 0 30px rgba(0,255,0,0.4);
-  `;
-
-  adminPanel.innerHTML = `
-    <div style="border-bottom: 2px solid #00ff00; margin-bottom: 20px; padding-bottom: 15px; text-align: center;">
-      🔒 CYBERDAD SECURE CONTROL PANEL
-    </div>
-    <div id="admin-controls" style="margin-bottom: 20px;">
-      <button onclick="showInternalData()" style="background: #0066cc; color: white; border: none; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; width: 100%;">
-        📊 Show Internal Data
-      </button>
-      <button onclick="hideInternalData()" style="background: #cc0000; color: white; border: none; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; width: 100%;">
-        🙈 Hide Internal Data
-      </button>
-      <button onclick="runSecurityScan()" style="background: #cc6600; color: white; border: none; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; width: 100%;">
-        🔍 Security Scan
-      </button>
-      <button onclick="document.getElementById('cyberdad-secure-admin').style.top='-350px'" style="background: #666; color: white; border: none; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; width: 100%;">
-        ❌ Close Panel
-      </button>
-    </div>
-    <div id="admin-output" style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; max-height: 250px; overflow-y: auto; font-size: 11px;">
-      <div style="color: #00ff00;">🛡️ SECURE ACCESS GRANTED</div>
-      <div style="color: #ffff00;">Ready for admin commands...</div>
-    </div>
-  `;
-
-  document.body.appendChild(adminPanel);
-
-  // Secret access sequence
-  let keySequence = [];
-  const secretCode = ['c', 'y', 'b', 'e', 'r', 'd', 'a', 'd'];
-
-  document.addEventListener('keydown', function(e) {
-    keySequence.push(e.key.toLowerCase());
-    keySequence = keySequence.slice(-8);
-
-    if (JSON.stringify(keySequence) === JSON.stringify(secretCode)) {
-      adminPanel.style.top = '20px';
-      keySequence = [];
-      
-      if (CYBERDAD_CONFIG.logSecurityEvents) {
-        console.log('🔓 Secure admin access granted');
-      }
-    }
-  });
-}
-
-// Admin panel functions
-window.showInternalData = function() {
-  const internalData = document.getElementById('internal-automation-data');
-  if (internalData) {
-    internalData.style.display = 'block';
-    internalData.style.opacity = '0.8';
-    internalData.style.border = '3px dashed #ff6600';
-    internalData.style.background = '#fff3cd';
-  }
-  
-  const output = document.getElementById('admin-output');
-  output.innerHTML += '<div style="color: #00ff00;">✅ Internal automation data visible</div>';
-};
-
-window.hideInternalData = function() {
-  const internalData = document.getElementById('internal-automation-data');
-  if (internalData) {
-    internalData.style.display = 'none';
-  }
-  
-  const output = document.getElementById('admin-output');
-  output.innerHTML += '<div style="color: #ff0000;">🙈 Internal data hidden from public view</div>';
-};
-
-window.runSecurityScan = function() {
-  const output = document.getElementById('admin-output');
-  
-  // Simulate security scan
-  output.innerHTML += '<div style="color: #ffff00;">🔍 Running security scan...</div>';
-  
-  setTimeout(() => {
-    const risks = [
-      'GitHub links: SECURED ✅',
-      'Automation details: HIDDEN ✅', 
-      'Email addresses: PROTECTED ✅',
-      'Technical specifications: SANITIZED ✅',
-      'Store links: FUNCTIONAL ✅'
-    ];
-    
-    risks.forEach((risk, index) => {
-      setTimeout(() => {
-        output.innerHTML += `<div style="color: #00ff00;">${risk}</div>`;
-      }, index * 500);
-    });
-    
-    setTimeout(() => {
-      output.innerHTML += '<div style="color: #00ff00; font-weight: bold;">🛡️ SECURITY STATUS: ALL CLEAR</div>';
-    }, 3000);
-  }, 1000);
-};
-
-// Initialize everything when page loads
-function initializeCyberDad() {
-  console.log('🚀 CyberDad security system initializing...');
-  
-  // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      sanitizeContent();
-      updateStoreLinks();
-      createSecureAdmin();
-      
-      if (CYBERDAD_CONFIG.logSecurityEvents) {
-        console.log('✅ CyberDad security system active');
-        console.log('🔐 Admin access: Type "cyberdad" anywhere on the page');
-      }
-    });
-  } else {
-    sanitizeContent();
-    updateStoreLinks();
-    createSecureAdmin();
-    
-    if (CYBERDAD_CONFIG.logSecurityEvents) {
-      console.log('✅ CyberDad security system active');
-      console.log('🔐 Admin access: Type "cyberdad" anywhere on the page');
-    }
-  }
-}
-
-// Start the system
-initializeCyberDad();
-
-// Export for manual access if needed
-window.CyberDadSystem = {
-  config: CYBERDAD_CONFIG,
-  sanitize: sanitizeContent,
-  updateLinks: updateStoreLinks,
-  showAdmin: () => {
-    const panel = document.getElementById('cyberdad-secure-admin');
-    if (panel) panel.style.top = '20px';
-  }
-};
-</script>
-
 <style>
-/* Enhanced CSS for better presentation and security */
+/* Clean CSS - No Script Leaks */
 .home {
   max-width: 1200px;
   margin: 0 auto;
@@ -781,13 +556,6 @@ window.CyberDadSystem = {
   gap: 30px;
 }
 
-.automation-status {
-  background: #e8f5e8;
-  border-radius: 12px;
-  padding: 25px;
-  border: 2px dashed #28a745;
-}
-
 .about-cyberdad {
   background: #f0f8ff;
   border-radius: 12px;
@@ -839,13 +607,5 @@ window.CyberDadSystem = {
     flex-direction: column;
     align-items: center;
   }
-}
-
-/* Hide any debug or development info */
-.debug-info,
-.dev-info,
-[class*="debug"],
-[class*="development"] {
-  display: none !important;
 }
 </style>
