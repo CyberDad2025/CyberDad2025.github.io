@@ -1,0 +1,80 @@
+# Jekyll Configuration for Cyber Dad Blog
+title: "Cyber Dad Blog"
+description: "Global Cybersecurity Guidance for Modern Families"
+author: "CyberDad2025"
+email: "cyberdadkit@gmail.com"
+url: "https://cyberdad2025.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Theme
+remote_theme: jekyll/minima
+
+# Social links
+twitter_username: cyberdad2025
+github_username: CyberDad2025
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
+
+# Default layout for posts
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "CyberDad2025"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Pagination
+paginate: 10
+paginate_path: "/page:num/"
+
+# SEO
+lang: en
+google_analytics: # Add your GA code here later
+google_site_verification: # Add your verification code here later
+
+# Navigation
+header_pages:
+  - about.md
+  - contact.md
+
+# Exclude files
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .sass-cache
+  - .jekyll-cache
+  - .github
+
+# Include files
+include:
+  - _pages
+
+# Sass
+sass:
+  style: compressed
+
+# Security
+safe: true
