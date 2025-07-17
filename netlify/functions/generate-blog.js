@@ -1,263 +1,334 @@
 // netlify/functions/generate-blog.js
-// Simple blog generator with no external dependencies
+// BULLETPROOF Blog Generator - Fixed All Issues
 
-const TOPICS = [
-  "VPN Security Tips 2025",
-  "Password Manager Guide",
-  "Home Router Setup",
-  "Antivirus Review",
-  "Cloud Backup Security",
-  "Parental Control Software",
-  "Identity Theft Protection",
-  "Enterprise Security Tools",
-  "Email Security Privacy",
-  "Cryptocurrency Security"
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_OWNER = 'CyberDad2025';
+const GITHUB_REPO = 'CyberDad2025.github.io';
+const CRON_SECRET = process.env.CRON_SECRET;
+
+// Cybersecurity topics pool
+const CYBERSECURITY_TOPICS = [
+  'password security', 'home network security', 'VPN setup', 'phishing prevention',
+  'social media privacy', 'smart home security', 'mobile device security', 'backup strategies',
+  'identity theft protection', 'secure browsing', 'email security', 'WiFi security',
+  'router configuration', 'antivirus software', 'firewall setup', 'secure passwords',
+  'two-factor authentication', 'data encryption', 'secure file sharing', 'privacy settings',
+  'parental controls', 'online banking security', 'remote work security', 'IoT security',
+  'cloud storage security', 'browser security', 'social engineering awareness', 
+  'ransomware protection', 'secure communication', 'digital footprint management'
 ];
 
 exports.handler = async (event, context) => {
-  // Set CORS headers
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Content-Type': 'application/json'
-  };
-
-  // Handle OPTIONS request for CORS
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: ''
-    };
-  }
+  console.log('🚀 Starting bulletproof blog generator...');
 
   try {
-    console.log('🚀 Blog generation started');
-    
-    // Check authorization
-    const authHeader = event.headers.authorization || event.headers.Authorization;
-    if (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    // 1. VERIFY AUTHORIZATION
+    const auth = event.headers.authorization;
+    if (!auth || !auth.includes(CRON_SECRET)) {
+      console.log('❌ Unauthorized request');
       return {
         statusCode: 401,
-        headers,
-        body: JSON.stringify({ error: 'Unauthorized - Invalid or missing authorization' })
+        body: JSON.stringify({ error: 'Unauthorized' })
       };
     }
 
-    // Select random topic
-    const topic = TOPICS[Math.floor(Math.random() * TOPICS.length)];
-    console.log(`Selected topic: ${topic}`);
-    
-    // Generate simple content
-    const content = generateContent(topic);
-    
-    // Create filename
+    // 2. CHECK ENVIRONMENT VARIABLES
+    if (!OPENAI_API_KEY) {
+      throw new Error('Missing OPENAI_API_KEY environment variable');
+    }
+    if (!GITHUB_TOKEN) {
+      throw new Error('Missing GITHUB_TOKEN environment variable');
+    }
+
+    console.log('✅ Authorization and environment check passed');
+
+    // 3. GENERATE PROPER TIMESTAMP (EST/EDT timezone aware)
     const now = new Date();
-    const date = now.toISOString().split('T')[0];
-    const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const filename = `${date}-${slug}.md`;
+    const estOffset = -5; // EST is UTC-5, EDT is UTC-4
+    const isDST = isDaylightSavingTime(now);
+    const timezoneOffset = isDST ? -4 : -5; // EDT vs EST
     
-    // Create blog post with frontmatter
-    const blogPost = createBlogPost(topic, content, now);
+    const estTime = new Date(now.getTime() + (timezoneOffset * 60 * 60 * 1000));
+    const dateStr = estTime.toISOString().split('T')[0]; // YYYY-MM-DD
+    const timeStr = estTime.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS
     
-    // Commit to GitHub
-    await commitToGitHub(filename, blogPost);
+    console.log(`📅 Generated EST time: ${dateStr} ${timeStr}`);
+
+    // 4. GENERATE TOPIC AND TITLE
+    const topic = CYBERSECURITY_TOPICS[Math.floor(Math.random() * CYBERSECURITY_TOPICS.length)];
+    const currentYear = new Date().getFullYear();
     
-    console.log('✅ Blog post created successfully');
+    console.log(`🎯 Selected topic: ${topic}`);
+
+    // 5. GENERATE BLOG CONTENT WITH OPENAI
+    console.log('🤖 Generating blog content with OpenAI...');
     
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({ 
-        success: true, 
-        topic: topic,
-        filename: filename,
-        timestamp: now.toISOString(),
-        message: 'Blog post generated and committed to GitHub'
-      })
-    };
+    const prompt = `Write a comprehensive cybersecurity blog post about "${topic}" for families in ${currentYear}. 
     
+    Requirements:
+    - Write for parents and families
+    - Include practical, actionable tips
+    - Make it engaging and easy to understand
+    - Include specific product recommendations
+    - Add real-world examples
+    - Target 800-1200 words
+    - Include a compelling introduction
+    - Use subheadings with ##
+    - End with a practical summary
+    
+    Focus on helping families protect themselves online in ${currentYear}.`;
+
+    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a cybersecurity expert who writes engaging, practical blog posts for families. Write in a friendly, authoritative tone.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        max_tokens: 2000,
+        temperature: 0.7,
+      }),
+    });
+
+    if (!openaiResponse.ok) {
+      const errorData = await openaiResponse.text();
+      console.log('❌ OpenAI API error:', errorData);
+      throw new Error(`OpenAI API error: ${openaiResponse.status} - ${errorData}`);
+    }
+
+    const openaiData = await openaiResponse.json();
+    const blogContent = openaiData.choices[0].message.content;
+    
+    console.log('✅ Blog content generated successfully');
+
+    // 6. EXTRACT TITLE FROM CONTENT
+    const titleMatch = blogContent.match(/^#\s*(.+)$/m) || blogContent.match(/^(.+)$/m);
+    let title = titleMatch ? titleMatch[1].trim() : `${topic.charAt(0).toUpperCase() + topic.slice(1)} Guide for ${currentYear}`;
+    
+    // Clean title for filename
+    title = title.replace(/[#*]/g, '').trim();
+    const cleanTitle = title.toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    console.log(`📝 Generated title: ${title}`);
+
+    // 7. CREATE FILENAME
+    const filename = `${dateStr}-${cleanTitle}.md`;
+    console.log(`📄 Filename: ${filename}`);
+
+    // 8. CREATE JEKYLL FRONT MATTER
+    const categories = ['cybersecurity', 'security', 'family-safety'];
+    const tags = extractTags(topic, blogContent);
+    
+    const frontMatter = `---
+layout: post
+title: "${title}"
+date: ${dateStr} ${timeStr} -0500
+categories: [${categories.join(', ')}]
+tags: [${tags.join(', ')}]
+author: CyberDad2025
+excerpt: "${generateExcerpt(blogContent)}"
+seo_title: "${title} - Complete ${currentYear} Guide"
+seo_description: "Learn ${topic} with practical tips for families. Protect your home network and keep your family safe online in ${currentYear}."
+featured: true
+image: /assets/images/cybersecurity-${cleanTitle}.jpg
+---
+
+`;
+
+    const fullContent = frontMatter + blogContent;
+
+    // 9. CHECK IF POST ALREADY EXISTS
+    console.log('🔍 Checking if post already exists...');
+    
+    try {
+      const existingResponse = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/_posts/${filename}`, {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      
+      if (existingResponse.ok) {
+        console.log('⚠️ Post already exists, appending timestamp...');
+        const timestamp = Date.now();
+        const newFilename = `${dateStr}-${cleanTitle}-${timestamp}.md`;
+        return await createGitHubPost(newFilename, fullContent, title);
+      }
+    } catch (error) {
+      console.log('✅ Post does not exist, proceeding with creation');
+    }
+
+    // 10. CREATE THE BLOG POST
+    return await createGitHubPost(filename, fullContent, title);
+
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('💥 Fatal error in blog generator:', error);
+    
+    // 11. FALLBACK ERROR HANDLING
+    try {
+      await createErrorIssue(error);
+    } catch (issueError) {
+      console.error('Failed to create error issue:', issueError);
+    }
     
     return {
       statusCode: 500,
-      headers,
       body: JSON.stringify({ 
-        success: false, 
         error: error.message,
-        details: 'Check function logs for more information'
+        details: 'Check function logs for more information',
+        timestamp: new Date().toISOString()
       })
     };
   }
 };
 
-function generateContent(topic) {
-  const currentYear = new Date().getFullYear();
+// HELPER FUNCTIONS
+
+async function createGitHubPost(filename, content, title) {
+  console.log(`📤 Creating GitHub post: ${filename}`);
   
-  return `# ${topic}
+  try {
+    const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/_posts/${filename}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: `Auto-generated blog post: ${filename}`,
+        content: Buffer.from(content).toString('base64'),
+        author: {
+          name: 'CyberDad2025 Bot',
+          email: 'cyberdadkit@gmail.com'
+        }
+      }),
+    });
 
-In ${currentYear}, cybersecurity has become more critical than ever. Understanding ${topic.toLowerCase()} is essential for protecting your digital life and maintaining online security.
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error(`GitHub API error: ${response.status} - ${errorData}`);
+    }
 
-## Why ${topic} Matters
+    const result = await response.json();
+    console.log('✅ Blog post created successfully on GitHub');
 
-Digital threats are constantly evolving, making it crucial to stay informed about ${topic.toLowerCase()}. Whether you're an individual, family, or business, implementing proper security measures can save you from costly breaches and privacy violations.
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        success: true,
+        message: 'Blog post created successfully',
+        filename: filename,
+        title: title,
+        url: result.content.html_url,
+        timestamp: new Date().toISOString()
+      })
+    };
 
-## Key Benefits
-
-- **Enhanced Protection**: Safeguard your personal and professional data
-- **Peace of Mind**: Sleep better knowing your systems are secure  
-- **Cost Savings**: Prevent expensive security incidents before they happen
-- **Compliance**: Meet industry standards and regulatory requirements
-- **Reputation Protection**: Maintain trust with customers and partners
-
-## Getting Started with ${topic}
-
-### Step 1: Assessment
-Begin by evaluating your current security posture. Identify potential vulnerabilities and areas that need immediate attention.
-
-### Step 2: Planning  
-Develop a comprehensive security strategy that aligns with your specific needs and budget constraints.
-
-### Step 3: Implementation
-Deploy the necessary tools and processes to strengthen your security infrastructure.
-
-### Step 4: Monitoring
-Continuously monitor your systems for threats and unusual activity.
-
-### Step 5: Maintenance
-Keep all security measures updated and review your strategy regularly.
-
-## Best Practices
-
-**Prevention First**
-- Use strong, unique passwords for all accounts
-- Enable two-factor authentication whenever possible
-- Keep software and systems updated with latest patches
-- Regular security training for all users
-- Implement backup and recovery procedures
-
-**Stay Informed**
-- Follow cybersecurity news and threat intelligence
-- Subscribe to security advisories from vendors
-- Participate in security communities and forums
-- Attend training sessions and webinars
-
-## Common Mistakes to Avoid
-
-1. **Assuming you're not a target** - Everyone is at risk
-2. **Delaying security updates** - Patches are critical
-3. **Using weak passwords** - Complexity matters
-4. **Ignoring user training** - Human error is common
-5. **Neglecting mobile devices** - Phones need security too
-
-## Implementation Timeline
-
-**Week 1-2: Discovery**
-- Audit current security measures
-- Identify gaps and vulnerabilities  
-- Prioritize critical areas
-
-**Week 3-4: Strategy**
-- Research available solutions
-- Develop implementation plan
-- Allocate necessary resources
-
-**Month 2: Deployment**
-- Install and configure security tools
-- Train users on new procedures
-- Test all systems thoroughly
-
-**Ongoing: Operations**
-- Monitor security metrics
-- Update systems regularly
-- Review and improve processes
-
-## Measuring Success
-
-Track these important metrics to ensure your ${topic.toLowerCase()} efforts are effective:
-
-- **Response Time**: How quickly threats are detected and addressed
-- **System Uptime**: Availability and reliability of your systems
-- **User Compliance**: Adherence to security policies and procedures
-- **Incident Frequency**: Number and severity of security events
-- **Cost Efficiency**: Return on investment for security measures
-
-## Looking Ahead
-
-The cybersecurity landscape continues to evolve rapidly. Staying ahead requires:
-
-- **Continuous Learning**: Keep up with new threats and technologies
-- **Adaptive Strategies**: Flexible approaches that evolve with risks
-- **Technology Investment**: Leverage AI and automation for better security
-- **Community Engagement**: Collaborate with other security professionals
-
-## Conclusion
-
-${topic} represents a critical investment in your digital future. By implementing comprehensive security measures and maintaining a proactive approach, you can protect what matters most while enabling growth and innovation.
-
-Remember that cybersecurity is not a destination but a journey. It requires ongoing attention, investment, and adaptation to new threats and technologies. Start with the fundamentals, build systematically, and never assume you're completely secure.
-
-**Take action today** to strengthen your ${topic.toLowerCase()} posture. Your future self will appreciate the protection you implement now.
-
----
-
-*Stay vigilant, stay informed, and prioritize cybersecurity in everything you do.*`;
+  } catch (error) {
+    console.error('❌ Error creating GitHub post:', error);
+    throw error;
+  }
 }
 
-function createBlogPost(topic, content, date) {
-  const tags = topic.toLowerCase().split(/[\s\-]+/).filter(tag => tag.length > 2);
+function isDaylightSavingTime(date) {
+  const year = date.getFullYear();
+  // DST in US: 2nd Sunday in March to 1st Sunday in November
+  const dstStart = new Date(year, 2, 1); // March 1st
+  const dstEnd = new Date(year, 10, 1); // November 1st
   
-  return `---
-layout: post
-title: "${topic}"
-date: ${date.toISOString()}
-categories: [cybersecurity, security, tech]
-tags: [${tags.join(', ')}]
-author: CyberDad2025
-excerpt: "Complete guide to ${topic.toLowerCase()} for ${date.getFullYear()}"
-seo_title: "${topic} - Essential Guide ${date.getFullYear()}"
-seo_description: "Learn about ${topic.toLowerCase()} with practical tips and expert recommendations for better cybersecurity."
-featured: false
----
-
-${content}`;
+  // Find 2nd Sunday in March
+  dstStart.setDate(1 + (7 - dstStart.getDay()) % 7 + 7);
+  
+  // Find 1st Sunday in November  
+  dstEnd.setDate(1 + (7 - dstEnd.getDay()) % 7);
+  
+  return date >= dstStart && date < dstEnd;
 }
 
-async function commitToGitHub(filename, content) {
-  const token = process.env.GITHUB_TOKEN;
-  const repo = 'CyberDad2025/CyberDad2025.github.io';
+function extractTags(topic, content) {
+  const baseTags = topic.split(' ').slice(0, 3);
+  const contentTags = [];
   
-  if (!token) {
-    throw new Error('GitHub token not found in environment variables');
+  // Extract additional tags from content
+  if (content.toLowerCase().includes('vpn')) contentTags.push('vpn');
+  if (content.toLowerCase().includes('password')) contentTags.push('passwords');
+  if (content.toLowerCase().includes('router')) contentTags.push('router');
+  if (content.toLowerCase().includes('wifi')) contentTags.push('wifi');
+  if (content.toLowerCase().includes('family')) contentTags.push('family');
+  if (content.toLowerCase().includes('home')) contentTags.push('home');
+  
+  return [...baseTags, ...contentTags].slice(0, 8);
+}
+
+function generateExcerpt(content) {
+  // Extract first paragraph or first 160 characters
+  const firstParagraph = content.split('\n\n')[0];
+  const excerpt = firstParagraph.replace(/[#*]/g, '').trim();
+  
+  if (excerpt.length > 160) {
+    return excerpt.substring(0, 157) + '...';
   }
   
-  const url = `https://api.github.com/repos/${repo}/contents/_posts/${filename}`;
+  return excerpt;
+}
+
+async function createErrorIssue(error) {
+  console.log('📝 Creating error report issue...');
   
-  const body = JSON.stringify({
-    message: `🤖 Auto-generated blog post: ${filename}`,
-    content: Buffer.from(content).toString('base64'),
-    branch: 'main'
-  });
-  
-  const response = await fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `token ${token}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'CyberDad-Blog-Bot'
-    },
-    body: body
-  });
-  
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`GitHub API error ${response.status}: ${errorText}`);
+  try {
+    const errorIssue = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: `🚨 Blog Generator Error - ${new Date().toISOString().split('T')[0]}`,
+        body: `# Blog Generator Error Report
+
+**Time:** ${new Date().toLocaleString()}
+**Error:** ${error.message}
+
+**Stack Trace:**
+\`\`\`
+${error.stack}
+\`\`\`
+
+**Environment:**
+- Function: generate-blog
+- Trigger: Cron job
+
+**Next Steps:**
+1. Check environment variables
+2. Verify API keys
+3. Test function manually
+`,
+        labels: ['bug', 'automation', 'high-priority']
+      })
+    });
+
+    if (errorIssue.ok) {
+      console.log('✅ Error issue created successfully');
+    }
+  } catch (issueError) {
+    console.error('Failed to create error issue:', issueError);
   }
-  
-  const result = await response.json();
-  console.log('✅ Successfully committed to GitHub:', result.commit.sha);
-  
-  return result;
 }
