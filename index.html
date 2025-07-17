@@ -137,10 +137,10 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
     </div>
     
     <div class="store-buttons">
-      <a href="https://www.etsy.com/shop/YourStoreNameHere" class="store-btn etsy-btn">
+      <a href="https://www.etsy.com/shop/CyberDadPrints" class="store-btn etsy-btn">
         🛍️ Shop Etsy Store
       </a>
-      <a href="https://payhip.com/YourStoreNameHere" class="store-btn payhip-btn">
+      <a href="https://payhip.com/CyberDadKit" class="store-btn payhip-btn">
         📁 Instant Downloads
       </a>
     </div>
@@ -217,8 +217,9 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
       <h3>🔗 Connect With Us</h3>
       <p>
         <a href="https://www.pinterest.com/cyberdadkit/">📌 Pinterest</a> | 
-        <a href="https://www.etsy.com/shop/YourStoreNameHere">🛍️ Etsy Store</a> | 
-        <a href="https://payhip.com/YourStoreNameHere">📁 Digital Downloads</a>
+        <a href="https://www.etsy.com/shop/CyberDadPrints">🛍️ Etsy Store</a> | 
+        <a href="https://payhip.com/CyberDadKit">📁 Digital Downloads</a> |
+        <a href="https://linktr.ee/cyberdadkit">🔗 All Links</a>
       </p>
     </div>
     
@@ -238,9 +239,9 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
 <script>
 // ===== CYBERDAD SITE SECURITY & SALES SYSTEM =====
 const CYBERDAD_CONFIG = {
-  // ⚠️ UPDATE THESE WITH YOUR ACTUAL STORE URLS ⚠️
-  etsyStoreUrl: "https://www.etsy.com/shop/YourStoreNameHere",
-  payhipStoreUrl: "https://payhip.com/YourStoreNameHere",
+  // ✅ UPDATED WITH ACTUAL STORE URLS
+  etsyStoreUrl: "https://www.etsy.com/shop/CyberDadPrints",
+  payhipStoreUrl: "https://payhip.com/CyberDadKit",
   
   // Security settings
   hideAutomationDetails: true,
@@ -274,7 +275,7 @@ function sanitizeContent() {
 
 // Function to update store URLs
 function updateStoreLinks() {
-  const storeLinks = document.querySelectorAll('a[href*="YourStoreNameHere"]');
+  const storeLinks = document.querySelectorAll('a[href*="CyberDadPrints"], a[href*="CyberDadKit"]');
   storeLinks.forEach(link => {
     if (link.href.includes('etsy.com')) {
       link.href = CYBERDAD_CONFIG.etsyStoreUrl;
