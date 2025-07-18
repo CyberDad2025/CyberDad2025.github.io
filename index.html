@@ -844,3 +844,272 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('📊 Blog page view tracked');
 });
 </script>
+<!-- CYBERDAD GLOBAL DETECTION SYSTEM - PASTE BEFORE </body> TAG -->
+
+<style>
+/* Global Country Detection - Secure & Clean */
+.country-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 9999;
+    max-width: 320px;
+    transform: translateX(400px);
+    transition: transform 0.5s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: none;
+}
+
+.country-notification.show {
+    transform: translateX(0);
+    display: block;
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.country-flag {
+    font-size: 24px;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.notification-message {
+    margin-bottom: 15px;
+    line-height: 1.4;
+    opacity: 0.95;
+    font-size: 0.9rem;
+}
+
+.notification-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-translate {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 100px;
+}
+
+.btn-translate:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.btn-dismiss {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .country-notification {
+        max-width: 280px;
+        padding: 15px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .notification-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+
+<div id="countryNotification" class="country-notification">
+    <button class="close-btn" onclick="hideGlobalNotification()">&times;</button>
+    <div class="notification-header">
+        <span class="country-flag" id="globalFlag">🌍</span>
+        <div class="notification-title" id="globalTitle">Language Option</div>
+    </div>
+    <div class="notification-message" id="globalMessage">
+        Content available in your language
+    </div>
+    <div class="notification-buttons">
+        <button class="btn-translate" id="globalTranslateBtn" onclick="translateContent()">
+            Switch Language
+        </button>
+        <button class="btn-dismiss" onclick="hideGlobalNotification()">
+            Keep English
+        </button>
+    </div>
+</div>
+
+<script>
+// Secure Global Detection System
+(function() {
+    'use strict';
+    
+    // Secure configuration (no sensitive data exposed)
+    const config = {
+        countries: {
+            'ES': { flag: '🇪🇸', lang: 'es', btn: 'Ver en Español' },
+            'MX': { flag: '🇲🇽', lang: 'es', btn: 'Ver en Español' },
+            'AR': { flag: '🇦🇷', lang: 'es', btn: 'Ver en Español' },
+            'CO': { flag: '🇨🇴', lang: 'es', btn: 'Ver en Español' },
+            'FR': { flag: '🇫🇷', lang: 'fr', btn: 'Voir en Français' },
+            'CA': { flag: '🇨🇦', lang: 'fr', btn: 'Voir en Français' },
+            'DE': { flag: '🇩🇪', lang: 'de', btn: 'Auf Deutsch' },
+            'AT': { flag: '🇦🇹', lang: 'de', btn: 'Auf Deutsch' },
+            'CH': { flag: '🇨🇭', lang: 'de', btn: 'Auf Deutsch' }
+        },
+        
+        translations: {
+            en: {
+                heroTitle: "🛡️ CyberDad",
+                heroSubtitle: "Protecting Families in the Digital Age",
+                heroDescription: "Expert cybersecurity solutions trusted by 10,000+ families worldwide. Keep your loved ones safe from cyber threats, online predators, and digital dangers.",
+                ctaPrimary: "🚀 Get Family Protection",
+                ctaSecondary: "📖 Free Safety Guide",
+                featuresTitle: "Complete Family Protection",
+                featuresSubtitle: "Everything you need to keep your family safe online"
+            },
+            es: {
+                heroTitle: "🛡️ CiberPapa",
+                heroSubtitle: "Protegiendo Familias en la Era Digital",
+                heroDescription: "Soluciones expertas de ciberseguridad confiables para más de 10,000 familias en todo el mundo. Mantén a tus seres queridos seguros de amenazas cibernéticas, depredadores en línea y peligros digitales.",
+                ctaPrimary: "🚀 Obtener Protección Familiar",
+                ctaSecondary: "📖 Guía Gratuita de Seguridad",
+                featuresTitle: "Protección Familiar Completa",
+                featuresSubtitle: "Todo lo que necesitas para mantener a tu familia segura en línea"
+            },
+            fr: {
+                heroTitle: "🛡️ CyberPapa",
+                heroSubtitle: "Protéger les Familles à l'Ère Numérique",
+                heroDescription: "Solutions de cybersécurité expertes approuvées par plus de 10 000 familles dans le monde. Protégez vos proches des cybermenaces, des prédateurs en ligne et des dangers numériques.",
+                ctaPrimary: "🚀 Obtenir Protection Familiale",
+                ctaSecondary: "📖 Guide Gratuit de Sécurité",
+                featuresTitle: "Protection Familiale Complète",
+                featuresSubtitle: "Tout ce dont vous avez besoin pour garder votre famille en sécurité en ligne"
+            },
+            de: {
+                heroTitle: "🛡️ CyberVater",
+                heroSubtitle: "Familien im Digitalen Zeitalter Schützen",
+                heroDescription: "Experten-Cybersicherheitslösungen, denen weltweit über 10.000 Familien vertrauen. Schützen Sie Ihre Lieben vor Cyber-Bedrohungen, Online-Raubtieren und digitalen Gefahren.",
+                ctaPrimary: "🚀 Familienschutz Erhalten",
+                ctaSecondary: "📖 Kostenloser Sicherheitsleitfaden",
+                featuresTitle: "Kompletter Familienschutz",
+                featuresSubtitle: "Alles was Sie brauchen, um Ihre Familie online sicher zu halten"
+            }
+        }
+    };
+    
+    let currentLang = 'en';
+    let detectedCountry = null;
+    
+    // Secure detection without exposing internal logic
+    function detectUser() {
+        const browserLang = (navigator.language || 'en').split('-')[0];
+        
+        if (browserLang && browserLang !== 'en' && config.translations[browserLang]) {
+            showNotification(browserLang);
+        }
+    }
+    
+    // Show clean notification (no technical details)
+    function showNotification(lang) {
+        const notification = document.getElementById('countryNotification');
+        const flag = document.getElementById('globalFlag');
+        const title = document.getElementById('globalTitle');
+        const message = document.getElementById('globalMessage');
+        const btn = document.getElementById('globalTranslateBtn');
+        
+        if (!notification) return;
+        
+        const langData = {
+            es: { flag: '🇪🇸', title: 'Español Disponible', msg: 'Contenido disponible en español', btn: 'Ver en Español' },
+            fr: { flag: '🇫🇷', title: 'Français Disponible', msg: 'Contenu disponible en français', btn: 'Voir en Français' },
+            de: { flag: '🇩🇪', title: 'Deutsch Verfügbar', msg: 'Inhalt auf Deutsch verfügbar', btn: 'Auf Deutsch' }
+        };
+        
+        const data = langData[lang];
+        if (data) {
+            currentLang = lang;
+            flag.textContent = data.flag;
+            title.textContent = data.title;
+            message.textContent = data.msg;
+            btn.textContent = data.btn;
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 3000);
+        }
+    }
+    
+    // Secure translation (no exposed logic)
+    window.translateContent = function() {
+        hideGlobalNotification();
+        
+        const translations = config.translations[currentLang];
+        if (translations) {
+            Object.keys(translations).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = translations[key];
+                }
+            });
+            
+            // Update language selector if exists
+            const langSelect = document.getElementById('languageSelect');
+            if (langSelect) {
+                langSelect.value = currentLang;
+            }
+        }
+    };
+    
+    // Hide notification
+    window.hideGlobalNotification = function() {
+        const notification = document.getElementById('countryNotification');
+        if (notification) {
+            notification.classList.remove('show');
+        }
+    };
+    
+    // Initialize securely
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(detectUser, 2000);
+    });
+    
+})();
+</script>
