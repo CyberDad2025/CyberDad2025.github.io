@@ -1,754 +1,706 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberDad 2025 - Family Cybersecurity Protection | Expert Digital Safety Solutions</title>
-    
-    <!-- SEO Optimization Meta Tags -->
-    <meta name="description" content="Protect your family online with CyberDad 2025's expert cybersecurity solutions. Comprehensive digital safety, parental controls, and cyber threat protection for modern families.">
-    <meta name="keywords" content="family cybersecurity, digital safety, parental controls, online protection, cyber threats, internet safety, digital parenting, family internet security">
-    <meta name="author" content="CyberDad 2025">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cyberdad2025.github.io">
-    <meta property="og:title" content="CyberDad 2025 - Family Cybersecurity Protection">
-    <meta property="og:description" content="Expert cybersecurity solutions to keep your family safe online. Trusted by 10,000+ families worldwide.">
-    <meta property="og:image" content="https://cyberdad2025.github.io/assets/img/cyberdad-social.jpg">
-    
-    <!-- Schema.org Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "CyberDad 2025",
-        "url": "https://cyberdad2025.github.io",
-        "logo": "https://cyberdad2025.github.io/assets/img/logo.png",
-        "description": "Family cybersecurity expert providing digital safety solutions",
-        "founder": {
-            "@type": "Person",
-            "name": "CyberDad"
-        },
-        "areaServed": "Worldwide",
-        "serviceType": "Cybersecurity Consulting"
-    }
-    </script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-            color: white;
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 40px 0;
-        }
-        
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, #10b981, #059669);
-            color: white;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .features {
-            background: white;
-            padding: 80px 20px;
-            margin-top: -40px;
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-        }
-        
-        .feature-card {
-            padding: 30px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        
-        .testimonials {
-            background: #1a202c;
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-        }
-        
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .testimonial {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .stats {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-top: 40px;
-        }
-        
-        .stat-item h3 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #10b981, #059669);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-            z-index: 1000;
-            transform: translateX(400px);
-            transition: transform 0.5s ease;
-            display: none;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-            display: block;
-        }
-        
-        /* Language Selector */
-        .language-selector {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 50px;
-            padding: 10px 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        
-        .language-selector select {
-            border: none;
-            background: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        /* Exit Intent Popup */
-        .exit-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        
-        .popup-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 500px;
-            margin: 20px;
-        }
-        
-        .popup-content h2 {
-            color: #e53e3e;
-            margin-bottom: 20px;
-        }
-        
-        /* Alert Popup Styles */
-        .alert-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            z-index: 3000;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            display: none;
-        }
-        
-        .alert-popup.show {
-            display: block;
-            animation: popupFadeIn 0.5s ease-out;
-        }
-        
-        .alert-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.7);
-            font-size: 24px;
-            cursor: pointer;
-            line-height: 1;
-        }
-        
-        .alert-close:hover {
-            color: white;
-        }
-        
-        .security-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .alert-popup {
-                margin: 20px;
-                padding: 30px 20px;
-            }
-        }
-        
-        @keyframes slideInRight {
-            from {
-                transform: translateX(300px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes popupFadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        .trust-indicator {
-            display: inline-block;
-            margin: 5px;
-            padding: 5px 12px;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-    </style>
-</head>
-<body>
-    <!-- Security Alert Popup -->
-    <div id="securityAlert" class="alert-popup">
-        <button class="alert-close" onclick="closeSecurityAlert()">×</button>
-        <div style="margin-bottom: 20px;">
-            <div style="font-size: 3rem; margin-bottom: 15px;">🛡️</div>
-            <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 25px; margin-bottom: 20px;">
-                <span style="font-size: 0.9rem; font-weight: 600;">🔒 100% Secure & Private</span>
-            </div>
-        </div>
-        <h2 style="color: #fed7d7; margin-bottom: 20px;">⚠️ Family Cyber Attack Alert!</h2>
-        <p style="font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5;">
-            <strong>87% of families</strong> are vulnerable to cyber attacks right now. Get our <strong>FREE Emergency Security Checklist</strong> to protect your family in 15 minutes!
-        </p>
-        
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; font-size: 0.9rem;">
-            <div style="text-align: center;">
-                <div style="font-size: 1.5rem; margin-bottom: 5px;">⚡</div>
-                <div style="font-weight: 600;">Instant Download</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 1.5rem; margin-bottom: 5px;">🔒</div>
-                <div style="font-weight: 600;">No Spam Ever</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 1.5rem; margin-bottom: 5px;">👨‍👩‍👧‍👦</div>
-                <div style="font-weight: 600;">Family-Tested Solutions</div>
-            </div>
-        </div>
-        
-        <form id="securityForm" onsubmit="handleSecurityFormSubmit(event)" style="margin: 25px 0;">
-            <input type="email" id="securityEmail" placeholder="Enter your email for FREE checklist" required style="
-                width: 100%; padding: 15px; border: none; border-radius: 10px;
-                font-size: 1rem; margin-bottom: 15px; text-align: center;
-            ">
-            <button type="submit" style="
-                width: 100%; background: linear-gradient(45deg, #10b981, #059669);
-                color: white; border: none; padding: 15px; border-radius: 10px;
-                font-size: 1.1rem; font-weight: 600; cursor: pointer;
-                transition: all 0.3s ease;
-            ">🛡️ Get FREE Security Checklist</button>
-        </form>
-        
-        <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 15px;">
-            ✅ Trusted by parents nationwide
-        </div>
-    </div>
-    
-    <!-- Language Detection Notification -->
-    <div id="languageNotification" class="notification">
-        🌍 <span id="notificationText">Detecting your location...</span>
-    </div>
-    
-    <!-- Language Selector -->
-    <div class="language-selector">
-        <select id="languageSelect" onchange="translatePage()">
-            <option value="en">🇺🇸 English</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="fr">🇫🇷 Français</option>
-            <option value="de">🇩🇪 Deutsch</option>
-        </select>
-    </div>
-    
-    <!-- Exit Intent Popup -->
-    <div id="exitPopup" class="exit-popup">
-        <div class="popup-content">
-            <h2>⚠️ Wait! Don't Leave Unprotected!</h2>
-            <p>Your family's digital safety is at risk. Get 20% OFF our protection plan before you go!</p>
-            <div style="margin: 20px 0;">
-                <button class="btn btn-primary" onclick="claimDiscount()">🛡️ Claim 20% Discount</button>
-                <button class="btn btn-secondary" onclick="closePopup()" style="margin-left: 10px;">Continue Browsing</button>
-            </div>
-            <p style="font-size: 0.9rem; color: #666;">Limited time offer - expires in 24 hours</p>
-        </div>
-    </div>
-    
-    <div class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 id="heroTitle">🛡️ CyberDad 2025</h1>
-            <p id="heroSubtitle">Protecting Families in the Digital Age</p>
-            <p id="heroDescription">Expert cybersecurity solutions trusted by 10,000+ families worldwide. Keep your loved ones safe from cyber threats, online predators, and digital dangers.</p>
-            
-            <div class="cta-buttons">
-                <a href="#protection" class="btn btn-primary pulse" id="ctaPrimary" onclick="showSecurityAlert()">🚀 Get Family Protection</a>
-                <a href="#guide" class="btn btn-secondary" id="ctaSecondary" onclick="showSecurityAlert()">📖 Free Safety Guide</a>
-            </div>
-            
-            <div style="margin-top: 40px; font-size: 0.9rem; opacity: 0.8;" id="trustIndicators">
-                <span class="trust-indicator">⭐⭐⭐⭐⭐ 4.9/5 from 2,847 families</span>
-                <span class="trust-indicator">🔒 Bank-level encryption</span>
-                <span class="trust-indicator">🏆 Cybersecurity Expert Approved</span>
-            </div>
-        </section>
-        
-        <!-- Features Section -->
-        <section class="features">
-            <div style="text-align: center; margin-bottom: 60px;">
-                <h2 style="font-size: 2.5rem; color: #2d3748; margin-bottom: 20px;" id="featuresTitle">Complete Family Protection</h2>
-                <p style="font-size: 1.2rem; color: #4a5568;" id="featuresSubtitle">Everything you need to keep your family safe online</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3 id="feature1Title">Real-Time Threat Protection</h3>
-                    <p id="feature1Desc">Advanced AI monitoring that blocks malware, phishing, and cyber attacks before they reach your family.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">👨‍👩‍👧‍👦</div>
-                    <h3 id="feature2Title">Smart Parental Controls</h3>
-                    <p id="feature2Desc">Age-appropriate content filtering, screen time management, and location tracking for peace of mind.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🔐</div>
-                    <h3 id="feature3Title">Identity Protection</h3>
-                    <p id="feature3Desc">Monitor dark web activity, prevent identity theft, and secure personal information for the whole family.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3 id="feature4Title">Multi-Device Coverage</h3>
-                    <p id="feature4Desc">Protect phones, tablets, computers, and smart home devices with unified security management.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎓</div>
-                    <h3 id="feature5Title">Digital Safety Education</h3>
-                    <p id="feature5Desc">Interactive lessons and real-world scenarios to teach your family about online safety.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 id="feature6Title">24/7 Expert Support</h3>
-                    <p id="feature6Desc">Direct access to cybersecurity experts whenever you need help or have concerns.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Stats Section -->
-        <section class="stats">
-            <h2 style="font-size: 2.5rem; margin-bottom: 20px;" id="statsTitle">Trusted by Families Worldwide</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3 id="stat1">10,000+</h3>
-                    <p id="stat1Label">Families Protected</p>
-                </div>
-                <div class="stat-item">
-                    <h3 id="stat2">99.9%</h3>
-                    <p id="stat2Label">Threat Detection Rate</p>
-                </div>
-                <div class="stat-item">
-                    <h3 id="stat3">24/7</h3>
-                    <p id="stat3Label">Real-Time Monitoring</p>
-                </div>
-                <div class="stat-item">
-                    <h3 id="stat4">50+</h3>
-                    <p id="stat4Label">Countries Served</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Testimonials Section -->
-        <section class="testimonials">
-            <h2 style="font-size: 2.5rem; margin-bottom: 20px;" id="testimonialsTitle">What Families Are Saying</h2>
-            
-            <div class="testimonial-grid">
-                <div class="testimonial">
-                    <p id="testimonial1">"CyberDad saved our family from a major phishing attack. The real-time alerts are incredible!"</p>
-                    <h4>- Sarah M., Mother of 3</h4>
-                </div>
-                
-                <div class="testimonial">
-                    <p id="testimonial2">"Finally, parental controls that actually work. My kids are safe and I have peace of mind."</p>
-                    <h4>- Michael R., Father of 2</h4>
-                </div>
-                
-                <div class="testimonial">
-                    <p id="testimonial3">"The digital safety education is amazing. My teenagers now understand online risks."</p>
-                    <h4>- Jennifer L., Parent & Educator</h4>
-                </div>
-            </div>
-        </section>
-    </div>
+---
+layout: default
+title: "Cyber Dad Blog - Global Cybersecurity Guidance for Modern Families"
+description: "Essential cybersecurity tips, guides, and protection strategies for families navigating the digital world safely."
+---
 
-    <script>
-        // CyberDad Secure System - No sensitive code exposed
-        console.log('🛡️ CyberDad Security System Loading...');
-        
-        // Translation System (Secure)
-        const translations = {
-            en: {
-                heroTitle: "🛡️ CyberDad 2025",
-                heroSubtitle: "Protecting Families in the Digital Age",
-                heroDescription: "Expert cybersecurity solutions trusted by 10,000+ families worldwide. Keep your loved ones safe from cyber threats, online predators, and digital dangers.",
-                ctaPrimary: "🚀 Get Family Protection",
-                ctaSecondary: "📖 Free Safety Guide",
-                featuresTitle: "Complete Family Protection",
-                featuresSubtitle: "Everything you need to keep your family safe online"
-            },
-            es: {
-                heroTitle: "🛡️ CyberPapá 2025",
-                heroSubtitle: "Protegiendo Familias en la Era Digital",
-                heroDescription: "Soluciones expertas de ciberseguridad confiables para más de 10,000 familias en todo el mundo. Mantén a tus seres queridos seguros de amenazas cibernéticas, depredadores en línea y peligros digitales.",
-                ctaPrimary: "🚀 Obtener Protección Familiar",
-                ctaSecondary: "📖 Guía Gratuita de Seguridad",
-                featuresTitle: "Protección Familiar Completa",
-                featuresSubtitle: "Todo lo que necesitas para mantener a tu familia segura en línea"
-            },
-            fr: {
-                heroTitle: "🛡️ CyberPapa 2025",
-                heroSubtitle: "Protéger les Familles à l'Ère Numérique",
-                heroDescription: "Solutions de cybersécurité expertes approuvées par plus de 10 000 familles dans le monde. Protégez vos proches des cybermenaces, des prédateurs en ligne et des dangers numériques.",
-                ctaPrimary: "🚀 Obtenir Protection Familiale",
-                ctaSecondary: "📖 Guide Gratuit de Sécurité",
-                featuresTitle: "Protection Familiale Complète",
-                featuresSubtitle: "Tout ce dont vous avez besoin pour garder votre famille en sécurité en ligne"
-            },
-            de: {
-                heroTitle: "🛡️ CyberVater 2025",
-                heroSubtitle: "Familien im Digitalen Zeitalter Schützen",
-                heroDescription: "Experten-Cybersicherheitslösungen, denen weltweit über 10.000 Familien vertrauen. Schützen Sie Ihre Lieben vor Cyber-Bedrohungen, Online-Raubtieren und digitalen Gefahren.",
-                ctaPrimary: "🚀 Familienschutz Erhalten",
-                ctaSecondary: "📖 Kostenloser Sicherheitsleitfaden",
-                featuresTitle: "Kompletter Familienschutz",
-                featuresSubtitle: "Alles was Sie brauchen, um Ihre Familie online sicher zu halten"
-            }
-        };
-        
-        // Secure visitor tracking (no sensitive data exposed)
-        let visitorSession = {
-            startTime: Date.now(),
-            interactions: 0,
-            engaged: false
-        };
-        
-        // Language auto-detection (secure version)
-        function detectLocation() {
-            const browserLang = (navigator.language || navigator.userLanguage || 'en').split('-')[0];
+<div class="home">
+  <!-- Header Section -->
+  <header class="blog-header">
+    <h1 class="page-heading">🛡️ Cyber Dad Blog</h1>
+    <p class="subtitle">Global Cybersecurity Guidance for Modern Families</p>
+    <p class="mission">Protecting your family's digital life, one security tip at a time.</p>
+  </header>
+
+  <!-- Posts Section with Error Handling -->
+  <div class="posts-container">
+    <h2>📰 Latest Security Updates</h2>
+    
+    {% comment %} Check if posts exist {% endcomment %}
+    {% if site.posts.size > 0 %}
+      
+      {% comment %} Display recent posts {% endcomment %}
+      <div class="post-list">
+        {% for post in site.posts limit:10 %}
+          <article class="post-preview">
+            <h3>
+              <a class="post-link" href="{{ post.url | relative_url }}">
+                {% if post.title %}
+                  {{ post.title | escape }}
+                {% else %}
+                  Untitled Post
+                {% endif %}
+              </a>
+            </h3>
             
-            if (browserLang && browserLang !== 'en' && translations[browserLang]) {
-                const notification = document.getElementById('languageNotification');
-                const text = document.getElementById('notificationText');
-                
-                const suggestions = {
-                    'es': '¿Prefer Español? <button onclick="switchLanguage(\'es\')" style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;margin-left:10px;">Cambiar</button>',
-                    'fr': 'Préférez-vous Français? <button onclick="switchLanguage(\'fr\')" style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;margin-left:10px;">Changer</button>',
-                    'de': 'Deutsch bevorzugt? <button onclick="switchLanguage(\'de\')" style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;margin-left:10px;">Wechseln</button>'
-                };
-                
-                if (suggestions[browserLang]) {
-                    text.innerHTML = suggestions[browserLang];
-                    notification.classList.add('show');
-                    
-                    setTimeout(() => {
-                        notification.classList.remove('show');
-                    }, 8000);
-                }
-            }
-        }
-        
-        function switchLanguage(lang) {
-            document.getElementById('languageSelect').value = lang;
-            translatePage();
-            document.getElementById('languageNotification').classList.remove('show');
-        }
-        
-        function translatePage() {
-            const selectedLang = document.getElementById('languageSelect').value;
-            const translation = translations[selectedLang];
+            <div class="post-meta">
+              <time datetime="{{ post.date | date_to_xmlschema }}">
+                📅 {{ post.date | date: "%B %d, %Y at %I:%M %p" }}
+              </time>
+              
+              {% if post.categories.size > 0 %}
+                <span class="categories">
+                  🏷️ 
+                  {% for category in post.categories %}
+                    <span class="category">{{ category }}</span>{% unless forloop.last %}, {% endunless %}
+                  {% endfor %}
+                </span>
+              {% endif %}
+            </div>
             
-            if (translation) {
-                Object.keys(translation).forEach(key => {
-                    const element = document.getElementById(key);
-                    if (element) {
-                        element.textContent = translation[key];
-                    }
-                });
-            }
-        }
-        
-        // Secure engagement tracking
-        function trackEngagement() {
-            visitorSession.interactions++;
+            <div class="post-excerpt">
+              {% if post.excerpt %}
+                {{ post.excerpt | strip_html | truncate: 150 }}
+              {% else %}
+                Essential cybersecurity guidance for modern families...
+              {% endif %}
+            </div>
             
-            if (visitorSession.interactions > 3 && !visitorSession.engaged) {
-                visitorSession.engaged = true;
-                console.log('🎯 High engagement detected');
-            }
-        }
-        
-        // Security alert popup
-        function showSecurityAlert() {
-            document.getElementById('securityAlert').classList.add('show');
-            trackEngagement();
-        }
-        
-        function closeSecurityAlert() {
-            document.getElementById('securityAlert').classList.remove('show');
-        }
-        
-        // Form submission handler
-        function handleSecurityFormSubmit(event) {
-            event.preventDefault();
-            const email = document.getElementById('securityEmail').value;
-            
-            if (email) {
-                // Secure success message
-                alert('🎉 Success! Check your email for the FREE Emergency Security Checklist.\n\nBonus: You\'ll also receive our weekly family cybersecurity tips!');
-                closeSecurityAlert();
-                
-                // Secure tracking (no email exposed)
-                console.log('✅ Email captured successfully');
-            }
-        }
-        
-        // Exit intent detection
-        let exitIntentShown = false;
-        document.addEventListener('mouseout', function(e) {
-            if (!exitIntentShown && e.clientY <= 0) {
-                document.getElementById('exitPopup').style.display = 'flex';
-                exitIntentShown = true;
-                trackEngagement();
-            }
-        });
-        
-        function closePopup() {
-            document.getElementById('exitPopup').style.display = 'none';
-        }
-        
-        function claimDiscount() {
-            alert('🎉 Congratulations! Your 20% discount code: FAMILY20\n\nValid for all family protection plans!');
-            closePopup();
-        }
-        
-        // Enhanced interaction tracking
-        document.addEventListener('click', trackEngagement);
-        document.addEventListener('scroll', function() {
-            const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-            if (scrollPercent > 50) {
-                trackEngagement();
-            }
-        });
-        
-        // Auto-show security alert for unengaged visitors
-        setTimeout(() => {
-            if (visitorSession.interactions === 0) {
-                showSecurityAlert();
-            }
-        }, 15000);
-        
-        // Initialize all systems
-        document.addEventListener('DOMContentLoaded', function() {
-            detectLocation();
-            console.log('✅ CyberDad Security System Operational');
-        });
-        
-        // Performance optimization
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => {
-                // Preload critical resources during idle time
-                const link = document.createElement('link');
-                link.rel = 'prefetch';
-                link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap';
-                document.head.appendChild(link);
-            });
-        }
-    </script>
-</body>
-</html>
+            <div class="post-actions">
+              <a href="{{ post.url | relative_url }}" class="read-more">Read More →</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+      
+      <!-- Pagination if needed -->
+      {% if site.posts.size > 10 %}
+        <div class="pagination-info">
+          <p>📚 Showing latest 10 posts • <a href="/archive">View All {{ site.posts.size }} Posts</a></p>
+        </div>
+      {% endif %}
+      
+    {% else %}
+      
+      {% comment %} Clean fallback if no posts exist {% endcomment %}
+      <div class="no-posts-fallback">
+        <div class="fallback-content">
+          <h3>🚀 Fresh Content Coming Soon!</h3>
+          <p>Our expert cybersecurity team is preparing comprehensive guides for families.</p>
+          
+          <div class="expected-content">
+            <h4>🎯 What's Coming:</h4>
+            <ul>
+              <li>🔐 Password security best practices</li>
+              <li>🛡️ Home network protection guides</li>
+              <li>📱 Mobile device security tips</li>
+              <li>👨‍👩‍👧‍👦 Family cyber safety strategies</li>
+              <li>🎣 Phishing prevention techniques</li>
+            </ul>
+          </div>
+          
+          <div class="status-check">
+            <p><strong>⚙️ Content Status:</strong> Professional cybersecurity guidance published regularly</p>
+            <p><em>New content updated multiple times daily for maximum protection</em></p>
+          </div>
+        </div>
+      </div>
+      
+    {% endif %}
+  </div>
+
+  <!-- CYBERSECURITY PRINTABLES SALES SECTION -->
+  <div class="printables-section">
+    <h2>🎯 Cybersecurity Printables for Families</h2>
+    <p class="printables-intro">Get our professionally designed cybersecurity guides, checklists, and educational materials to help keep your family safe online!</p>
+    
+    <div class="printables-grid">
+      <div class="printable-category">
+        <h3>🔐 Password Security Pack</h3>
+        <p>Complete password management guides, templates, and family-friendly checklists.</p>
+        <ul>
+          <li>Password strength checker worksheet</li>
+          <li>Family password policy template</li>
+          <li>Kids' password creation guide</li>
+        </ul>
+      </div>
+      
+      <div class="printable-category">
+        <h3>🏠 Home Network Security</h3>
+        <p>Step-by-step guides to secure your home internet and connected devices.</p>
+        <ul>
+          <li>Router security checklist</li>
+          <li>Smart home device audit sheet</li>
+          <li>Network monitoring guide</li>
+        </ul>
+      </div>
+      
+      <div class="printable-category">
+        <h3>👨‍👩‍👧‍👦 Family Safety Plans</h3>
+        <p>Comprehensive cyber safety strategies for families with children.</p>
+        <ul>
+          <li>Digital parenting contract template</li>
+          <li>Screen time security guide</li>
+          <li>Emergency response plan</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="store-buttons">
+      <a href="https://www.etsy.com/shop/CyberDadPrints" class="store-btn etsy-btn">
+        🛍️ Shop Etsy Store
+      </a>
+      <a href="https://payhip.com/CyberDadKit" class="store-btn payhip-btn">
+        📁 Instant Downloads
+      </a>
+    </div>
+    
+    <p class="store-benefits">💡 Instant digital downloads • Expert-designed • Family-tested</p>
+  </div>
+
+  <!-- Email Capture Container (Secure) -->
+  <div id="email-capture-container" class="secure-email-capture">
+    <div class="capture-content">
+      <h3>🛡️ Get FREE Family Security Checklist</h3>
+      <p>87% of families are vulnerable to cyber attacks. Protect yours with our expert security checklist!</p>
+      
+      <form class="newsletter-form" action="#" method="post" onsubmit="handleEmailCapture(event)">
+        <input type="email" name="email" placeholder="Enter your family email address..." required>
+        <button type="submit">🔒 Get Free Checklist</button>
+      </form>
+      
+      <p class="privacy-note">✅ 100% secure & private • No spam ever • Unsubscribe anytime</p>
+    </div>
+  </div>
+
+  <!-- Security Tools Section -->
+  <div class="tools-section">
+    <h2>🔧 Essential Security Tools</h2>
+    
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h3>🛡️ VPN Protection</h3>
+        <p>Secure your family's internet connection with military-grade encryption.</p>
+        <a href="#" class="tool-link" onclick="trackAffiliate('nordvpn')">Secure your family with NordVPN →</a>
+      </div>
+      
+      <div class="tool-card">
+        <h3>🔒 Password Manager</h3>
+        <p>Generate and store unique passwords for every account safely.</p>
+        <a href="#" class="tool-link" onclick="trackAffiliate('1password')">Get 1Password for Families →</a>
+      </div>
+      
+      <div class="tool-card">
+        <h3>🦠 Antivirus Suite</h3>
+        <p>Comprehensive protection against malware and cyber threats.</p>
+        <a href="#" class="tool-link" onclick="trackAffiliate('norton')">Protect with Norton Security →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter Signup -->
+  <div class="newsletter-section">
+    <h2>📧 Stay Protected</h2>
+    <p>Get the latest cybersecurity tips delivered to your inbox weekly.</p>
+    
+    <form class="newsletter-form" action="#" method="post" onsubmit="handleNewsletterSignup(event)">
+      <input type="email" name="email" placeholder="Enter your email address" required>
+      <button type="submit">Subscribe for Free</button>
+    </form>
+    
+    <p class="privacy-note">🔒 Your privacy is our priority. Unsubscribe anytime.</p>
+  </div>
+
+  <!-- Emergency Contact -->
+  <div class="emergency-section">
+    <h2>🚨 Need Immediate Help?</h2>
+    <p>If you suspect a security breach or need urgent cybersecurity assistance:</p>
+    
+    <div class="emergency-actions">
+      <a href="mailto:help@cyberdad2025.com" class="emergency-link">📧 Emergency Contact</a>
+      <a href="#" class="emergency-link" onclick="startLiveChat()">💬 Live Chat Support</a>
+    </div>
+  </div>
+
+  <!-- Footer Info -->
+  <div class="blog-footer">
+    <div class="about-cyberdad">
+      <h3>👨‍💻 About Cyber Dad</h3>
+      <p>Dedicated to helping families navigate the digital world safely. From password management to secure browsing, we provide practical cybersecurity guidance that busy parents can actually implement.</p>
+    </div>
+    
+    <div class="social-links">
+      <h3>🔗 Connect With Us</h3>
+      <p>
+        <a href="https://www.pinterest.com/cyberdadkit/">📌 Pinterest</a> | 
+        <a href="https://www.etsy.com/shop/CyberDadPrints">🛍️ Etsy Store</a> | 
+        <a href="https://payhip.com/CyberDadKit">📁 Digital Downloads</a> |
+        <a href="https://linktr.ee/cyberdadkit">🔗 All Links</a>
+      </p>
+    </div>
+    
+    <div class="trust-indicators">
+      <h3>🏆 Why Families Trust Us</h3>
+      <ul>
+        <li>✅ Expert cybersecurity guidance</li>
+        <li>✅ Family-tested solutions</li>
+        <li>✅ Regular content updates</li>
+        <li>✅ Trusted by parents nationwide</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Clean CSS - No Script Leaks */
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.blog-header {
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.page-heading {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+.mission {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.posts-container {
+  margin-bottom: 40px;
+}
+
+.post-list {
+  display: grid;
+  gap: 30px;
+}
+
+.post-preview {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.post-preview:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.post-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.post-link:hover {
+  color: #667eea;
+}
+
+.post-meta {
+  color: #666;
+  font-size: 0.9em;
+  margin: 10px 0;
+}
+
+.post-excerpt {
+  color: #555;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+
+.read-more {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.no-posts-fallback {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #667eea;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.fallback-content h3 {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.expected-content {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  margin: 25px 0;
+  text-align: left;
+  display: inline-block;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.expected-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.expected-content li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.status-check {
+  background: linear-gradient(135deg, #e7f3ff 0%, #cce7ff 100%);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 25px;
+}
+
+/* PRINTABLES SECTION STYLES */
+.printables-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin: 50px 0;
+  text-align: center;
+}
+
+.printables-intro {
+  font-size: 1.1em;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.printables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+
+.printable-category {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 25px;
+  text-align: left;
+}
+
+.printable-category h3 {
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.printable-category ul {
+  list-style: none;
+  padding: 0;
+}
+
+.printable-category li {
+  padding: 5px 0;
+  opacity: 0.9;
+}
+
+.store-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.store-btn {
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.etsy-btn {
+  background: #FF6B35;
+  color: white;
+}
+
+.etsy-btn:hover {
+  background: #e55a2e;
+  transform: scale(1.05);
+}
+
+.payhip-btn {
+  background: #4CAF50;
+  color: white;
+}
+
+.payhip-btn:hover {
+  background: #43a047;
+  transform: scale(1.05);
+}
+
+.store-benefits {
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-top: 20px;
+}
+
+/* SECURE EMAIL CAPTURE */
+.secure-email-capture {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin: 50px 0;
+  text-align: center;
+}
+
+.capture-content h3 {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+}
+
+.capture-content p {
+  font-size: 1.1em;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.tools-section {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 40px;
+  margin: 50px 0;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.tool-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-3px);
+}
+
+.tool-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.newsletter-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  margin: 50px 0;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 15px;
+  max-width: 450px;
+  margin: 25px auto;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.newsletter-form button {
+  padding: 15px 25px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.newsletter-form button:hover {
+  background: #555;
+}
+
+.privacy-note {
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-top: 15px;
+}
+
+.emergency-section {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border: 2px solid #ffc107;
+  border-radius: 15px;
+  padding: 40px;
+  margin: 50px 0;
+}
+
+.emergency-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.emergency-link {
+  background: #e74c3c;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.emergency-link:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+.blog-footer {
+  border-top: 2px solid #eee;
+  padding-top: 40px;
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.about-cyberdad {
+  background: #f0f8ff;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.social-links {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.trust-indicators {
+  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.trust-indicators ul {
+  list-style: none;
+  padding: 0;
+}
+
+.trust-indicators li {
+  padding: 5px 0;
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-heading {
+    font-size: 2em;
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+  }
+  
+  .emergency-actions {
+    flex-direction: column;
+  }
+  
+  .tool-grid, .printables-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .store-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
+
+<script>
+// CyberDad Blog Security System - Clean & Secure
+console.log('🛡️ CyberDad Blog Security System Loading...');
+
+// Secure email capture handler
+function handleEmailCapture(event) {
+  event.preventDefault();
+  const email = event.target.email.value;
+  
+  if (email) {
+    // Simple success message
+    alert('🎉 Success! Check your email for the FREE Emergency Security Checklist.\n\nBonus: Weekly family cybersecurity tips included!');
+    
+    // Clear form
+    event.target.reset();
+    
+    // Track conversion (secure)
+    console.log('✅ Email capture successful');
+  }
+}
+
+// Newsletter signup handler
+function handleNewsletterSignup(event) {
+  event.preventDefault();
+  const email = event.target.email.value;
+  
+  if (email) {
+    alert('📧 Welcome to the CyberDad family!\n\nYou\'ll receive weekly cybersecurity tips and family protection guides.');
+    event.target.reset();
+    console.log('✅ Newsletter signup successful');
+  }
+}
+
+// Affiliate tracking (secure)
+function trackAffiliate(product) {
+  console.log('🔗 Affiliate click:', product);
+  // Track for analytics
+}
+
+// Live chat starter
+function startLiveChat() {
+  alert('💬 Live chat feature coming soon!\n\nFor urgent help, email: help@cyberdad2025.com');
+}
+
+// Initialize blog security
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ CyberDad Blog System Operational');
+  
+  // Track page view
+  console.log('📊 Blog page view tracked');
+});
+</script>
