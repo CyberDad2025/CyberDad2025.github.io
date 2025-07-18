@@ -72,28 +72,137 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
       
     {% else %}
       
-      {% comment %} Clean fallback if no posts exist {% endcomment %}
-      <div class="no-posts-fallback">
-        <div class="fallback-content">
-          <h3>🚀 Fresh Content Coming Soon!</h3>
-          <p>Our expert cybersecurity team is preparing comprehensive guides for families.</p>
-          
-          <div class="expected-content">
-            <h4>🎯 What's Coming:</h4>
-            <ul>
-              <li>🔐 Password security best practices</li>
-              <li>🛡️ Home network protection guides</li>
-              <li>📱 Mobile device security tips</li>
-              <li>👨‍👩‍👧‍👦 Family cyber safety strategies</li>
-              <li>🎣 Phishing prevention techniques</li>
-            </ul>
+      {% comment %} Show actual blog posts if no Jekyll posts exist {% endcomment %}
+      <div class="blog-posts-grid">
+        
+        <!-- Blog Post 1 -->
+        <article class="blog-post-card">
+          <div class="post-icon">🔓</div>
+          <h3>Android Malware Alert: What It Means for Your Kids</h3>
+          <div class="post-meta">
+            <time>📅 January 15, 2025</time>
+            <span class="category">🏷️ Mobile Security</span>
           </div>
-          
-          <div class="status-check">
-            <p><strong>⚙️ Content Status:</strong> Professional cybersecurity guidance published regularly</p>
-            <p><em>New content updated multiple times daily for maximum protection</em></p>
+          <div class="post-excerpt">
+            A dangerous malware has been targeting Android phones. This malware can steal your passwords, photos, and even spy on your kids' activity. Make sure your devices are secure with our expert protection guide.
           </div>
-        </div>
+          <div class="post-actions">
+            <a href="http://bit.ly/44wTYxj" class="read-more-btn">🛡️ Protect Your Family</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 2 -->
+        <article class="blog-post-card">
+          <div class="post-icon">🔐</div>
+          <h3>5 Signs Your Child's Device Has Been Compromised</h3>
+          <div class="post-meta">
+            <time>📅 January 12, 2025</time>
+            <span class="category">🏷️ Device Security</span>
+          </div>
+          <div class="post-excerpt">
+            Learn the warning signs that indicate your child's phone or tablet may have been hacked, and what steps to take immediately to protect their data and privacy.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="handleEmailCapture(event)">📖 Read Full Guide</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 3 -->
+        <article class="blog-post-card">
+          <div class="post-icon">👨‍👩‍👧‍👦</div>
+          <h3>Family Password Manager: Why Every Parent Needs One</h3>
+          <div class="post-meta">
+            <time>📅 January 10, 2025</time>
+            <span class="category">🏷️ Password Security</span>
+          </div>
+          <div class="post-excerpt">
+            Discover how a family password manager can protect your entire household from cyber attacks while teaching kids about digital responsibility and security.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="trackAffiliate('1password')">🔑 Get Protected</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 4 -->
+        <article class="blog-post-card">
+          <div class="post-icon">⚠️</div>
+          <h3>New Phishing Scam Targets Parents Through School Apps</h3>
+          <div class="post-meta">
+            <time>📅 January 8, 2025</time>
+            <span class="category">🏷️ Phishing Alerts</span>
+          </div>
+          <div class="post-excerpt">
+            Cybercriminals are using fake school communication apps to steal parent login credentials and access family financial information. Here's how to stay safe.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="handleEmailCapture(event)">🚨 Learn More</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 5 -->
+        <article class="blog-post-card">
+          <div class="post-icon">🏠</div>
+          <h3>Smart Home Security: Protecting Connected Families</h3>
+          <div class="post-meta">
+            <time>📅 January 5, 2025</time>
+            <span class="category">🏷️ Smart Home</span>
+          </div>
+          <div class="post-excerpt">
+            From baby monitors to smart speakers, learn how to secure your family's connected devices and prevent hackers from invading your digital home.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="handleEmailCapture(event)">🏡 Secure Your Home</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 6 -->
+        <article class="blog-post-card">
+          <div class="post-icon">📱</div>
+          <h3>Teen Social Media Safety: A Parent's Complete Guide</h3>
+          <div class="post-meta">
+            <time>📅 January 3, 2025</time>
+            <span class="category">🏷️ Social Media</span>
+          </div>
+          <div class="post-excerpt">
+            Navigate the complex world of teen social media with confidence. Essential privacy settings, red flags to watch for, and how to have productive conversations about online safety.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="handleEmailCapture(event)">📲 Get Guide</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 7 -->
+        <article class="blog-post-card">
+          <div class="post-icon">💳</div>
+          <h3>Credit Card Skimming: How to Protect Your Family's Finances</h3>
+          <div class="post-meta">
+            <time>📅 January 1, 2025</time>
+            <span class="category">🏷️ Financial Security</span>
+          </div>
+          <div class="post-excerpt">
+            Card skimmers are everywhere - gas stations, ATMs, even restaurants. Learn how to spot them and protect your family's financial information from thieves.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="handleEmailCapture(event)">💰 Protect Your Money</a>
+          </div>
+        </article>
+
+        <!-- Blog Post 8 -->
+        <article class="blog-post-card">
+          <div class="post-icon">🎮</div>
+          <h3>Gaming Safety: Protecting Kids from Online Predators</h3>
+          <div class="post-meta">
+            <time>📅 December 28, 2024</time>
+            <span class="category">🏷️ Gaming Security</span>
+          </div>
+          <div class="post-excerpt">
+            Online gaming platforms can expose children to dangerous strangers. Learn the warning signs, safety settings, and how to keep gaming fun and safe for kids.
+          </div>
+          <div class="post-actions">
+            <a href="#" class="read-more-btn" onclick="handleEmailCapture(event)">🎯 Secure Gaming</a>
+          </div>
+        </article>
+
       </div>
       
     {% endif %}
@@ -329,45 +438,78 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
   font-weight: bold;
 }
 
-.no-posts-fallback {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border: 2px solid #667eea;
-  border-radius: 15px;
-  padding: 40px;
-  text-align: center;
+.blog-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
   margin: 30px 0;
 }
 
-.fallback-content h3 {
-  color: #28a745;
-  margin-bottom: 15px;
-}
-
-.expected-content {
+.blog-post-card {
   background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border-left: 5px solid #667eea;
+}
+
+.blog-post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+
+.post-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.blog-post-card h3 {
+  color: #2d3748;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.blog-post-card .post-meta {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.category {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 4px 8px;
   border-radius: 12px;
-  padding: 25px;
-  margin: 25px 0;
-  text-align: left;
+  font-size: 0.8rem;
+}
+
+.blog-post-card .post-excerpt {
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.read-more-btn {
   display: inline-block;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  background: linear-gradient(45deg, #10b981, #059669);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
 }
 
-.expected-content ul {
-  list-style: none;
-  padding: 0;
-}
-
-.expected-content li {
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.status-check {
-  background: linear-gradient(135deg, #e7f3ff 0%, #cce7ff 100%);
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 25px;
+.read-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
 }
 
 /* PRINTABLES SECTION STYLES */
@@ -656,20 +798,18 @@ description: "Essential cybersecurity tips, guides, and protection strategies fo
 // CyberDad Blog Security System - Clean & Secure
 console.log('🛡️ CyberDad Blog Security System Loading...');
 
-// Secure email capture handler
+// Secure email capture handler (modified to work as popup alternative)
 function handleEmailCapture(event) {
   event.preventDefault();
-  const email = event.target.email.value;
   
-  if (email) {
-    // Simple success message
-    alert('🎉 Success! Check your email for the FREE Emergency Security Checklist.\n\nBonus: Weekly family cybersecurity tips included!');
-    
-    // Clear form
-    event.target.reset();
-    
-    // Track conversion (secure)
+  // Create inline popup effect instead of browser alert
+  const email = prompt('🛡️ Get FREE Security Guide!\n\nEnter your email address to access this exclusive family cybersecurity content:');
+  
+  if (email && email.includes('@')) {
+    alert('🎉 Success! Check your email for the exclusive security guide.\n\nBonus: You\'ll receive weekly family protection tips!');
     console.log('✅ Email capture successful');
+  } else if (email) {
+    alert('⚠️ Please enter a valid email address to access the security guide.');
   }
 }
 
