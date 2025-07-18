@@ -1,0 +1,33 @@
+name: Analyze Pinterest Logs
+on:
+  workflow_dispatch:  # Manual trigger button
+
+jobs:
+  analyze-logs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: |
+          pip install requests
+          
+      - name: Run Pinterest Log Analyzer
+        run: |
+          cd scripts
+          python pinterest_log_analyzer.py
+          
+      - name: Upload analysis results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: pinterest-analysis-results
+          path: |
+            scripts/failed_pinterest_content_*.json
+            logs/
