@@ -9,7 +9,7 @@ baseurl: ""
 # Build settings
 markdown: kramdown
 highlighter: rouge
-permalink: /:year/:month/:day/:title/
+permalink: /:year/:month/:day/:title.html
 
 # CRITICAL FIX - Allow future posts and set timezone
 future: true
