@@ -27,46 +27,6 @@
         }
     </script>
     <style>
-        /* REVENUE-OPTIMIZED BLOG DESIGN - BASED ON $1M/MONTH EARNERS */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            <body>
-    <!-- GLOBAL LANGUAGE & LOCATION BAR -->
-    <div class="global-bar" id="globalBar" style="display: none;">
-        <div class="global-container">
-            <div class="location-info">
-                <span id="locationFlag">🌍</span>
-                <span id="locationText">Detecting location...</span>
-            </div>
-            <div class="language-switcher">
-                <select id="languageSelect" onchange="changeLanguage()">
-                    <option value="en">🇺🇸 English</option>
-                    <option value="es">🇪🇸 Español</option>
-                    <option value="fr">🇫🇷 Français</option>
-                    <option value="de">🇩🇪 Deutsch</option>
-                    <option value="pt">🇵🇹 Português</option>
-                </select>
-            </div>
-            <div class="local-threat-alert" id="localThreatAlert" style="display: none;">
-                <span>⚠️</span>
-                <span id="threatText">Local security alert for your region</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Your existing header starts here -->
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #2d3748;
-            background: #ffffff;
-        }
-
         /* GLOBAL LANGUAGE & LOCATION BAR */
         .global-bar {
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
@@ -122,6 +82,23 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
         }
+
+        /* REVENUE-OPTIMIZED BLOG DESIGN - BASED ON $1M/MONTH EARNERS */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #ffffff;
+        }
+
+        /* HEADER - Clean & Professional */
         .main-header {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -654,37 +631,39 @@
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-        <!-- GLOBAL LANGUAGE & LOCATION BAR -->
-        <div class="global-bar" id="globalBar" style="display: none;">
-            <div class="global-container">
-                <div class="location-info">
-                    <span id="locationFlag">🌍</span>
-                    <span id="locationText">Detecting location...</span>
-                </div>
-                <div class="language-switcher">
-                    <select id="languageSelect" onchange="changeLanguage()">
-                        <option value="en">🇺🇸 English</option>
-                        <option value="es">🇪🇸 Español</option>
-                        <option value="fr">🇫🇷 Français</option>
-                        <option value="de">🇩🇪 Deutsch</option>
-                        <option value="pt">🇵🇹 Português</option>
-                    </select>
-                </div>
-                <div class="local-threat-alert" id="localThreatAlert" style="display: none;">
-                    <span>⚠️</span>
-                    <span id="threatText">Local security alert for your region</span>
-                </div>
+    <!-- GLOBAL LANGUAGE & LOCATION BAR -->
+    <div class="global-bar" id="globalBar" style="display: none;">
+        <div class="global-container">
+            <div class="location-info">
+                <span id="locationFlag">🌍</span>
+                <span id="locationText">Detecting location...</span>
+            </div>
+            <div class="language-switcher">
+                <select id="languageSelect" onchange="changeLanguage()">
+                    <option value="en">🇺🇸 English</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="pt">🇵🇹 Português</option>
+                </select>
+            </div>
+            <div class="local-threat-alert" id="localThreatAlert" style="display: none;">
+                <span>⚠️</span>
+                <span id="threatText">Local security alert for your region</span>
             </div>
         </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="main-header">
         <div class="header-container">
-            <a <a href="/" class="logo" id="brandName">🛡️ CyberDad</a>
+            <a href="/" class="logo" id="brandName">🛡️ CyberDad</a>
             <nav>
                 <ul class="main-nav">
                     <li><a href="#alerts" id="nav-alerts">Security Alerts</a></li>
-<li><a href="#guides" id="nav-guides">Family Guides</a></li>
-<li><a href="#tools" id="nav-tools">Security Tools</a></li>
-<li><a href="#products" id="nav-products">Resources</a></li>
+                    <li><a href="#guides" id="nav-guides">Family Guides</a></li>
+                    <li><a href="#tools" id="nav-tools">Security Tools</a></li>
+                    <li><a href="#products" id="nav-products">Resources</a></li>
                 </ul>
             </nav>
         </div>
@@ -747,7 +726,7 @@
             <div class="alert-content">
                 <p>Our AI just published a comprehensive family cybersecurity guide with essential steps to keep your family safe online. Generated from real-time threat intelligence.</p>
             </div>
-            <a href="/2025/07/19/family-cybersecurity-guide.html" class="alert-cta">Read Latest Guide →</a>
+            <a href="https://cyberdad2025.github.io/2025/07/19/family-cybersecurity-guide.html" class="alert-cta">Read Latest Guide →</a>
         </section>
 
         <!-- CONTENT GRID -->
@@ -767,23 +746,23 @@
                             <div class="post-content">
                                 <span class="post-category">Family Security</span>
                                 <h3 class="post-title">Family Cybersecurity Guide</h3>
-                                <p class="post-excerpt">Your family's digital security is important to us. Here are some simple steps to stay protected and keep your family safe online...</p>
+                                <p class="post-excerpt">Complete guide to protecting your family from cyber threats. Simple steps every parent needs to know...</p>
                                 <div class="post-meta">
                                     <span>1 hour ago</span>
-                                    <a href="/2025/07/19/family-cybersecurity-guide.html" class="read-more">Read Guide →</a>
+                                    <a href="https://cyberdad2025.github.io/2025/07/19/family-cybersecurity-guide.html" class="read-more">Read Guide →</a>
                                 </div>
                             </div>
                         </article>
 
                         <article class="post-card fade-in">
-                            <div class="post-image">🚨</div>
+                            <div class="post-image">🛡️</div>
                             <div class="post-content">
                                 <span class="post-category">Scam Prevention</span>
                                 <h3 class="post-title">Prevent Online Scams</h3>
-                                <p class="post-excerpt">Learn how to protect your family from online scams and fraudulent activities. Essential tips every parent should know...</p>
+                                <p class="post-excerpt">Learn how to identify and avoid online scams that target families. Protect yourself from digital fraud...</p>
                                 <div class="post-meta">
-                                    <span>7 hours ago</span>
-                                    <a href="/2025/07/19/prevent-online-scams.html" class="read-more">Read Guide →</a>
+                                    <span>8 hours ago</span>
+                                    <a href="https://cyberdad2025.github.io/2025/07/19/prevent-online-scams.html" class="read-more">Read Guide →</a>
                                 </div>
                             </div>
                         </article>
@@ -793,10 +772,10 @@
                             <div class="post-content">
                                 <span class="post-category">Authentication</span>
                                 <h3 class="post-title">Simple Two-Factor Authentication</h3>
-                                <p class="post-excerpt">Add an extra layer of security to your family's most important accounts with this beginner-friendly guide...</p>
+                                <p class="post-excerpt">Easy guide to setting up two-factor authentication for your family's most important accounts...</p>
                                 <div class="post-meta">
-                                    <span>3 hours ago</span>
-                                    <a href="/2025/07/19/simple-two-factor-auth.html" class="read-more">Read Guide →</a>
+                                    <span>4 hours ago</span>
+                                    <a href="https://cyberdad2025.github.io/2025/07/19/simple-two-factor-auth.html" class="read-more">Read Guide →</a>
                                 </div>
                             </div>
                         </article>
@@ -806,23 +785,23 @@
                             <div class="post-content">
                                 <span class="post-category">Mobile Security</span>
                                 <h3 class="post-title">Protect Your Phone</h3>
-                                <p class="post-excerpt">Essential mobile security tips to keep your family's smartphones and tablets safe from threats and privacy breaches...</p>
+                                <p class="post-excerpt">Essential mobile security tips to keep your smartphone and personal data safe from hackers...</p>
                                 <div class="post-meta">
-                                    <span>20 hours ago</span>
-                                    <a href="/2025/07/18/protect-your-phone.html" class="read-more">Read Guide →</a>
+                                    <span>Yesterday</span>
+                                    <a href="https://cyberdad2025.github.io/2025/07/18/protect-your-phone.html" class="read-more">Read Guide →</a>
                                 </div>
                             </div>
                         </article>
 
                         <article class="post-card fade-in">
-                            <div class="post-image">📧</div>
+                            <div class="post-image">📱</div>
                             <div class="post-content">
                                 <span class="post-category">Social Media</span>
                                 <h3 class="post-title">Safe Social Media</h3>
-                                <p class="post-excerpt">Keep your family safe on social media platforms with these essential privacy settings and security practices...</p>
+                                <p class="post-excerpt">How to use social media safely and protect your family's privacy online. Essential tips for parents...</p>
                                 <div class="post-meta">
                                     <span>Yesterday</span>
-                                    <a href="/2025/07/18/safe-social-media.html" class="read-more">Read Guide →</a>
+                                    <a href="https://cyberdad2025.github.io/2025/07/18/safe-social-media.html" class="read-more">Read Guide →</a>
                                 </div>
                             </div>
                         </article>
@@ -832,10 +811,10 @@
                             <div class="post-content">
                                 <span class="post-category">Home Network</span>
                                 <h3 class="post-title">Home Router Setup</h3>
-                                <p class="post-excerpt">Secure your home network with proper router configuration. Step-by-step guide to protect your family's internet connection...</p>
+                                <p class="post-excerpt">Step-by-step guide to securing your home router and protecting your family's internet connection...</p>
                                 <div class="post-meta">
                                     <span>3 days ago</span>
-                                    <a href="/2025/07/16/home-router-setup.html" class="read-more">Read Guide →</a>
+                                    <a href="https://cyberdad2025.github.io/2025/07/16/home-router-setup.html" class="read-more">Read Guide →</a>
                                 </div>
                             </div>
                         </article>
@@ -863,17 +842,17 @@
                 <div class="sidebar-card">
                     <h3 class="sidebar-title">🔥 Most Popular Guides</h3>
                     <div style="display: grid; gap: 1rem;">
-                        <a href="/2025/07/19/family-cybersecurity-guide.html" style="text-decoration: none; color: #4a5568; font-size: 0.9rem; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0;">
+                        <a href="https://cyberdad2025.github.io/2025/07/19/family-cybersecurity-guide.html" style="text-decoration: none; color: #4a5568; font-size: 0.9rem; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0;">
                             <strong>Family Cybersecurity Guide</strong><br>
-                            <span style="color: #a0aec0; font-size: 0.8rem;">Latest AI-generated guide</span>
+                            <span style="color: #a0aec0; font-size: 0.8rem;">Latest security guide</span>
                         </a>
-                        <a href="/2025/07/19/prevent-online-scams.html" style="text-decoration: none; color: #4a5568; font-size: 0.9rem; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0;">
+                        <a href="https://cyberdad2025.github.io/2025/07/19/prevent-online-scams.html" style="text-decoration: none; color: #4a5568; font-size: 0.9rem; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0;">
                             <strong>Prevent Online Scams</strong><br>
-                            <span style="color: #a0aec0; font-size: 0.8rem;">Essential protection tips</span>
+                            <span style="color: #a0aec0; font-size: 0.8rem;">8,920 families protected</span>
                         </a>
-                        <a href="/2025/07/18/protect-your-phone.html" style="text-decoration: none; color: #4a5568; font-size: 0.9rem; padding: 0.5rem 0;">
+                        <a href="https://cyberdad2025.github.io/2025/07/18/protect-your-phone.html" style="text-decoration: none; color: #4a5568; font-size: 0.9rem; padding: 0.5rem 0;">
                             <strong>Protect Your Phone</strong><br>
-                            <span style="color: #a0aec0; font-size: 0.8rem;">Mobile security guide</span>
+                            <span style="color: #a0aec0; font-size: 0.8rem;">7,650 families secured</span>
                         </a>
                     </div>
                 </div>
@@ -999,23 +978,6 @@
         let userLanguage = '';
         let visitorData = {};
 
-        // ANALYTICS & REVENUE TRACKING
-        function initializeAnalytics() {
-            // Track page view
-            gtag('event', 'page_view', {
-                'page_title': 'CyberDad Family Protection Hub',
-                'page_location': window.location.href
-            });
-
-            // Track visitor engagement
-            setTimeout(() => {
-                gtag('event', 'engagement', {
-                    'event_category': 'User Engagement',
-                    'event_label': '30 Second View'
-                });
-            }, 30000);
-        }
-
         // IP GEOLOCATION DETECTION
         async function detectUserLocation() {
             try {
@@ -1038,16 +1000,6 @@
                 checkLocalThreats();
                 autoSetLanguage();
                 
-                // Track location for analytics
-                gtag('event', 'user_location', {
-                    'event_category': 'Geography',
-                    'event_label': data.country_name,
-                    'custom_map': {
-                        'country': data.country_name,
-                        'city': data.city
-                    }
-                });
-
             } catch (error) {
                 console.log('Location detection failed, using fallback');
                 showGlobalBar();
@@ -1114,12 +1066,6 @@
         function changeLanguage() {
             const selectedLang = document.getElementById('languageSelect').value;
             translateContent(selectedLang);
-            
-            // Track language change for analytics
-            gtag('event', 'language_change', {
-                'event_category': 'Localization',
-                'event_label': selectedLang
-            });
         }
 
         // CONTENT TRANSLATION
@@ -1184,54 +1130,6 @@
             document.getElementById('nav-products').textContent = content.navProducts;
         }
 
-        // REVENUE TRACKING
-        function trackProductClick(product, price) {
-            trackRevenue('product_click', price);
-            gtag('event', 'click', {
-                'event_category': 'Products',
-                'event_label': product,
-                'value': price
-            });
-        }
-
-        function trackAffiliateClick(affiliate) {
-            gtag('event', 'click', {
-                'event_category': 'Affiliates',
-                'event_label': affiliate
-            });
-        }
-
-        // EMAIL SIGNUP ENHANCED
-        function handleEmailSignup(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value;
-            
-            if (email) {
-                // Track conversion
-                gtag('event', 'conversion', {
-                    'send_to': 'GA_MEASUREMENT_ID/email_signup',
-                    'event_category': 'Lead Generation',
-                    'event_label': 'Email Signup',
-                    'value': 10 // Assign $10 value to email signup
-                });
-
-                // Localized success message
-                const messages = {
-                    'en': `🎉 Welcome to CyberDad Intelligence!\n\nYou'll now receive:\n✅ Real-time threat alerts\n✅ Device security updates\n✅ Family protection guides\n\nCheck ${email} for your welcome message!`,
-                    'es': `🎉 ¡Bienvenido a CyberPapá Intelligence!\n\nAhora recibirás:\n✅ Alertas de amenazas en tiempo real\n✅ Actualizaciones de seguridad\n✅ Guías de protección familiar\n\n¡Revisa ${email} para tu mensaje de bienvenida!`,
-                    'fr': `🎉 Bienvenue à CyberPapa Intelligence!\n\nVous recevrez maintenant:\n✅ Alertes de menaces en temps réel\n✅ Mises à jour de sécurité\n✅ Guides de protection familiale\n\nVérifiez ${email} pour votre message de bienvenue!`,
-                    'de': `🎉 Willkommen bei CyberVater Intelligence!\n\nSie erhalten jetzt:\n✅ Echtzeit-Bedrohungsalarme\n✅ Sicherheitsupdates\n✅ Familienschutzführer\n\nÜberprüfen Sie ${email} für Ihre Willkommensnachricht!`,
-                    'pt': `🎉 Bem-vindo ao CyberPai Intelligence!\n\nVocê agora receberá:\n✅ Alertas de ameaças em tempo real\n✅ Atualizações de segurança\n✅ Guias de proteção familiar\n\nVerifique ${email} para sua mensagem de boas-vindas!`
-                };
-
-                const currentLang = document.getElementById('languageSelect').value;
-                const message = messages[currentLang] || messages['en'];
-                
-                alert(message);
-                event.target.reset();
-            }
-        }
-
         // SHOW GLOBAL BAR
         function showGlobalBar() {
             document.getElementById('globalBar').style.display = 'block';
@@ -1253,39 +1151,33 @@
             }, 3000);
         }
 
-        // INITIALIZE EVERYTHING
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeAnalytics();
-            detectUserLocation();
+        // EMAIL SIGNUP ENHANCED
+        function handleEmailSignup(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
             
-            // Enhanced button tracking
-            document.querySelectorAll('a[href*="etsy"]').forEach(link => {
-                link.addEventListener('click', () => trackProductClick('Etsy Store', 25));
-            });
-            
-            document.querySelectorAll('a[href*="payhip"]').forEach(link => {
-                link.addEventListener('click', () => trackProductClick('PayHip Downloads', 15));
-            });
-            
-            document.querySelectorAll('a[href*="gumroad"]').forEach(link => {
-                link.addEventListener('click', () => trackProductClick('Gumroad Store', 20));
-            });
-            
-            document.querySelectorAll('a[href*="nordvpn"]').forEach(link => {
-                link.addEventListener('click', () => trackAffiliateClick('NordVPN'));
-            });
-            
-            document.querySelectorAll('a[href*="1password"]').forEach(link => {
-                link.addEventListener('click', () => trackAffiliateClick('1Password'));
-            });
-            
-            document.querySelectorAll('a[href*="norton"]').forEach(link => {
-                link.addEventListener('click', () => trackAffiliateClick('Norton'));
-            });
+            if (email) {
+                // Localized success message
+                const messages = {
+                    'en': `🎉 Welcome to CyberDad Intelligence!\n\nYou'll now receive:\n✅ Real-time threat alerts\n✅ Device security updates\n✅ Family protection guides\n\nCheck ${email} for your welcome message!`,
+                    'es': `🎉 ¡Bienvenido a CyberPapá Intelligence!\n\nAhora recibirás:\n✅ Alertas de amenazas en tiempo real\n✅ Actualizaciones de seguridad\n✅ Guías de protección familiar\n\n¡Revisa ${email} para tu mensaje de bienvenida!`,
+                    'fr': `🎉 Bienvenue à CyberPapa Intelligence!\n\nVous recevrez maintenant:\n✅ Alertes de menaces en temps réel\n✅ Mises à jour de sécurité\n✅ Guides de protection familiale\n\nVérifiez ${email} pour votre message de bienvenue!`,
+                    'de': `🎉 Willkommen bei CyberVater Intelligence!\n\nSie erhalten jetzt:\n✅ Echtzeit-Bedrohungsalarme\n✅ Sicherheitsupdates\n✅ Familienschutzführer\n\nÜberprüfen Sie ${email} für Ihre Willkommensnachricht!`,
+                    'pt': `🎉 Bem-vindo ao CyberPai Intelligence!\n\nVocê agora receberá:\n✅ Alertas de ameaças em tempo real\n✅ Atualizações de segurança\n✅ Guias de proteção familiar\n\nVerifique ${email} para sua mensagem de boas-vindas!`
+                };
 
-            console.log('🌍 Global CyberDad: Multi-language analytics system loaded!');
-            console.log('💰 Revenue tracking: ACTIVE');
-            console.log('🎯 Location targeting: ACTIVE');
+                const currentLang = document.getElementById('languageSelect').value;
+                const message = messages[currentLang] || messages['en'];
+                
+                alert(message);
+                event.target.reset();
+            }
+        }
+
+        // INITIALIZE GEOLOCATION
+        document.addEventListener('DOMContentLoaded', function() {
+            detectUserLocation();
+            console.log('🌍 Global CyberDad: Multi-language system loaded!');
         });
 
         // SMOOTH SCROLLING
