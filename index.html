@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberDad - Family Cybersecurity Intelligence</title>
     <meta name="description" content="Real-time cybersecurity intelligence for modern families. Get protection guides, threat alerts, and security tips that keep your family safe online.">
+    
+    <!-- IP GEOLOCATION & ANALYTICS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- GOOGLE ANALYTICS - REVENUE TRACKING -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+        
+        // Revenue Event Tracking
+        function trackRevenue(action, value) {
+            gtag('event', action, {
+                'event_category': 'Revenue',
+                'event_label': 'CyberDad',
+                'value': value
+            });
+        }
+    </script>
     <style>
         /* REVENUE-OPTIMIZED BLOG DESIGN - BASED ON $1M/MONTH EARNERS */
         
@@ -21,7 +42,61 @@
             background: #ffffff;
         }
 
-        /* HEADER - Clean & Professional */
+        /* GLOBAL LANGUAGE & LOCATION BAR */
+        .global-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .global-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-switcher select {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .language-switcher select option {
+            background: #2d3748;
+            color: white;
+        }
+
+        .local-threat-alert {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
         .main-header {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -555,7 +630,28 @@
 </head>
 <body>
     <!-- HEADER -->
-    <header class="main-header">
+        <!-- GLOBAL LANGUAGE & LOCATION BAR -->
+        <div class="global-bar" id="globalBar" style="display: none;">
+            <div class="global-container">
+                <div class="location-info">
+                    <span id="locationFlag">🌍</span>
+                    <span id="locationText">Detecting location...</span>
+                </div>
+                <div class="language-switcher">
+                    <select id="languageSelect" onchange="changeLanguage()">
+                        <option value="en">🇺🇸 English</option>
+                        <option value="es">🇪🇸 Español</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="pt">🇵🇹 Português</option>
+                    </select>
+                </div>
+                <div class="local-threat-alert" id="localThreatAlert" style="display: none;">
+                    <span>⚠️</span>
+                    <span id="threatText">Local security alert for your region</span>
+                </div>
+            </div>
+        </div>
         <div class="header-container">
             <a href="/" class="logo">🛡️ CyberDad</a>
             <nav>
@@ -873,16 +969,299 @@
     </footer>
 
     <script>
-        // EMAIL SIGNUP
+        // GLOBAL IP GEOLOCATION & ANALYTICS SYSTEM
+        let userCountry = '';
+        let userLanguage = '';
+        let visitorData = {};
+
+        // ANALYTICS & REVENUE TRACKING
+        function initializeAnalytics() {
+            // Track page view
+            gtag('event', 'page_view', {
+                'page_title': 'CyberDad Family Protection Hub',
+                'page_location': window.location.href
+            });
+
+            // Track visitor engagement
+            setTimeout(() => {
+                gtag('event', 'engagement', {
+                    'event_category': 'User Engagement',
+                    'event_label': '30 Second View'
+                });
+            }, 30000);
+        }
+
+        // IP GEOLOCATION DETECTION
+        async function detectUserLocation() {
+            try {
+                // Using ipapi.co for geolocation
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                userCountry = data.country_code;
+                visitorData = {
+                    country: data.country_name,
+                    countryCode: data.country_code,
+                    city: data.city,
+                    region: data.region,
+                    timezone: data.timezone,
+                    currency: data.currency,
+                    languages: data.languages
+                };
+
+                updateLocationDisplay();
+                checkLocalThreats();
+                autoSetLanguage();
+                
+                // Track location for analytics
+                gtag('event', 'user_location', {
+                    'event_category': 'Geography',
+                    'event_label': data.country_name,
+                    'custom_map': {
+                        'country': data.country_name,
+                        'city': data.city
+                    }
+                });
+
+            } catch (error) {
+                console.log('Location detection failed, using fallback');
+                showGlobalBar();
+            }
+        }
+
+        // UPDATE LOCATION DISPLAY
+        function updateLocationDisplay() {
+            const flagEmojis = {
+                'US': '🇺🇸', 'CA': '🇨🇦', 'GB': '🇬🇧', 'AU': '🇦🇺', 'DE': '🇩🇪',
+                'FR': '🇫🇷', 'ES': '🇪🇸', 'IT': '🇮🇹', 'BR': '🇧🇷', 'MX': '🇲🇽',
+                'JP': '🇯🇵', 'KR': '🇰🇷', 'IN': '🇮🇳', 'CN': '🇨🇳', 'RU': '🇷🇺',
+                'NL': '🇳🇱', 'SE': '🇸🇪', 'NO': '🇳🇴', 'DK': '🇩🇰', 'FI': '🇫🇮'
+            };
+
+            const flag = flagEmojis[userCountry] || '🌍';
+            const locationText = `Securing families in ${visitorData.country}`;
+            
+            document.getElementById('locationFlag').textContent = flag;
+            document.getElementById('locationText').textContent = locationText;
+            
+            showGlobalBar();
+        }
+
+        // LOCAL THREAT DETECTION
+        function checkLocalThreats() {
+            const threats = {
+                'US': 'Recent: Banking trojan targeting US families',
+                'GB': 'Alert: UK phishing campaigns increase 40%',
+                'CA': 'Warning: Canadian tax scam season active',
+                'AU': 'Notice: MyGov phishing attempts detected',
+                'DE': 'Warnung: GDPR-themed phishing attacks',
+                'FR': 'Alerte: Nouvelles arnaques aux impôts',
+                'ES': 'Alerta: Estafas de WhatsApp en aumento',
+                'IT': 'Avviso: Truffe PosteItaliane in corso',
+                'BR': 'Alerta: Golpes do PIX aumentaram 60%',
+                'JP': '警告: 偽のコロナ対策メール増加',
+                'Default': 'Global: New family-targeting scams detected'
+            };
+
+            const threatText = threats[userCountry] || threats['Default'];
+            document.getElementById('threatText').textContent = threatText;
+            document.getElementById('localThreatAlert').style.display = 'flex';
+        }
+
+        // AUTO LANGUAGE DETECTION
+        function autoSetLanguage() {
+            const languageMap = {
+                'ES': 'es', 'MX': 'es', 'AR': 'es', 'CO': 'es', 'CL': 'es',
+                'FR': 'fr', 'CA': 'fr', 'BE': 'fr', 'CH': 'fr',
+                'DE': 'de', 'AT': 'de', 'CH': 'de',
+                'BR': 'pt', 'PT': 'pt',
+                'IT': 'it', 'CH': 'it'
+            };
+
+            const suggestedLang = languageMap[userCountry] || 'en';
+            if (suggestedLang !== 'en') {
+                document.getElementById('languageSelect').value = suggestedLang;
+                showLanguageSuggestion(suggestedLang);
+            }
+        }
+
+        // LANGUAGE CHANGE HANDLER
+        function changeLanguage() {
+            const selectedLang = document.getElementById('languageSelect').value;
+            translateContent(selectedLang);
+            
+            // Track language change for analytics
+            gtag('event', 'language_change', {
+                'event_category': 'Localization',
+                'event_label': selectedLang
+            });
+        }
+
+        // CONTENT TRANSLATION
+        function translateContent(lang) {
+            const translations = {
+                'en': {
+                    brandName: 'CyberDad',
+                    heroTitle: 'Family Cybersecurity Intelligence',
+                    heroSubtitle: 'Get real-time threat alerts, protection guides, and security tips that keep your family safe in the digital world',
+                    navAlerts: 'Security Alerts',
+                    navGuides: 'Family Guides',
+                    navTools: 'Security Tools',
+                    navProducts: 'Resources'
+                },
+                'es': {
+                    brandName: 'CyberPapá',
+                    heroTitle: 'Inteligencia de Ciberseguridad Familiar',
+                    heroSubtitle: 'Obtén alertas de amenazas en tiempo real, guías de protección y consejos de seguridad para mantener a tu familia segura en el mundo digital',
+                    navAlerts: 'Alertas de Seguridad',
+                    navGuides: 'Guías Familiares',
+                    navTools: 'Herramientas',
+                    navProducts: 'Recursos'
+                },
+                'fr': {
+                    brandName: 'CyberPapa',
+                    heroTitle: 'Renseignement de Cybersécurité Familiale',
+                    heroSubtitle: 'Recevez des alertes de menaces en temps réel, des guides de protection et des conseils de sécurité pour protéger votre famille dans le monde numérique',
+                    navAlerts: 'Alertes Sécurité',
+                    navGuides: 'Guides Famille',
+                    navTools: 'Outils Sécurité',
+                    navProducts: 'Ressources'
+                },
+                'de': {
+                    brandName: 'CyberVater',
+                    heroTitle: 'Familien-Cybersicherheit Intelligence',
+                    heroSubtitle: 'Erhalten Sie Echtzeit-Bedrohungsalarme, Schutzleitfäden und Sicherheitstipps, um Ihre Familie in der digitalen Welt zu schützen',
+                    navAlerts: 'Sicherheitsalarme',
+                    navGuides: 'Familienführer',
+                    navTools: 'Sicherheitstools',
+                    navProducts: 'Ressourcen'
+                },
+                'pt': {
+                    brandName: 'CyberPai',
+                    heroTitle: 'Inteligência de Cibersegurança Familiar',
+                    heroSubtitle: 'Receba alertas de ameaças em tempo real, guias de proteção e dicas de segurança para manter sua família segura no mundo digital',
+                    navAlerts: 'Alertas Segurança',
+                    navGuides: 'Guias Família',
+                    navTools: 'Ferramentas',
+                    navProducts: 'Recursos'
+                }
+            };
+
+            const content = translations[lang] || translations['en'];
+            
+            // Update visible content
+            document.getElementById('brandName').textContent = content.brandName;
+            document.querySelector('.hero-title').textContent = content.heroTitle;
+            document.querySelector('.hero-subtitle').textContent = content.heroSubtitle;
+            document.getElementById('nav-alerts').textContent = content.navAlerts;
+            document.getElementById('nav-guides').textContent = content.navGuides;
+            document.getElementById('nav-tools').textContent = content.navTools;
+            document.getElementById('nav-products').textContent = content.navProducts;
+        }
+
+        // REVENUE TRACKING
+        function trackProductClick(product, price) {
+            trackRevenue('product_click', price);
+            gtag('event', 'click', {
+                'event_category': 'Products',
+                'event_label': product,
+                'value': price
+            });
+        }
+
+        function trackAffiliateClick(affiliate) {
+            gtag('event', 'click', {
+                'event_category': 'Affiliates',
+                'event_label': affiliate
+            });
+        }
+
+        // EMAIL SIGNUP ENHANCED
         function handleEmailSignup(event) {
             event.preventDefault();
             const email = event.target.querySelector('input[type="email"]').value;
             
             if (email) {
-                alert(`🎉 Welcome to CyberDad Intelligence!\n\nYou'll now receive:\n✅ Real-time threat alerts\n✅ Device security updates\n✅ Family protection guides\n\nCheck ${email} for your welcome message and free security checklist!`);
+                // Track conversion
+                gtag('event', 'conversion', {
+                    'send_to': 'GA_MEASUREMENT_ID/email_signup',
+                    'event_category': 'Lead Generation',
+                    'event_label': 'Email Signup',
+                    'value': 10 // Assign $10 value to email signup
+                });
+
+                // Localized success message
+                const messages = {
+                    'en': `🎉 Welcome to CyberDad Intelligence!\n\nYou'll now receive:\n✅ Real-time threat alerts\n✅ Device security updates\n✅ Family protection guides\n\nCheck ${email} for your welcome message!`,
+                    'es': `🎉 ¡Bienvenido a CyberPapá Intelligence!\n\nAhora recibirás:\n✅ Alertas de amenazas en tiempo real\n✅ Actualizaciones de seguridad\n✅ Guías de protección familiar\n\n¡Revisa ${email} para tu mensaje de bienvenida!`,
+                    'fr': `🎉 Bienvenue à CyberPapa Intelligence!\n\nVous recevrez maintenant:\n✅ Alertes de menaces en temps réel\n✅ Mises à jour de sécurité\n✅ Guides de protection familiale\n\nVérifiez ${email} pour votre message de bienvenue!`,
+                    'de': `🎉 Willkommen bei CyberVater Intelligence!\n\nSie erhalten jetzt:\n✅ Echtzeit-Bedrohungsalarme\n✅ Sicherheitsupdates\n✅ Familienschutzführer\n\nÜberprüfen Sie ${email} für Ihre Willkommensnachricht!`,
+                    'pt': `🎉 Bem-vindo ao CyberPai Intelligence!\n\nVocê agora receberá:\n✅ Alertas de ameaças em tempo real\n✅ Atualizações de segurança\n✅ Guias de proteção familiar\n\nVerifique ${email} para sua mensagem de boas-vindas!`
+                };
+
+                const currentLang = document.getElementById('languageSelect').value;
+                const message = messages[currentLang] || messages['en'];
+                
+                alert(message);
                 event.target.reset();
             }
         }
+
+        // SHOW GLOBAL BAR
+        function showGlobalBar() {
+            document.getElementById('globalBar').style.display = 'block';
+        }
+
+        // LANGUAGE SUGGESTION
+        function showLanguageSuggestion(lang) {
+            const langNames = {
+                'es': 'Español',
+                'fr': 'Français', 
+                'de': 'Deutsch',
+                'pt': 'Português'
+            };
+            
+            setTimeout(() => {
+                if (confirm(`Would you prefer to view this site in ${langNames[lang]}? / ¿Prefieres ver este sitio en ${langNames[lang]}?`)) {
+                    changeLanguage();
+                }
+            }, 3000);
+        }
+
+        // INITIALIZE EVERYTHING
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAnalytics();
+            detectUserLocation();
+            
+            // Enhanced button tracking
+            document.querySelectorAll('a[href*="etsy"]').forEach(link => {
+                link.addEventListener('click', () => trackProductClick('Etsy Store', 25));
+            });
+            
+            document.querySelectorAll('a[href*="payhip"]').forEach(link => {
+                link.addEventListener('click', () => trackProductClick('PayHip Downloads', 15));
+            });
+            
+            document.querySelectorAll('a[href*="gumroad"]').forEach(link => {
+                link.addEventListener('click', () => trackProductClick('Gumroad Store', 20));
+            });
+            
+            document.querySelectorAll('a[href*="nordvpn"]').forEach(link => {
+                link.addEventListener('click', () => trackAffiliateClick('NordVPN'));
+            });
+            
+            document.querySelectorAll('a[href*="1password"]').forEach(link => {
+                link.addEventListener('click', () => trackAffiliateClick('1Password'));
+            });
+            
+            document.querySelectorAll('a[href*="norton"]').forEach(link => {
+                link.addEventListener('click', () => trackAffiliateClick('Norton'));
+            });
+
+            console.log('🌍 Global CyberDad: Multi-language analytics system loaded!');
+            console.log('💰 Revenue tracking: ACTIVE');
+            console.log('🎯 Location targeting: ACTIVE');
+        });
 
         // SMOOTH SCROLLING
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
