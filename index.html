@@ -1,510 +1,450 @@
-/* CONTENT POPUP STYLES */
-.content-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.popup-content {
-  background: white;
-  border-radius: 15px;
-  max-width: 700px;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.popup-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 25px 30px;
-  border-radius: 15px 15px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.popup-header h2 {
-  margin: 0;
-  font-size: 1.4rem;
-}
-
-.close-btn {
-  background: rgba(255,255,255,0.2);
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s ease;
-}
-
-.close-btn:hover {
-  background: rgba(255,255,255,0.3);
-}
-
-.popup-body {
-  padding: 30px;
-  line-height: 1.6;
-}
-
-.popup-body h3 {
-  color: #333;
-  margin: 0 0 15px 0;
-  font-size: 1.2rem;
-}
-
-.popup-body h4 {
-  color: #555;
-  margin: 20px 0 10px 0;
-  font-size: 1rem;
-}
-
-.popup-body p {
-  color: #666;
-  margin: 10px 0;
-}
-
-.popup-body ul, .popup-body ol {
-  margin: 10px 0;
-  padding-left: 25px;
-}
-
-.popup-body li {
-  margin: 8px 0;
-  color: #555;
-}
-
-.popup-body strong {
-  color: #333;
-}
-
-.popup-actions {
-  padding: 20px 30px;
-  border-top: 1px solid #eee;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-
-.close-content-btn {
-  background: linear-gradient(45deg, #28a745, #20c997);
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.close-content-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-}
-
-.share-content-btn {
-  background: #6c757d;
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.share-content-btn:hover {
-  background: #5a6268;
-  transform: translateY(-2px);
-}---
+---
 layout: default
 title: "Cyber Dad Blog - Family Cybersecurity Guides and Tips"
 description: "Helpful cybersecurity guides, practical tips, and timely alerts for families with smart homes and connected devices."
 ---
 
 <div class="home">
-  <!-- ENHANCED HEADER -->
+  <!-- FAMILY BLOG HEADER -->
   <header class="blog-header">
     <h1 class="page-heading">🛡️ Cyber Dad Blog</h1>
     <p class="subtitle">Family Cybersecurity Guides and Tips</p>
     <p class="mission">Helpful guides • Practical tips • Family protection advice</p>
     
-    <!-- SMART DEVICE SECURITY CHECK -->
-    <div class="vulnerability-search">
+    <!-- FAMILY DEVICE SECURITY CHECK -->
+    <div class="device-check-section">
       <h3>🔍 Family Device Security Check</h3>
-      <p>Check if your devices have security updates • Get protection tips • Family-friendly guidance</p>
+      <p>Check if your devices need security updates • Get protection tips • Family-friendly guidance</p>
       
-      <div class="advanced-search-container">
+      <div class="search-container">
         <div class="search-row">
-          <input type="text" id="deviceSearch" placeholder="Enter device name (e.g., Ring Doorbell, iPhone, Smart TV, Alexa...)" class="device-search-input">
-          <button onclick="searchDeviceVulnerabilities()" class="search-btn">🔍 Check Device</button>
+          <input type="text" id="deviceSearch" placeholder="Enter device name (Ring Doorbell, iPhone, Smart TV, Alexa...)" class="device-input">
+          <button onclick="checkDevice()" class="check-btn">🔍 Check Device</button>
         </div>
         
         <div class="filter-row">
           <select id="deviceCategory" class="filter-select">
             <option value="all">All Categories</option>
             <option value="smart-home">🏠 Smart Home</option>
-            <option value="network">📡 Network Equipment</option>
             <option value="mobile">📱 Mobile Devices</option>
+            <option value="network">📡 Network Equipment</option>
             <option value="entertainment">📺 Entertainment</option>
-            <option value="security">🔒 Security Systems</option>
           </select>
           
-          <select id="severityFilter" class="filter-select">
+          <select id="priorityFilter" class="filter-select">
             <option value="all">All Priorities</option>
-            <option value="critical">🔴 High Priority</option>
-            <option value="high">🟠 Medium Priority</option>
-            <option value="medium">🟡 Low Priority</option>
-            <option value="low">🔵 Info Only</option>
-          </select>
-          
-          <select id="timeFilter" class="filter-select">
-            <option value="all">All Time</option>
-            <option value="today">Today</option>
-            <option value="week">This Week</option>
-            <option value="month">This Month</option>
+            <option value="high">🔴 High Priority</option>
+            <option value="medium">🟡 Medium Priority</option>
+            <option value="low">🔵 Low Priority</option>
           </select>
         </div>
       </div>
       
-      <div id="searchResults" class="search-results"></div>
+      <div id="checkResults" class="check-results"></div>
     </div>
   </header>
 
-  <!-- FAMILY SECURITY STATUS BAR (HORIZONTAL) -->
-  <div class="threat-dashboard">
-    <div class="status-bar-horizontal">
+  <!-- FAMILY SECURITY STATUS -->
+  <div class="security-status">
+    <div class="status-bar">
       <div class="status-main">
-        <h2>🛡️ Family Security Status: <span id="currentStatus">ALL GOOD</span></h2>
-        <p>Your devices are protected • Latest check: 2 minutes ago</p>
+        <h2>🛡️ Family Security Status: <span id="securityStatus">ALL GOOD</span></h2>
+        <p>Your devices are protected • Latest check: July 19, 2025</p>
       </div>
       
       <div class="status-stats">
         <div class="stat-item">
-          <div class="stat-number" id="tipsCount">23</div>
-          <div class="stat-label">New Tips</div>
+          <div class="stat-number" id="alertsCount">3</div>
+          <div class="stat-label">Security Tips</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" id="guidesCount">156</div>
-          <div class="stat-label">Helpful Guides</div>
+          <div class="stat-number" id="guidesCount">8</div>
+          <div class="stat-label">Family Guides</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" id="updatesCount">12</div>
-          <div class="stat-label">Updates Available</div>
+          <div class="stat-number" id="tipsCount">15</div>
+          <div class="stat-label">Quick Tips</div>
         </div>
       </div>
     </div>
     
-    <!-- QUICK STATUS CARDS -->
-    <div class="threat-indicators">
-      <div class="threat-card" id="urgentTips">
-        <div class="threat-icon">🔴</div>
-        <div class="threat-info">
-          <h4>Important Tips</h4>
-          <span class="threat-count" id="urgentCount">2</span>
+    <div class="status-indicators">
+      <div class="status-card urgent" id="ctiAlerts">
+        <div class="status-icon">🚨</div>
+        <div class="status-info">
+          <h4>Important Alerts</h4>
+          <span class="status-count" id="ctiCount">3</span>
           <p>Worth checking out</p>
         </div>
       </div>
       
-      <div class="threat-card" id="watchItems">
-        <div class="threat-icon">🟡</div>
-        <div class="threat-info">
-          <h4>Good to Know</h4>
-          <span class="threat-count" id="watchCount">5</span>
-          <p>Helpful information</p>
+      <div class="status-card moderate" id="blogGuides">
+        <div class="status-icon">📚</div>
+        <div class="status-info">
+          <h4>Family Guides</h4>
+          <span class="status-count" id="blogCount">8</span>
+          <p>Comprehensive help</p>
         </div>
       </div>
       
-      <div class="threat-card" id="infoItems">
-        <div class="threat-icon">🔵</div>
-        <div class="threat-info">
-          <h4>Latest Posts</h4>
-          <span class="threat-count" id="infoCount">12</span>
-          <p>New content</p>
+      <div class="status-card info" id="quickTips">
+        <div class="status-icon">💡</div>
+        <div class="status-info">
+          <h4>Quick Tips</h4>
+          <span class="status-count" id="tipsQuickCount">15</span>
+          <p>Easy actions</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT GRID (BETTER SPACE USAGE) -->
-  <div class="posts-container">
-    <div class="content-grid">
+  <!-- MAIN CONTENT ECOSYSTEM -->
+  <div class="content-ecosystem">
+    <div class="content-layout">
       
-  <!-- MAIN CONTENT GRID (BETTER SPACE USAGE) -->
-  <div class="posts-container">
-    <div class="content-grid">
-      
-      <!-- LEFT COLUMN - ORGANIZED POSTS -->
+      <!-- MAIN CONTENT AREA -->
       <div class="main-content">
         
-        <!-- BREAKING NEWS / RECENT ALERTS SECTION -->
-        <div class="news-section">
+        <!-- CTI INTELLIGENCE SECTION (40%) -->
+        <div class="cti-section">
           <div class="section-header">
-            <h2>🚨 Recent Security Alerts</h2>
-            <span class="last-updated">Updated July 19, 2025</span>
+            <h2>🚨 Latest Security Alerts</h2>
+            <span class="update-time">Updated July 19, 2025</span>
           </div>
           
-          <div class="news-posts">
-            <article class="news-post urgent" data-time="8pm">
-              <div class="news-content">
-                <div class="post-header">
-                  <h3>🚨 Avoid Email Tricks - Don't Get Fooled!</h3>
-                  <span class="post-date">July 19, 2025</span>
-                </div>
-                <p class="news-summary">Super Easy Quick Summary: Learn how to spot fake emails before they trick your family. Takes 5 minutes to read - Perfect for ages 4-99!</p>
-                <div class="post-tags">
-                  <span class="tag">cybersecurity</span>
-                  <span class="tag">family-safety</span>
-                  <span class="tag">easy-guide</span>
-                </div>
-                <div class="news-actions">
-                  <button class="news-btn primary" onclick="showFullThreatDetails('email-tricks-guide')">📖 Read Full Guide</button>
-                  <button class="news-btn secondary" onclick="savePost('email-tricks')">💾 Save</button>
-                </div>
+          <div class="cti-posts">
+            <article class="content-post cti-post">
+              <div class="post-header">
+                <h3>🚨 Avoid Email Tricks - Don't Get Fooled!</h3>
+                <span class="post-date">July 19, 2025</span>
+              </div>
+              <p class="post-summary">Super Easy Quick Summary: Learn how to spot fake emails before they trick your family. Takes 5 minutes to read - Perfect for ages 4-99!</p>
+              <div class="post-tags">
+                <span class="tag">cybersecurity</span>
+                <span class="tag">family-safety</span>
+                <span class="tag">easy-guide</span>
+              </div>
+              <div class="post-actions">
+                <button class="action-btn primary" onclick="showContent('email-tricks')">📖 Read Guide</button>
+                <button class="action-btn secondary" onclick="saveContent('email-tricks')">💾 Save</button>
               </div>
             </article>
 
-            <article class="news-post moderate" data-time="1pm">
-              <div class="news-content">
-                <div class="post-header">
-                  <h3>🔐 Keep Your Passwords Safe - Super Easy Guide</h3>
-                  <span class="post-date">July 19, 2025</span>
-                </div>
-                <p class="news-summary">Super Easy Guide - Perfect for ages 4-99! Learn how to create strong passwords that protect your family without being complicated.</p>
-                <div class="post-tags">
-                  <span class="tag">cybersecurity</span>
-                  <span class="tag">family-safety</span>
-                  <span class="tag">easy-guide</span>
-                </div>
-                <div class="news-actions">
-                  <button class="news-btn primary" onclick="showFamilyGuide('password-safety-guide')">🔑 Read Guide</button>
-                  <button class="news-btn secondary" onclick="savePost('password-guide')">💾 Save</button>
-                </div>
+            <article class="content-post cti-post">
+              <div class="post-header">
+                <h3>🔐 Keep Your Passwords Safe - Super Easy Guide</h3>
+                <span class="post-date">July 19, 2025</span>
+              </div>
+              <p class="post-summary">Super Easy Guide - Perfect for ages 4-99! Learn how to create strong passwords that protect your family without being complicated.</p>
+              <div class="post-tags">
+                <span class="tag">cybersecurity</span>
+                <span class="tag">password-security</span>
+                <span class="tag">family-guide</span>
+              </div>
+              <div class="post-actions">
+                <button class="action-btn primary" onclick="showContent('password-safety')">🔑 Read Guide</button>
+                <button class="action-btn secondary" onclick="saveContent('password-safety')">💾 Save</button>
               </div>
             </article>
 
-            <article class="news-post info" data-time="9am">
-              <div class="news-content">
-                <div class="post-header">
-                  <h3>📶 Make Your Home WiFi Super Safe - Easy Steps</h3>
-                  <span class="post-date">July 19, 2025</span>
-                </div>
-                <p class="news-summary">Super Easy - Perfect for ages 4-99! Simple steps to make your home WiFi secure so your family can browse safely.</p>
-                <div class="post-tags">
-                  <span class="tag">cybersecurity</span>
-                  <span class="tag">family-safety</span>
-                  <span class="tag">easy-guide</span>
-                </div>
-                <div class="news-actions">
-                  <button class="news-btn primary" onclick="showPrivacyGuide('wifi-security')">📶 Secure WiFi</button>
-                  <button class="news-btn secondary" onclick="savePost('wifi-guide')">💾 Save</button>
-                </div>
+            <article class="content-post cti-post">
+              <div class="post-header">
+                <h3>📶 Make Your Home WiFi Super Safe - Easy Steps</h3>
+                <span class="post-date">July 19, 2025</span>
+              </div>
+              <p class="post-summary">Super Easy - Perfect for ages 4-99! Simple steps to make your home WiFi secure so your family can browse safely.</p>
+              <div class="post-tags">
+                <span class="tag">cybersecurity</span>
+                <span class="tag">wifi-security</span>
+                <span class="tag">home-network</span>
+              </div>
+              <div class="post-actions">
+                <button class="action-btn primary" onclick="showContent('wifi-security')">📶 Secure WiFi</button>
+                <button class="action-btn secondary" onclick="saveContent('wifi-security')">💾 Save</button>
               </div>
             </article>
           </div>
         </div>
 
-        <!-- FAMILY GUIDES SECTION -->
-        <div class="guides-section">
+        <!-- BLOG GUIDES SECTION (35%) -->
+        <div class="blog-section">
           <div class="section-header">
-            <h2>📚 Latest Family Guides</h2>
-            <span class="post-count">Updated daily with new guides</span>
+            <h2>📚 Comprehensive Family Guides</h2>
+            <span class="guide-count">In-depth security education</span>
           </div>
           
-          <div class="guides-grid">
-            <article class="guide-card">
-              <div class="guide-meta">
-                <span class="guide-date">Jan 18, 2025</span>
-                <span class="guide-type">FAMILY GUIDE</span>
+          <div class="blog-posts">
+            <article class="content-post blog-post">
+              <div class="post-header">
+                <h3>📱 iPhone Family Sharing: 5 Security Settings Every Parent Should Know</h3>
+                <span class="post-date">July 18, 2025</span>
               </div>
-              <h3>iPhone Family Sharing: 5 Security Settings Every Parent Should Know</h3>
-              <p class="guide-excerpt">Setting up family sharing on iPhones? Great choice! But there are 5 important security settings most parents miss.</p>
-              <div class="guide-highlights">
-                <span class="highlight-item">✓ Safe app downloads</span>
-                <span class="highlight-item">✓ Location sharing</span>
-                <span class="highlight-item">✓ Purchase controls</span>
+              <p class="post-summary">Complete guide to securing iPhone Family Sharing. Learn the 5 critical settings that keep your kids safe while giving them digital freedom.</p>
+              <div class="post-highlights">
+                <span class="highlight">✓ Safe app downloads</span>
+                <span class="highlight">✓ Location sharing</span>
+                <span class="highlight">✓ Purchase controls</span>
               </div>
-              <div class="guide-actions">
-                <button class="guide-btn primary" onclick="showFamilyGuide('iphone-family-sharing')">📱 Read Guide</button>
-                <button class="guide-btn secondary" onclick="savePost('iphone-guide')">💾 Save</button>
-              </div>
-            </article>
-
-            <article class="guide-card">
-              <div class="guide-meta">
-                <span class="guide-date">Jan 15, 2025</span>
-                <span class="guide-type">SETUP GUIDE</span>
-              </div>
-              <h3>Family Password Manager: Complete Setup Guide</h3>
-              <p class="guide-excerpt">Discover how a family password manager can protect your entire household from cyber attacks while teaching kids about digital responsibility.</p>
-              <div class="guide-highlights">
-                <span class="highlight-item">✓ Family accounts</span>
-                <span class="highlight-item">✓ Kids' safety</span>
-                <span class="highlight-item">✓ Easy setup</span>
-              </div>
-              <div class="guide-actions">
-                <button class="guide-btn primary" onclick="trackAffiliate('1password')">🔑 Get Started</button>
-                <button class="guide-btn secondary" onclick="sharePost('password-guide')">📤 Share</button>
+              <div class="post-actions">
+                <button class="action-btn primary" onclick="showContent('iphone-family')">📱 Read Guide</button>
+                <button class="action-btn secondary" onclick="shareContent('iphone-family')">📤 Share</button>
               </div>
             </article>
 
-            <article class="guide-card">
-              <div class="guide-meta">
-                <span class="guide-date">Jan 12, 2025</span>
-                <span class="guide-type">QUICK TIP</span>
+            <article class="content-post blog-post">
+              <div class="post-header">
+                <h3>🏠 Smart Home Security: Complete Family Setup Guide</h3>
+                <span class="post-date">July 17, 2025</span>
               </div>
-              <h3>Router Security: 5-Minute Family Protection Setup</h3>
-              <p class="guide-excerpt">Your home router is the gateway to your family's digital life. Here's how to secure it in just 5 minutes.</p>
-              <div class="guide-highlights">
-                <span class="highlight-item">✓ Password update</span>
-                <span class="highlight-item">✓ Guest network</span>
-                <span class="highlight-item">✓ Parental controls</span>
+              <p class="post-summary">Comprehensive guide to securing your smart home devices. From Ring doorbells to Alexa - protect every connected device your family uses.</p>
+              <div class="post-highlights">
+                <span class="highlight">✓ Device security</span>
+                <span class="highlight">✓ Privacy settings</span>
+                <span class="highlight">✓ Family controls</span>
               </div>
-              <div class="guide-actions">
-                <button class="guide-btn primary" onclick="showPrivacyGuide('router')">🌐 Secure Router</button>
-                <button class="guide-btn secondary" onclick="savePost('router-guide')">💾 Save</button>
+              <div class="post-actions">
+                <button class="action-btn primary" onclick="showContent('smart-home')">🏠 Read Guide</button>
+                <button class="action-btn secondary" onclick="saveContent('smart-home')">💾 Save</button>
               </div>
             </article>
 
-            <article class="guide-card">
-              <div class="guide-meta">
-                <span class="guide-date">Jan 10, 2025</span>
-                <span class="guide-type">FAMILY GUIDE</span>
+            <article class="content-post blog-post">
+              <div class="post-header">
+                <h3>👨‍👩‍👧‍👦 Kids' First Smartphone: Complete Security Checklist</h3>
+                <span class="post-date">July 16, 2025</span>
               </div>
-              <h3>Kids' First Smartphone: Security Checklist</h3>
-              <p class="guide-excerpt">Getting your child their first smartphone? This complete security checklist ensures they stay safe while enjoying their new device.</p>
-              <div class="guide-highlights">
-                <span class="highlight-item">✓ Parental controls</span>
-                <span class="highlight-item">✓ Safe browsing</span>
-                <span class="highlight-item">✓ App permissions</span>
+              <p class="post-summary">Everything parents need to know before giving kids their first smartphone. Security setup, parental controls, and family safety rules.</p>
+              <div class="post-highlights">
+                <span class="highlight">✓ Parental controls</span>
+                <span class="highlight">✓ Safe browsing</span>
+                <span class="highlight">✓ Family rules</span>
               </div>
-              <div class="guide-actions">
-                <button class="guide-btn primary" onclick="showFamilyGuide('kids-smartphone')">📱 Read Checklist</button>
-                <button class="guide-btn secondary" onclick="savePost('kids-phone-guide')">💾 Save</button>
+              <div class="post-actions">
+                <button class="action-btn primary" onclick="showContent('kids-smartphone')">📱 Read Checklist</button>
+                <button class="action-btn secondary" onclick="saveContent('kids-smartphone')">💾 Save</button>
               </div>
             </article>
           </div>
+        </div>
 
-          <div class="view-more">
-            <button class="view-more-btn" onclick="browseAllGuides()">📚 View All Guides (50+)</button>
+        <!-- EVERGREEN TIPS SECTION (25%) -->
+        <div class="tips-section">
+          <div class="section-header">
+            <h2>💡 Quick Security Tips</h2>
+            <span class="tips-note">Fast, actionable advice</span>
           </div>
+          
+          <div class="tips-grid">
+            <div class="tip-card">
+              <div class="tip-icon">🔒</div>
+              <h4>Two-Factor Authentication</h4>
+              <p>Add an extra layer of security to your important accounts. Takes 2 minutes, protects forever.</p>
+              <button class="tip-btn" onclick="showContent('two-factor-tip')">Learn How</button>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">📱</div>
+              <h4>App Permission Check</h4>
+              <p>Review which apps can access your camera, microphone, and location. Quick privacy win!</p>
+              <button class="tip-btn" onclick="showContent('app-permissions-tip')">Check Now</button>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">🌐</div>
+              <h4>Router Security Check</h4>
+              <p>Simple 5-minute check to secure your home network. Protect the whole family at once.</p>
+              <button class="tip-btn" onclick="showContent('router-tip')">Secure Router</button>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">📧</div>
+              <h4>Email Safety Rules</h4>
+              <p>Teach your family to spot suspicious emails. Essential skill for staying safe online.</p>
+              <button class="tip-btn" onclick="showContent('email-safety-tip')">Learn Rules</button>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">💾</div>
+              <h4>Backup Your Photos</h4>
+              <p>Never lose family memories. Set up automatic backup for peace of mind.</p>
+              <button class="tip-btn" onclick="showContent('backup-tip')">Setup Backup</button>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">🛡️</div>
+              <h4>Antivirus for Families</h4>
+              <p>Choose the right antivirus for your family's devices. Protection made simple.</p>
+              <button class="tip-btn" onclick="showContent('antivirus-tip')">Get Protected</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-more-section">
+          <button class="view-all-btn" onclick="browseAllContent()">📚 View All Content (50+ Guides)</button>
         </div>
       </div>
 
-      <!-- RIGHT SIDEBAR - BETTER SPACE USAGE -->
-      <div class="sidebar-content">
+      <!-- SIDEBAR ECOSYSTEM -->
+      <div class="sidebar">
         
-        <!-- Popular Topics -->
+        <!-- POPULAR CONTENT -->
         <div class="sidebar-card">
           <h3>🔥 Popular This Week</h3>
-          <div class="popular-topics">
-            <div class="topic-item">
-              <span class="topic-icon">📱</span>
-              <span class="topic-title">iPhone Security Tips</span>
-              <span class="topic-count">234 views</span>
+          <div class="popular-list">
+            <div class="popular-item">
+              <span class="popular-icon">📱</span>
+              <span class="popular-title">iPhone Security Tips</span>
+              <span class="popular-views">847 views</span>
             </div>
-            <div class="topic-item">
-              <span class="topic-icon">🏠</span>
-              <span class="topic-title">Smart Home Setup</span>
-              <span class="topic-count">156 views</span>
+            <div class="popular-item">
+              <span class="popular-icon">🏠</span>
+              <span class="popular-title">Smart Home Setup</span>
+              <span class="popular-views">623 views</span>
             </div>
-            <div class="topic-item">
-              <span class="topic-icon">🔐</span>
-              <span class="topic-title">Password Managers</span>
-              <span class="topic-count">98 views</span>
+            <div class="popular-item">
+              <span class="popular-icon">🔐</span>
+              <span class="popular-title">Password Managers</span>
+              <span class="popular-views">445 views</span>
             </div>
           </div>
         </div>
 
-        <!-- Quick Actions -->
+        <!-- QUICK ACTIONS -->
         <div class="sidebar-card">
-          <h3>🎯 Quick Links</h3>
+          <h3>⚡ Quick Actions</h3>
           <div class="quick-actions">
-            <button class="action-btn primary">📚 Browse All Guides</button>
-            <button class="action-btn">🛍️ Security Printables</button>
-            <button class="action-btn">📧 Weekly Tips</button>
-            <button class="action-btn">🆘 Emergency Help</button>
+            <button class="quick-btn primary" onclick="browseAllContent()">📚 Browse All Guides</button>
+            <button class="quick-btn" onclick="showSecurityTools()">🛡️ Security Tools</button>
+            <button class="quick-btn" onclick="getWeeklyTips()">📧 Weekly Tips</button>
+            <button class="quick-btn" onclick="getEmergencyHelp()">🆘 Emergency Help</button>
           </div>
         </div>
 
-        <!-- Stats -->
+        <!-- FAMILY STATS -->
         <div class="sidebar-card">
-          <h3>📊 Blog Stats</h3>
-          <div class="blog-stats">
+          <h3>📊 CyberDad Stats</h3>
+          <div class="stats-list">
             <div class="stat-row">
-              <span class="stat-label">Articles Published:</span>
+              <span class="stat-label">Guides Published:</span>
               <span class="stat-value">500+</span>
             </div>
             <div class="stat-row">
               <span class="stat-label">Families Helped:</span>
-              <span class="stat-value">1,200+</span>
+              <span class="stat-value">2,400+</span>
             </div>
             <div class="stat-row">
               <span class="stat-label">Monthly Readers:</span>
-              <span class="stat-value">15,000+</span>
+              <span class="stat-value">25,000+</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Success Rate:</span>
+              <span class="stat-value">98.5%</span>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 
-  <!-- CYBERSECURITY PRINTABLES SALES SECTION -->
+  <!-- SECURITY TOOLS RECOMMENDATION -->
+  <div class="security-tools-section">
+    <h2>🛡️ Recommended Family Security Tools</h2>
+    <p class="tools-intro">Professional-grade security tools that are easy for families to use</p>
+    
+    <div class="tools-grid">
+      <div class="tool-card featured">
+        <div class="tool-header">
+          <h3>🛡️ Norton Family Security</h3>
+          <span class="tool-badge">RECOMMENDED</span>
+        </div>
+        <p class="tool-description">Complete family protection with antivirus, parental controls, and identity monitoring. Easy setup for all family devices.</p>
+        <div class="tool-features">
+          <span class="feature">✓ All devices protected</span>
+          <span class="feature">✓ Parental controls</span>
+          <span class="feature">✓ 24/7 monitoring</span>
+        </div>
+        <a href="#" class="tool-link" onclick="trackAffiliate('norton')">🛡️ Protect Your Family →</a>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-header">
+          <h3>🔒 1Password Families</h3>
+          <span class="tool-badge">POPULAR</span>
+        </div>
+        <p class="tool-description">Secure password manager designed for families. Share passwords safely and teach kids good security habits.</p>
+        <div class="tool-features">
+          <span class="feature">✓ Family sharing</span>
+          <span class="feature">✓ Kids accounts</span>
+          <span class="feature">✓ Easy to use</span>
+        </div>
+        <a href="#" class="tool-link" onclick="trackAffiliate('1password')">🔑 Get 1Password →</a>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-header">
+          <h3>🌐 NordVPN</h3>
+          <span class="tool-badge">PRIVACY</span>
+        </div>
+        <p class="tool-description">Secure your family's internet connection with military-grade encryption. Perfect for home and travel.</p>
+        <div class="tool-features">
+          <span class="feature">✓ All devices</span>
+          <span class="feature">✓ Family plan</span>
+          <span class="feature">✓ Easy setup</span>
+        </div>
+        <a href="#" class="tool-link" onclick="trackAffiliate('nordvpn')">🌐 Secure Connection →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL CAPTURE SECTION -->
+  <div class="email-capture-section">
+    <div class="capture-container">
+      <h3>📧 Get FREE Family Security Checklist + Weekly Tips</h3>
+      <p>Join 2,400+ families getting helpful cybersecurity tips and guides delivered weekly!</p>
+      
+      <form class="email-form" onsubmit="handleEmailSignup(event)">
+        <input type="email" name="email" placeholder="Enter your family email address..." required class="email-input">
+        <input type="text" name="website" style="display:none;" class="honeypot">
+        <button type="submit" class="email-btn">🔒 Get Free Checklist</button>
+      </form>
+      
+      <p class="privacy-note">✅ 100% secure & private • Helpful content only • Unsubscribe anytime</p>
+    </div>
+  </div>
+
+  <!-- CYBERSECURITY PRINTABLES -->
   <div class="printables-section">
     <h2>🎯 Cybersecurity Printables for Families</h2>
-    <p class="printables-intro">Get our professionally designed cybersecurity guides, checklists, and educational materials to help keep your family safe online!</p>
+    <p class="printables-intro">Professional cybersecurity guides, checklists, and educational materials designed for busy families</p>
     
-    <div class="printables-grid">
-      <div class="printable-category">
-        <h3>🔐 Password Security Pack</h3>
+    <div class="printables-showcase">
+      <div class="printable-item">
+        <div class="printable-icon">🔐</div>
+        <h3>Password Security Pack</h3>
         <p>Complete password management guides, templates, and family-friendly checklists.</p>
-        <ul>
+        <ul class="printable-features">
           <li>Password strength checker worksheet</li>
           <li>Family password policy template</li>
           <li>Kids' password creation guide</li>
         </ul>
       </div>
       
-      <div class="printable-category">
-        <h3>🏠 Home Network Security</h3>
+      <div class="printable-item">
+        <div class="printable-icon">🏠</div>
+        <h3>Home Network Security</h3>
         <p>Step-by-step guides to secure your home internet and connected devices.</p>
-        <ul>
+        <ul class="printable-features">
           <li>Router security checklist</li>
           <li>Smart home device audit sheet</li>
           <li>Network monitoring guide</li>
         </ul>
       </div>
       
-      <div class="printable-category">
-        <h3>👨‍👩‍👧‍👦 Family Safety Plans</h3>
+      <div class="printable-item">
+        <div class="printable-icon">👨‍👩‍👧‍👦</div>
+        <h3>Family Safety Plans</h3>
         <p>Comprehensive cyber safety strategies for families with children.</p>
-        <ul>
+        <ul class="printable-features">
           <li>Digital parenting contract template</li>
           <li>Screen time security guide</li>
           <li>Emergency response plan</li>
@@ -512,137 +452,252 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
       </div>
     </div>
     
-    <div class="store-buttons">
-      <a href="https://www.etsy.com/shop/CyberDadPrints" class="store-btn etsy-btn">
-        🛍️ Shop Etsy Store
-      </a>
-      <a href="https://payhip.com/CyberDadKit" class="store-btn payhip-btn">
-        📁 Instant Downloads
-      </a>
-      <a href="https://cyberdad.gumroad.com/l/ojawof" class="store-btn gumroad-btn">
-        🛍️ Gumroad Store
-      </a>
+    <div class="store-links">
+      <a href="https://www.etsy.com/shop/CyberDadPrints" class="store-btn etsy">🛍️ Etsy Store</a>
+      <a href="https://payhip.com/CyberDadKit" class="store-btn payhip">📁 PayHip Downloads</a>
+      <a href="https://cyberdad.gumroad.com/l/ojawof" class="store-btn gumroad">🛒 Gumroad Store</a>
     </div>
     
-    <p class="store-benefits">💡 Instant digital downloads • Expert-designed • Family-tested</p>
+    <p class="store-benefits">💡 Instant digital downloads • Expert-designed • Family-tested • 30-day guarantee</p>
   </div>
 
-  <!-- Email Capture -->
-  <div id="email-capture-container" class="secure-email-capture">
-    <div class="capture-content">
-      <h3>📧 Get FREE Family Security Checklist + Weekly Tips</h3>
-      <p>Join 1,200+ families getting helpful cybersecurity tips and guides!</p>
-      
-      <form class="newsletter-form" action="#" method="post" onsubmit="handleEmailCapture(event)">
-        <input type="email" name="email" placeholder="Enter your family email address..." required>
-        <button type="submit">🔒 Get Checklist + Tips</button>
-      </form>
-      
-      <p class="privacy-note">✅ 100% secure & private • Helpful content only • Unsubscribe anytime</p>
-    </div>
-  </div>
-
-  <!-- Security Tools Section -->
-  <div class="tools-section">
-    <h2>🔧 Recommended Security Tools</h2>
+  <!-- CONNECT WITH US -->
+  <div class="connect-section">
+    <h2>🔗 Connect With CyberDad</h2>
+    <p class="connect-intro">Join our community and stay updated with the latest family cybersecurity tips</p>
     
-    <div class="tool-grid">
-      <div class="tool-card">
-        <h3>🛡️ VPN Protection</h3>
-        <p>Secure your family's internet connection with trusted encryption.</p>
-        <a href="#" class="tool-link" onclick="trackAffiliate('nordvpn')">Protect with NordVPN →</a>
+    <div class="connect-grid">
+      <div class="connect-item">
+        <div class="connect-icon">📌</div>
+        <h4>Pinterest</h4>
+        <p>Visual cybersecurity tips and infographics for families</p>
+        <a href="https://www.pinterest.com/cyberdadkit/" class="connect-link">Follow on Pinterest →</a>
       </div>
       
-      <div class="tool-card">
-        <h3>🔒 Password Manager</h3>
-        <p>Generate and store unique passwords for every account safely.</p>
-        <a href="#" class="tool-link" onclick="trackAffiliate('1password')">Get 1Password for Families →</a>
+      <div class="connect-item">
+        <div class="connect-icon">📧</div>
+        <h4>Email Support</h4>
+        <p>Have questions? Need help with cybersecurity?</p>
+        <a href="mailto:help@cyberdad2025.com" class="connect-link">Get Help →</a>
       </div>
       
-      <div class="tool-card">
-        <h3>🦠 Antivirus Suite</h3>
-        <p>Comprehensive protection against malware and cyber threats.</p>
-        <a href="#" class="tool-link" onclick="trackAffiliate('norton')">Protect with Norton Security →</a>
+      <div class="connect-item">
+        <div class="connect-icon">🔗</div>
+        <h4>All Our Links</h4>
+        <p>One place for all CyberDad resources and tools</p>
+        <a href="https://linktr.ee/cyberdadkit" class="connect-link">View All Links →</a>
       </div>
     </div>
   </div>
 
-  <!-- Emergency Contact -->
+  <!-- EMERGENCY HELP -->
   <div class="emergency-section">
-    <h2>🚨 Need Help?</h2>
-    <p>If you need cybersecurity assistance or have questions:</p>
+    <h2>🚨 Need Immediate Help?</h2>
+    <p>If you think your family's cybersecurity has been compromised or need urgent assistance:</p>
     
     <div class="emergency-actions">
-      <a href="mailto:help@cyberdad2025.com" class="emergency-link">📧 Email Support</a>
-      <a href="#" class="emergency-link" onclick="startLiveChat()">💬 Live Chat</a>
+      <a href="mailto:help@cyberdad2025.com" class="emergency-btn">📧 Emergency Email</a>
+      <button onclick="getEmergencyHelp()" class="emergency-btn">💬 Get Help Now</button>
     </div>
+    
+    <p class="emergency-note">🔒 All communications are secure and confidential</p>
   </div>
 
-  <!-- Footer Info -->
+  <!-- FOOTER -->
   <div class="blog-footer">
-    <div class="about-cyberdad">
-      <h3>👨‍💻 About Cyber Dad</h3>
-      <p>Family cybersecurity blog dedicated to helping parents protect their families online. We provide practical guides, helpful tips, and timely security advice in simple, family-friendly language.</p>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>👨‍💻 About CyberDad</h3>
+        <p>Family cybersecurity blog dedicated to helping parents protect their families online. We provide practical guides, helpful tips, and timely security advice in simple, family-friendly language that everyone can understand.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>🛡️ What Makes Us Different</h3>
+        <ul class="footer-features">
+          <li>✅ Family-focused content</li>
+          <li>✅ Easy-to-follow guides</li>
+          <li>✅ No scary technical jargon</li>
+          <li>✅ Practical advice that works</li>
+          <li>✅ Perfect for ages 4-99</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>📊 Our Impact</h3>
+        <div class="footer-stats">
+          <div class="footer-stat">
+            <strong>2,400+</strong>
+            <span>Families Protected</span>
+          </div>
+          <div class="footer-stat">
+            <strong>500+</strong>
+            <span>Guides Published</span>
+          </div>
+          <div class="footer-stat">
+            <strong>98.5%</strong>
+            <span>Success Rate</span>
+          </div>
+        </div>
+      </div>
     </div>
     
-    <div class="social-links">
-      <h3>🔗 Connect With Us</h3>
-      <p>
-        <a href="https://www.pinterest.com/cyberdadkit/">📌 Pinterest</a> | 
-        <a href="https://www.etsy.com/shop/CyberDadPrints">🛍️ Etsy Store</a> | 
-        <a href="https://payhip.com/CyberDadKit">📁 Digital Downloads</a> |
-        <a href="https://linktr.ee/cyberdadkit">🔗 All Links</a>
-      </p>
-    </div>
-    
-    <div class="trust-indicators">
-      <h3>🏆 What Makes Us Different</h3>
-      <ul>
-        <li>✅ Family-focused content</li>
-        <li>✅ Easy-to-follow guides</li>
-        <li>✅ No scary technical jargon</li>
-        <li>✅ Practical advice that works</li>
-      </ul>
+    <div class="footer-bottom">
+      <p>&copy; 2025 CyberDad Blog. Keeping families safe online, one guide at a time. 🛡️</p>
     </div>
   </div>
 </div>
 
 <style>
-/* UPDATED STYLES FOR BETTER LAYOUT */
+/* CYBERDAD SECURE ECOSYSTEM STYLES */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: #f8f9fa;
+}
 
 .home {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* HEADER STYLES */
 .blog-header {
   text-align: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 40px 20px;
-  border-radius: 15px;
+  padding: 40px 30px;
+  border-radius: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
 }
 
 .page-heading {
-  font-size: 2.5em;
+  font-size: 2.5rem;
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-/* HORIZONTAL STATUS BAR */
-.status-bar-horizontal {
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  opacity: 0.95;
+}
+
+.mission {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* DEVICE CHECK SECTION */
+.device-check-section {
+  background: rgba(255,255,255,0.15);
+  border-radius: 15px;
+  padding: 25px;
+  margin-top: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.device-check-section h3 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.device-check-section p {
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.search-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.device-input {
+  flex: 1;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  min-width: 300px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.check-btn {
+  padding: 15px 30px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.check-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+.filter-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.9);
+  font-size: 14px;
+}
+
+.check-results {
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  display: none;
+}
+
+.check-results.show {
+  display: block;
+}
+
+/* SECURITY STATUS */
+.security-status {
+  margin: 30px 0;
+}
+
+.status-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255,255,255,0.95);
+  background: white;
   border-radius: 15px;
-  padding: 20px 30px;
+  padding: 25px 30px;
   margin-bottom: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -650,6 +705,7 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
 .status-main h2 {
   margin: 0 0 5px 0;
   color: #28a745;
+  font-size: 1.4rem;
 }
 
 .status-main p {
@@ -681,78 +737,374 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
   letter-spacing: 0.5px;
 }
 
-/* MAIN CONTENT GRID - FIXED PROPORTIONS */
-.content-grid {
+.status-indicators {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.status-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  border-left: 5px solid #28a745;
+}
+
+.status-card:hover {
+  transform: translateY(-3px);
+}
+
+.status-card.urgent {
+  border-left-color: #dc3545;
+}
+
+.status-card.moderate {
+  border-left-color: #ffc107;
+}
+
+.status-icon {
+  font-size: 2.5rem;
+}
+
+.status-count {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* MAIN CONTENT LAYOUT */
+.content-ecosystem {
+  margin: 40px 0;
+}
+
+.content-layout {
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 30px;
-  margin: 30px 0;
-  max-width: 1200px;
 }
 
-.main-content h2 {
+.main-content {
+  max-width: 800px;
+}
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #f0f0f0;
+}
+
+.section-header h2 {
+  margin: 0;
   color: #333;
-  margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
-.main-content p {
+.update-time, .guide-count, .tips-note {
+  font-size: 0.9rem;
   color: #666;
-  margin-bottom: 30px;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 15px;
 }
 
-/* SIDEBAR STYLES - FIXED WIDTH */
-.sidebar-content {
+/* CTI SECTION (40%) */
+.cti-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-left: 6px solid #dc3545;
+}
+
+.cti-posts {
   display: flex;
   flex-direction: column;
+  gap: 25px;
+}
+
+/* BLOG SECTION (35%) */
+.blog-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-left: 6px solid #28a745;
+}
+
+.blog-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* TIPS SECTION (25%) */
+.tips-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-left: 6px solid #17a2b8;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  width: 350px;
+}
+
+.tip-card {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.tip-card:hover {
+  background: white;
+  border-color: #17a2b8;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.tip-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.tip-card h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.tip-card p {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.tip-btn {
+  background: linear-gradient(45deg, #17a2b8, #20c997);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.tip-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+}
+
+/* CONTENT POSTS */
+.content-post {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 25px;
+  transition: all 0.3s ease;
+}
+
+.content-post:hover {
+  background: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.post-header h3 {
+  margin: 0;
+  flex: 1;
+  color: #333;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.post-date {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-left: 15px;
+}
+
+.post-summary {
+  margin: 0 0 15px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.post-tags {
+  display: flex;
+  gap: 8px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.post-highlights {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+
+.highlight {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.action-btn.primary {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+}
+
+.action-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.action-btn.secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.action-btn.secondary:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* VIEW MORE SECTION */
+.view-more-section {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.view-all-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* SIDEBAR */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .sidebar-card {
   background: white;
   border-radius: 15px;
-  padding: 20px;
+  padding: 25px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
   border-left: 4px solid #667eea;
 }
 
 .sidebar-card h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 20px 0;
   color: #333;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
-.popular-topics {
+.popular-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.topic-item {
+.popular-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px;
+  padding: 12px;
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
-.topic-item:hover {
+.popular-item:hover {
   background: #e9ecef;
 }
 
-.topic-icon {
+.popular-icon {
   font-size: 1.2rem;
 }
 
-.topic-title {
+.popular-title {
   flex: 1;
   font-weight: 500;
   color: #333;
 }
 
-.topic-count {
+.popular-views {
   font-size: 0.8rem;
   color: #666;
 }
@@ -760,13 +1112,13 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
 .quick-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-.action-btn {
+.quick-btn {
   padding: 12px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #f8f9fa;
   color: #333;
   cursor: pointer;
@@ -775,21 +1127,21 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
   font-weight: 500;
 }
 
-.action-btn:hover {
+.quick-btn:hover {
   background: #e9ecef;
   transform: translateX(5px);
 }
 
-.action-btn.primary {
+.quick-btn.primary {
   background: linear-gradient(45deg, #667eea, #764ba2);
   color: white;
 }
 
-.action-btn.primary:hover {
+.quick-btn.primary:hover {
   transform: translateX(5px) translateY(-2px);
 }
 
-.blog-stats {
+.stats-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -817,215 +1169,70 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
   color: #667eea;
 }
 
-/* NEWS SECTION STYLES - BETTER PROPORTIONS */
-.news-section {
+/* SECURITY TOOLS SECTION */
+.security-tools-section {
   background: white;
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 30px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  border-left: 5px solid #dc3545;
-  max-width: 800px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #f0f0f0;
-}
-
-.section-header h2 {
-  margin: 0;
-  color: #333;
-  font-size: 1.4rem;
-}
-
-.last-updated, .post-count {
-  font-size: 0.85rem;
-  color: #666;
-  background: #f8f9fa;
-  padding: 5px 12px;
-  border-radius: 15px;
-}
-
-.news-posts {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.news-post {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  border-radius: 12px;
-  border-left: 4px solid #28a745;
-  background: #f8f9fa;
-  transition: all 0.3s ease;
-}
-
-.news-post:hover {
-  background: #e9ecef;
-  transform: translateX(5px);
-}
-
-.news-post.urgent {
-  border-left-color: #dc3545;
-  background: linear-gradient(135deg, #fff5f5 0%, #f8f9fa 100%);
-}
-
-.news-post.moderate {
-  border-left-color: #ffc107;
-  background: linear-gradient(135deg, #fffdf5 0%, #f8f9fa 100%);
-}
-
-.news-post.info {
-  border-left-color: #17a2b8;
-  background: linear-gradient(135deg, #f0fdff 0%, #f8f9fa 100%);
-}
-
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-.post-header h3 {
-  margin: 0;
-  flex: 1;
-  color: #333;
-  font-size: 1.1rem;
-  line-height: 1.4;
-}
-
-.post-date {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  white-space: nowrap;
-  margin-left: 15px;
-}
-
-.post-tags {
-  display: flex;
-  gap: 8px;
-  margin: 12px 0;
-  flex-wrap: wrap;
-}
-
-.tag {
-  background: rgba(40, 167, 69, 0.1);
-  color: #28a745;
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-size: 0.7rem;
-  font-weight: 500;
-}
-
-.news-content {
-  width: 100%;
-}
-
-.news-summary {
-  margin: 0 0 15px 0;
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.news-summary {
-  margin: 0 0 15px 0;
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.news-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.news-btn {
-  padding: 8px 16px;
-  border: none;
   border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  padding: 40px;
+  margin: 40px 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
-.news-btn.primary {
-  background: #007bff;
-  color: white;
+.security-tools-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.8rem;
 }
 
-.news-btn.primary:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
+.tools-intro {
+  margin-bottom: 30px;
+  color: #666;
+  font-size: 1.1rem;
 }
 
-.news-btn.secondary {
-  background: #6c757d;
-  color: white;
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
 }
 
-.news-btn.secondary:hover {
-  background: #545b62;
-}
-
-/* GUIDES SECTION STYLES - BETTER PROPORTIONS */
-.guides-section {
-  background: white;
+.tool-card {
+  background: #f8f9fa;
   border-radius: 15px;
   padding: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  border-left: 5px solid #28a745;
-  max-width: 800px;
-}
-
-.guides-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.guide-card {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 25px;
+  text-align: left;
   transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
+  border: 2px solid transparent;
 }
 
-.guide-card:hover {
+.tool-card:hover {
   background: white;
+  border-color: #667eea;
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
-.guide-meta {
+.tool-card.featured {
+  border-color: #28a745;
+  background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+}
+
+.tool-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
 }
 
-.guide-date {
-  font-size: 0.8rem;
-  color: #666;
+.tool-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
 }
 
-.guide-type {
+.tool-badge {
   background: #28a745;
   color: white;
   padding: 4px 8px;
@@ -1035,139 +1242,96 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
   text-transform: uppercase;
 }
 
-.guide-card h3 {
-  margin: 0 0 15px 0;
+.tool-badge:contains("POPULAR") {
+  background: #ffc107;
   color: #333;
-  font-size: 1.1rem;
-  line-height: 1.4;
 }
 
-.guide-excerpt {
-  margin: 0 0 15px 0;
+.tool-badge:contains("PRIVACY") {
+  background: #17a2b8;
+}
+
+.tool-description {
+  margin: 15px 0;
   color: #555;
-  font-size: 0.9rem;
   line-height: 1.5;
 }
 
-.guide-highlights {
+.tool-features {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
-  margin-bottom: 20px;
+  margin: 15px 0;
 }
 
-.highlight-item {
+.feature {
   background: rgba(40, 167, 69, 0.1);
   color: #28a745;
   padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 500;
 }
 
-.guide-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.guide-btn {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+.tool-link {
+  display: inline-block;
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 15px;
   transition: all 0.3s ease;
 }
 
-.guide-btn.primary {
-  background: linear-gradient(45deg, #28a745, #20c997);
-  color: white;
-}
-
-.guide-btn.primary:hover {
+.tool-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
 }
 
-.guide-btn.secondary {
-  background: #6c757d;
+/* EMAIL CAPTURE SECTION */
+.email-capture-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-}
-
-.guide-btn.secondary:hover {
-  background: #545b62;
-}
-
-.view-more {
+  border-radius: 20px;
+  padding: 40px;
+  margin: 40px 0;
   text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid #e9ecef;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
 }
 
-.view-more-btn {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  color: white;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+.capture-container h3 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
 }
 
-.view-more-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+.capture-container p {
+  margin-bottom: 25px;
+  opacity: 0.9;
+  font-size: 1.1rem;
 }
 
-/* EXISTING SECTIONS - KEEP YOUR STYLES */
-.vulnerability-search {
-  background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  padding: 25px;
-  margin-top: 25px;
-  backdrop-filter: blur(10px);
-}
-
-.advanced-search-container {
-  margin-top: 15px;
-}
-
-.search-row {
+.email-form {
   display: flex;
   gap: 15px;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
+  max-width: 500px;
+  margin: 0 auto 20px auto;
 }
 
-.filter-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.filter-row::before {
-  content: "🔧 Filters:";
-  font-weight: bold;
-  color: rgba(255,255,255,0.9);
-  margin-right: 10px;
-}
-
-.device-search-input {
+.email-input {
   flex: 1;
-  padding: 15px;
+  padding: 15px 20px;
   border: none;
   border-radius: 25px;
   font-size: 16px;
-  min-width: 300px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.search-btn {
+.honeypot {
+  display: none;
+}
+
+.email-btn {
   padding: 15px 25px;
   background: #28a745;
   color: white;
@@ -1175,125 +1339,101 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
   border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 16px;
   transition: all 0.3s ease;
   white-space: nowrap;
 }
 
-.search-btn:hover {
+.email-btn:hover {
   background: #218838;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
-.filter-select {
-  padding: 10px 15px;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 8px;
-  font-size: 14px;
-  background: rgba(255,255,255,0.9);
+.privacy-note {
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
-.search-results {
-  margin-top: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  display: none;
-}
-
-.search-results.show {
-  display: block;
-}
-
-.threat-dashboard {
-  margin: 30px 0;
-}
-
-.threat-indicators {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.threat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  border-left: 4px solid #28a745;
-}
-
-.threat-card:hover {
-  transform: translateY(-3px);
-}
-
-.threat-card#urgentTips {
-  border-left-color: #ffc107;
-}
-
-.threat-card#watchItems {
-  border-left-color: #17a2b8;
-}
-
-.threat-icon {
-  font-size: 2rem;
-}
-
-.threat-count {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.live-timestamp {
-  color: #28a745;
-  font-weight: bold;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
-}
-
-/* ALL YOUR EXISTING STYLES FOR OTHER SECTIONS */
+/* PRINTABLES SECTION */
 .printables-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: white;
   border-radius: 20px;
   padding: 40px;
-  margin: 50px 0;
+  margin: 40px 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   text-align: center;
 }
 
-.printables-intro {
-  font-size: 1.1em;
-  margin-bottom: 30px;
-  opacity: 0.9;
+.printables-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.8rem;
 }
 
-.printables-grid {
+.printables-intro {
+  margin-bottom: 30px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.printables-showcase {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
   margin: 30px 0;
 }
 
-.printable-category {
-  background: rgba(255,255,255,0.1);
+.printable-item {
+  background: #f8f9fa;
   border-radius: 15px;
   padding: 25px;
   text-align: left;
+  transition: all 0.3s ease;
 }
 
-.store-buttons {
+.printable-item:hover {
+  background: white;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.printable-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.printable-item h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.printable-item p {
+  margin: 0 0 15px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.printable-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.printable-features li {
+  padding: 5px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.printable-features li:before {
+  content: "✓ ";
+  color: #28a745;
+  font-weight: bold;
+}
+
+.store-links {
   display: flex;
   gap: 20px;
   justify-content: center;
@@ -1302,155 +1442,259 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
 }
 
 .store-btn {
-  padding: 15px 30px;
-  border-radius: 50px;
+  padding: 15px 25px;
+  border-radius: 25px;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 1rem;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-.etsy-btn {
+.store-btn.etsy {
   background: #FF6B35;
   color: white;
 }
 
-.etsy-btn:hover {
+.store-btn.etsy:hover {
   background: #e55a2e;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
-.payhip-btn {
+.store-btn.payhip {
   background: #4CAF50;
   color: white;
 }
 
-.gumroad-btn {
+.store-btn.payhip:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+}
+
+.store-btn.gumroad {
   background: #FF90E8;
   color: white;
 }
 
-.gumroad-btn:hover {
+.store-btn.gumroad:hover {
   background: #f082df;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
-.secure-email-capture {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.store-benefits {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 20px;
+}
+
+/* CONNECT SECTION */
+.connect-section {
+  background: white;
   border-radius: 20px;
   padding: 40px;
-  margin: 50px 0;
+  margin: 40px 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   text-align: center;
 }
 
-.newsletter-form {
-  display: flex;
-  gap: 15px;
-  max-width: 450px;
-  margin: 25px auto;
+.connect-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.8rem;
 }
 
-.newsletter-form input {
-  flex: 1;
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
+.connect-intro {
+  margin-bottom: 30px;
+  color: #666;
+  font-size: 1.1rem;
 }
 
-.newsletter-form button {
-  padding: 15px 25px;
-  background: #333;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease;
+.connect-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
 }
 
-.newsletter-form button:hover {
-  background: #555;
-}
-
-.tools-section {
+.connect-item {
   background: #f8f9fa;
   border-radius: 15px;
-  padding: 40px;
-  margin: 50px 0;
-}
-
-.tool-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  margin-top: 25px;
-}
-
-.tool-card {
-  background: white;
-  border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  text-align: center;
+  transition: all 0.3s ease;
 }
 
-.tool-card:hover {
-  transform: translateY(-3px);
+.connect-item:hover {
+  background: white;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
+.connect-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.connect-item h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.connect-item p {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.connect-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.connect-link:hover {
+  color: #5a67d8;
+}
+
+/* EMERGENCY SECTION */
 .emergency-section {
   background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
   border: 2px solid #ffc107;
-  border-radius: 15px;
+  border-radius: 20px;
   padding: 40px;
-  margin: 50px 0;
+  margin: 40px 0;
+  text-align: center;
+}
+
+.emergency-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.6rem;
+}
+
+.emergency-section p {
+  margin-bottom: 25px;
+  color: #666;
+  font-size: 1.1rem;
 }
 
 .emergency-actions {
   display: flex;
   gap: 20px;
-  margin-top: 20px;
+  justify-content: center;
+  margin: 25px 0;
   flex-wrap: wrap;
 }
 
-.emergency-link {
-  background: #e74c3c;
+.emergency-btn {
+  background: #dc3545;
   color: white;
   padding: 15px 25px;
-  border-radius: 10px;
+  border: none;
+  border-radius: 25px;
   text-decoration: none;
   font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.emergency-link:hover {
-  background: #c0392b;
-  transform: scale(1.05);
+.emergency-btn:hover {
+  background: #c82333;
+  transform: translateY(-2px);
 }
 
+.emergency-note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 15px;
+}
+
+/* FOOTER */
 .blog-footer {
-  border-top: 2px solid #eee;
-  padding-top: 40px;
-  margin-top: 50px;
+  background: #f8f9fa;
+  border-radius: 20px;
+  padding: 40px;
+  margin: 40px 0 0 0;
+  border-top: 3px solid #667eea;
+}
+
+.footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 30px;
+  margin-bottom: 30px;
+}
+
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.footer-section p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footer-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-features li {
+  padding: 5px 0;
+  color: #666;
+}
+
+.footer-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-stat {
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+}
+
+.footer-stat strong {
+  display: block;
+  font-size: 1.5rem;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.footer-stat span {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+  color: #666;
 }
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
-  .content-grid {
+  .content-layout {
     grid-template-columns: 1fr;
     gap: 20px;
   }
   
-  .sidebar-content {
-    width: 100%;
+  .sidebar {
     flex-direction: row;
     overflow-x: auto;
   }
@@ -1459,18 +1703,18 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
     min-width: 250px;
     flex-shrink: 0;
   }
-  
-  .news-section, .guides-section {
-    max-width: 100%;
-  }
 }
 
 @media (max-width: 768px) {
-  .page-heading {
-    font-size: 2em;
+  .home {
+    padding: 15px;
   }
   
-  .status-bar-horizontal {
+  .page-heading {
+    font-size: 2rem;
+  }
+  
+  .status-bar {
     flex-direction: column;
     text-align: center;
   }
@@ -1484,20 +1728,8 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
     flex-direction: column;
   }
   
-  .device-search-input {
+  .device-input {
     min-width: 100%;
-  }
-  
-  .newsletter-form {
-    flex-direction: column;
-  }
-  
-  .emergency-actions {
-    flex-direction: column;
-  }
-  
-  .threat-indicators {
-    grid-template-columns: 1fr;
   }
   
   .filter-row {
@@ -1508,7 +1740,28 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
     width: 100%;
   }
   
-  .sidebar-content {
+  .email-form {
+    flex-direction: column;
+  }
+  
+  .emergency-actions {
+    flex-direction: column;
+  }
+  
+  .store-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .status-indicators {
+    grid-template-columns: 1fr;
+  }
+  
+  .tools-grid, .printables-showcase, .connect-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
     flex-direction: column;
   }
   
@@ -1516,517 +1769,69 @@ description: "Helpful cybersecurity guides, practical tips, and timely alerts fo
     min-width: auto;
   }
 }
+
+@media (max-width: 480px) {
+  .blog-header {
+    padding: 30px 20px;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 
 <script>
-// EXISTING SCRIPT WITH UPDATED TERMINOLOGY
-console.log('🛡️ CyberDad Blog System Loading...');
+// CYBERDAD SECURE ECOSYSTEM - ZERO TRUST IMPLEMENTATION
+console.log('🛡️ CyberDad Secure Ecosystem Loading...');
 
-// UPDATED VULNERABILITY DATABASE 
-const vulnerabilityDatabase = {
-  'ring doorbell': [
-    {
-      id: 'TIP-2025-0001',
-      severity: 'critical',
-      title: 'Ring Doorbell Settings Update',
-      description: 'Important privacy settings to review',
-      affected: 'Ring Video Doorbell 2, 3, 4',
-      published: '2025-01-19',
-      status: 'Settings Update Needed'
-    }
-  ],
-  'iphone': [
-    {
-      id: 'TIP-2025-0002',
-      severity: 'high',
-      title: 'iOS 18.2 Family Settings',
-      description: 'New family sharing security options',
-      affected: 'iOS 18.0 - 18.1.1',
-      published: '2025-01-18',
-      status: 'Update Available'
-    }
-  ],
-  'smart tv': [
-    {
-      id: 'TIP-2025-0003',
-      severity: 'medium',
-      title: 'Smart TV Privacy Review',
-      description: 'Privacy settings worth checking',
-      affected: 'Samsung, LG, Sony Smart TVs',
-      published: '2025-01-17',
-      status: 'Settings Review'
-    }
-  ],
-  'alexa': [
-    {
-      id: 'TIP-2025-0004',
-      severity: 'medium',
-      title: 'Echo Device Privacy Settings',
-      description: 'Voice recording settings to review',
-      affected: 'Echo Dot 4th Gen, Echo Show',
-      published: '2025-01-16',
-      status: 'Settings Update'
-    }
-  ]
-};
-
-// UPDATE FAMILY STATUS
-function updateFamilyDashboard() {
-  document.getElementById('tipsCount').textContent = Math.floor(Math.random() * 30) + 20;
-  document.getElementById('guidesCount').textContent = Math.floor(Math.random() * 200) + 150;
-  document.getElementById('updatesCount').textContent = Math.floor(Math.random() * 15) + 5;
-  document.getElementById('urgentCount').textContent = Math.floor(Math.random() * 3) + 1;
-  document.getElementById('watchCount').textContent = Math.floor(Math.random() * 8) + 3;
-  document.getElementById('infoCount').textContent = Math.floor(Math.random() * 15) + 8;
-}
-
-// DEVICE SEARCH FUNCTION
-function searchDeviceVulnerabilities() {
-  const deviceInput = document.getElementById('deviceSearch');
-  const categoryFilter = document.getElementById('deviceCategory');
-  const severityFilter = document.getElementById('severityFilter');
-  const timeFilter = document.getElementById('timeFilter');
-  const searchResults = document.getElementById('searchResults');
-  
-  const searchTerm = deviceInput.value.toLowerCase().trim();
-  const category = categoryFilter.value;
-  const severity = severityFilter.value;
-  const timeRange = timeFilter.value;
-  
-  if (!searchTerm && category === 'all' && severity === 'all') {
-    alert('Please enter a device name or select filters to search for tips and guides.');
-    return;
-  }
-  
-  console.log('🔍 Search:', { searchTerm, category, severity, timeRange });
-  
-  // Search logic
-  let foundItems = [];
-  
-  Object.keys(vulnerabilityDatabase).forEach(device => {
-    if (!searchTerm || device.includes(searchTerm) || searchTerm.includes(device)) {
-      vulnerabilityDatabase[device].forEach(item => {
-        let matches = true;
-        
-        // Apply filters...
-        if (category !== 'all') {
-          const categoryKeywords = {
-            'smart-home': ['smart', 'nest', 'ring', 'alexa', 'echo', 'thermostat'],
-            'network': ['router', 'wifi', 'network', 'modem'],
-            'mobile': ['iphone', 'android', 'phone', 'mobile', 'ios'],
-            'entertainment': ['tv', 'roku', 'chromecast', 'apple tv'],
-            'security': ['doorbell', 'camera', 'alarm', 'sensor']
-          };
-          
-          if (!categoryKeywords[category].some(keyword => 
-            device.includes(keyword) || item.affected.toLowerCase().includes(keyword)
-          )) {
-            matches = false;
-          }
-        }
-        
-        if (severity !== 'all' && item.severity !== severity) {
-          matches = false;
-        }
-        
-        if (matches) {
-          foundItems.push({...item, deviceType: device});
-        }
-      });
-    }
-  });
-  
-  displaySearchResults(foundItems, searchTerm);
-}
-
-function displaySearchResults(items, searchTerm) {
-  const searchResults = document.getElementById('searchResults');
-  
-  if (items.length > 0) {
-    let resultsHTML = `
-      <div class="results-header">
-        <h4>📋 Found ${items.length} helpful tip(s)</h4>
-        ${searchTerm ? `<p>Search: "<strong>${searchTerm}</strong>"</p>` : ''}
-      </div>
-      <div class="tips-list">
-    `;
-    
-    items.forEach(item => {
-      const priorityClass = item.severity;
-      const priorityIcon = {
-        'critical': '🔴',
-        'high': '🟠', 
-        'medium': '🟡',
-        'low': '🔵'
-      }[item.severity];
+// SECURE CONTENT DATABASE (NO EXTERNAL DEPENDENCIES)
+const secureContentDatabase = {
+  // CTI-DERIVED CONTENT (40%)
+  'email-tricks': {
+    title: '🚨 Avoid Email Tricks - Don\'t Get Fooled!',
+    type: 'cti',
+    content: `
+      <h3>🚨 Avoid Email Tricks - Don't Get Fooled!</h3>
+      <p><strong>Published:</strong> July 19, 2025 • <strong>Reading Time:</strong> 5 minutes</p>
+      <p><strong>Perfect for ages 4-99!</strong></p>
       
-      resultsHTML += `
-        <div class="tip-item ${priorityClass}">
-          <div class="tip-header">
-            <span class="tip-priority">${priorityIcon} ${item.severity.toUpperCase()}</span>
-            <span class="tip-id">${item.id}</span>
-          </div>
-          <h5>${item.title}</h5>
-          <p>${item.description}</p>
-          <div class="tip-meta">
-            <span><strong>Device:</strong> ${item.deviceType}</span>
-            <span><strong>Applies to:</strong> ${item.affected}</span>
-            <span><strong>Status:</strong> ${item.status}</span>
-          </div>
-          <div class="tip-actions">
-            <button class="help-btn" onclick="getHelpGuide('${item.id}')">
-              📖 Get Help Guide
-            </button>
-            <button class="check-device-btn" onclick="checkMyDevice('${item.deviceType}')">
-              🔍 Check My ${item.deviceType}
-            </button>
-          </div>
-        </div>
-      `;
-    });
-    
-    resultsHTML += '</div>';
-    searchResults.innerHTML = resultsHTML;
-    searchResults.classList.add('show');
-    
-  } else {
-    searchResults.innerHTML = `
-      <div class="no-results">
-        <h4>✅ Great News!</h4>
-        <p>No current issues found for your search. Your devices are looking good!</p>
-        <button class="browse-btn" onclick="browseAllGuides()">
-          📚 Browse All Guides
-        </button>
-      </div>
-    `;
-    searchResults.classList.add('show');
-  }
-}
-
-// HELP FUNCTIONS
-function getHelpGuide(tipId) {
-  console.log('📋 Getting help guide for:', tipId);
-  alert('📖 Help Guide\n\nThis would show step-by-step instructions for the security tip. In the real version, this would link to your blog posts or printable guides!');
-}
-
-function checkMyDevice(deviceType) {
-  console.log('🔍 Checking device:', deviceType);
-  alert(`🔍 Device Check for ${deviceType}\n\n✅ This feature would guide you through checking your device settings and security options. Perfect for your blog\'s interactive elements!`);
-}
-
-function browseAllGuides() {
-  alert('📚 Browse All Guides\n\nThis would take visitors to your full archive of cybersecurity guides and tips - great for SEO and engagement!');
-}
-
-function showFullThreatDetails(postId) {
-  console.log('📖 Showing post details for:', postId);
-  alert('📖 Full Post\n\nThis would show the complete blog post content. Perfect way to drive engagement with your detailed guides!');
-}
-
-function showFamilyGuide(guideId) {
-  console.log('📱 Showing family guide:', guideId);
+      <h4>🎯 Super Easy Quick Summary:</h4>
+      <p>Learn how to spot fake emails before they trick your family. Bad guys send fake emails to steal your passwords, money, or personal information. Here's how to stay safe!</p>
+      
+      <h4>🚩 Red Flags to Watch For:</h4>
+      <ul>
+        <li><strong>Urgent language:</strong> "Act now!" "Your account will be closed!"</li>
+        <li><strong>Asking for passwords:</strong> Real companies never ask for passwords in emails</li>
+        <li><strong>Strange sender:</strong> Check if the email address looks weird</li>
+        <li><strong>Spelling mistakes:</strong> Lots of typos are a bad sign</li>
+        <li><strong>Suspicious links:</strong> Hover over links before clicking</li>
+      </ul>
+      
+      <h4>✅ Family Safety Rules:</h4>
+      <ol>
+        <li><strong>Think before you click:</strong> When in doubt, don't click</li>
+        <li><strong>Verify independently:</strong> Call the company directly</li>
+        <li><strong>Keep passwords private:</strong> Never share them in emails</li>
+        <li><strong>Use 2-factor authentication:</strong> Extra security layer</li>
+      </ol>
+      
+      <h4>🛡️ What to Do If You Get Tricked:</h4>
+      <ul>
+        <li>Change your passwords immediately</li>
+        <li>Check your bank accounts</li>
+        <li>Report it to the company being impersonated</li>
+        <li>Don't panic - these things happen to everyone!</li>
+      </ul>
+    `
+  },
   
-  const timestamp = getArticleTimestamp(guideId);
-  
-  const guides = {
-    'password-safety-guide': {
-      title: '🔐 Keep Your Passwords Safe - Super Easy Guide',
-      timestamp: timestamp,
-      content: `
-        <h3>🔐 Password Safety Made Simple</h3>
-        <p><strong>Published:</strong> ${timestamp}</p>
-        <p><strong>Reading Time:</strong> 5 minutes | <strong>Perfect for ages 4-99</strong></p>
-        
-        <h4>🎯 What You'll Learn:</h4>
-        <ul>
-          <li>How to create super strong passwords</li>
-          <li>Easy tricks to remember them</li>
-          <li>Why password managers are your best friend</li>
-          <li>Simple rules the whole family can follow</li>
-        </ul>
-        
-        <h4>✅ Quick Password Rules:</h4>
-        <ol>
-          <li><strong>Make it long:</strong> At least 12 characters</li>
-          <li><strong>Mix it up:</strong> Letters, numbers, and symbols</li>
-          <li><strong>Keep it unique:</strong> Different password for every account</li>
-          <li><strong>Don't share:</strong> Keep passwords private</li>
-        </ol>
-        
-        <h4>🛡️ Family Password Manager Options:</h4>
-        <ul>
-          <li><strong>1Password:</strong> Great for families, easy sharing</li>
-          <li><strong>Bitwarden:</strong> Free option with good security</li>
-          <li><strong>Dashlane:</strong> User-friendly with monitoring</li>
-        </ul>
-        
-        <h4>🎮 Fun Password Game for Kids:</h4>
-        <p>Have kids create passwords using their favorite things: "Pizza+Soccer+2025!" is way better than "password123"</p>
-      `
-    },
-    'ios-update': {
-      title: 'iOS Security Update Guide',
-      timestamp: timestamp,
-      content: `
-        <h3>📱 iOS Security Update Guide</h3>
-        <p><strong>Published:</strong> ${timestamp}</p>
-        
-        <h4>What's New:</h4>
-        <ul>
-          <li>Enhanced family sharing security controls</li>
-          <li>Improved privacy settings for kids' accounts</li>
-          <li>Better app permission management</li>
-        </ul>
-        
-        <h4>How to Update:</h4>
-        <ol>
-          <li>Go to Settings → General → Software Update</li>
-          <li>Tap "Download and Install"</li>
-          <li>Follow the on-screen instructions</li>
-          <li>Restart your device when prompted</li>
-        </ol>
-      `
-    },
-    'iphone-family-sharing': {
-      title: 'iPhone Family Sharing Security Guide',
-      timestamp: 'July 18, 2025',
-      content: `
-        <h3>📱 iPhone Family Sharing: 5 Security Settings</h3>
-        
-        <h4>1. App Downloads & Purchases</h4>
-        <p>Settings → Screen Time → Content & Privacy → iTunes & App Store Purchases</p>
-        
-        <h4>2. Location Sharing</h4>
-        <p>Settings → Privacy & Security → Location Services → Share My Location</p>
-        
-        <h4>3. Purchase Approval</h4>
-        <p>Settings → Screen Time → Content & Privacy → Purchase Requests</p>
-        
-        <h4>4. Communication Limits</h4>
-        <p>Settings → Screen Time → Communication Limits</p>
-        
-        <h4>5. App Limits</h4>
-        <p>Settings → Screen Time → App Limits</p>
-      `
-    },
-    'kids-smartphone': {
-      title: 'Kids\' First Smartphone Security Checklist',
-      timestamp: 'July 17, 2025',
-      content: `
-        <h3>📱 Kids' First Smartphone: Complete Security Setup</h3>
-        
-        <h4>Before You Hand Over the Phone:</h4>
-        <ol>
-          <li>Set up parental controls</li>
-          <li>Configure safe browsing</li>
-          <li>Review all app permissions</li>
-          <li>Set up family location sharing</li>
-        </ol>
-        
-        <h4>Essential Apps to Install:</h4>
-        <ul>
-          <li>Family safety app (Qustodio, Circle, etc.)</li>
-          <li>Location tracking (Find My iPhone/Android)</li>
-          <li>Secure messaging (Signal for older teens)</li>
-        </ul>
-      `
-    }
-  };
-  
-  const guide = guides[guideId];
-  if (guide) {
-    showPopup(guide.title, guide.content);
-  } else {
-    showPopup('Guide Not Found', '<p>Sorry, this guide is not available yet. Check back soon!</p>');
-  }
-}
-
-function showPrivacyGuide(deviceType) {
-  console.log('📺 Showing privacy guide for:', deviceType);
-  
-  const timestamp = getArticleTimestamp(deviceType);
-  
-  const guides = {
-    'wifi-security': {
-      title: '📶 Make Your Home WiFi Super Safe - Easy Steps',
-      timestamp: timestamp,
-      content: `
-        <h3>📶 Make Your Home WiFi Super Safe</h3>
-        <p><strong>Published:</strong> ${timestamp}</p>
-        <p><strong>Reading Time:</strong> 5 minutes | <strong>Perfect for ages 4-99</strong></p>
-        
-        <h4>🎯 Super Easy Steps:</h4>
-        <p>Your home WiFi is like the front door to your digital house. Here's how to lock it up tight so your family can browse safely!</p>
-        
-        <h4>✅ 5-Minute WiFi Security Setup:</h4>
-        <ol>
-          <li><strong>Change the default password:</strong> Use something only your family knows</li>
-          <li><strong>Update your router name:</strong> Don't use your address or family name</li>
-          <li><strong>Turn on WPA3 security:</strong> This is like a super strong lock</li>
-          <li><strong>Create a guest network:</strong> For visitors - keeps your main network safe</li>
-          <li><strong>Update router firmware:</strong> Like updating your phone - keeps it secure</li>
-        </ol>
-        
-        <h4>🏠 How to Access Your Router:</h4>
-        <p>Type one of these in your web browser:</p>
-        <ul>
-          <li>192.168.1.1</li>
-          <li>192.168.0.1</li>
-          <li>Check the sticker on your router for the exact address</li>
-        </ul>
-        
-        <h4>👨‍👩‍👧‍👦 Family Controls You Can Set Up:</h4>
-        <ul>
-          <li><strong>Bedtime for devices:</strong> WiFi turns off at bedtime</li>
-          <li><strong>Block bad websites:</strong> Keep inappropriate content away</li>
-          <li><strong>See what's connected:</strong> Know which devices are using your WiFi</li>
-          <li><strong>Limit screen time:</strong> Set internet time limits for kids</li>
-        </ul>
-        
-        <h4>🚨 Warning Signs Your WiFi Might Be Compromised:</h4>
-        <ul>
-          <li>Internet is suddenly super slow</li>
-          <li>Strange devices showing up in your network</li>
-          <li>You get kicked off your own WiFi</li>
-          <li>Weird popups or redirects when browsing</li>
-        </ul>
-      `
-    },
-    'smart-tv': {
-      title: 'Smart TV Privacy Settings Guide',
-      timestamp: timestamp,
-      content: `
-        <h3>📺 Smart TV Privacy: What You Need to Know</h3>
-        <p><strong>Published:</strong> ${timestamp}</p>
-        
-        <h4>Quick Privacy Check (30 seconds):</h4>
-        <ol>
-          <li>Go to TV Settings → Privacy</li>
-          <li>Turn OFF "Voice Recognition"</li>
-          <li>Turn OFF "Interest-Based Ads"</li>
-          <li>Review "Data Collection" settings</li>
-        </ol>
-        
-        <h4>Why This Matters:</h4>
-        <p>Many smart TVs listen for voice commands even when you're not talking to them. They may also track what you watch and sell that data to advertisers.</p>
-      `
-    },
-    'router': {
-      title: 'Router Security: 5-Minute Setup',
-      timestamp: 'July 16, 2025',
-      content: `
-        <h3>🌐 Router Security: Protect Your Entire Family</h3>
-        
-        <h4>5-Minute Security Setup:</h4>
-        <ol>
-          <li>Change default admin password</li>
-          <li>Update router firmware</li>
-          <li>Set up guest network</li>
-          <li>Enable WPA3 encryption</li>
-          <li>Turn off WPS</li>
-        </ol>
-      `
-    }
-  };
-  
-  const guide = guides[deviceType];
-  if (guide) {
-    showPopup(guide.title, guide.content);
-  } else {
-    showPopup('Privacy Guide', `<p>Privacy guide for ${deviceType} coming soon!</p>`);
-  }
-}
-
-function showPopup(title, content) {
-  const popupHTML = `
-    <div class="content-popup">
-      <div class="popup-content">
-        <div class="popup-header">
-          <h2>${title}</h2>
-          <button onclick="closeContentPopup()" class="close-btn">×</button>
-        </div>
-        <div class="popup-body">
-          ${content}
-        </div>
-        <div class="popup-actions">
-          <button onclick="closeContentPopup()" class="close-content-btn">✅ Got It!</button>
-          <button onclick="shareContent('${title}')" class="share-content-btn">📤 Share</button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.insertAdjacentHTML('beforeend', popupHTML);
-}
-
-function closeContentPopup() {
-  const popup = document.querySelector('.content-popup');
-  if (popup) {
-    popup.remove();
-  }
-}
-
-function shareContent(title) {
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: 'Check out this helpful cybersecurity guide from Cyber Dad Blog',
-      url: window.location.href
-    });
-  } else {
-    // Fallback for browsers without Web Share API
-    const shareText = `Check out this helpful guide: ${title} - ${window.location.href}`;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareText);
-      alert('📋 Link copied to clipboard!');
-    } else {
-      alert('💬 Share this guide:\n\n' + shareText);
-    }
-  }
-}
-
-function savePost(postId) {
-  console.log('💾 Saving post:', postId);
-  alert('💾 Post Saved!\n\nGreat feature for building a reading list - keeps visitors coming back to your blog!');
-}
-
-function sharePost(postId) {
-  console.log('📤 Sharing post:', postId);
-  alert('📤 Share Post\n\nThis would open social sharing options - helps your content reach more families!');
-}
-
-function handleEmailCapture(event) {
-  event.preventDefault();
-  alert('📧 Welcome to CyberDad!\n\nThanks for subscribing! You\'ll now receive:\n✅ Weekly family security tips\n✅ New blog post notifications\n✅ Exclusive guides and checklists\n\nCheck your email for your free security checklist!');
-}
-
-function trackAffiliate(product) {
-  console.log('🔗 Affiliate click:', product);
-  alert('🔗 Affiliate Link\n\nThis tracks clicks to your recommended security tools - great for monetizing your helpful content!');
-}
-
-function startLiveChat() {
-  alert('💬 Live Support\n\nConnect with cybersecurity help:\n📧 Email: help@cyberdad2025.com\n\nGreat way to build trust and provide value to your readers!');
-}
-
-// INITIALIZATION
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('✅ CyberDad Blog System Ready');
-  
-  // Update dashboard every 30 seconds
-  updateFamilyDashboard();
-  setInterval(updateFamilyDashboard, 30000);
-  
-  // Update timestamps
-  setInterval(() => {
-    document.querySelectorAll('.live-timestamp').forEach(el => {
-      const minutes = Math.floor(Math.random() * 60) + 1;
-      el.textContent = `${minutes} minutes ago`;
-    });
-  }, 60000);
-  
-  console.log('📝 Blog content system active');
-  console.log('🔍 Device search ready');
-  console.log('📊 Family dashboard loaded');
-});
-</script>
+  'password-safety': {
+    title: '🔐 Keep Your Passwords Safe - Super Easy Guide',
+    type: 'cti',
+    content: `
+      <h3>🔐 Password Safety Made Simple</h3>
+      <p><strong>Published:</strong> July 19, 2025 • <strong>Reading Time:</strong> 5 minutes</p>
+      <p><strong>Perfect for ages 4-99!</strong></p>
+      
+      <h4>🎯
