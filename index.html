@@ -36,6 +36,31 @@
         }
 
         body {
+            <body>
+    <!-- GLOBAL LANGUAGE & LOCATION BAR -->
+    <div class="global-bar" id="globalBar" style="display: none;">
+        <div class="global-container">
+            <div class="location-info">
+                <span id="locationFlag">🌍</span>
+                <span id="locationText">Detecting location...</span>
+            </div>
+            <div class="language-switcher">
+                <select id="languageSelect" onchange="changeLanguage()">
+                    <option value="en">🇺🇸 English</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="pt">🇵🇹 Português</option>
+                </select>
+            </div>
+            <div class="local-threat-alert" id="localThreatAlert" style="display: none;">
+                <span>⚠️</span>
+                <span id="threatText">Local security alert for your region</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your existing header starts here -->
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #2d3748;
@@ -653,13 +678,13 @@
             </div>
         </div>
         <div class="header-container">
-            <a href="/" class="logo">🛡️ CyberDad</a>
+            <a <a href="/" class="logo" id="brandName">🛡️ CyberDad</a>
             <nav>
                 <ul class="main-nav">
-                    <li><a href="#alerts">Security Alerts</a></li>
-                    <li><a href="#guides">Family Guides</a></li>
-                    <li><a href="#tools">Security Tools</a></li>
-                    <li><a href="#products">Resources</a></li>
+                    <li><a href="#alerts" id="nav-alerts">Security Alerts</a></li>
+<li><a href="#guides" id="nav-guides">Family Guides</a></li>
+<li><a href="#tools" id="nav-tools">Security Tools</a></li>
+<li><a href="#products" id="nav-products">Resources</a></li>
                 </ul>
             </nav>
         </div>
