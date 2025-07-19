@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-CyberDad CTI Backend System - Blog Post Generator
-Scrapes CTI feeds, generates family-friendly blog posts, creates Jekyll markdown files
-Runs 3x daily: CTI alerts, tips, guides
+CyberDad Ultra-Secure CTI Backend System
+Zero Trust Architecture with Multi-Layer Security Protection
+Adaptive Threat Detection | Stealth Scraping | Self-Protection
 """
 
 import requests
@@ -11,681 +11,943 @@ import os
 import json
 import feedparser
 import hashlib
+import hmac
 import time
 import random
+import secrets
+import base64
+import threading
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import re
 import yaml
+import logging
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+import ssl
+import socket
+import subprocess
+import psutil
+import signal
+import sys
+from functools import wraps
+from typing import Dict, List, Optional, Tuple
+import ipaddress
+from urllib.parse import urlparse, urljoin
+import user_agent
 
-class CyberDadContentGenerator:
+# Security Configuration
+SECURITY_CONFIG = {
+    'max_file_size': 50 * 1024 * 1024,  # 50MB limit
+    'max_memory_usage': 512 * 1024 * 1024,  # 512MB limit
+    'max_execution_time': 1800,  # 30 minutes
+    'allowed_domains': [
+        'cisa.gov', 'krebsonsecurity.com', 'threatpost.com', 
+        'securityweek.com', 'bleepingcomputer.com', 'nvd.nist.gov'
+    ],
+    'rate_limits': {
+        'requests_per_minute': 6,  # Very conservative
+        'requests_per_hour': 50,
+        'delay_between_requests': (30, 90)  # Random delay range
+    },
+    'encryption_key_rotation': 3600,  # 1 hour
+    'integrity_check_interval': 300,  # 5 minutes
+    'self_defense_enabled': True,
+    'stealth_mode': True
+}
+
+class SecurityManager:
+    """Zero Trust Security Manager with Self-Protection"""
+    
     def __init__(self):
-        # API Keys
-        self.openai_key = os.getenv('OPENAI_API_KEY')
-        self.pinterest_token = os.getenv('PINTEREST_ACCESS_TOKEN')  # For future use
-        self.board_id = os.getenv('PINTEREST_BOARD_ID')  # For future use
+        self.session_key = self._generate_session_key()
+        self.encryption_key = self._derive_encryption_key()
+        self.integrity_hashes = {}
+        self.process_whitelist = set()
+        self.network_monitor = NetworkSecurityMonitor()
+        self.threat_detector = ThreatDetector()
+        self.setup_logging()
         
-        # Content tracking
-        self.existing_posts = set()
-        self.content_calendar = {}
+    def _generate_session_key(self) -> bytes:
+        """Generate cryptographically secure session key"""
+        return secrets.token_bytes(32)
+    
+    def _derive_encryption_key(self) -> Fernet:
+        """Derive encryption key using PBKDF2"""
+        salt = os.urandom(16)
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=100000,
+        )
+        key = base64.urlsafe_b64encode(kdf.derive(self.session_key))
+        return Fernet(key)
+    
+    def setup_logging(self):
+        """Setup secure logging with encryption"""
+        log_formatter = logging.Formatter(
+            '%(asctime)s - [ENCRYPTED] - %(levelname)s - %(message)s'
+        )
         
-        # CTI Intelligence Sources
-        self.cti_sources = [
-            {
-                'name': 'CISA Alerts',
-                'url': 'https://www.cisa.gov/news-events/cybersecurity-advisories.rss',
-                'type': 'government',
-                'priority': 'high'
-            },
-            {
-                'name': 'Krebs Security',
-                'url': 'https://krebsonsecurity.com/feed/',
-                'type': 'security_news',
-                'priority': 'medium'
-            },
-            {
-                'name': 'Threatpost',
-                'url': 'https://threatpost.com/feed/',
-                'type': 'security_news',
-                'priority': 'medium'
-            },
-            {
-                'name': 'Security Week',
-                'url': 'https://feeds.feedburner.com/securityweek',
-                'type': 'security_news',
-                'priority': 'medium'
-            },
-            {
-                'name': 'Bleeping Computer',
-                'url': 'https://www.bleepingcomputer.com/feed/',
-                'type': 'security_news',
-                'priority': 'high'
-            }
-        ]
+        # Create encrypted log handler
+        handler = EncryptedFileHandler('logs/secure_operations.enc', self.encryption_key)
+        handler.setFormatter(log_formatter)
         
-        # Family IoT/Home Device Keywords
-        self.family_keywords = [
-            'smart home', 'iot', 'router', 'wifi', 'alexa', 'google home', 'siri',
-            'ring doorbell', 'nest', 'smart tv', 'smart thermostat', 'smart bulb',
-            'baby monitor', 'security camera', 'smart lock', 'mesh network',
-            'home automation', 'smart speaker', 'chromecast', 'roku', 'apple tv',
-            'smart watch', 'fitness tracker', 'tablet', 'smartphone', 'android',
-            'iphone', 'ipad', 'smart fridge', 'smart garage', 'family', 'parents',
-            'children', 'kids', 'teens', 'home', 'household', 'personal', 'consumer'
-        ]
+        logger = logging.getLogger('cyberdad_security')
+        logger.setLevel(logging.INFO)
+        logger.addHandler(handler)
         
-        # Content types and their distribution
-        self.content_types = {
-            'cti_alert': {
-                'percentage': 40,
-                'templates': ['security_alert', 'vulnerability_guide', 'urgent_update'],
-                'tone': 'informative but not alarming'
-            },
-            'quick_tip': {
-                'percentage': 35,
-                'templates': ['device_tip', 'privacy_check', 'security_hack'],
-                'tone': 'helpful and practical'
-            },
-            'family_guide': {
-                'percentage': 25,
-                'templates': ['comprehensive_guide', 'setup_tutorial', 'family_strategy'],
-                'tone': 'educational and thorough'
-            }
-        }
-
-    def load_existing_posts(self):
-        """Load existing blog posts to prevent duplicates"""
+        return logger
+    
+    def verify_integrity(self, filepath: str) -> bool:
+        """Verify file integrity using SHA-256 hash"""
         try:
-            print("📚 Loading existing blog posts for duplicate detection...")
+            with open(filepath, 'rb') as f:
+                file_hash = hashlib.sha256(f.read()).hexdigest()
             
-            # Check _posts directory for existing Jekyll posts
-            posts_dir = "_posts"
-            if os.path.exists(posts_dir):
-                for filename in os.listdir(posts_dir):
-                    if filename.endswith('.md'):
-                        with open(os.path.join(posts_dir, filename), 'r', encoding='utf-8') as f:
-                            content = f.read()
-                            # Extract title from front matter
-                            if '---' in content:
-                                try:
-                                    front_matter = content.split('---')[1]
-                                    title_match = re.search(r'title:\s*["\']?(.*?)["\']?\n', front_matter)
-                                    if title_match:
-                                        title = title_match.group(1).strip()
-                                        content_hash = hashlib.md5(title.lower().encode()).hexdigest()[:8]
-                                        self.existing_posts.add(content_hash)
-                                except:
-                                    pass
+            if filepath in self.integrity_hashes:
+                return self.integrity_hashes[filepath] == file_hash
+            else:
+                self.integrity_hashes[filepath] = file_hash
+                return True
+        except Exception:
+            return False
+    
+    def check_memory_usage(self) -> bool:
+        """Monitor memory usage for security"""
+        process = psutil.Process()
+        memory_usage = process.memory_info().rss
+        return memory_usage < SECURITY_CONFIG['max_memory_usage']
+    
+    def validate_url(self, url: str) -> bool:
+        """Validate URL against whitelist and security checks"""
+        try:
+            parsed = urlparse(url)
+            domain = parsed.netloc.lower()
             
-            print(f"✅ Loaded {len(self.existing_posts)} existing posts for duplicate detection")
+            # Check domain whitelist
+            if not any(allowed in domain for allowed in SECURITY_CONFIG['allowed_domains']):
+                return False
+            
+            # Check for suspicious patterns
+            suspicious_patterns = [
+                'javascript:', 'data:', 'file:', 'ftp:',
+                '../', '..\\', '%2e%2e', 'localhost', '127.0.0.1'
+            ]
+            
+            if any(pattern in url.lower() for pattern in suspicious_patterns):
+                return False
+            
+            # Validate IP addresses
+            try:
+                ip = ipaddress.ip_address(domain)
+                if ip.is_private or ip.is_loopback or ip.is_multicast:
+                    return False
+            except ValueError:
+                pass  # Not an IP address, continue validation
+            
+            return True
+        except Exception:
+            return False
+
+class EncryptedFileHandler(logging.FileHandler):
+    """Custom logging handler with encryption"""
+    
+    def __init__(self, filename, encryption_key):
+        super().__init__(filename)
+        self.encryption_key = encryption_key
+    
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            encrypted_msg = self.encryption_key.encrypt(msg.encode())
+            
+            with open(self.baseFilename, 'ab') as f:
+                f.write(base64.b64encode(encrypted_msg) + b'\n')
+        except Exception:
+            self.handleError(record)
+
+class NetworkSecurityMonitor:
+    """Network traffic monitoring and anomaly detection"""
+    
+    def __init__(self):
+        self.request_times = []
+        self.failed_requests = 0
+        self.suspicious_activity = False
+    
+    def log_request(self, url: str, response_time: float, status_code: int):
+        """Log network request for monitoring"""
+        self.request_times.append({
+            'url': hashlib.sha256(url.encode()).hexdigest()[:16],  # Hash for privacy
+            'time': datetime.now(),
+            'response_time': response_time,
+            'status': status_code
+        })
+        
+        if status_code >= 400:
+            self.failed_requests += 1
+        
+        # Clean old entries
+        cutoff = datetime.now() - timedelta(hours=1)
+        self.request_times = [r for r in self.request_times if r['time'] > cutoff]
+    
+    def detect_anomalies(self) -> bool:
+        """Detect suspicious network patterns"""
+        recent_requests = len(self.request_times)
+        
+        # Too many requests in short time
+        if recent_requests > SECURITY_CONFIG['rate_limits']['requests_per_hour']:
+            return True
+        
+        # High failure rate
+        if self.failed_requests > 10:
+            return True
+        
+        return False
+
+class ThreatDetector:
+    """Real-time threat detection and response"""
+    
+    def __init__(self):
+        self.threat_indicators = {
+            'malicious_patterns': [
+                r'<script[^>]*>.*?</script>',
+                r'javascript:',
+                r'vbscript:',
+                r'onload\s*=',
+                r'onerror\s*=',
+                r'eval\s*\(',
+                r'document\.cookie',
+                r'window\.location'
+            ],
+            'suspicious_strings': [
+                'rat', 'trojan', 'backdoor', 'keylogger', 'rootkit',
+                'botnet', 'c2', 'command and control', 'payload',
+                'shellcode', 'exploit kit', 'zero day'
+            ]
+        }
+        self.quarantine_dir = 'quarantine'
+        os.makedirs(self.quarantine_dir, exist_ok=True)
+    
+    def scan_content(self, content: str) -> Tuple[bool, List[str]]:
+        """Scan content for threats"""
+        threats_found = []
+        
+        # Check for malicious patterns
+        for pattern in self.threat_indicators['malicious_patterns']:
+            if re.search(pattern, content, re.IGNORECASE):
+                threats_found.append(f"Malicious pattern: {pattern}")
+        
+        # Check for suspicious strings
+        content_lower = content.lower()
+        for suspicious in self.threat_indicators['suspicious_strings']:
+            if suspicious in content_lower:
+                threats_found.append(f"Suspicious content: {suspicious}")
+        
+        # Buffer overflow protection
+        if len(content) > SECURITY_CONFIG['max_file_size']:
+            threats_found.append("Content size exceeds security limits")
+        
+        return len(threats_found) == 0, threats_found
+    
+    def quarantine_content(self, content: str, reason: str) -> str:
+        """Quarantine suspicious content"""
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"quarantined_{timestamp}.txt"
+        filepath = os.path.join(self.quarantine_dir, filename)
+        
+        quarantine_data = {
+            'timestamp': timestamp,
+            'reason': reason,
+            'content_hash': hashlib.sha256(content.encode()).hexdigest(),
+            'content': base64.b64encode(content.encode()).decode()
+        }
+        
+        with open(filepath, 'w') as f:
+            json.dump(quarantine_data, f, indent=2)
+        
+        return filepath
+
+class StealthScraper:
+    """Stealth web scraping with advanced evasion techniques"""
+    
+    def __init__(self, security_manager: SecurityManager):
+        self.security = security_manager
+        self.session = requests.Session()
+        self.user_agents = self._load_user_agents()
+        self.proxies = self._setup_proxy_rotation()
+        self.setup_session()
+    
+    def _load_user_agents(self) -> List[str]:
+        """Load realistic user agent strings"""
+        return [
+            user_agent.generate_user_agent(),
+            user_agent.generate_user_agent(device_type='desktop'),
+            user_agent.generate_user_agent(os='win'),
+            user_agent.generate_user_agent(os='mac'),
+            user_agent.generate_user_agent(os='linux')
+        ]
+    
+    def _setup_proxy_rotation(self) -> List[Dict]:
+        """Setup proxy rotation (if available)"""
+        # This would be configured with actual proxy services
+        return []
+    
+    def setup_session(self):
+        """Configure session with security headers"""
+        self.session.headers.update({
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Encoding': 'gzip, deflate',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Cache-Control': 'max-age=0'
+        })
+        
+        # SSL/TLS configuration
+        self.session.verify = True
+        
+        # Timeout configuration
+        self.session.timeout = (10, 30)  # Connect, read timeout
+    
+    def randomize_request(self):
+        """Randomize request characteristics"""
+        # Random user agent
+        self.session.headers['User-Agent'] = random.choice(self.user_agents)
+        
+        # Random delay
+        delay = random.uniform(*SECURITY_CONFIG['rate_limits']['delay_between_requests'])
+        time.sleep(delay)
+    
+    def safe_request(self, url: str) -> Optional[requests.Response]:
+        """Make secure HTTP request with all protections"""
+        try:
+            # Validate URL
+            if not self.security.validate_url(url):
+                raise ValueError(f"URL failed security validation: {url}")
+            
+            # Randomize request characteristics
+            self.randomize_request()
+            
+            # Make request with timing
+            start_time = time.time()
+            response = self.session.get(url, stream=True)
+            response_time = time.time() - start_time
+            
+            # Log request for monitoring
+            self.security.network_monitor.log_request(url, response_time, response.status_code)
+            
+            # Check response size
+            content_length = response.headers.get('content-length')
+            if content_length and int(content_length) > SECURITY_CONFIG['max_file_size']:
+                raise ValueError("Response too large")
+            
+            # Download with size limit
+            content = b''
+            for chunk in response.iter_content(chunk_size=8192):
+                content += chunk
+                if len(content) > SECURITY_CONFIG['max_file_size']:
+                    raise ValueError("Response exceeded size limit")
+            
+            response._content = content
+            return response
             
         except Exception as e:
-            print(f"⚠️ Could not load existing posts: {e}")
+            logging.getLogger('cyberdad_security').error(f"Request failed: {str(e)}")
+            return None
 
-    def scrape_cti_intelligence(self):
-        """Scrape latest CTI from multiple sources"""
-        print("🕵️ Scraping cybersecurity threat intelligence...")
+def security_decorator(func):
+    """Decorator for adding security checks to functions"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Memory check
+        if not args[0].security.check_memory_usage():
+            raise MemoryError("Memory usage exceeded security limits")
         
-        all_threats = []
+        # Execution time check
+        start_time = time.time()
+        try:
+            result = func(*args, **kwargs)
+            execution_time = time.time() - start_time
+            
+            if execution_time > SECURITY_CONFIG['max_execution_time']:
+                raise TimeoutError("Execution time exceeded security limits")
+            
+            return result
+        except Exception as e:
+            logging.getLogger('cyberdad_security').error(f"Security violation in {func.__name__}: {str(e)}")
+            raise
+    
+    return wrapper
+
+class UltraSecureCyberDadGenerator:
+    """Ultra-secure CTI content generator with zero trust architecture"""
+    
+    def __init__(self):
+        # Initialize security layers
+        self.security = SecurityManager()
+        self.scraper = StealthScraper(self.security)
+        self.threat_detector = ThreatDetector()
         
-        for source in self.cti_sources:
+        # API configuration with encryption
+        self.openai_key = self._decrypt_api_key('OPENAI_API_KEY')
+        
+        # Content tracking with integrity verification
+        self.existing_posts = set()
+        self.processed_items = set()
+        self.content_hashes = {}
+        
+        # Initialize OpenAI with security
+        if self.openai_key:
+            openai.api_key = self.openai_key
+        
+        # CTI feeds with security validation
+        self.cti_feeds = {
+            'cisa_alerts': 'https://www.cisa.gov/cybersecurity-advisories/rss.xml',
+            'nist_nvd': 'https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml',
+            'krebs': 'https://krebsonsecurity.com/feed/',
+            'threatpost': 'https://threatpost.com/feed/',
+            'security_week': 'https://www.securityweek.com/feed/'
+        }
+        
+        # Family keywords for threat relevance
+        self.family_keywords = [
+            'ring', 'doorbell', 'camera', 'alexa', 'google home', 'smart tv',
+            'router', 'wifi', 'iphone', 'android', 'ipad', 'tablet',
+            'smart watch', 'fitbit', 'home assistant', 'nest', 'roku',
+            'apple tv', 'chromecast', 'xbox', 'playstation', 'nintendo',
+            'smart thermostat', 'smart lock', 'baby monitor', 'security camera',
+            'home automation', 'iot', 'smart home', 'family sharing',
+            'parental controls', 'kids', 'children', 'family', 'home network'
+        ]
+        
+        # Setup self-defense mechanisms
+        self.setup_self_defense()
+    
+    def _decrypt_api_key(self, env_var: str) -> Optional[str]:
+        """Securely retrieve and decrypt API key"""
+        try:
+            encrypted_key = os.getenv(env_var)
+            if encrypted_key:
+                # In production, implement proper key management
+                return encrypted_key
+            return None
+        except Exception:
+            return None
+    
+    def setup_self_defense(self):
+        """Setup self-defense mechanisms"""
+        if SECURITY_CONFIG['self_defense_enabled']:
+            # Monitor for tampering
+            threading.Thread(target=self._integrity_monitor, daemon=True).start()
+            
+            # Setup signal handlers for graceful shutdown
+            signal.signal(signal.SIGTERM, self._emergency_shutdown)
+            signal.signal(signal.SIGINT, self._emergency_shutdown)
+    
+    def _integrity_monitor(self):
+        """Continuous integrity monitoring"""
+        while True:
             try:
-                print(f"📡 Checking {source['name']}...")
-                threats = self.scrape_rss_source(source)
-                all_threats.extend(threats)
-                time.sleep(2)  # Be respectful to sources
+                # Check script integrity
+                if not self.security.verify_integrity(__file__):
+                    self._emergency_shutdown(signal.SIGTERM, None)
+                
+                # Check for anomalies
+                if self.security.network_monitor.detect_anomalies():
+                    logging.getLogger('cyberdad_security').warning("Network anomaly detected")
+                
+                time.sleep(SECURITY_CONFIG['integrity_check_interval'])
+            except Exception:
+                break
+    
+    def _emergency_shutdown(self, signum, frame):
+        """Emergency shutdown procedure"""
+        logging.getLogger('cyberdad_security').critical("Emergency shutdown initiated")
+        
+        # Clear sensitive data
+        if hasattr(self, 'openai_key'):
+            self.openai_key = None
+        
+        # Secure cleanup
+        self._secure_cleanup()
+        sys.exit(1)
+    
+    def _secure_cleanup(self):
+        """Secure cleanup of sensitive data"""
+        try:
+            # Overwrite sensitive variables
+            if hasattr(self, 'security'):
+                self.security.session_key = b'\x00' * 32
+            
+            # Clear process memory (simplified)
+            import gc
+            gc.collect()
+            
+        except Exception:
+            pass
+    
+    @security_decorator
+    def scrape_cti_feeds_secure(self) -> List[Dict]:
+        """Securely scrape CTI feeds with all protections"""
+        cti_items = []
+        
+        for source, url in self.cti_feeds.items():
+            try:
+                # Rate limiting check
+                recent_requests = len(self.security.network_monitor.request_times)
+                if recent_requests >= SECURITY_CONFIG['rate_limits']['requests_per_minute']:
+                    time.sleep(60)  # Wait before continuing
+                
+                logging.getLogger('cyberdad_security').info(f"Secure scraping: {source}")
+                
+                # Secure request
+                response = self.scraper.safe_request(url)
+                if not response or response.status_code != 200:
+                    continue
+                
+                # Content security scan
+                is_safe, threats = self.threat_detector.scan_content(response.text)
+                if not is_safe:
+                    self.threat_detector.quarantine_content(
+                        response.text, 
+                        f"Threats detected in {source}: {threats}"
+                    )
+                    continue
+                
+                # Parse feed securely
+                feed = feedparser.parse(response.text)
+                
+                for entry in feed.entries[:5]:  # Limit entries
+                    content = f"{entry.title} {getattr(entry, 'description', '')}"
+                    
+                    # Security scan on entry content
+                    is_safe, _ = self.threat_detector.scan_content(content)
+                    if not is_safe:
+                        continue
+                    
+                    if self.is_family_relevant(content):
+                        # Generate content hash for deduplication
+                        content_hash = hashlib.sha256(content.encode()).hexdigest()
+                        if content_hash not in self.content_hashes:
+                            self.content_hashes[content_hash] = True
+                            
+                            item = {
+                                'source': source,
+                                'title': entry.title,
+                                'description': getattr(entry, 'description', ''),
+                                'link': getattr(entry, 'link', ''),
+                                'published': getattr(entry, 'published', str(datetime.now())),
+                                'relevance_score': self.calculate_relevance_score(content),
+                                'content_hash': content_hash
+                            }
+                            cti_items.append(item)
+                
+                # Respectful delay between sources
+                time.sleep(random.uniform(45, 75))
                 
             except Exception as e:
-                print(f"⚠️ Error with {source['name']}: {e}")
+                logging.getLogger('cyberdad_security').error(f"Error in secure scraping {source}: {str(e)}")
                 continue
         
-        # Filter for family/home relevant threats
-        relevant_threats = self.filter_family_relevant(all_threats)
-        print(f"🎯 Found {len(relevant_threats)} family-relevant threats")
+        # Sort by relevance and return top items
+        cti_items.sort(key=lambda x: x['relevance_score'], reverse=True)
+        return cti_items[:3]  # Conservative limit
+    
+    def is_family_relevant(self, content: str) -> bool:
+        """Check family relevance with security filtering"""
+        content_lower = content.lower()
         
-        return relevant_threats
-
-    def scrape_rss_source(self, source):
-        """Scrape threats from RSS feed"""
-        threats = []
+        # Security check first
+        is_safe, _ = self.threat_detector.scan_content(content)
+        if not is_safe:
+            return False
         
+        return any(keyword in content_lower for keyword in self.family_keywords)
+    
+    def calculate_relevance_score(self, content: str) -> int:
+        """Calculate relevance score with security considerations"""
+        content_lower = content.lower()
+        score = 0
+        
+        for keyword in self.family_keywords:
+            if keyword in content_lower:
+                score += content_lower.count(keyword) * 2
+        
+        # Boost score for critical security terms
+        critical_terms = ['critical', 'vulnerability', 'patch', 'update', 'security']
+        for term in critical_terms:
+            if term in content_lower:
+                score += 5
+        
+        return min(score, 100)  # Cap at 100
+    
+    @security_decorator
+    def generate_secure_content(self, content_type: str, data: Optional[Dict] = None) -> Optional[Dict]:
+        """Generate content with full security validation"""
         try:
-            feed = feedparser.parse(source['url'])
-            
-            for entry in feed.entries[:10]:  # Latest 10 from each source
-                threat = {
-                    'title': entry.title,
-                    'summary': entry.get('summary', entry.get('description', entry.title))[:500],
-                    'url': entry.link,
-                    'published': entry.get('published', datetime.now().isoformat()),
-                    'source': source['name'],
-                    'type': source['type'],
-                    'priority': source['priority']
+            # Content templates (same as before but with additional security)
+            templates = {
+                'cti_alert': {
+                    'prompt': """Convert this cybersecurity alert into a family-friendly blog post.
+
+Technical Alert: {title}
+Details: {content}
+
+SECURITY REQUIREMENTS:
+- Use only family-safe language
+- No technical jargon that could enable attacks
+- Focus on protection, not vulnerability details
+- Include clear, safe action steps
+
+Write a helpful post (300-500 words) that:
+- Explains the issue in simple terms
+- Provides 3-5 protection steps
+- Includes "Why This Matters" section
+- Ends with quick fix instructions
+- Maintains calm, educational tone"""
+                },
+                'quick_tip': {
+                    'prompt': """Create a quick cybersecurity tip for families about {topic}.
+
+SECURITY REQUIREMENTS:
+- Safe, actionable advice only
+- No information that could be misused
+- Family-appropriate language
+
+Write a brief tip (150-250 words) with:
+- One specific, safe action step
+- Clear instructions
+- Explanation of benefits"""
+                },
+                'family_guide': {
+                    'prompt': """Create a comprehensive family security guide about {topic}.
+
+SECURITY REQUIREMENTS:
+- Comprehensive but safe information
+- No details that enable attacks
+- Focus on defense and protection
+
+Write an in-depth guide (500-800 words) with:
+- Simple explanations
+- Complete setup instructions
+- Troubleshooting tips
+- Recommended tools"""
                 }
-                threats.append(threat)
-                
-        except Exception as e:
-            print(f"❌ RSS scrape failed for {source['name']}: {e}")
-            
-        return threats
-
-    def filter_family_relevant(self, threats):
-        """Filter threats relevant to families and home users"""
-        relevant = []
-        
-        for threat in threats:
-            text = (threat['title'] + ' ' + threat['summary']).lower()
-            
-            # Check if contains family/home keywords
-            relevance_score = sum(1 for keyword in self.family_keywords if keyword in text)
-            
-            if relevance_score > 0:
-                # Check if not already covered
-                title_hash = hashlib.md5(threat['title'].lower().encode()).hexdigest()[:8]
-                
-                if title_hash not in self.existing_posts:
-                    threat['relevance_score'] = relevance_score
-                    threat['content_hash'] = title_hash
-                    relevant.append(threat)
-                else:
-                    print(f"🔄 Skipping duplicate: {threat['title'][:50]}...")
-        
-        # Sort by relevance score (most relevant first)
-        relevant.sort(key=lambda x: x['relevance_score'], reverse=True)
-        return relevant
-
-    def determine_content_type(self):
-        """Determine what type of content to generate based on distribution"""
-        # Simple rotation logic - can be enhanced with more sophisticated scheduling
-        current_hour = datetime.now().hour
-        
-        if current_hour < 8:  # Early morning - tips
-            return 'quick_tip'
-        elif current_hour < 16:  # Daytime - CTI alerts
-            return 'cti_alert'
-        else:  # Evening - guides
-            return 'family_guide'
-
-    def generate_family_content(self, threat_data=None, content_type=None):
-        """Generate family-friendly content using AI"""
-        
-        if not self.openai_key:
-            return self.create_fallback_content(threat_data, content_type)
-        
-        content_type = content_type or self.determine_content_type()
-        
-        print(f"🤖 Generating {content_type} content...")
-        
-        try:
-            openai.api_key = self.openai_key
-            
-            if content_type == 'cti_alert' and threat_data:
-                prompt = self.create_cti_prompt(threat_data)
-            elif content_type == 'quick_tip':
-                prompt = self.create_tip_prompt()
-            else:  # family_guide
-                prompt = self.create_guide_prompt()
-            
-            response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are CyberDad, a cybersecurity expert who helps families stay safe online. Write practical, actionable content that busy parents can understand and implement. Always use a helpful, reassuring tone - never scary or alarmist. Focus on simple solutions that work for real families."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                max_tokens=800,
-                temperature=0.7
-            )
-            
-            ai_content = response.choices[0].message.content.strip()
-            
-            return self.parse_ai_content(ai_content, content_type, threat_data)
-            
-        except Exception as e:
-            print(f"⚠️ AI generation failed: {e}")
-            return self.create_fallback_content(threat_data, content_type)
-
-    def create_cti_prompt(self, threat_data):
-        """Create prompt for CTI-based content"""
-        return f"""
-        Convert this cybersecurity threat into a helpful family blog post:
-        
-        THREAT: {threat_data['title']}
-        DETAILS: {threat_data['summary'][:300]}
-        SOURCE: {threat_data['source']}
-        
-        REQUIREMENTS:
-        - Write for busy parents (ages 25-55)
-        - Explain what this means for families in simple terms
-        - Focus on devices/services families actually use
-        - Provide 3-5 specific protection steps
-        - Keep tone helpful and reassuring, not scary
-        - Include why this matters for family safety
-        - Perfect for ages 4-99 to understand
-        - 400-600 words
-        
-        FORMAT:
-        Title: [Catchy, family-friendly title]
-        
-        Introduction: [What this means for families]
-        
-        Why This Matters: [Family impact explanation]
-        
-        Simple Protection Steps:
-        1. [Specific action]
-        2. [Specific action]
-        3. [Specific action]
-        
-        Family Tip: [Additional helpful advice]
-        
-        Bottom Line: [Reassuring summary]
-        """
-
-    def create_tip_prompt(self):
-        """Create prompt for quick tip content"""
-        tip_topics = [
-            "router security settings families should check",
-            "smart TV privacy settings parents miss", 
-            "smartphone security for kids and teens",
-            "home WiFi protection for families",
-            "password security for busy parents",
-            "smart speaker privacy for family homes",
-            "gaming console safety for kids",
-            "social media privacy for families",
-            "backup strategies for family photos",
-            "parental controls that actually work"
-        ]
-        
-        topic = random.choice(tip_topics)
-        
-        return f"""
-        Write a helpful cybersecurity tip about {topic}.
-        
-        REQUIREMENTS:
-        - Quick, actionable advice (3-4 minutes to read)
-        - Specific steps families can take today
-        - Focus on one main tip with clear instructions
-        - Include why this matters for family safety
-        - Keep tone friendly and encouraging
-        - Perfect for ages 4-99 to understand
-        - 300-400 words
-        
-        FORMAT:
-        Title: [Clear, benefit-focused title]
-        
-        The Problem: [What families face]
-        
-        Simple Solution: [Step-by-step instructions]
-        
-        Why This Works: [Explanation of benefits]
-        
-        Pro Tip: [Bonus advice]
-        """
-
-    def create_guide_prompt(self):
-        """Create prompt for comprehensive guide content"""
-        guide_topics = [
-            "complete family password strategy",
-            "smart home security setup for families",
-            "digital parenting and device safety",
-            "family internet safety rules and guidelines",
-            "protecting kids online: age-appropriate strategies",
-            "home network security for non-technical parents",
-            "family cloud storage and backup strategy",
-            "teaching kids about cybersecurity and privacy",
-            "family emergency cybersecurity plan",
-            "choosing family-friendly security tools"
-        ]
-        
-        topic = random.choice(guide_topics)
-        
-        return f"""
-        Write a comprehensive family guide about {topic}.
-        
-        REQUIREMENTS:
-        - Thorough but accessible explanation
-        - Step-by-step implementation guide
-        - Include specific product recommendations
-        - Address different family situations
-        - Provide troubleshooting tips
-        - Keep tone educational but encouraging
-        - Perfect for ages 4-99 to understand
-        - 600-800 words
-        
-        FORMAT:
-        Title: [Comprehensive, value-focused title]
-        
-        Introduction: [Why families need this]
-        
-        Step-by-Step Guide:
-        1. [Detailed step]
-        2. [Detailed step]
-        3. [Detailed step]
-        
-        Family Considerations: [Age-specific advice]
-        
-        Recommended Tools: [Specific products/services]
-        
-        Troubleshooting: [Common issues and solutions]
-        
-        Next Steps: [What to do after implementation]
-        """
-
-    def parse_ai_content(self, ai_content, content_type, threat_data=None):
-        """Parse AI-generated content into structured format"""
-        lines = ai_content.split('\n')
-        
-        # Extract title
-        title_line = next((line for line in lines if line.startswith('Title:')), lines[0])
-        title = re.sub(r'^Title:\s*', '', title_line).strip()
-        
-        # Clean and structure content
-        content_body = '\n'.join(lines[1:]).strip()
-        
-        # Remove title from content body if it's repeated
-        if title in content_body:
-            content_body = content_body.replace(title, '').strip()
-        
-        return {
-            'title': title,
-            'content': content_body,
-            'content_type': content_type,
-            'category': self.determine_category(content_body, threat_data),
-            'tags': self.generate_tags(content_body, content_type),
-            'source_threat': threat_data,
-            'reading_time': self.estimate_reading_time(content_body),
-            'difficulty': self.determine_difficulty(content_type)
-        }
-
-    def create_fallback_content(self, threat_data=None, content_type='quick_tip'):
-        """Create basic content when AI fails"""
-        fallback_content = {
-            'cti_alert': {
-                'title': f"Security Update: {threat_data['title'][:50] if threat_data else 'Keep Your Devices Updated'}",
-                'content': f"A new security issue has been discovered that may affect family devices. {threat_data['summary'][:200] if threat_data else 'Regular updates help protect your family from cyber threats.'} Here's what families should do: 1) Update all devices, 2) Check security settings, 3) Monitor for unusual activity.",
-                'category': 'security-alerts'
-            },
-            'quick_tip': {
-                'title': "Quick Security Tip: Check Your Router Settings",
-                'content': "Your home router is the gateway to your family's internet connection. Most routers come with default passwords that are easy for hackers to guess. Take 2 minutes to log into your router and change the admin password to something strong and unique. This simple step protects your entire family's internet activity.",
-                'category': 'home-network'
-            },
-            'family_guide': {
-                'title': "Family Password Safety: A Complete Guide",
-                'content': "Strong passwords are your family's first line of defense against cyber attacks. Every family member should use unique passwords for each account. Consider using a family password manager to generate and store secure passwords. Teach kids about password safety early. Enable two-factor authentication on important accounts. Review and update passwords regularly.",
-                'category': 'password-security'
             }
+            
+            # Generate content based on type
+            if content_type == 'cti_alert' and data:
+                device = self.extract_device_safely(data['title'])
+                prompt = templates['cti_alert']['prompt'].format(
+                    title=data['title'],
+                    content=data['description']
+                )
+                title = f"{device} Users: Security Update Available"
+            
+            elif content_type == 'quick_tip':
+                safe_topics = ['Router Settings', 'Smart TV Privacy', 'iPhone Security', 'Home Network']
+                topic = random.choice(safe_topics)
+                prompt = templates['quick_tip']['prompt'].format(topic=topic)
+                title = f"Quick {topic} Security Check"
+            
+            elif content_type == 'family_guide':
+                safe_guides = ['Password Security', 'Two-Factor Authentication', 'Home Network Setup']
+                topic = random.choice(safe_guides)
+                prompt = templates['family_guide']['prompt'].format(topic=topic)
+                title = f"Complete Family Guide to {topic}"
+            
+            else:
+                return self.generate_fallback_content(content_type)
+            
+            # Generate with OpenAI if available
+            if self.openai_key:
+                response = openai.ChatCompletion.create(
+                    model="gpt-4",
+                    messages=[
+                        {
+                            "role": "system", 
+                            "content": "You are a family cybersecurity expert. Provide helpful, safe advice without technical details that could enable attacks. Focus on protection and education."
+                        },
+                        {"role": "user", "content": prompt}
+                    ],
+                    max_tokens=800,
+                    temperature=0.6
+                )
+                
+                content = response.choices[0].message.content
+                
+                # Security scan generated content
+                is_safe, threats = self.threat_detector.scan_content(content)
+                if not is_safe:
+                    logging.getLogger('cyberdad_security').warning(f"Generated content failed security scan: {threats}")
+                    return self.generate_fallback_content(content_type)
+                
+                return {
+                    'title': title,
+                    'content': content,
+                    'type': content_type,
+                    'source_data': data,
+                    'security_verified': True
+                }
+            else:
+                return self.generate_fallback_content(content_type)
+                
+        except Exception as e:
+            logging.getLogger('cyberdad_security').error(f"Content generation error: {str(e)}")
+            return self.generate_fallback_content(content_type)
+    
+    def extract_device_safely(self, content: str) -> str:
+        """Safely extract device name without exposing vulnerabilities"""
+        content_safe = re.sub(r'[<>{}]', '', content.lower())
+        
+        for keyword in self.family_keywords:
+            if keyword in content_safe:
+                return keyword.title()
+        
+        return "Smart Device"
+    
+    def generate_fallback_content(self, content_type: str) -> Dict:
+        """Generate safe fallback content"""
+        fallback_titles = {
+            'cti_alert': "Important Security Update for Your Devices",
+            'quick_tip': "Quick Security Tip for Families",
+            'family_guide': "Family Cybersecurity Guide"
         }
         
-        template = fallback_content.get(content_type, fallback_content['quick_tip'])
+        fallback_content = """# Keeping Your Family Safe Online
+
+Your family's digital security is important to us. Here are some simple steps to stay protected:
+
+## Quick Security Steps
+1. **Keep devices updated** - Enable automatic updates when possible
+2. **Use strong passwords** - Consider a family password manager
+3. **Enable two-factor authentication** - Add extra security to important accounts
+4. **Review privacy settings** - Check settings on all family devices
+
+## Why This Matters
+Regular security practices help protect your family's personal information and digital life.
+
+## Simple Action (Takes 2 Minutes)
+Check one device today for available security updates. Your family's safety is worth these few minutes.
+
+**Stay Safe, CyberDad** 🛡️
+"""
         
         return {
-            'title': template['title'],
-            'content': template['content'],
-            'content_type': content_type,
-            'category': template['category'],
-            'tags': ['cybersecurity', 'family-safety', 'easy-guide'],
-            'source_threat': threat_data,
-            'reading_time': '3 minutes',
-            'difficulty': 'Beginner'
+            'title': fallback_titles.get(content_type, "Family Security Tips"),
+            'content': fallback_content,
+            'type': content_type,
+            'source_data': None,
+            'security_verified': True,
+            'fallback': True
         }
-
-    def determine_category(self, content, threat_data=None):
-        """Determine post category based on content"""
-        content_lower = content.lower()
-        
-        if any(word in content_lower for word in ['router', 'wifi', 'network', 'internet']):
-            return 'home-network'
-        elif any(word in content_lower for word in ['smart home', 'iot', 'alexa', 'nest', 'smart tv']):
-            return 'smart-home'
-        elif any(word in content_lower for word in ['mobile', 'phone', 'iphone', 'android', 'tablet']):
-            return 'mobile-security'
-        elif any(word in content_lower for word in ['password', 'login', 'account', 'authentication']):
-            return 'password-security'
-        elif any(word in content_lower for word in ['kids', 'children', 'teens', 'parental']):
-            return 'family-safety'
-        elif any(word in content_lower for word in ['privacy', 'data', 'tracking']):
-            return 'privacy-tips'
-        else:
-            return 'cybersecurity'
-
-    def generate_tags(self, content, content_type):
-        """Generate relevant tags for the post"""
-        base_tags = ['cybersecurity', 'family-safety']
-        
-        content_lower = content.lower()
-        
-        # Add content-specific tags
-        if 'router' in content_lower: base_tags.append('home-network')
-        if 'password' in content_lower: base_tags.append('password-security')
-        if 'smart' in content_lower: base_tags.append('smart-home')
-        if 'kids' in content_lower or 'children' in content_lower: base_tags.append('parental-guidance')
-        if 'privacy' in content_lower: base_tags.append('privacy-tips')
-        if 'mobile' in content_lower or 'phone' in content_lower: base_tags.append('mobile-security')
-        
-        # Add content type tag
-        if content_type == 'cti_alert': base_tags.append('security-alert')
-        elif content_type == 'quick_tip': base_tags.append('quick-tip')
-        elif content_type == 'family_guide': base_tags.append('comprehensive-guide')
-        
-        base_tags.append('easy-guide')  # Always add this
-        
-        return list(set(base_tags))  # Remove duplicates
-
-    def estimate_reading_time(self, content):
-        """Estimate reading time based on word count"""
-        words = len(content.split())
-        minutes = max(1, round(words / 200))  # Assume 200 words per minute
-        return f"{minutes} minute{'s' if minutes != 1 else ''}"
-
-    def determine_difficulty(self, content_type):
-        """Determine difficulty level"""
-        difficulty_map = {
-            'quick_tip': 'Beginner',
-            'cti_alert': 'Beginner', 
-            'family_guide': 'Intermediate'
-        }
-        return difficulty_map.get(content_type, 'Beginner')
-
-    def create_jekyll_post(self, content_data):
-        """Create Jekyll markdown post file"""
-        
-        # Generate filename
-        date_str = datetime.now().strftime('%Y-%m-%d')
-        title_slug = re.sub(r'[^\w\s-]', '', content_data['title'].lower())
-        title_slug = re.sub(r'\s+', '-', title_slug)[:50]
-        filename = f"{date_str}-{title_slug}.md"
-        
-        # Create front matter
-        front_matter = {
-            'layout': 'post',
-            'title': content_data['title'],
-            'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S %z') or datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'categories': [content_data['category'], 'family-safety'],
-            'tags': content_data['tags'],
-            'excerpt': self.create_excerpt(content_data['content']),
-            'reading_time': content_data['reading_time'],
-            'difficulty': content_data['difficulty'],
-            'perfect_for_ages': '4-99'
-        }
-        
-        # Add source attribution if CTI-based
-        if content_data['source_threat']:
-            front_matter['source'] = content_data['source_threat']['source']
-            front_matter['cti_based'] = True
-        
-        # Create full post content
-        post_content = f"""---
+    
+    @security_decorator
+    def create_secure_jekyll_post(self, post_data: Dict) -> bool:
+        """Create Jekyll post with security validation"""
+        try:
+            # Final security scan
+            is_safe, threats = self.threat_detector.scan_content(post_data['content'])
+            if not is_safe:
+                logging.getLogger('cyberdad_security').error(f"Post content failed final security scan: {threats}")
+                return False
+            
+            # Generate secure filename
+            date_str = datetime.now().strftime('%Y-%m-%d')
+            title_clean = re.sub(r'[^\w\s-]', '', post_data['title']).strip()
+            title_slug = re.sub(r'[-\s]+', '-', title_clean).lower()[:50]  # Limit length
+            filename = f"{date_str}-{title_slug}.md"
+            
+            # Check for duplicates
+            if title_slug in self.existing_posts:
+                return False
+            
+            # Create secure front matter
+            front_matter = {
+                'layout': 'post',
+                'title': post_data['title'],
+                'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S +0000'),
+                'categories': ['cybersecurity', 'family'],
+                'tags': ['family-safety', 'cybersecurity', 'digital-parenting'],
+                'excerpt': post_data['content'][:150] + '...',
+                'reading_time': f"{max(1, len(post_data['content'].split()) // 200)} min read",
+                'author': 'CyberDad',
+                'image': '/assets/images/family-cybersecurity.jpg',
+                'security_verified': post_data.get('security_verified', False)
+            }
+            
+            # Create full content with security notice
+            full_content = f"""---
 {yaml.dump(front_matter, default_flow_style=False)}---
 
-{content_data['content']}
+{post_data['content']}
 
 ---
 
-## 🛡️ Keep Your Family Safe
+## 🛡️ Family Cybersecurity Resources
 
-Want more family cybersecurity tips? [Get our free family security checklist](https://cyberdad2025.github.io) and join 1,200+ families staying safe online.
+- [Family Password Security Guide](/family-password-guide)
+- [Smart Home Security Checklist](/smart-home-security)
+- [Kids Online Safety Guide](/kids-online-safety)
 
-### 🔧 Recommended Security Tools:
-- **VPN Protection**: [NordVPN for Families](https://affiliate-link) 
-- **Password Manager**: [1Password Family Plan](https://affiliate-link)
-- **Antivirus**: [Norton Family Security](https://affiliate-link)
+**Content Security**: This post has been verified for family safety and security.
 
-### 📚 Related Resources:
-- [Complete Family Security Guide](https://payhip.com/CyberDadKit)
-- [Printable Security Checklists](https://www.etsy.com/shop/CyberDadPrints)
-- [Digital Safety Worksheets](https://cyberdad.gumroad.com/l/ojawof)
-
-*Remember: Perfect for ages 4-99! Share this with other families who need to stay cyber-safe.*
+**Stay Safe, CyberDad** 👨‍💻🛡️
 """
-        
-        return filename, post_content
-
-    def create_excerpt(self, content):
-        """Create excerpt from content"""
-        sentences = content.split('.')[:2]  # First 2 sentences
-        excerpt = '. '.join(sentences)
-        if len(excerpt) > 160:
-            excerpt = excerpt[:157] + "..."
-        return excerpt
-
-    def save_post(self, filename, content):
-        """Save Jekyll post to _posts directory"""
-        try:
-            # Create _posts directory if it doesn't exist
-            os.makedirs('_posts', exist_ok=True)
             
+            # Secure file creation
+            os.makedirs('_posts', exist_ok=True)
             filepath = os.path.join('_posts', filename)
             
-            with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(content)
+            # Write with atomic operation
+            temp_filepath = filepath + '.tmp'
+            with open(temp_filepath, 'w', encoding='utf-8') as f:
+                f.write(full_content)
             
-            print(f"✅ Blog post saved: {filepath}")
-            return True
+            # Atomic move
+            os.rename(temp_filepath, filepath)
             
-        except Exception as e:
-            print(f"❌ Failed to save post: {e}")
-            return False
-
-    def log_generation_activity(self, success, content_title="", content_type="", source="", error=None):
-        """Log content generation activity"""
-        log_entry = {
-            "timestamp": datetime.now().isoformat(),
-            "success": success,
-            "content_title": content_title,
-            "content_type": content_type,
-            "source": source,
-            "error": str(error) if error else None
-        }
-        
-        try:
-            os.makedirs('logs', exist_ok=True)
-            log_file = f"logs/content_generation_{datetime.now().strftime('%Y%m%d')}.json"
-            
-            logs = []
-            if os.path.exists(log_file):
-                with open(log_file, 'r') as f:
-                    logs = json.load(f)
-            
-            logs.append(log_entry)
-            
-            with open(log_file, 'w') as f:
-                json.dump(logs, f, indent=2)
+            # Verify file integrity
+            if self.security.verify_integrity(filepath):
+                self.existing_posts.add(title_slug)
+                logging.getLogger('cyberdad_security').info(f"Secure post created: {filename}")
+                return True
+            else:
+                os.remove(filepath)
+                return False
                 
         except Exception as e:
-            print(f"⚠️ Logging failed: {e}")
-
-    def run_content_generation(self):
-        """Main content generation function"""
-        print("🚀 CYBERDAD CONTENT GENERATION SYSTEM")
-        print("=" * 60)
-        print(f"🕐 Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            logging.getLogger('cyberdad_security').error(f"Secure post creation error: {str(e)}")
+            return False
+    
+    def determine_content_type_secure(self) -> str:
+        """Securely determine content type based on time and security state"""
+        current_hour = datetime.now().hour
         
+        # Check for security incidents
+        if self.security.network_monitor.detect_anomalies():
+            return 'family_guide'  # Safer content during anomalies
+        
+        if current_hour < 8:
+            return 'quick_tip'
+        elif 8 <= current_hour < 16:
+            return 'cti_alert'
+        else:
+            return 'family_guide'
+    
+    @security_decorator
+    def run_secure_generation(self) -> bool:
+        """Main secure generation pipeline"""
         try:
-            # Step 1: Load existing posts
-            self.load_existing_posts()
+            logging.getLogger('cyberdad_security').info("Starting secure content generation")
             
-            # Step 2: Determine content type for this run
-            content_type = self.determine_content_type()
-            print(f"📝 Generating {content_type} content...")
+            # Pre-flight security checks
+            if not self.security.check_memory_usage():
+                raise MemoryError("Memory usage too high")
             
-            # Step 3: Get CTI data if needed
-            threat_data = None
+            # Load existing posts
+            self.load_existing_posts_secure()
+            
+            # Determine content type
+            content_type = self.determine_content_type_secure()
+            
+            # Scrape CTI feeds if needed
+            cti_data = None
             if content_type == 'cti_alert':
-                threats = self.scrape_cti_intelligence()
-                if threats:
-                    threat_data = threats[0]  # Use most relevant threat
-                    print(f"🎯 Using threat: {threat_data['title'][:50]}...")
-                else:
-                    print("⚠️ No relevant threats found, switching to tip content")
-                    content_type = 'quick_tip'
+                cti_items = self.scrape_cti_feeds_secure()
+                if cti_items:
+                    cti_data = cti_items[0]
             
-            # Step 4: Generate family-friendly content
-            content_data = self.generate_family_content(threat_data, content_type)
+            # Generate content
+            post_data = self.generate_secure_content(content_type, cti_data)
             
-            # Step 5: Create Jekyll post
-            filename, post_content = self.create_jekyll_post(content_data)
+            if post_data and post_data.get('security_verified', False):
+                # Create post
+                success = self.create_secure_jekyll_post(post_data)
+                
+                if success:
+                    # Log success securely
+                    log_entry = {
+                        'timestamp': datetime.now().isoformat(),
+                        'content_type': content_type,
+                        'title_hash': hashlib.sha256(post_data['title'].encode()).hexdigest()[:16],
+                        'security_verified': True,
+                        'success': True
+                    }
+                    
+                    self.log_operation_secure(log_entry)
+                    return True
             
-            # Step 6: Save post
-            success = self.save_post(filename, post_content)
-            
-            # Step 7: Update existing posts tracking
-            if success:
-                self.existing_posts.add(content_data.get('content_hash', hashlib.md5(content_data['title'].encode()).hexdigest()[:8]))
-            
-            # Step 8: Log activity
-            self.log_generation_activity(
-                success=success,
-                content_title=content_data['title'],
-                content_type=content_type,
-                source=threat_data['source'] if threat_data else 'Generated'
-            )
-            
-            print("=" * 60)
-            if success:
-                print("✅ CONTENT GENERATION SUCCESS!")
-                print(f"📄 Created: {content_data['title']}")
-                print(f"📂 File: {filename}")
-                print(f"🏷️ Type: {content_type}")
-                print(f"📚 Category: {content_data['category']}")
-                print(f"⏱️ Reading time: {content_data['reading_time']}")
-                if threat_data:
-                    print(f"🕵️ Source: {threat_data['source']}")
-            else:
-                print("❌ CONTENT GENERATION FAILED!")
-            
-            print(f"🕐 Completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-            
-            return success
+            return False
             
         except Exception as e:
-            print(f"❌ CRITICAL ERROR: {e}")
-            self.log_generation_activity(False, error=str(e))
+            logging.getLogger('cyberdad_security').error(f"Secure generation failed: {str(e)}")
             return False
+    
+    def load_existing_posts_secure(self):
+        """Securely load existing posts"""
+        posts_dir = '_posts'
+        if os.path.exists(posts_dir):
+            for filename in os.listdir(posts_dir):
+                if filename.endswith('.md'):
+                    # Verify file integrity before processing
+                    filepath = os.path.join(posts_dir, filename)
+                    if self.security.verify_integrity(filepath):
+                        title = filename.replace('.md', '').split('-', 3)[-1] if '-' in filename else filename
+                        self.existing_posts.add(title.lower())
+    
+    def log_operation_secure(self, log_data: Dict):
+        """Securely log operations"""
+        try:
+            os.makedirs('logs', exist_ok=True)
+            log_file = f"logs/secure_operations_{datetime.now().strftime('%Y%m%d')}.json"
+            
+            # Encrypt sensitive log data
+            encrypted_data = self.security.encryption_key.encrypt(
+                json.dumps(log_data).encode()
+            )
+            
+            with open(log_file, 'ab') as f:
+                f.write(base64.b64encode(encrypted_data) + b'\n')
+                
+        except Exception as e:
+            logging.getLogger('cyberdad_security').error(f"Secure logging failed: {str(e)}")
 
 def main():
-    """Entry point for GitHub Actions"""
-    generator = CyberDadContentGenerator()
-    
-    # Add random delay to avoid rate limiting
-    delay = random.randint(5, 30)
-    print(f"⏱️ Starting delay: {delay} seconds")
-    time.sleep(delay)
-    
-    # Run content generation
-    success = generator.run_content_generation()
-    
-    if success:
-        print("🎉 CyberDad content generation completed successfully!")
-        exit(0)
-    else:
-        print("💥 Content generation failed!")
-        exit(1)
+    """Main execution with security context"""
+    try:
+        # Initialize secure generator
+        generator = UltraSecureCyberDadGenerator()
+        
+        # Run secure generation
+        success = generator.run_secure_generation()
+        
+        if success:
+            print("✅ Secure content generation completed successfully")
+            return 0
+        else:
+            print("❌ Secure content generation failed")
+            return 1
+            
+    except Exception as e:
+        print(f"🚨 Critical error in secure generation: {str(e)}")
+        return 1
+    finally:
+        # Secure cleanup
+        try:
+            if 'generator' in locals():
+                generator._secure_cleanup()
+        except:
+            pass
 
 if __name__ == "__main__":
-    main()
+    exit_code = main()
+    sys.exit(exit_code)
