@@ -1,7 +1,6 @@
 name: Generate Daily Cybersecurity Blog Post - Robust Version
 
 on:
-  schedule:
      schedule:
     - cron: '0 13 * * *'  # 9:00 AM EST
     - cron: '0 17 * * *'  # 1:00 PM EST
