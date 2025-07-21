@@ -44,6 +44,9 @@ jobs:
         echo "🚀 Starting CyberDad Ultra-Secure CTI Generation..."
         python scripts/content_generator.py
         echo "✅ Content generation completed successfully"
+        echo "✅ Content generation completed successfully"
+        echo "📊 Updating analytics with accurate post count..."
+        python scripts/analytics_fixed.py
         
     - name: 📝 Commit New Security Content
       run: |
