@@ -1,331 +1,47 @@
-name: Generate Daily Cybersecurity Blog Post - Robust Version
+name: Generate Daily Cybersecurity Blog Post
 
 on:
-     schedule:
+  schedule:
     - cron: '0 13 * * *'  # 9:00 AM EST
-    - cron: '0 17 * * *'  # 1:00 PM EST
+    - cron: '0 17 * * *'  # 1:00 PM EST  
     - cron: '0 0 * * *'   # 8:00 PM EST (runs at 12:00 AM UTC next day)
-  workflow_dispatch:  # Allow manual triggering
-    inputs:
-      force_run:
-        description: 'Force run even if recent post exists'
-        required: false
-        default: 'false'
-
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  workflow_dispatch:      # Allow manual triggering
 
 jobs:
   generate-blog-post:
     runs-on: ubuntu-latest
-    timeout-minutes: 30  # Prevent infinite hanging
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [ubuntu-latest]
+    timeout-minutes: 30
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Setup Python with cache
+      
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
-        cache: 'pip'
-    
-    - name: Install dependencies with retry
+        python-version: '3.9'
+        
+    - name: Install dependencies
       run: |
-        for i in {1..3}; do
-          pip install --upgrade pip && \
-          pip install requests openai anthropic python-frontmatter markdown beautifulsoup4 pyyaml && \
-          break || sleep 30
-        done
-    
-    - name: Check for recent posts
-      id: check_recent
+        pip install requests openai feedparser beautifulsoup4 pyyaml cryptography
+        
+    - name: Run Content Generator
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       run: |
-        # Check if we've posted in the last 4 hours (unless forced)
-        if [ "${{ github.event.inputs.force_run }}" != "true" ]; then
-          recent_post=$(find _posts -name "*.md" -newermt "4 hours ago" | head -1)
-          if [ -n "$recent_post" ]; then
-            echo "Recent post found: $recent_post"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "No recent posts found, proceeding..."
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-        else
-          echo "Force run enabled, skipping recent check"
-          echo "skip=false" >> $GITHUB_OUTPUT
-        fi
-    
-    - name: Generate blog post with fallback
-      if: steps.check_recent.outputs.skip == 'false'
-      run: |
-        python3 << 'EOF'
-        import os
-        import sys
-        import requests
-        import json
-        import time
-        from datetime import datetime
-        import random
-        import yaml
+        cd scripts
+        python content_generator.py
         
-        # Pinterest-optimized topics (short titles under 30 chars)
-        TOPICS = [
-            "VPN Security Tips 2025",
-            "Password Manager Guide",
-            "Home Router Setup",
-            "Antivirus Review",
-            "Cloud Backup Security",
-            "Parental Control Software",
-            "Identity Theft Protection",
-            "Enterprise Security Tools",
-            "Email Security Privacy",
-            "Cryptocurrency Security",
-            "IoT Device Protection",
-            "Mobile Security Apps",
-            "Network Monitoring Tools",
-            "Firewall Configuration",
-            "Data Encryption Guide",
-            "Phishing Prevention",
-            "Ransomware Protection",
-            "Social Media Privacy",
-            "Wi-Fi Security Setup",
-            "Backup Strategy Guide"
-        ]
-        
-        def generate_with_openai(topic, api_key):
-            """Generate content using OpenAI API with retry logic"""
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json"
-            }
-            
-            prompt = f"""Write a comprehensive cybersecurity blog post about "{topic}". 
-            
-            Structure:
-            1. Engaging introduction
-            2. Main content with practical tips
-            3. Product recommendations with affiliate potential
-            4. Conclusion with call-to-action
-            
-            Make it SEO-friendly, informative, and suitable for families. Include specific product recommendations.
-            Length: 800-1200 words."""
-            
-            data = {
-                "model": "gpt-3.5-turbo",
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 2000,
-                "temperature": 0.7
-            }
-            
-            for attempt in range(3):
-                try:
-                    response = requests.post(
-                        "https://api.openai.com/v1/chat/completions",
-                        headers=headers,
-                        json=data,
-                        timeout=30
-                    )
-                    
-                    if response.status_code == 200:
-                        return response.json()["choices"][0]["message"]["content"]
-                    elif response.status_code == 429:
-                        print(f"Rate limited, waiting {(attempt + 1) * 10} seconds...")
-                        time.sleep((attempt + 1) * 10)
-                    else:
-                        print(f"OpenAI API error {response.status_code}: {response.text}")
-                        
-                except Exception as e:
-                    print(f"OpenAI attempt {attempt + 1} failed: {e}")
-                    time.sleep(5)
-            
-            return None
-        
-        def generate_with_anthropic(topic, api_key):
-            """Fallback to Anthropic API"""
-            headers = {
-                "x-api-key": api_key,
-                "Content-Type": "application/json",
-                "anthropic-version": "2023-06-01"
-            }
-            
-            data = {
-                "model": "claude-3-sonnet-20240229",
-                "max_tokens": 2000,
-                "messages": [{"role": "user", "content": f"Write a cybersecurity blog post about {topic}"}]
-            }
-            
-            try:
-                response = requests.post(
-                    "https://api.anthropic.com/v1/messages",
-                    headers=headers,
-                    json=data,
-                    timeout=30
-                )
-                
-                if response.status_code == 200:
-                    return response.json()["content"][0]["text"]
-                    
-            except Exception as e:
-                print(f"Anthropic API failed: {e}")
-            
-            return None
-        
-        def generate_fallback_content(topic):
-            """Generate basic content if APIs fail"""
-            return f"""# {topic}
-        
-        Cybersecurity remains one of the most critical concerns for individuals and businesses in 2025. Understanding {topic.lower()} is essential for maintaining digital safety and protecting sensitive information.
-        
-        ## Why {topic} Matters
-        
-        In today's interconnected world, cyber threats are constantly evolving. {topic} plays a crucial role in defending against malicious actors and securing digital assets.
-        
-        ## Key Considerations
-        
-        - Regular security updates and patches
-        - Strong authentication methods
-        - Continuous monitoring and assessment
-        - User education and awareness
-        - Incident response planning
-        
-        ## Best Practices
-        
-        1. **Assessment**: Regularly evaluate your current security posture
-        2. **Implementation**: Deploy appropriate security measures
-        3. **Monitoring**: Continuously watch for threats and anomalies
-        4. **Response**: Have a plan for incident management
-        5. **Recovery**: Ensure business continuity capabilities
-        
-        ## Recommended Solutions
-        
-        Consider investing in reputable cybersecurity tools and services that align with your specific needs and budget. Professional consultation can help determine the best approach for your situation.
-        
-        ## Conclusion
-        
-        {topic} is an investment in your digital future. By taking proactive steps today, you can protect yourself and your organization from evolving cyber threats.
-        
-        Stay informed, stay secure, and remember that cybersecurity is an ongoing process, not a one-time setup.
-        """
-        
-        def create_blog_post():
-            """Main function to create blog post"""
-            # Select random topic
-            topic = random.choice(TOPICS)
-            print(f"Selected topic: {topic}")
-            
-            # Try to generate content
-            content = None
-            
-            # Try OpenAI first
-            openai_key = os.getenv('OPENAI_API_KEY')
-            if openai_key:
-                print("Attempting OpenAI generation...")
-                content = generate_with_openai(topic, openai_key)
-            
-            # Fallback to Anthropic
-            if not content:
-                anthropic_key = os.getenv('ANTHROPIC_API_KEY')
-                if anthropic_key:
-                    print("Falling back to Anthropic...")
-                    content = generate_with_anthropic(topic, anthropic_key)
-            
-            # Final fallback to template
-            if not content:
-                print("Using fallback template...")
-                content = generate_fallback_content(topic)
-            
-            # Create filename
-            now = datetime.now()
-            filename = f"_posts/{now.strftime('%Y-%m-%d')}-{topic.lower().replace(' ', '-').replace(':', '').replace('/', '-')}.md"
-            
-            # Create frontmatter
-            frontmatter = {
-                'layout': 'post',
-                'title': topic,
-                'date': now.strftime('%Y-%m-%d %H:%M:%S %z'),
-                'categories': ['cybersecurity', 'tech', 'security'],
-                'tags': topic.lower().split(),
-                'author': 'CyberDad2025',
-                'excerpt': f"Essential guide to {topic.lower()} for families and businesses in 2025.",
-                'seo_title': f"{topic} - Complete Guide 2025",
-                'seo_description': f"Learn about {topic.lower()} with practical tips and recommendations for better cybersecurity."
-            }
-            
-            # Write file
-            os.makedirs('_posts', exist_ok=True)
-            with open(filename, 'w') as f:
-                f.write('---\n')
-                f.write(yaml.dump(frontmatter, default_flow_style=False))
-                f.write('---\n\n')
-                f.write(content)
-            
-            print(f"Blog post created: {filename}")
-            return filename
-        
-        # Execute
-        try:
-            filename = create_blog_post()
-            print(f"SUCCESS: Created {filename}")
-        except Exception as e:
-            print(f"ERROR: {e}")
-            sys.exit(1)
-        EOF
-    
-    - name: Commit and push with retry
-      if: steps.check_recent.outputs.skip == 'false'
+    - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        
-        # Check if there are changes to commit
-        if [ -n "$(git status --porcelain)" ]; then
-          git add _posts/
-          git commit -m "🤖 Auto-generated blog post - $(date '+%Y-%m-%d %H:%M:%S')"
-          
-          # Push with retry logic
-          for i in {1..5}; do
-            if git push origin main; then
-              echo "✅ Successfully pushed to repository"
-              break
-            else
-              echo "❌ Push failed, attempt $i/5"
-              if [ $i -eq 5 ]; then
-                echo "🚨 All push attempts failed"
-                exit 1
-              fi
-              sleep $((i * 10))
-            fi
-          done
-        else
+        git add .
+        if git diff --staged --quiet; then
           echo "No changes to commit"
+        else
+          git commit -m "Add new cybersecurity blog post - $(date +'%Y-%m-%d')"
+          git push
         fi
-    
-    - name: Deployment verification
-      if: steps.check_recent.outputs.skip == 'false'
-      run: |
-        echo "✅ Blog post generation completed successfully"
-        echo "📝 New post should be available at: https://cyberdad2025.github.io"
-        echo "🔄 Site will rebuild automatically via GitHub Pages"
-        
-        # Optional: Ping site to trigger rebuild
-        curl -s -o /dev/null -w "%{http_code}" "https://cyberdad2025.github.io" || true
-    
-    - name: Error reporting
-      if: failure()
-      run: |
-        echo "🚨 Workflow failed. Common solutions:"
-        echo "1. Check API keys in repository secrets"
-        echo "2. Verify repository permissions"
-        echo "3. Check GitHub Actions quota"
-        echo "4. Review workflow logs above"
-        echo "5. Try manual workflow_dispatch trigger"
