@@ -6,7 +6,8 @@ Adaptive Threat Detection | Stealth Scraping | Self-Protection
 """
 
 import requests
-import openai
+# NEW (fixed):
+response = self.openai_client.chat.completions.create(
 import os
 import json
 import feedparser
