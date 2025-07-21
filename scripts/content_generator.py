@@ -406,7 +406,7 @@ class UltraSecureCyberDadGenerator:
         
         # Initialize OpenAI with security
         if self.openai_key:
-    self.openai_client = OpenAI(api_key=self.openai_key)
+     self.openai_client = OpenAI(api_key=self.openai_key)
         
         # CTI feeds with security validation
         self.cti_feeds = {
