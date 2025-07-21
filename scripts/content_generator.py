@@ -6,8 +6,7 @@ Adaptive Threat Detection | Stealth Scraping | Self-Protection
 """
 
 import requests
-# NEW (fixed):
-response = self.openai_client.chat.completions.create(
+from openai import OpenAI
 import os
 import json
 import feedparser
@@ -407,7 +406,7 @@ class UltraSecureCyberDadGenerator:
         
         # Initialize OpenAI with security
         if self.openai_key:
-            openai.api_key = self.openai_key
+    self.openai_client = OpenAI(api_key=self.openai_key)
         
         # CTI feeds with security validation
         self.cti_feeds = {
