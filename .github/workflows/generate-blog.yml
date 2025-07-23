@@ -1,37 +1,26 @@
 name: Generate Blog Post
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    paths:
+      - "_posts/**"
+      - "smart_fm_update.py"
+  workflow_dispatch:
 
 jobs:
   generate-post:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set Up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: List Files in Workspace
-      run: ls -R
+      - name: Install PyYAML
+        run: pip install pyyaml
 
-    - name: Check for main.py
-      run: |
-        if [ ! -f "./main.py" ]; then
-          echo "❌ main.py not found in root directory."
-          exit 1
-        fi
-
-    - name: Install Dependencies
-      run: |
-        pip install -r requirements.txt || echo "⚠️ requirements.txt not found or install failed."
-
-    - name: Run Blog Generator
-      run: python main.py
+      - name: Run Smart FM Update
+        run: python smart_fm_update.py
