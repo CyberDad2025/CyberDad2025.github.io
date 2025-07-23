@@ -1,58 +1,59 @@
-python smart_fm_update.py
 import os
 import yaml
+import datetime
 
 POSTS_DIR = "_posts"
-DEFAULT_IMAGE = "/assets/images/post-thumbnail.jpg"
+SYNC_LOG = "logs/sync-report.md"
 
-def determine_category(title):
-    title = title.lower()
-    if any(k in title for k in ["daily", "alert", "malware", "phishing", "threat", "scam"]):
-        return "CTI"
-    elif any(k in title for k in ["setup", "password", "router", "camera", "security", "authentication"]):
-        return "Guide"
-    elif any(k in title for k in ["tips", "privacy", "checklist", "safe", "pro tips"]):
-        return "Tips"
-    elif any(k in title for k in ["kids", "parent", "family", "grandparent"]):
-        return "Family"
-    else:
-        return "General"
-
-def has_valid_front_matter(lines):
-    return lines and lines[0].strip() == "---" and "---" in lines[1:]
-
-for filename in os.listdir(POSTS_DIR):
-    if not filename.endswith(".md"):
-        continue
-
-    path = os.path.join(POSTS_DIR, filename)
-
-    with open(path, "r", encoding="utf-8") as f:
+def update_front_matter(file_path):
+    with open(file_path, "r", encoding="utf-8") as f:
         lines = f.readlines()
 
-    if not has_valid_front_matter(lines):
-        print(f"Skipped (no valid front matter): {filename}")
-        continue
+    if lines[0].strip() != "---":
+        return False
 
-    end_index = lines[1:].index("---\n") + 1
-    front_matter = yaml.safe_load("".join(lines[1:end_index]))
-    title = front_matter.get("title", filename)
+    front_matter = []
+    content_start = 0
+    for i, line in enumerate(lines[1:], 1):
+        if line.strip() == "---":
+            content_start = i + 1
+            break
+        front_matter.append(line)
 
+    data = yaml.safe_load("".join(front_matter))
     updated = False
 
-    if "image" not in front_matter:
-        front_matter["image"] = DEFAULT_IMAGE
-        updated = True
-
-    if "category" not in front_matter:
-        front_matter["category"] = determine_category(title)
+    if "title" not in data or not data["title"]:
+        filename = os.path.basename(file_path).replace(".md", "")
+        generated_title = filename.replace("-", " ").title()
+        data["title"] = generated_title
         updated = True
 
     if updated:
-        new_front = yaml.dump(front_matter, sort_keys=False)
-        new_content = ["---\n"] + new_front.splitlines(keepends=True) + ["---\n"] + lines[end_index+1:]
-        with open(path, "w", encoding="utf-8") as f:
-            f.writelines(new_content)
-        print(f"✅ Updated: {filename}")
-    else:
-        print(f"✔️ Already good: {filename}")
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write("---\n")
+            yaml.dump(data, f, allow_unicode=True)
+            f.write("---\n")
+            f.writelines(lines[content_start:])
+
+    return updated
+
+def main():
+    updated_files = []
+    for filename in os.listdir(POSTS_DIR):
+        if filename.endswith(".md"):
+            file_path = os.path.join(POSTS_DIR, filename)
+            if update_front_matter(file_path):
+                updated_files.append(filename)
+
+    with open(SYNC_LOG, "w") as log_file:
+        log_file.write(f"# Front Matter Sync Report ({datetime.datetime.now().isoformat()})\n\n")
+        if updated_files:
+            log_file.write("Updated the following files:\n")
+            for f in updated_files:
+                log_file.write(f"- {f}\n")
+        else:
+            log_file.write("No updates were necessary.\n")
+
+if __name__ == "__main__":
+    main()
