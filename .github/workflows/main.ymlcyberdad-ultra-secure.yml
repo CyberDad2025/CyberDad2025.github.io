@@ -42,7 +42,7 @@ jobs:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       run: |
         echo "🚀 Starting CyberDad Ultra-Secure CTI Generation..."
-        python scripts/content_generator.py
+        python scripts/multi_ai_blog_generator.py
         echo "✅ Content generation completed successfully"
         echo "✅ Content generation completed successfully"
         echo "📊 Updating analytics with accurate post count..."
