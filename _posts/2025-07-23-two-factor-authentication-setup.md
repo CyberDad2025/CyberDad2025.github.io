@@ -3,6 +3,7 @@ layout: post
 title: "Two-Factor Authentication Setup"
 date: 2025-07-23 18:57:28 -0500
 categories: [cybersecurity, family-safety, security-guide]
+image: /assets/images/post-thumbnail.jpg
 tags: [security, family, guide, protection, cybersecurity]
 author: CyberDad
 description: "Learn two-factor authentication setup with simple steps anyone can follow."
