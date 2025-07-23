@@ -48,7 +48,7 @@ defaults:
       layout: "default"
 
 # Pagination
-paginate: 10
+paginate: 25
 paginate_path: "/page:num/"
 
 # SEO
