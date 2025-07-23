@@ -11,27 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Set Up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
+    - name: Set Up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-      - name: List Files for Debugging
-        run: ls -R
+    - name: List Files in Workspace
+      run: ls -R
 
-      - name: Check for main.py
-        run: |
-          if [ ! -f "./main.py" ]; then
-            echo "❌ main.py not found in root directory."
-            exit 1
-          fi
+    - name: Check for main.py
+      run: |
+        if [ ! -f "./main.py" ]; then
+          echo "❌ main.py not found in root directory."
+          exit 1
+        fi
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt || echo "⚠️ No requirements.txt found or install failed."
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt || echo "⚠️ requirements.txt not found or install failed."
 
-      - name: Run Blog Generator
-        run: python main.py
+    - name: Run Blog Generator
+      run: python main.py
