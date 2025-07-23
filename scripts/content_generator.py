@@ -178,7 +178,8 @@ class GitHubBlogPublisher:
 
 def main():
     print("🚀 Starting Cyber Dad Blog Publisher")
-    repo_path = "/your/full/path/to/cyberdad2025.github.io"  # <- CHANGE THIS
+    repo_path = "."
+  # <- CHANGE THIS
     config_path = "cyberdad_config.yaml"
 
     engine = CyberDadContentEngine(config_path=config_path)
