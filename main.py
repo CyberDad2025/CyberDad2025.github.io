@@ -1,34 +1,24 @@
-import openai
 import datetime
-import os
-import random
 
-# Set your OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Create a basic blog post with today's date
+today = datetime.datetime.now().strftime("%Y-%m-%d")
+filename = f"_posts/{today}-daily-cyber-tip.md"
 
-# Define the output folder
-POST_DIR = "_posts"
+content = f"""---
+title: "Cyber Tip for {today}"
+date: {today}
+categories: [Cybersecurity, Family Safety]
+---
 
-# Define time-based categories
-categories_by_hour = {
-    9: "Family Tips",
-    13: "Cyber Threat Alert",
-    20: "Security Tools"
-}
+🔐 **Daily Cyber Tip**
 
-# Title prompt themes
-prompt_by_category = {
-    "Family Tips": "Write a short, helpful cybersecurity tip for families using non-technical language.",
-    "Cyber Threat Alert": "Summarize the latest cybersecurity threat or scam targeting families. Use plain English.",
-    "Security Tools": "Explain a cybersecurity tool (like VPN, antivirus, 2FA) in a simple way that even grandparents can follow."
-}
+Always use **unique passwords** for each online account and enable **two-factor authentication (2FA)** wherever possible.
 
-# Determine the current category
-current_hour = datetime.datetime.now().hour
-selected_hour = max([h for h in categories_by_hour if h <= current_hour], default=9)
-category = categories_by_hour[selected_hour]
-prompt = prompt_by_category[category]
+Stay safe online! 🛡️
+"""
 
-# Generate post with OpenAI
-response = openai.ChatCompletion.create(
-    model="gpt-4",
+# Write the blog post
+with open(filename, "w") as file:
+    file.write(content)
+
+print(f"✅ Blog post created: {filename}")
