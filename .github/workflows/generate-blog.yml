@@ -2,11 +2,12 @@ name: Scheduled Blog Post
 
 on:
   schedule:
-    # Adjust these if you want exact Eastern times (these are UTC)
-    - cron: '0 14 * * *'   # ~10:00 ET (09:00 EST / 10:00 EDT)
-    - cron: '0 18 * * *'   # ~14:00 ET (01:00/02:00 depending DST)
-    - cron: '0 0 * * *'    # ~20:00 ET previous day (08:00 PM EST / 09:00 PM EDT approx)
-  workflow_dispatch:        # manual run button
+    - cron: '0 14 * * *'  # ~10:00 ET (09:00 EST / 10:00 EDT)
+    - cron: '0 18 * * *'  # ~14:00 ET (01:00/02:00 depending DST)
+    - cron: '0 0 * * *'   # ~20:00 ET previous day (08:00 PM EST / 09:00 PM EDT approx)
+workflow_dispatch:      # <- MUST be aligned with `schedule:`
+
+  
 
 env:
   OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
