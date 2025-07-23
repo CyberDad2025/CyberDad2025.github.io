@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+
+  <!-- 🔐 Cybersecurity Alert Banner -->
+  <section style="background: #fef3c7; padding: 20px; border: 1px solid #fcd34d; margin-bottom: 40px;">
+    <h2>🚨 Family Cybersecurity Alert</h2>
+    <p>New phishing tactics targeting parents with fake apps. Check your devices!</p>
+    <a href="{{ site.posts[0].url }}" style="display:inline-block;padding:10px 20px;background:#f59e0b;color:white;text-decoration:none;border-radius:5px;">Read Latest Alert →</a>
+  </section>
+
+  <!-- 📰 Latest Blog Posts -->
+  <section>
+    <h2>Latest Family Security Posts</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;">
+      {% for post in site.posts limit:6 %}
+      <div style="border:1px solid #e5e7eb;padding:20px;width:30%;background:white;">
+        <img src="{{ post.image | default: '/assets/images/default-thumb.png' }}" alt="Post image" style="width:100%;height:auto;">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.excerpt }}</p>
+        <a href="{{ post.url }}" style="color:#2563eb;">Read More →</a>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- 📩 Email Sign-Up CTA -->
+  <section style="margin-top: 50px; background: #e0f2fe; padding: 20px; text-align: center;">
+    <h3>Join 12,000+ Parents Getting Weekly Alerts
