@@ -8,12 +8,14 @@ on:
     - cron: '0 0 * * *'    # ~20:00 ET previous day (08:00 PM EST / 09:00 PM EDT approx)
   workflow_dispatch:        # manual run button
 
+env:
+  OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
+  PYTHONUNBUFFERED: "1"
 jobs:
   generate-post:
     runs-on: ubuntu-latest
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      PYTHONUNBUFFERED: "1"
+
+    
 
     steps:
       - name: Checkout repo
