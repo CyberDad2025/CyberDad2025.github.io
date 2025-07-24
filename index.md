@@ -4,501 +4,309 @@ title: Cyber Dad Central
 ---
 
 <style>
-/* HIGH-REVENUE BLOG COLOR SCHEME */
-body {
+body { 
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Georgia', serif;
+    line-height: 1.7;
+    color: #333;
 }
 
-.main-container {
+.blog-container {
+    max-width: 800px;
+    margin: 2rem auto;
     background: white;
-    margin: 0 auto;
-    max-width: 1200px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    padding: 3rem;
     border-radius: 12px;
-    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* HERO SECTION */
-.hero-section {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-    color: white;
-    padding: 3rem 2rem;
+.blog-header {
     text-align: center;
-    position: relative;
-    overflow: hidden;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid #ff6b6b;
 }
 
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-.hero-title {
+.blog-title {
     font-size: 2.5rem;
-    font-weight: 800;
+    color: #2c3e50;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-weight: 700;
 }
 
-.hero-subtitle {
+.blog-tagline {
     font-size: 1.2rem;
-    opacity: 0.95;
-    margin-bottom: 2rem;
-    font-weight: 300;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 1.5rem;
 }
 
-.hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.stat-item {
-    background: rgba(255,255,255,0.2);
-    padding: 1rem 1.5rem;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.3);
-}
-
-.stat-number {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: 700;
-}
-
-/* CONTENT SECTION */
-.content-section {
+.author-intro {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
     padding: 2rem;
-}
-
-/* DIGITAL STORE SECTION */
-.store-section {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-    color: white;
-    padding: 3rem 2rem;
+    border-radius: 10px;
     margin: 2rem 0;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+    border-left: 5px solid #e17055;
 }
 
-.store-title {
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-}
-
-.store-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+.store-intro {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
     margin: 2rem 0;
 }
 
-.store-item {
-    background: rgba(255,255,255,0.15);
-    padding: 1.5rem;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
+.store-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
-.store-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-.store-item a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-block;
+.store-link {
     background: rgba(255,255,255,0.2);
+    color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 25px;
-    margin-top: 1rem;
+    text-decoration: none;
+    font-weight: 600;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-.store-item a:hover {
+.store-link:hover {
     background: rgba(255,255,255,0.3);
-    transform: scale(1.05);
-}
-
-.bestseller-badge {
-    background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%);
-    color: #333;
-    padding: 2rem;
-    border-radius: 15px;
-    margin: 2rem 0;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(255, 154, 158, 0.4);
-}
-
-/* BLOG POSTS SECTION */
-.posts-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transform: translateY(-2px);
     color: white;
-    padding: 3rem 2rem;
-    margin: 2rem 0;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
 }
 
-.posts-title {
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
+.posts-section {
+    margin: 3rem 0;
+}
+
+.posts-intro {
+    font-size: 1.1rem;
+    color: #2c3e50;
     margin-bottom: 2rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    text-align: center;
+    font-style: italic;
 }
 
 .post-item {
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #00b894;
     transition: all 0.3s ease;
 }
 
 .post-item:hover {
-    background: rgba(255,255,255,0.15);
-    transform: translateX(10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .post-date {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    color: #636e72;
     font-size: 0.9rem;
-    font-weight: 600;
-    display: inline-block;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
 .post-category {
-    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    background: #00b894;
     color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
+    padding: 0.2rem 0.8rem;
+    border-radius: 12px;
     font-size: 0.8rem;
+    margin-left: 1rem;
     font-weight: 500;
-    margin-left: 0.5rem;
 }
 
 .post-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin: 1rem 0;
     font-weight: 600;
-    margin: 1rem 0 0.5rem 0;
 }
 
 .post-title a {
-    color: white;
+    color: #2c3e50;
     text-decoration: none;
 }
 
 .post-title a:hover {
-    color: #ffd93d;
-    text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
-}
-
-.post-excerpt {
-    opacity: 0.9;
-    line-height: 1.6;
-    margin: 1rem 0;
-}
-
-.read-more {
-    color: #ffd93d;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border: 2px solid #ffd93d;
-    border-radius: 20px;
-    display: inline-block;
-    transition: all 0.3s ease;
-}
-
-.read-more:hover {
-    background: #ffd93d;
-    color: #333;
-    transform: scale(1.05);
-}
-
-/* STATS SECTION */
-.stats-section {
-    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-    color: #333;
-    padding: 2rem;
-    border-radius: 15px;
-    margin: 2rem 0;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(252, 182, 159, 0.3);
-}
-
-.stats-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #d63031;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-}
-
-.stat-box {
-    background: rgba(255,255,255,0.7);
-    padding: 1rem;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-}
-
-/* CONTACT SECTION */
-.contact-section {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-    color: #333;
-    padding: 2rem;
-    border-radius: 15px;
-    margin: 2rem 0;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(168, 237, 234, 0.3);
-}
-
-.contact-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
     color: #00b894;
 }
 
-.emergency-btn {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 25px;
-    font-weight: 600;
+.post-excerpt {
+    color: #636e72;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.read-more {
+    color: #00b894;
     text-decoration: none;
-    display: inline-block;
-    margin: 0.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-}
-
-.emergency-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
-}
-
-.help-btn {
-    background: linear-gradient(45deg, #4ecdc4, #44a08d);
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 25px;
     font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-    margin: 0.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
 }
 
-.help-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
+.read-more:hover {
+    border-bottom-color: #00b894;
 }
 
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .hero-stats {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .store-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .content-section {
-        padding: 1rem;
-    }
-}
-
-/* FLOATING ELEMENTS */
-.floating-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+.blog-footer {
+    background: #2c3e50;
     color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer-stats {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-stat {
+    text-align: center;
+    margin: 0.5rem;
+}
+
+.footer-stat-number {
     font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-    cursor: pointer;
+    font-weight: 700;
+    color: #74b9ff;
+}
+
+.contact-buttons {
+    margin-top: 1.5rem;
+}
+
+.contact-btn {
+    background: #e17055;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    margin: 0.5rem;
+    display: inline-block;
+    font-weight: 600;
     transition: all 0.3s ease;
-    z-index: 1000;
 }
 
-.floating-icon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+.contact-btn:hover {
+    background: #d63031;
+    transform: translateY(-2px);
+    color: white;
 }
 
-/* ANIMATIONS */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.emergency-btn {
+    background: #d63031;
 }
 
-.post-item, .store-item, .stat-box {
-    animation: fadeInUp 0.6s ease forwards;
+@media (max-width: 768px) {
+    .blog-container { margin: 1rem; padding: 2rem; }
+    .blog-title { font-size: 2rem; }
+    .store-links { flex-direction: column; }
+    .footer-stats { flex-direction: column; }
 }
-
-.post-item:nth-child(1) { animation-delay: 0.1s; }
-.post-item:nth-child(2) { animation-delay: 0.2s; }
-.post-item:nth-child(3) { animation-delay: 0.3s; }
 </style>
 
-<div class="main-container">
+<div class="blog-container">
 
-<div class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title">🛡️ Cyber Dad Central</h1>
-        <p class="hero-subtitle">Your Daily Dose of Family Cybersecurity</p>
-        <div class="hero-stats">
-            <div class="stat-item">
-                <span class="stat-number">12K+</span>
-                <span class="stat-label">Families Protected</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">500+</span>
-                <span class="stat-label">Security Guides</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">24/7</span>
-                <span class="stat-label">Threat Monitoring</span>
-            </div>
-        </div>
-    </div>
+<header class="blog-header">
+<h1 class="blog-title">🛡️ Cyber Dad Central</h1>
+<p class="blog-tagline">Where Family Safety Meets Digital Wisdom</p>
+<p>Real cybersecurity advice for real families, delivered with care and expertise you can trust.</p>
+</header>
+
+<div class="author-intro">
+<h2>Welcome to Our Digital Family</h2>
+<p>Hi there! I'm your Cyber Dad, and I've been where you are. Worried about online threats, confused by tech jargon, and wondering how to keep your family safe in an increasingly digital world.</p>
+
+<p>This isn't just another tech blog filled with complicated tutorials. This is a place where parents come to get practical, actionable advice that actually works for busy families. Every day, I share three types of content designed to keep you informed and protected:</p>
+
+<p><strong>🚨 Real-world threat alerts</strong> - When something's happening that could affect your family, you'll know about it first.</p>
+
+<p><strong>👨‍💻 Tech tips for non-tech families</strong> - Simple solutions that don't require a computer science degree.</p>
+
+<p><strong>⏰ Timeless safety habits</strong> - The foundational practices that keep families secure year after year.</p>
 </div>
 
-<div class="content-section">
+<div class="store-intro">
+<h2>🛒 Comprehensive Family Security Resources</h2>
+<p>Over the years, I've created comprehensive guides, checklists, and templates that have helped thousands of families build their digital defense. Whether you prefer detailed guides, quick printables, or step-by-step templates, I've got you covered.</p>
 
-<div class="store-section">
-    <h2 class="store-title">🛒 Digital Security Store</h2>
-    <div class="store-grid">
-        <div class="store-item">
-            <h3>📋 Gumroad Store</h3>
-            <p>Security guides & templates</p>
-            <a href="https://cyberdad.gumroad.com" target="_blank">Shop Now →</a>
-        </div>
-        <div class="store-item">
-            <h3>💾 Payhip Store</h3>
-            <p>Digital downloads</p>
-            <a href="https://payhip.com/CyberDadKit" target="_blank">Browse Store →</a>
-        </div>
-        <div class="store-item">
-            <h3>🖨️ Etsy Printables</h3>
-            <p>Print-at-home resources</p>
-            <a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank">Visit Etsy →</a>
-        </div>
-    </div>
-    
-    <div class="bestseller-badge">
-        <h3>🏆 Best Seller: Family Security Bundle - $39.99</h3>
-        <p><em>Complete protection guides for modern families</em></p>
-        <a href="https://cyberdad.gumroad.com" style="background: #ff6b6b; color: white; padding: 0.75rem 2rem; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem;">Get Bundle Now →</a>
-    </div>
+<div class="store-links">
+<a href="https://cyberdad.gumroad.com" target="_blank" class="store-link">📋 Security Guides & Templates</a>
+<a href="https://payhip.com/CyberDadKit" target="_blank" class="store-link">💾 Complete Digital Bundles</a>
+<a href="https://www.etsy.com/shop/CyberDadPrints" target="_blank" class="store-link">🖨️ Printable Checklists</a>
 </div>
 
-<div class="posts-section">
-    <h2 class="posts-title">📅 Latest Security Posts (Newest First)</h2>
-    
-    {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
-    {% for post in sorted_posts limit: 10 %}
-    <div class="post-item">
-        <div class="post-date">{{ post.date | date: "%B %d, %Y at %l:%M %p" }}</div>
+<p style="margin-top: 1.5rem; text-align: center;"><strong>🏆 Popular Choice:</strong> The Complete Family Security Bundle includes everything you need to protect your family online - guides, checklists, templates, and step-by-step tutorials. <em>Currently $39.99 (regularly $97)</em></p>
+</div>
+
+<section class="posts-section">
+<h2 style="color: #2c3e50; text-align: center; margin-bottom: 1rem;">Latest Family Security Posts</h2>
+<p class="posts-intro">Here are the most recent updates, tips, and alerts to keep your family safe online. Each post is designed to be read in under 5 minutes and implemented immediately.</p>
+
+{% assign sorted_posts = site.posts | sort: 'date' | reverse %}
+{% for post in sorted_posts limit: 8 %}
+<article class="post-item">
+    <div class="post-date">
+        Published {{ post.date | date: "%B %d, %Y" }} at {{ post.date | date: "%l:%M %p" }}
         <span class="post-category">{{ post.categories | first | upcase }}</span>
-        
-        <h3 class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
-        
-        <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-        
-        <a href="{{ post.url }}" class="read-more">Read Full Post →</a>
     </div>
-    {% endfor %}
-</div>
-
-<div class="stats-section">
-    <h3 class="stats-title">📊 Blog Performance</h3>
-    <div class="stats-grid">
-        <div class="stat-box">
-            <strong>{{ site.posts.size }}</strong><br>Total Posts
-        </div>
-        <div class="stat-box">
-            <strong>{{ site.time | date: "%B %d, %Y" }}</strong><br>Last Updated
-        </div>
-        <div class="stat-box">
-            <strong>3 Daily</strong><br>Posts at 9am, 1pm, 8pm EST
-        </div>
-        <div class="stat-box">
-            <strong>AI-Powered</strong><br>Real-time Intelligence
-        </div>
-    </div>
-</div>
-
-
     
-    <p style="margin-top: 1rem; opacity: 0.8;">For immediate cybersecurity threats</p>
+    <h3 class="post-title">
+        <a href="{{ post.url }}">{{ post.title }}</a>
+    </h3>
+    
+    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+    
+    <a href="{{ post.url }}" class="read-more">Continue reading this security update →</a>
+</article>
+{% endfor %}
+</section>
+
+<footer class="blog-footer">
+<h3>About This Blog</h3>
+<p>Cyber Dad Central is powered by AI but written with families in mind. Every piece of content is designed to be practical, actionable, and immediately useful for parents who want to keep their families safe online.</p>
+
+<div class="footer-stats">
+    <div class="footer-stat">
+        <div class="footer-stat-number">{{ site.posts.size }}</div>
+        <div>Security Articles</div>
+    </div>
+    <div class="footer-stat">
+        <div class="footer-stat-number">3</div>
+        <div>Daily Updates</div>
+    </div>
+    <div class="footer-stat">
+        <div class="footer-stat-number">12K+</div>
+        <div>Families Protected</div>
+    </div>
+    <div class="footer-stat">
+        <div class="footer-stat-number">24/7</div>
+        <div>Monitoring</div>
+    </div>
 </div>
 
-</div>
+<p>Updates posted daily at 9am, 1pm, and 8pm EST. Last updated {{ site.time | date: "%B %d, %Y" }}.</p>
+
+<div class="contact-buttons">
+<a href="mailto:help@cyberdad2025.com" class="contact-btn">📧 Get Help</a>
+<a href="tel:911" class="contact-btn emergency-btn">🆘 Emergency (Call 911)</a>
 </div>
 
-<!-- Floating Help Button -->
-<div class="floating-icon" onclick="window.location.href='mailto:help@cyberdad2025.com'">
-    💬
+<p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">For immediate cybersecurity threats, always contact local authorities first.</p>
+</footer>
+
 </div>
