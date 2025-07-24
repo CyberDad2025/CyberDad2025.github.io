@@ -1,200 +1,156 @@
+#!/usr/bin/env python3
+"""
+Simple content generator that doesn't require external dependencies.
+Creates cybersecurity/parenting blog posts using only built-in Python libraries.
+"""
+
 import os
-import requests
-import feedparser
-import openai
-from datetime import datetime
-from dataclasses import dataclass
-from typing import List, Dict
-import yaml
+import random
+import datetime
+from pathlib import Path
 
-# Set your OpenAI API Key
-openai.api_key = os.getenv('OPENAI_API_KEY')
+# Blog post templates and content
+TOPICS = [
+    "Cybersecurity for Parents",
+    "Teaching Kids About Online Safety",
+    "Family Digital Privacy",
+    "Parental Controls Guide",
+    "Safe Social Media for Teens",
+    "Home Network Security",
+    "Password Management for Families",
+    "Protecting Kids from Cyberbullying",
+    "Digital Footprint Awareness",
+    "Smart Device Security at Home"
+]
 
+CONTENT_TEMPLATES = {
+    "intro": [
+        "As a parent in the digital age, keeping our families safe online has never been more important.",
+        "In today's connected world, cybersecurity isn't just for IT professionals - it's a family responsibility.",
+        "Every parent needs to understand the digital landscape their children are navigating.",
+        "The intersection of parenting and cybersecurity creates unique challenges and opportunities."
+    ],
+    
+    "tips": [
+        "Set up strong, unique passwords for all family accounts",
+        "Enable two-factor authentication wherever possible",
+        "Regularly update all devices and software in your home",
+        "Create a family technology agreement with clear rules",
+        "Monitor your children's online activities appropriately",
+        "Teach kids to recognize phishing attempts and suspicious links",
+        "Use parental controls, but don't rely on them exclusively",
+        "Have open conversations about online experiences",
+        "Create tech-free zones and times in your home",
+        "Lead by example with your own digital habits"
+    ],
+    
+    "warnings": [
+        "Never share personal information with strangers online",
+        "Be cautious of free Wi-Fi networks in public places",
+        "Don't click on suspicious links or download unknown files",
+        "Watch out for cyberbullying and know how to report it",
+        "Be aware of location sharing on social media apps",
+        "Understand the privacy settings on all family devices",
+        "Keep software and apps updated to patch security vulnerabilities"
+    ],
+    
+    "conclusions": [
+        "Remember, cybersecurity is an ongoing conversation, not a one-time setup.",
+        "Stay informed about new threats and teach your family to adapt.",
+        "The goal isn't to create fear, but to build digital resilience.",
+        "Small steps today can prevent major problems tomorrow."
+    ]
+}
 
-@dataclass
-class CyberThreatIntel:
-    title: str
-    description: str
-    severity: str
-    family_impact: str
-    prevention_tips: List[str]
-    product_tie_in: str
-
-
-class CyberDadContentEngine:
-    def __init__(self, config_path='cyberdad_config.yaml'):
-        self.config = self.load_config(config_path)
-        self.cti_sources = [
-            'https://feeds.feedburner.com/TheHackersNews',
-            'https://krebsonsecurity.com/feed/',
-            'https://www.bleepingcomputer.com/feed/',
-            'https://threatpost.com/feed/',
-            'https://www.darkreading.com/rss.xml'
-        ]
-
-    def load_config(self, config_path):
-        try:
-            with open(config_path, 'r') as f:
-                return yaml.safe_load(f)
-        except Exception as e:
-            print(f"[❌] Error loading config: {e}")
-            return {}
-
-    def fetch_cti_feeds(self) -> List[Dict]:
-        all_threats = []
-        for feed_url in self.cti_sources:
-            try:
-                feed = feedparser.parse(feed_url)
-                for entry in feed.entries[:3]:
-                    all_threats.append({
-                        'title': entry.title,
-                        'summary': entry.summary,
-                        'link': entry.link,
-                        'published': entry.get('published', ''),
-                        'source': feed.feed.title
-                    })
-            except Exception as e:
-                print(f"[❌] Error fetching {feed_url}: {e}")
-        return all_threats[:5]
-
-    def convert_to_family_friendly(self, threat_data: Dict) -> CyberThreatIntel:
-        prompt = f"""
-        Convert this cybersecurity threat into family-friendly content for parents:
-
-        Title: {threat_data['title']}
-        Summary: {threat_data['summary']}
-
-        Create:
-        1. Family-friendly title (avoid technical jargon)
-        2. Simple explanation parents can understand
-        3. Severity level (Low/Medium/High)
-        4. How this affects families specifically
-        5. 3 practical prevention tips for families
-        6. Which Cyber Dad product would help (choose from: Digital Shield Kit, Password Safety Kit, Screen-Free Activity Pack, Family Tech Rules Pack)
-        """
-
-        try:
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=500
-            )
-            content = response.choices[0].message.content
-            return self.parse_ai_response(content)
-        except Exception as e:
-            print(f"[❌] OpenAI conversion error: {e}")
-            return self.create_fallback_content(threat_data)
-
-    def parse_ai_response(self, ai_content: str) -> CyberThreatIntel:
-        # Naive parser – improve based on your format if needed
-        return CyberThreatIntel(
-            title="Family Cybersecurity Alert",
-            description=ai_content.strip()[:300] + "...",
-            severity="Medium",
-            family_impact="May affect family devices and online activity",
-            prevention_tips=["Update your devices", "Avoid strange links", "Talk to kids about online safety"],
-            product_tie_in="Digital Shield Kit"
-        )
-
-    def create_blog_post(self, intel: CyberThreatIntel) -> str:
-        today = datetime.now()
-        date_str = today.strftime('%Y-%m-%d %H:%M:%S')
-        current_date = today.strftime('%B %d, %Y')
-        product_url = self.config.get('products', {}).get(intel.product_tie_in, {}).get('link', '#')
-        checklist_url = self.config.get('lead_magnets', {}).get('wifi_checklist', '#')
-
-        content = f"""---
+def generate_post_content(topic):
+    """Generate a blog post about the given topic."""
+    
+    # Create the post content
+    intro = random.choice(CONTENT_TEMPLATES["intro"])
+    
+    # Select 3-5 random tips
+    selected_tips = random.sample(CONTENT_TEMPLATES["tips"], random.randint(3, 5))
+    tips_section = "\n".join(f"- {tip}" for tip in selected_tips)
+    
+    # Select 2-3 warnings
+    selected_warnings = random.sample(CONTENT_TEMPLATES["warnings"], random.randint(2, 3))
+    warnings_section = "\n".join(f"⚠️ {warning}" for warning in selected_warnings)
+    
+    conclusion = random.choice(CONTENT_TEMPLATES["conclusions"])
+    
+    # Create the full post
+    content = f"""---
 layout: post
-title: "{intel.title}"
-date: {date_str}
-categories: [cybersecurity, family-safety]
-tags: [parenting, tech-safety, cyber-threats]
+title: "{topic}: A Parent's Guide"
+date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -0500
+categories: cybersecurity parenting
+tags: online-safety digital-parenting family-security
 ---
 
-# {intel.title}
+# {topic}: A Parent's Guide
 
-**Alert Level: {intel.severity}** | **Date: {current_date}**
+{intro}
 
-## What Parents Need to Know
+## Key Actions to Take
 
-{intel.description}
+{tips_section}
 
-## How This Affects Your Family
+## Important Warnings
 
-{intel.family_impact}
+{warnings_section}
 
-## How to Protect Your Family
+## Final Thoughts
 
-"""
-        for i, tip in enumerate(intel.prevention_tips, 1):
-            content += f"{i}. {tip}\n"
-
-        content += f"""
-
-## 🛡️ Get Extra Protection
-
-This threat highlights why every family needs the **{intel.product_tie_in}**.
-
-[🔒 Protect Your Family Now - Get {intel.product_tie_in}]({product_url})
-
-*Use code CYBERDAD20 for 20% off this week only!*
+{conclusion}
 
 ---
 
-[📋 Download Free Wi-Fi Checklist]({checklist_url})
+*Stay safe, stay informed, and keep your family protected in the digital world.*
 
-Stay safe,
-**Cyber Dad Team**
+**CyberDad Central** - Where cybersecurity meets parenting wisdom.
 """
-        return content
+    
+    return content
 
-
-class GitHubBlogPublisher:
-    def __init__(self, repo_path):
-        self.repo_path = repo_path
-
-    def publish_post(self, content: str, filename: str):
-        posts_dir = os.path.join(self.repo_path, '_posts')
-        os.makedirs(posts_dir, exist_ok=True)
-        filepath = os.path.join(posts_dir, filename)
-
-        try:
-            with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(content)
-            print(f"[✅] Blog post written: {filepath}")
-        except Exception as e:
-            print(f"[❌] Write error: {e}")
-            return
-
-        # Git push
-        try:
-            os.system(f'cd {self.repo_path} && git add .')
-            os.system(f'cd {self.repo_path} && git commit -m "Auto-post: {filename}"')
-            os.system(f'cd {self.repo_path} && git push origin main')
-            print(f"[✅] Blog post pushed: {filename}")
-        except Exception as e:
-            print(f"[❌] Git push failed: {e}")
-
+def create_post_file(content, topic):
+    """Create a markdown file for the blog post."""
+    
+    # Create _posts directory if it doesn't exist
+    posts_dir = Path("_posts")
+    posts_dir.mkdir(exist_ok=True)
+    
+    # Generate filename
+    date_str = datetime.datetime.now().strftime('%Y-%m-%d')
+    safe_title = topic.lower().replace(' ', '-').replace(':', '').replace(',', '')
+    filename = f"{date_str}-{safe_title}.md"
+    
+    # Write the file
+    filepath = posts_dir / filename
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    print(f"✅ Created blog post: {filepath}")
+    return filepath
 
 def main():
-    print("🚀 Starting Cyber Dad Blog Publisher")
-    repo_path = "."
-  # <- CHANGE THIS
-    config_path = "cyberdad_config.yaml"
-
-    engine = CyberDadContentEngine(config_path=config_path)
-    publisher = GitHubBlogPublisher(repo_path)
-
-    threats = engine.fetch_cti_feeds()
-    if not threats:
-        print("[⚠️] No threats found.")
-        return
-
-    intel = engine.convert_to_family_friendly(threats[0])
-    blog_post = engine.create_blog_post(intel)
-    filename = f"{datetime.now().strftime('%Y-%m-%d')}-{intel.title.lower().replace(' ', '-')}.md"
-    publisher.publish_post(blog_post, filename)
-
+    """Main function to generate a blog post."""
+    
+    print("🤖 CyberDad Content Generator Starting...")
+    
+    # Select a random topic
+    topic = random.choice(TOPICS)
+    print(f"📝 Generating post about: {topic}")
+    
+    # Generate content
+    content = generate_post_content(topic)
+    
+    # Create the file
+    filepath = create_post_file(content, topic)
+    
+    print(f"🎉 Blog post generated successfully!")
+    print(f"📄 File: {filepath}")
+    
+    return True
 
 if __name__ == "__main__":
     main()
