@@ -24,5 +24,3 @@ jobs:
 
       - name: Run Smart FM Update
         run: python scripts/smart_fm_update.py
-
-
