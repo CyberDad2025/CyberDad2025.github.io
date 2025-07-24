@@ -21,8 +21,9 @@ jobs:
       - name: Install PyYAML
         run: pip install pyyaml
 
-      - name: Generate post
-  run: python scripts/content_generator.py
+        - name: Generate post
+          run: python scripts/content_generator.py
+
 
 
       - name: Commit & push
