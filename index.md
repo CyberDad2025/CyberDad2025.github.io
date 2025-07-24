@@ -490,10 +490,8 @@ body {
     </div>
 </div>
 
-<div class="contact-section">
-    <h3 class="contact-title">💡 Need Help?</h3>
-    <a href="mailto:help@cyberdad2025.com" class="help-btn">📧 Email Support</a>
-    <a href="tel:911" class="emergency-btn">🆘 Emergency: Call 911</a>
+
+    
     <p style="margin-top: 1rem; opacity: 0.8;">For immediate cybersecurity threats</p>
 </div>
 
