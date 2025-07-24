@@ -23,5 +23,6 @@ jobs:
         run: pip install pyyaml
 
       - name: Run Smart FM Update
-       run: python scripts/smart_fm_update.py
+        run: python scripts/smart_fm_update.py
+
 
