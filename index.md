@@ -16,7 +16,30 @@ Powered by AI. Designed for humans. Loved by families.
 ---
 
 ## 🛒 **Digital Security Store**
+---
 
+## 📅 **Latest Security Posts** (Newest First)
+
+{% assign sorted_posts = site.posts | sort: 'date' | reverse %}
+{% for post in sorted_posts limit: 10 %}
+**{{ post.date | date: "%B %d, %Y at %l:%M %p" }}** • {{ post.categories | first | upcase }}
+
+### [{{ post.title }}]({{ post.url }})
+
+{{ post.excerpt | strip_html | truncatewords: 30 }}
+
+[Read Full Post →]({{ post.url }})
+
+---
+{% endfor %}
+
+**📊 Blog Stats:** {{ site.posts.size }} total posts • Last updated: {{ site.time | date: "%B %d, %Y" }}
+
+**🔔 Updates:** 3 posts daily at 9am, 1pm, 8pm EST
+
+---
+
+💡 **Need help?** Email: help@cyberdad2025.com | **Emergency:** Call 911 for immediate threats
 **[📋 Gumroad Store](https://cyberdad.gumroad.com)** - Security guides & templates  
 **[💾 Payhip Store](https://payhip.com/CyberDadKit)** - Digital downloads  
 **[🖨️ Etsy Printables](https://www.etsy.com/shop/CyberDadPrints)** - Print-at-home resources  
