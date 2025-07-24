@@ -16,18 +16,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-            python-version: '3.11'
+          python-version: '3.11'
 
       - name: Install PyYAML
         run: pip install pyyaml
 
-          - name: Generate post
-            run: python scripts/content_generator.py
+      - name: Generate post
+        run: python scripts/content_generator.py
 
-
-
-         - name: Commit & push
-           run: |
+      - name: Commit & push
+        run: |
           git config user.name "CyberDad2025"
           git config user.email "you@example.com"
           git add _posts/*.md
