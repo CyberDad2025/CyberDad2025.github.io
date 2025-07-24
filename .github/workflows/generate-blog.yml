@@ -18,10 +18,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Python dependencies
-        run: pip install pyyaml requests
-
-      - name: Generate post
+      - name: Generate post (no dependencies needed)
         run: python scripts/content_generator.py
 
       - name: Commit & push
