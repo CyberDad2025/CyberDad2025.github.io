@@ -1,0 +1,39 @@
+---
+---
+@import "minima";
+
+/* CYBER DAD CUSTOM STYLING */
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    font-family: 'Georgia', serif !important;
+}
+
+.site-header {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important;
+    border-bottom: none !important;
+}
+
+.site-title, .site-title:visited {
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 2rem !important;
+}
+
+.wrapper {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    padding: 2rem !important;
+    margin: 2rem auto !important;
+}
+
+.post-list {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%) !important;
+    color: white !important;
+    padding: 2rem !important;
+    border-radius: 12px !important;
+}
+
+.post-list h3 a {
+    color: white !important;
+}
