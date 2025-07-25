@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Parental Controls Guide: A Parent's Guide"
-date: 2025-07-25 03:52:38 -0500
+date: 2025-07-25 17:45:59 -0500
 categories: cybersecurity parenting
 tags: online-safety digital-parenting family-security
 ---
@@ -12,15 +12,15 @@ Every parent needs to understand the digital landscape their children are naviga
 
 ## Key Actions to Take
 
-- Regularly update all devices and software in your home
-- Create a family technology agreement with clear rules
-- Teach kids to recognize phishing attempts and suspicious links
+- Create tech-free zones and times in your home
 - Enable two-factor authentication wherever possible
+- Regularly update all devices and software in your home
+- Use parental controls, but don't rely on them exclusively
 
 ## Important Warnings
 
-⚠️ Don't click on suspicious links or download unknown files
-⚠️ Keep software and apps updated to patch security vulnerabilities
+⚠️ Watch out for cyberbullying and know how to report it
+⚠️ Be cautious of free Wi-Fi networks in public places
 
 ## Final Thoughts
 
