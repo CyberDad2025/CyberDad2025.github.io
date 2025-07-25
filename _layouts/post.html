@@ -1,0 +1,123 @@
+---
+layout: default
+---
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {{ page.date | date: "%B %d, %Y" }}
+      </time>
+      {%- if page.author -%}
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">{{ page.author }}</span>
+          </span>
+      {%- endif -%}
+      • {{ content | number_of_words }} words
+      • {{ content | number_of_words | divided_by: 200 | ceil }} min read
+    </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <!-- INTERNAL LINKING SECTION -->
+  <div class="related-posts">
+    <h3>🔗 Related Security Guides</h3>
+    <div class="related-grid">
+      {% assign related_posts = site.posts | where_exp: "post", "post.categories contains page.categories.first" | limit: 3 %}
+      {% for post in related_posts %}
+        {% unless post.url == page.url %}
+          <a href="{{ post.url }}" class="related-link">
+            <strong>{{ post.title }}</strong>
+            <span>{{ post.date | date: "%B %d" }}</span>
+          </a>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- POPULAR POSTS -->
+  <div class="popular-posts">
+    <h3>🔥 Most Popular This Week</h3>
+    {% for post in site.posts limit: 5 %}
+      <a href="{{ post.url }}">{{ post.title | truncatewords: 6 }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- CALL TO ACTION -->
+  <div class="post-cta">
+    <h3>🛡️ Keep Your Family Safe</h3>
+    <p>Get instant alerts about new cybersecurity threats affecting families.</p>
+    <a href="/#products" class="cta-button">Download Security Guides →</a>
+  </div>
+
+</article>
+
+<style>
+.related-posts {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.related-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.related-link {
+  display: block;
+  background: rgba(255,255,255,0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.related-link:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.2);
+}
+
+.popular-posts {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.popular-posts a {
+  display: block;
+  padding: 0.5rem 0;
+  color: #2b6cb0;
+  text-decoration: none;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.post-cta {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.cta-button {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 1rem;
+}
+</style>
