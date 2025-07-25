@@ -20,6 +20,16 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+  # SEO Settings (ADD THESE LINES)
+title: "CyberDad - Family Cybersecurity Intelligence"
+description: "Real-time cybersecurity intelligence for modern families. Get protection guides, threat alerts, and security tips that keep your family safe online."
+url: "https://cyberdad2025.github.io"
+author:
+  name: "CyberDad"
+  email: "cyberdadkit@gmail.com"
+
+# Google Analytics (ADD THIS LINE)
+google_analytics: G-XXXXXXXXXX
 
 # Theme
 remote_theme: jekyll/minima
