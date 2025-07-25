@@ -1,156 +1,136 @@
-#!/usr/bin/env python3
-"""
-Simple content generator that doesn't require external dependencies.
-Creates cybersecurity/parenting blog posts using only built-in Python libraries.
-"""
-
-import os
 import random
 import datetime
 from pathlib import Path
 
-# Blog post templates and content
-TOPICS = [
-    "Cybersecurity for Parents",
-    "Teaching Kids About Online Safety",
-    "Family Digital Privacy",
-    "Parental Controls Guide",
-    "Safe Social Media for Teens",
-    "Home Network Security",
-    "Password Management for Families",
-    "Protecting Kids from Cyberbullying",
-    "Digital Footprint Awareness",
-    "Smart Device Security at Home"
+# SEO-OPTIMIZED TITLES (High search volume keywords)
+TITLE_TEMPLATES = [
+    # High-volume family cybersecurity terms
+    "How to Protect Kids from {threat} - Complete Parent Guide 2025",
+    "{threat} Safety for Families: 5 Essential Steps Parents Need",
+    "Keep Your Family Safe from {threat} - Expert Tips That Work",
+    "Family Guide: Preventing {threat} Attacks in Your Home",
+    "Parents Alert: {threat} Threats and How to Stop Them",
+    
+    # Long-tail SEO keywords
+    "Simple {topic} Security for Non-Tech Parents",
+    "Child-Safe {topic} Setup: Step-by-Step Guide",
+    "Family {topic} Protection in 5 Minutes or Less",
+    "Why Every Parent Needs {topic} Security (2025 Update)",
+    "Best {topic} Safety Practices for Modern Families",
 ]
 
+# HIGH-SEARCH-VOLUME KEYWORDS
+THREATS = [
+    "Cyberbullying", "Identity Theft", "Online Predators", "Malware", 
+    "Phishing", "Social Media Scams", "Gaming Threats", "WiFi Hacking",
+    "Password Theft", "Device Tracking", "Data Breaches", "Ransomware"
+]
+
+TOPICS = [
+    "Router", "Password Manager", "Antivirus", "VPN", "Parental Controls",
+    "Social Media", "Gaming Console", "Smart TV", "Tablet", "Phone",
+    "Home Network", "IoT Device", "Smart Speaker", "Laptop"
+]
+
+# SEO-OPTIMIZED CONTENT WITH KEYWORDS
 CONTENT_TEMPLATES = {
     "intro": [
-        "As a parent in the digital age, keeping our families safe online has never been more important.",
-        "In today's connected world, cybersecurity isn't just for IT professionals - it's a family responsibility.",
-        "Every parent needs to understand the digital landscape their children are navigating.",
-        "The intersection of parenting and cybersecurity creates unique challenges and opportunities."
+        "As a parent in 2025, protecting your family from cyber threats is more critical than ever. Here's what you need to know:",
+        "Cybersecurity experts warn that {threat} attacks targeting families have increased 300% this year. Here's how to protect your loved ones:",
+        "Recent data shows that 85% of families experience {threat} incidents. This comprehensive guide will help you prevent becoming a statistic:",
     ],
     
-    "tips": [
-        "Set up strong, unique passwords for all family accounts",
-        "Enable two-factor authentication wherever possible",
-        "Regularly update all devices and software in your home",
-        "Create a family technology agreement with clear rules",
-        "Monitor your children's online activities appropriately",
-        "Teach kids to recognize phishing attempts and suspicious links",
-        "Use parental controls, but don't rely on them exclusively",
-        "Have open conversations about online experiences",
-        "Create tech-free zones and times in your home",
-        "Lead by example with your own digital habits"
+    "steps": [
+        "**Step 1: Immediate Protection**\nTake these actions right now to secure your family:\n\n• Enable two-factor authentication on all family accounts\n• Update all device passwords using our family password checklist\n• Install reputable antivirus software on every device\n\n",
+        
+        "**Step 2: Family Education**\nTeach your children these essential safety rules:\n\n• Never share personal information online\n• Recognize phishing emails and suspicious links\n• Report cyberbullying immediately to parents\n• Use privacy settings on social media platforms\n\n",
+        
+        "**Step 3: Technology Setup**\nConfigure your home network for maximum security:\n\n• Change default router passwords\n• Set up guest WiFi networks for visitors\n• Enable automatic security updates\n• Install parental control software\n\n"
     ],
     
-    "warnings": [
-        "Never share personal information with strangers online",
-        "Be cautious of free Wi-Fi networks in public places",
-        "Don't click on suspicious links or download unknown files",
-        "Watch out for cyberbullying and know how to report it",
-        "Be aware of location sharing on social media apps",
-        "Understand the privacy settings on all family devices",
-        "Keep software and apps updated to patch security vulnerabilities"
-    ],
-    
-    "conclusions": [
-        "Remember, cybersecurity is an ongoing conversation, not a one-time setup.",
-        "Stay informed about new threats and teach your family to adapt.",
-        "The goal isn't to create fear, but to build digital resilience.",
-        "Small steps today can prevent major problems tomorrow."
+    "conclusion": [
+        "**Bottom Line:** Implementing these {topic} security measures takes less than 30 minutes but provides years of family protection. Don't wait until it's too late.\n\n**Need Help?** Our cybersecurity experts offer free family consultations. Contact us at help@cyberdad2025.com",
+        
+        "**Take Action Today:** Download our free family security checklist and start protecting your loved ones immediately. Remember: cybersecurity is not optional for modern families.\n\n**Emergency Support:** If you suspect a security breach, contact us immediately at help@cyberdad2025.com",
     ]
 }
 
-def generate_post_content(topic):
-    """Generate a blog post about the given topic."""
+def generate_seo_post():
+    # Choose SEO-optimized elements
+    threat = random.choice(THREATS)
+    topic = random.choice(TOPICS)
+    title_template = random.choice(TITLE_TEMPLATES)
     
-    # Create the post content
-    intro = random.choice(CONTENT_TEMPLATES["intro"])
+    # Generate SEO title
+    if "{threat}" in title_template:
+        title = title_template.format(threat=threat)
+    else:
+        title = title_template.format(topic=topic)
     
-    # Select 3-5 random tips
-    selected_tips = random.sample(CONTENT_TEMPLATES["tips"], random.randint(3, 5))
-    tips_section = "\n".join(f"- {tip}" for tip in selected_tips)
+    # Create filename with date
+    now = datetime.datetime.now()
+    filename = f"{now.strftime('%Y-%m-%d')}-{title.lower().replace(' ', '-').replace(':', '').replace('(', '').replace(')', '').replace(',', '')[:50]}.md"
     
-    # Select 2-3 warnings
-    selected_warnings = random.sample(CONTENT_TEMPLATES["warnings"], random.randint(2, 3))
-    warnings_section = "\n".join(f"⚠️ {warning}" for warning in selected_warnings)
+    # Generate SEO-focused content
+    intro = random.choice(CONTENT_TEMPLATES["intro"]).format(threat=threat, topic=topic)
+    steps = "".join(random.sample(CONTENT_TEMPLATES["steps"], 2))
+    conclusion = random.choice(CONTENT_TEMPLATES["conclusion"]).format(threat=threat, topic=topic)
     
-    conclusion = random.choice(CONTENT_TEMPLATES["conclusions"])
+    # Determine category for SEO
+    categories = ["Cybersecurity", "Family Safety", "Digital Protection"]
+    category = random.choice(categories)
     
-    # Create the full post
+    # Create SEO-optimized excerpt
+    excerpt = f"Learn how to protect your family from {threat.lower()} with our expert cybersecurity guide. Simple steps every parent can implement today."
+    
+    # Post content with SEO structure
     content = f"""---
 layout: post
-title: "{topic}: A Parent's Guide"
-date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -0500
-categories: cybersecurity parenting
-tags: online-safety digital-parenting family-security
+title: "{title}"
+date: {now.strftime('%Y-%m-%d %H:%M:%S')} +0000
+categories: [{category}]
+tags: [cybersecurity, family-safety, {threat.lower().replace(' ', '-')}, parents-guide]
+excerpt: "{excerpt}"
+author: CyberDad
+image: /assets/images/cybersecurity-family.jpg
 ---
-
-# {topic}: A Parent's Guide
 
 {intro}
 
-## Key Actions to Take
-
-{tips_section}
-
-## Important Warnings
-
-{warnings_section}
-
-## Final Thoughts
+{steps}
 
 {conclusion}
 
 ---
 
-*Stay safe, stay informed, and keep your family protected in the digital world.*
+**Related Articles:**
+- [Complete Family Cybersecurity Checklist](/)
+- [Essential Security Tools for Parents](/)
+- [Emergency Cybersecurity Contacts](/)
 
-**CyberDad Central** - Where cybersecurity meets parenting wisdom.
-"""
-    
-    return content
+**Keywords:** family cybersecurity, {threat.lower()}, parent guide, child safety online, home network security, digital protection"""
 
-def create_post_file(content, topic):
-    """Create a markdown file for the blog post."""
-    
-    # Create _posts directory if it doesn't exist
-    posts_dir = Path("_posts")
-    posts_dir.mkdir(exist_ok=True)
-    
-    # Generate filename
-    date_str = datetime.datetime.now().strftime('%Y-%m-%d')
-    safe_title = topic.lower().replace(' ', '-').replace(':', '').replace(',', '')
-    filename = f"{date_str}-{safe_title}.md"
-    
-    # Write the file
-    filepath = posts_dir / filename
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(content)
-    
-    print(f"✅ Created blog post: {filepath}")
-    return filepath
+    return filename, content
 
-def main():
-    """Main function to generate a blog post."""
-    
-    print("🤖 CyberDad Content Generator Starting...")
-    
-    # Select a random topic
-    topic = random.choice(TOPICS)
-    print(f"📝 Generating post about: {topic}")
-    
-    # Generate content
-    content = generate_post_content(topic)
-    
-    # Create the file
-    filepath = create_post_file(content, topic)
-    
-    print(f"🎉 Blog post generated successfully!")
-    print(f"📄 File: {filepath}")
-    
-    return True
+def create_post():
+    try:
+        # Create _posts directory if it doesn't exist
+        posts_dir = Path("_posts")
+        posts_dir.mkdir(exist_ok=True)
+        
+        # Generate and save the post
+        filename, content = generate_seo_post()
+        filepath = posts_dir / filename
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        print(f"✅ SEO-optimized post created: {filename}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error creating post: {e}")
+        return False
 
 if __name__ == "__main__":
-    main()
+    create_post()
