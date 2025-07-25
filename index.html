@@ -27,6 +27,34 @@ description: Real-time cybersecurity intelligence for modern families.
 </script>
 
 <style>
+    /* FIX TOP CUTOFF ISSUE */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+}
+
+.global-bar {
+    position: relative !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    display: block !important;
+    margin: 0 !important;
+}
+
+.site-header {
+    display: block !important;
+    position: relative !important;
+    z-index: 999 !important;
+}
+
+.trust-bar {
+    margin-top: 0 !important;
+}
+
+.wrapper {
+    padding-top: 0 !important;
+}
 /* GLOBAL LANGUAGE & LOCATION BAR */
 .global-bar {
     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
