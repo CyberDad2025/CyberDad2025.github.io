@@ -147,7 +147,7 @@ email_signup = """
 <!-- End MailerLite Universal -->
 
 """
-    return filename, content
+    
 
 def create_post():
     try:
