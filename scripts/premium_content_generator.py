@@ -48,6 +48,11 @@ excerpt: "Essential cybersecurity guidance to keep your family safe online"
 
 {blog_content}
 
+{affiliate_section}
+
+{email_signup}
+
+---
 ---
 
 ## Stay Protected
