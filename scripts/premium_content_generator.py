@@ -65,6 +65,7 @@ Protect your family with these trusted cybersecurity solutions:
 - **[Malwarebytes](https://malwarebytes.com/affiliate-link)** - Advanced malware protection
 
 *As a cybersecurity affiliate, I earn from qualifying purchases at no cost to you.*
+{email_signup}
 # Email signup section with MailerLite
 email_signup = """
 
