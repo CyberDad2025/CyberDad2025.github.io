@@ -1,18 +1,15 @@
-
+#!/usr/bin/env python3
 import random
 import datetime
 from pathlib import Path
 
 # SEO-OPTIMIZED TITLES (High search volume keywords)
 TITLE_TEMPLATES = [
-    # High-volume family cybersecurity terms
     "How to Protect Kids from {threat} - Complete Parent Guide 2025",
     "{threat} Safety for Families: 5 Essential Steps Parents Need",
     "Keep Your Family Safe from {threat} - Expert Tips That Work",
     "Family Guide: Preventing {threat} Attacks in Your Home",
     "Parents Alert: {threat} Threats and How to Stop Them",
-    
-    # Long-tail SEO keywords
     "Simple {topic} Security for Non-Tech Parents",
     "Child-Safe {topic} Setup: Step-by-Step Guide",
     "Family {topic} Protection in 5 Minutes or Less",
@@ -37,8 +34,8 @@ TOPICS = [
 CONTENT_TEMPLATES = {
     "intro": [
         "As a parent in 2025, protecting your family from cyber threats is more critical than ever. Here's what you need to know:",
-        "Cybersecurity experts warn that {threat} attacks targeting families have increased 300% this year. Here's how to protect your loved ones:",
-        "Recent data shows that 85% of families experience {threat} incidents. This comprehensive guide will help you prevent becoming a statistic:",
+        "Cybersecurity experts warn that attacks targeting families have increased 300% this year. Here's how to protect your loved ones:",
+        "Recent data shows that 85% of families experience security incidents. This comprehensive guide will help you prevent becoming a statistic:",
     ],
     
     "steps": [
@@ -46,13 +43,17 @@ CONTENT_TEMPLATES = {
         
         "**Step 2: Family Education**\nTeach your children these essential safety rules:\n\n• Never share personal information online\n• Recognize phishing emails and suspicious links\n• Report cyberbullying immediately to parents\n• Use privacy settings on social media platforms\n\n",
         
-        "**Step 3: Technology Setup**\nConfigure your home network for maximum security:\n\n• Change default router passwords\n• Set up guest WiFi networks for visitors\n• Enable automatic security updates\n• Install parental control software\n\n"
+        "**Step 3: Technology Setup**\nConfigure your home network for maximum security:\n\n• Change default router passwords\n• Set up guest WiFi networks for visitors\n• Enable automatic security updates\n• Install parental control software\n\n",
+        
+        "**Step 4: Advanced Protection**\nImplement these professional-grade security measures:\n\n• Use a VPN for all family internet activity\n• Set up network monitoring for suspicious activity\n• Create separate user accounts for children\n• Regular security audits of all family devices\n\n",
+        
+        "**Step 5: Emergency Response**\nKnow what to do if your family experiences a cyber attack:\n\n• Immediately disconnect affected devices from internet\n• Document the incident with screenshots\n• Change all passwords on unaffected devices\n• Contact your bank if financial information may be compromised\n\n"
     ],
     
     "conclusion": [
-        "**Bottom Line:** Implementing these {topic} security measures takes less than 30 minutes but provides years of family protection.\n\n**🛡️ Essential Family Protection:**\n• [Norton Family Premier →](https://www.dpbolvw.net/click-101495044-13287827) - Parental controls & device monitoring\n• [Norton VPN →](https://www.tkqlhce.com/click-101495044-14039214) - Online privacy & security protection\n\n**Complete Family Security:** Get both Norton Family + VPN for maximum protection of your loved ones.\n\n**Need Help?** Contact us at help@cyberdad2025.com",
-        "**Take Action Today:** Download our free family security checklist and start protecting your loved ones immediately.\n\n**🛡️ Professional Recommendations:**\n• [Norton Family Premier →](https://www.dpbolvw.net/click-101495044-13287827) - Essential parental controls (30-day trial)\n• [Norton VPN →](https://www.tkqlhce.com/click-101495044-14039214) - Complete privacy protection (money-back guarantee)\n\n**Emergency Support:** If you suspect a security breach, contact us immediately at help@cyberdad2025.com",
-        "**Take Action Today:** Download our free family security checklist and start protecting your loved ones immediately. Remember: cybersecurity is not optional for modern families.\n\n**Emergency Support:** If you suspect a security breach, contact us immediately at help@cyberdad2025.com",
+        "**Bottom Line:** Implementing these security measures takes less than 30 minutes but provides years of family protection.",
+        "**Take Action Today:** Download our free family security checklist and start protecting your loved ones immediately.",
+        "**Remember:** Cybersecurity is not optional for modern families. Start with one step today and build from there.",
     ]
 }
 
@@ -62,125 +63,70 @@ def generate_seo_post():
     topic = random.choice(TOPICS)
     title_template = random.choice(TITLE_TEMPLATES)
     
-    # Generate SEO title
+    # Generate SEO title using simple string replacement
     if "{threat}" in title_template:
-        title = title_template.format(threat=threat)
+        title = title_template.replace("{threat}", threat)
     else:
-        title = title_template.format(topic=topic)
+        title = title_template.replace("{topic}", topic)
     
     # Create filename with date
     now = datetime.datetime.now()
-    filename = f"{now.strftime('%Y-%m-%d')}-{title.lower().replace(' ', '-').replace(':', '').replace('(', '').replace(')', '').replace(',', '')[:50]}.md"
+    clean_title = title.lower().replace(' ', '-').replace(':', '').replace('(', '').replace(')', '').replace(',', '').replace('?', '')
+    filename = now.strftime('%Y-%m-%d') + "-" + clean_title[:50] + ".md"
     
     # Generate SEO-focused content
-    intro = random.choice(CONTENT_TEMPLATES["intro"]).format(threat=threat, topic=topic)
-    steps = "".join(random.sample(CONTENT_TEMPLATES["steps"], 2))
-    conclusion = random.choice(CONTENT_TEMPLATES["conclusion"]).format(threat=threat, topic=topic)
+    intro = random.choice(CONTENT_TEMPLATES["intro"])
+    steps = "".join(random.sample(CONTENT_TEMPLATES["steps"], 3))  # Pick 3 random steps
+    conclusion = random.choice(CONTENT_TEMPLATES["conclusion"])
     
     # Determine category for SEO
     categories = ["Cybersecurity", "Family Safety", "Digital Protection"]
     category = random.choice(categories)
     
     # Create SEO-optimized excerpt
-    excerpt = f"Learn how to protect your family from {threat.lower()} with our expert cybersecurity guide. Simple steps every parent can implement today."
+    excerpt = "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
     
-    # Post content with SEO structure
-    content = f"""---
-layout: post
-title: "{title}"
-date: {now.strftime('%Y-%m-%d %H:%M:%S')} +0000
-categories: [{category}]
-tags: [cybersecurity, family-safety, {threat.lower().replace(' ', '-')}, parents-guide]
-excerpt: "{excerpt}"
-author: CyberDad
-image: /assets/images/cybersecurity-family.jpg
----
-
-{intro}
-
-{steps}
-
-{conclusion}
-{conclusion}
-
-## 🛡️ Recommended Security Tools
-
-Protect your family with these trusted cybersecurity solutions:
-
-- **[Norton 360 Deluxe](https://norton.com/affiliate-link)** - Complete family protection with VPN
-- **[NordVPN](https://nordvpn.com/affiliate-link)** - Secure your internet connection worldwide  
-- **[LastPass](https://lastpass.com/affiliate-link)** - Password manager trusted by millions
-- **[Malwarebytes](https://malwarebytes.com/affiliate-link)** - Advanced malware protection
-
-*As a cybersecurity affiliate, I earn from qualifying purchases at no cost to you.*
-
-## 🔒 Get FREE Cybersecurity Alerts
-
-**Join 12,000+ families getting instant notifications about threats affecting their devices!**
-
-<div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
-    <div class="ml-embedded" data-form="158915078478890584"></div>
-    <p style="font-size: 12px; color: #666; margin-top: 10px;">✅ Real-time threat alerts • Unsubscribe anytime</p>
-</div>
-
-<!-- MailerLite Universal -->
-<script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '1632878');
-</script>
-<!-- End MailerLite Universal -->
-
----
----
-
-**Related Articles:**
-- [Complete Family Cybersecurity Checklist](/)
-- [Essential Security Tools for Parents](/)
-- [Emergency Cybersecurity Contacts](/)
-- [Emergency Cybersecurity Contacts](//)
-
-**AFFILIATE SECTION - ADD HERE:**
-
-## 🛡️ Recommended Security Tools
-
-Protect your family with these trusted cybersecurity solutions:
-
-- **[Norton 360 Deluxe](https://norton.com/affiliate-link)** - Complete family protection with VPN
-- **[NordVPN](https://nordvpn.com/affiliate-link)** - Secure your internet connection worldwide  
-- **[LastPass](https://lastpass.com/affiliate-link)** - Password manager trusted by millions
-- **[Malwarebytes](https://malwarebytes.com/affiliate-link)** - Advanced malware protection
-
-*As a cybersecurity affiliate, I earn from qualifying purchases at no cost to you.*
-
-# Email signup section with MailerLite
-email_signup = """
-
----
-
-## 🔒 Get FREE Cybersecurity Alerts
-
-**Join 12,000+ families getting instant notifications about threats affecting their devices!**
-
-<div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
-    <div class="ml-embedded" data-form="158915078478890584"></div>
-    <p style="font-size: 12px; color: #666; margin-top: 10px;">✅ Real-time threat alerts • Unsubscribe anytime</p>
-</div>
-
-<!-- MailerLite Universal -->
-<script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '1632878');
-</script>
-<!-- End MailerLite Universal -->
-
-"""
+    # Build complete blog post using simple string concatenation
+    content = "---\n"
+    content += "layout: post\n"
+    content += "title: \"" + title + "\"\n"
+    content += "date: " + now.strftime('%Y-%m-%d %H:%M:%S') + " +0000\n"
+    content += "categories: [" + category + "]\n"
+    content += "tags: [cybersecurity, family-safety, " + threat.lower().replace(' ', '-') + ", parents-guide]\n"
+    content += "excerpt: \"" + excerpt + "\"\n"
+    content += "author: CyberDad\n"
+    content += "---\n\n"
+    content += intro + "\n\n"
+    content += steps + "\n\n"
+    content += conclusion + "\n\n"
     
+    # Add affiliate section
+    content += "## 🛡️ Recommended Security Tools\n\n"
+    content += "Protect your family with these trusted cybersecurity solutions:\n\n"
+    content += "- **[Norton 360 Deluxe](https://norton.com/affiliate-link)** - Complete family protection with VPN\n"
+    content += "- **[NordVPN](https://nordvpn.com/affiliate-link)** - Secure your internet connection worldwide\n"
+    content += "- **[LastPass](https://lastpass.com/affiliate-link)** - Password manager trusted by millions\n"
+    content += "- **[Malwarebytes](https://malwarebytes.com/affiliate-link)** - Advanced malware protection\n\n"
+    content += "*As a cybersecurity affiliate, I earn from qualifying purchases at no cost to you.*\n\n"
+    
+    # Add email signup section
+    content += "## 🔒 Get FREE Cybersecurity Alerts\n\n"
+    content += "**Join 12,000+ families getting instant notifications about threats affecting their devices!**\n\n"
+    content += "<div style=\"background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;\">\n"
+    content += "    <div class=\"ml-embedded\" data-form=\"158915078478890584\"></div>\n"
+    content += "    <p style=\"font-size: 12px; color: #666; margin-top: 10px;\">✅ Real-time threat alerts • Unsubscribe anytime</p>\n"
+    content += "</div>\n\n"
+    content += "<!-- MailerLite Universal -->\n"
+    content += "<script>\n"
+    content += "    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])\n"
+    content += "    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,\n"
+    content += "    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})\n"
+    content += "    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');\n"
+    content += "    ml('account', '1632878');\n"
+    content += "</script>\n"
+    content += "<!-- End MailerLite Universal -->\n"
+    
+    return filename, content
 
 def create_post():
     try:
@@ -195,11 +141,11 @@ def create_post():
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(content)
         
-        print(f"✅ SEO-optimized post created: {filename}")
+        print("✅ SEO-optimized post created: " + filename)
         return True
         
     except Exception as e:
-        print(f"❌ Error creating post: {e}")
+        print("❌ Error creating post: " + str(e))
         return False
 
 if __name__ == "__main__":
