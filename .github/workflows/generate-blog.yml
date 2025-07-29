@@ -17,12 +17,7 @@ jobs:
         with:
           python-version: '3.11'
     
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install openai requests
-      
-      - name: Generate CTI post
+      - name: Generate SEO post
         run: python scripts/content_generator.py
         
       - name: Commit & push
@@ -30,5 +25,5 @@ jobs:
           git config user.name "CyberDad2025"
           git config user.email "you@example.com"
           git add _posts/*.md
-          git commit -m "🤖 New CTI post" || echo "No changes to commit"
+          git commit -m "🤖 New post" || echo "No changes to commit"
           git push
