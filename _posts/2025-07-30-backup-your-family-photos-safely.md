@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Backup Your Family Photos Safely"
-date: 2025-07-30 18:59:06 -0500
+date: 2025-07-30 22:24:52 -0500
 categories: [cybersecurity, family-safety, security-guide]
 tags: [security, family, guide, protection, cybersecurity]
 author: CyberDad
