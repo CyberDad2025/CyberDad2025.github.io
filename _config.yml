@@ -93,3 +93,5 @@ sass:
 # Security
 safe: true
 
+plugins:
+  - jekyll-feed
