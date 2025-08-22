@@ -116,15 +116,6 @@ def generate_seo_post():
     content += "    <div class=\"ml-embedded\" data-form=\"158915078478890584\"></div>\n"
     content += "    <p style=\"font-size: 12px; color: #666; margin-top: 10px;\">✅ Real-time threat alerts • Unsubscribe anytime</p>\n"
     content += "</div>\n\n"
-    content += "<!-- MailerLite Universal -->\n"
-    content += "<script>\n"
-    content += "    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])\n"
-    content += "    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,\n"
-    content += "    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})\n"
-    content += "    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');\n"
-    content += "    ml('account', '1632878');\n"
-    content += "</script>\n"
-    content += "<!-- End MailerLite Universal -->\n"
     
     return filename, content
 
