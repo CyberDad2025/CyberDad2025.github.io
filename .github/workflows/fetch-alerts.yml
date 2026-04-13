@@ -1,0 +1,37 @@
+name: Fetch CISA Family Alerts
+
+on:
+  schedule:
+    # Runs every day at 7:00 AM UTC (3 AM ET / midnight PT)
+    - cron: '0 7 * * *'
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  fetch-and-update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # needed to commit files back to repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests feedparser python-dateutil
+
+      - name: Fetch CISA alerts and generate JSON
+        run: python _scripts/fetch_alerts.py
+
+      - name: Commit updated alerts if changed
+        run: |
+          git config user.name "CyberDadKit Bot"
+          git config user.email "ruel@cyberdadkit.com"
+          git add _data/alerts.json
+          git diff --cached --quiet || git commit -m "chore: auto-update family threat alerts [$(date +'%Y-%m-%d')]"
+          git push
