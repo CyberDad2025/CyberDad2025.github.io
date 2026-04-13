@@ -1,7 +1,7 @@
 ---
 layout: default
-title: CyberDad - Family Cybersecurity Intelligence
-description: Real-time cybersecurity intelligence for modern families.
+title: CyberDadKit — Family Cybersecurity, Simplified
+description: Practical cybersecurity for families. No jargon. No fear tactics. Just real protection for your kids, devices, and home network.
 ---
 {% seo %}
 
@@ -13,733 +13,1485 @@ description: Real-time cybersecurity intelligence for modern families.
   gtag('js', new Date());
   gtag('config', 'GA_MEASUREMENT_ID');
 </script>
-<script src="/cyberdad-events.js"></script>
 
 <!-- Schema Markup -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "CyberDad - Family Cybersecurity Intelligence",
-  "description": "Real-time cybersecurity intelligence for modern families",
-  "url": "https://cyberdad2025.github.io",
-  "author": { "@type": "Person", "name": "CyberDad" }
+  "@type": "WebSite",
+  "name": "CyberDadKit",
+  "description": "Practical cybersecurity for families. No jargon, no fear tactics.",
+  "url": "https://cyberdadkit.com",
+  "author": { "@type": "Person", "name": "CyberDad" },
+  "contactPoint": { "@type": "ContactPoint", "email": "ruel@cyberdadkit.com" }
 }
 </script>
 
 <style>
-  /* ── FONTS ── */
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap');
-
-  /* ── TOKENS ── */
-  :root {
-    --navy:      #0a0f1e;
-    --navy-mid:  #111827;
-    --navy-soft: #1e2d47;
-    --teal:      #00c9a7;
-    --teal-dim:  #00a88c;
-    --amber:     #f59e0b;
-    --red:       #ef4444;
-    --text:      #e2e8f0;
-    --text-muted:#94a3b8;
-    --border:    rgba(255,255,255,0.08);
-    --card-bg:   rgba(255,255,255,0.04);
-    --radius:    12px;
-    --font-head: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-  }
-
-  /* ── RESET ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--navy);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ── OVERRIDE MINIMA ── */
-  .site-header {
-    background: var(--navy) !important;
-    border-bottom: 1px solid var(--border) !important;
-    padding: 1rem 0 !important;
-  }
-  .site-title, .site-title:visited {
-    color: var(--teal) !important;
-    font-family: var(--font-head) !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.5px !important;
-  }
-  .site-nav .page-link { color: var(--text-muted) !important; font-family: var(--font-body) !important; }
-  .site-nav .page-link:hover { color: var(--teal) !important; }
-  .site-footer { background: var(--navy-mid) !important; color: var(--text-muted) !important; border-top: 1px solid var(--border) !important; }
-  .page-content { padding: 0 !important; }
-  .wrapper { max-width: 1200px !important; }
-
-  /* ── LAYOUT ── */
-  .cd-wrap {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    padding: 5rem 1.5rem 4rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(0, 201, 167, 0.1);
-    border: 1px solid rgba(0, 201, 167, 0.25);
-    color: var(--teal);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.35rem 0.85rem;
-    border-radius: 100px;
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--teal);
-    border-radius: 50%;
-    animation: blink 1.8s ease-in-out infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .hero-title {
-    font-family: var(--font-head);
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -1px;
-    color: #fff;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero-title span {
-    color: var(--teal);
-  }
-
-  .hero-body {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    max-width: 480px;
-  }
-
-  .hero-cta-row {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    background: var(--teal);
-    color: var(--navy);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 0.8rem 1.75rem;
-    border-radius: var(--radius);
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.2s, transform 0.2s;
-  }
-
-  .btn-primary:hover {
-    background: var(--teal-dim);
-    transform: translateY(-2px);
-    color: var(--navy);
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.8rem 1.75rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--teal);
-    color: var(--teal);
-  }
-
-  /* Hero visual panel */
-  .hero-panel {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .panel-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.25rem;
-  }
-
-  .threat-row {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.85rem 1rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-
-  .threat-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-red    { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
-  .dot-amber  { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
-  .dot-green  { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
-
-  .threat-label { font-size: 0.9rem; color: var(--text); flex: 1; }
-  .threat-tag {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-  }
-  .tag-high   { background: rgba(239,68,68,0.15); color: #ef4444; }
-  .tag-medium { background: rgba(245,158,11,0.15); color: #f59e0b; }
-  .tag-low    { background: rgba(34,197,94,0.15);  color: #22c55e; }
-
-  /* ── DIVIDER ── */
-  .section-divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
-
-  /* ── POSTS SECTION ── */
-  .posts-section {
-    padding: 4rem 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 2.5rem;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .section-title {
-    font-family: var(--font-head);
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.5px;
-  }
-
-  .section-link {
-    color: var(--teal);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-  .section-link:hover { text-decoration: underline; }
-
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .post-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .post-card:hover {
-    border-color: rgba(0, 201, 167, 0.3);
-    transform: translateY(-3px);
-  }
-
-  .post-thumb {
-    height: 160px;
-    background: linear-gradient(135deg, var(--navy-soft), #1a3a5c);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .post-body {
-    padding: 1.4rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .post-cat {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 0.6rem;
-  }
-
-  .post-title {
-    font-family: var(--font-head);
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.4;
-    margin-bottom: 0.6rem;
-  }
-
-  .post-excerpt {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    line-height: 1.55;
-    flex: 1;
-    margin-bottom: 1.2rem;
-  }
-
-  .post-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-  }
-
-  .post-date { color: var(--text-muted); }
-
-  .post-link {
-    color: var(--teal);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: gap 0.2s;
-  }
-  .post-link:hover { gap: 0.6rem; }
-
-  /* ── TWO-COL LAYOUT ── */
-  .two-col {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 2rem;
-    align-items: start;
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .sidebar-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-  }
-
-  .sidebar-card-title {
-    font-family: var(--font-head);
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 1.2rem;
-  }
-
-  /* Email form */
-  .email-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 0.75rem;
-  }
-
-  .email-form p {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-  }
-
-  .email-input {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    padding: 0.75rem 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-
-  .email-input:focus { border-color: var(--teal); }
-  .email-input::placeholder { color: var(--text-muted); }
-
-  /* Popular guide links */
-  .guide-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .guide-list li {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .guide-list li:last-child { border-bottom: none; }
-
-  .guide-list a {
-    display: block;
-    padding: 0.75rem 0;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 0.875rem;
-    transition: color 0.2s;
-  }
-
-  .guide-list a:hover { color: var(--teal); }
-
-  .guide-list span {
-    display: block;
-    color: var(--text-muted);
-    font-size: 0.78rem;
-    margin-top: 0.15rem;
-  }
-
-  /* ── KIT SECTION ── */
-  .kit-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem 5rem;
-  }
-
-  .kit-card {
-    background: linear-gradient(135deg, #0d2137 0%, #0a1628 100%);
-    border: 1px solid rgba(0, 201, 167, 0.2);
-    border-radius: 16px;
-    padding: 3rem;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 3rem;
-    align-items: center;
-  }
-
-  .kit-tag {
-    display: inline-block;
-    background: rgba(0, 201, 167, 0.1);
-    border: 1px solid rgba(0, 201, 167, 0.25);
-    color: var(--teal);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.75rem;
-    border-radius: 100px;
-    margin-bottom: 1.25rem;
-  }
-
-  .kit-title {
-    font-family: var(--font-head);
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
-    color: #fff;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.5px;
-  }
-
-  .kit-desc {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 1.75rem;
-    max-width: 480px;
-  }
-
-  .kit-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .kit-features li {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-  }
-
-  .kit-features li::before {
-    content: '✓';
-    color: var(--teal);
-    font-weight: 700;
-    font-size: 0.85rem;
-  }
-
-  .kit-visual {
-    background: rgba(0, 201, 167, 0.06);
-    border: 1px solid rgba(0, 201, 167, 0.15);
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    min-width: 200px;
-  }
-
-  .kit-icon { font-size: 3.5rem; margin-bottom: 0.75rem; }
-  .kit-price {
-    font-family: var(--font-head);
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--teal);
-  }
-  .kit-price-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
-    .hero-panel { display: none; }
-    .two-col { grid-template-columns: 1fr; }
-    .sidebar { display: none; } /* simplify on mobile — can show later */
-    .kit-card { grid-template-columns: 1fr; }
-    .kit-visual { display: none; }
-  }
-
-  @media (max-width: 600px) {
-    .posts-grid { grid-template-columns: 1fr; }
-    .hero-cta-row { flex-direction: column; }
-    .section-header { flex-direction: column; gap: 0.5rem; }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+
+/* ── TOKENS ── */
+:root {
+  --ink:        #0e1117;
+  --ink-soft:   #1c2333;
+  --slate:      #2d3748;
+  --mist:       #f0f4f8;
+  --cloud:      #e8edf4;
+  --teal:       #0a9e84;
+  --teal-light: #e6f7f4;
+  --teal-mid:   #0c8a73;
+  --amber:      #d97706;
+  --amber-bg:   #fffbeb;
+  --red:        #dc2626;
+  --red-bg:     #fef2f2;
+  --green:      #059669;
+  --green-bg:   #ecfdf5;
+  --text:       #1a202c;
+  --text-mid:   #4a5568;
+  --text-soft:  #718096;
+  --border:     #e2e8f0;
+  --white:      #ffffff;
+  --radius-sm:  8px;
+  --radius:     14px;
+  --radius-lg:  20px;
+  --font-head:  'Fraunces', Georgia, serif;
+  --font-body:  'DM Sans', sans-serif;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:     0 4px 16px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── OVERRIDE MINIMA THEME ── */
+.site-header {
+  background: var(--white) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.site-title, .site-title:visited {
+  color: var(--ink) !important;
+  font-family: var(--font-head) !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: -0.3px !important;
+}
+.site-nav .page-link { color: var(--text-mid) !important; font-family: var(--font-body) !important; font-size: 0.9rem !important; }
+.site-nav .page-link:hover { color: var(--teal) !important; }
+.site-footer { background: var(--ink) !important; color: var(--text-soft) !important; border-top: none !important; }
+.page-content { padding: 0 !important; }
+.wrapper { max-width: 1160px !important; }
+
+/* ── UTILITY ── */
+.cd-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* ── NAV BAR OVERRIDE ── */
+.site-header .wrapper { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem !important; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #f7fbfa 0%, #edf6f3 45%, #f8fafc 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 5rem 1.5rem 4.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(10,158,132,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 5rem;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.75rem;
+  border: 1px solid rgba(10,158,132,0.2);
+}
+
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--teal);
+}
+
+.hero-sub {
+  color: var(--text-mid);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2.25rem;
+  max-width: 460px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.875rem 1.875rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(10,158,132,0.25);
+}
+.btn-primary:hover {
+  background: var(--teal-mid);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10,158,132,0.3);
+  color: var(--white);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-mid);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+.hero-trust {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+.hero-trust-divider { color: var(--border); }
+
+/* Hero visual: threat panel */
+.hero-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.panel-live {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.panel-body { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.625rem; }
+
+.threat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: #fafbfc;
+  transition: border-color 0.2s;
+}
+.threat-item:hover { border-color: rgba(10,158,132,0.25); }
+
+.threat-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.threat-text { flex: 1; }
+.threat-label { font-size: 0.875rem; font-weight: 500; color: var(--text); line-height: 1.35; }
+.threat-meta  { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.2rem; }
+
+.threat-badge {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.badge-high   { background: var(--red-bg);   color: var(--red); }
+.badge-medium { background: var(--amber-bg); color: var(--amber); }
+.badge-info   { background: var(--green-bg); color: var(--green); }
+
+.panel-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--mist);
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  background: var(--ink);
+  padding: 1.25rem 1.5rem;
+}
+
+.trust-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #94a3b8;
+  font-size: 0.83rem;
+  font-weight: 500;
+}
+
+.trust-item span { font-size: 1.1rem; }
+
+/* ── TOPICS STRIP ── */
+.topics-strip {
+  background: var(--mist);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 1.5rem;
+}
+
+.topics-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.strip-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.topic-chip {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.topic-chip:hover {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.topic-chip-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+.topic-chip-label { font-size: 0.8rem; font-weight: 500; color: var(--text-mid); line-height: 1.3; }
+
+/* ── SECTION SHARED ── */
+.section-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.4rem;
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.section-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: gap 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+.section-link:hover { gap: 0.55rem; }
+
+/* ── GUIDES SECTION ── */
+.guides-section { padding: 5rem 1.5rem; }
+
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.guide-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.guide-card:hover {
+  border-color: rgba(10,158,132,0.35);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.guide-thumb {
+  height: 148px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.75rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.guide-thumb-kids    { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.guide-thumb-devices { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+.guide-thumb-pass    { background: linear-gradient(135deg, #fefce8, #fef9c3); }
+.guide-thumb-scams   { background: linear-gradient(135deg, #fff7ed, #fed7aa); }
+.guide-thumb-wifi    { background: linear-gradient(135deg, #fdf4ff, #f3e8ff); }
+.guide-thumb-rules   { background: linear-gradient(135deg, #f0fdfa, #ccfbf1); }
+
+.guide-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+.guide-cat {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.6rem;
+}
+
+.guide-title {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 0.7rem;
+}
+
+.guide-excerpt {
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 1.25rem;
+}
+
+.guide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.guide-date { color: var(--text-soft); }
+.guide-cta { color: var(--teal); font-weight: 600; font-size: 0.85rem; }
+
+/* ── MAIN + SIDEBAR ── */
+.content-sidebar {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ── ALERT STRIP ── */
+.alert-strip {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.alert-strip-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alert-strip-title {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.alert-strip-sub { font-size: 0.8rem; color: var(--text-soft); margin-top: 0.1rem; }
+
+.alerts-list { display: flex; flex-direction: column; }
+
+.alert-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.alert-item:last-child { border-bottom: none; }
+.alert-item:hover { background: var(--mist); }
+
+.alert-sev {
+  flex-shrink: 0;
+  width: 3.5rem;
+  padding: 0.25rem 0;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.sev-high   { background: var(--red-bg);   color: var(--red); }
+.sev-medium { background: var(--amber-bg); color: var(--amber); }
+.sev-info   { background: var(--green-bg); color: var(--green); }
+
+.alert-text { flex: 1; }
+.alert-head { font-weight: 600; font-size: 0.9rem; color: var(--text); line-height: 1.35; margin-bottom: 0.25rem; }
+.alert-desc { font-size: 0.82rem; color: var(--text-soft); line-height: 1.5; }
+.alert-date { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.35rem; }
+
+/* ── SIDEBAR ── */
+.sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.sidebar-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar-card-head {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--mist);
+}
+
+.sidebar-card-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sidebar-card-sub { font-size: 0.8rem; color: var(--text-soft); margin-top: 0.15rem; }
+.sidebar-card-body { padding: 1.25rem 1.5rem; }
+
+/* Email form */
+.email-form-wrap p { font-size: 0.875rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 1rem; }
+
+/*
+  ──────────────────────────────────────────────
+  MAILERLITE EMBED AREA
+  Replace everything inside .ml-embed-placeholder
+  with your actual MailerLite embed code.
+  ──────────────────────────────────────────────
+*/
+.ml-embed-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ml-embed-input {
+  background: var(--mist);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+.ml-embed-input:focus { border-color: var(--teal); background: var(--white); }
+.ml-embed-input::placeholder { color: var(--text-soft); }
+
+.ml-embed-btn {
+  background: var(--teal);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ml-embed-btn:hover { background: var(--teal-mid); }
+
+.ml-disclaimer { font-size: 0.73rem !important; color: var(--text-soft) !important; text-align: center; margin-bottom: 0 !important; }
+
+#ml-success { display: none; background: var(--green-bg); border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 1rem; font-size: 0.875rem; color: var(--green); font-weight: 500; }
+
+/* Popular guides sidebar list */
+.pop-guide-list { list-style: none; display: flex; flex-direction: column; }
+
+.pop-guide-list li { border-bottom: 1px solid var(--border); }
+.pop-guide-list li:last-child { border-bottom: none; }
+
+.pop-guide-list a {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.pop-guide-list a:hover .pop-guide-title { color: var(--teal); }
+
+.pop-guide-num {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  background: var(--teal-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-top: 1px;
+}
+
+.pop-guide-text { flex: 1; }
+.pop-guide-title { font-size: 0.85rem; font-weight: 500; color: var(--text); line-height: 1.35; }
+.pop-guide-date { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.15rem; }
+
+/* Quick tips card */
+.tip-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+
+.tip-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.45;
+}
+
+.tip-list li::before {
+  content: '✓';
+  flex-shrink: 0;
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+/* ── SHIELD KIT SECTION ── */
+.kit-section {
+  background: linear-gradient(160deg, #0c1a2e 0%, #0e2438 50%, #0a1628 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.kit-section::before {
+  content: '';
+  position: absolute;
+  top: -120px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(10,158,132,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.kit-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 5rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.kit-eyebrow {
+  display: inline-block;
+  background: rgba(10,158,132,0.15);
+  border: 1px solid rgba(10,158,132,0.3);
+  color: #4dd9bf;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.9rem;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.kit-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  color: #f0f6f4;
+  line-height: 1.12;
+  letter-spacing: -0.75px;
+  margin-bottom: 1rem;
+}
+
+.kit-title em { font-style: italic; font-weight: 300; color: #4dd9bf; }
+
+.kit-desc {
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.kit-checklist { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2.25rem; }
+
+.kit-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.kit-check {
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  background: rgba(10,158,132,0.2);
+  border: 1px solid rgba(10,158,132,0.35);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  color: #4dd9bf;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.kit-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+.btn-kit {
+  background: #0a9e84;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem 2.25rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(10,158,132,0.3);
+}
+.btn-kit:hover {
+  background: #0c8a73;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10,158,132,0.35);
+  color: var(--white);
+}
+
+.kit-guarantee {
+  font-size: 0.8rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Kit price card */
+.kit-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.kit-card-icon { font-size: 3.5rem; margin-bottom: 1.25rem; display: block; }
+
+.kit-price-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.kit-price {
+  font-family: var(--font-head);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #4dd9bf;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.kit-price-sub { font-size: 0.85rem; color: #475569; margin-bottom: 1.75rem; }
+
+.kit-includes {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.kit-includes li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.83rem;
+  color: #94a3b8;
+}
+
+.kit-includes li::before { content: '→'; color: #4dd9bf; font-weight: 700; flex-shrink: 0; }
+
+.kit-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin: 0 0 1.5rem;
+}
+
+/* ── FOOTER ── */
+.cd-footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 3.5rem 1.5rem 2rem;
+}
+
+.footer-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand-name {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.footer-brand-desc { font-size: 0.875rem; color: #64748b; line-height: 1.65; margin-bottom: 1rem; }
+.footer-email { font-size: 0.82rem; color: #4dd9bf; text-decoration: none; }
+.footer-email:hover { text-decoration: underline; }
+
+.footer-col-title {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #475569;
+  margin-bottom: 1rem;
+}
+
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #4dd9bf; }
+
+.footer-bottom {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copy { font-size: 0.8rem; color: #334155; }
+.footer-legal { display: flex; gap: 1.5rem; }
+.footer-legal a { font-size: 0.8rem; color: #334155; text-decoration: none; }
+.footer-legal a:hover { color: #4dd9bf; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-panel { display: none; }
+  .topics-grid { grid-template-columns: repeat(3, 1fr); }
+  .guides-grid { grid-template-columns: repeat(2, 1fr); }
+  .content-sidebar { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .kit-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .kit-card { display: none; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 620px) {
+  .topics-grid { grid-template-columns: repeat(2, 1fr); }
+  .guides-grid { grid-template-columns: 1fr; }
+  .trust-inner { gap: 1.5rem; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
 </style>
 
-<!-- ══════════════════════════════════════════
+<!-- ═══════════════════════════════════════
      HERO
-══════════════════════════════════════════ -->
+═══════════════════════════════════════ -->
 <section class="hero">
-  <div class="hero-text">
-    <div class="hero-eyebrow">Live threat intelligence</div>
-    <h1 class="hero-title">
-      Keep your family<br>
-      <span>safe online.</span>
-    </h1>
-    <p class="hero-body">
-      Plain-English cybersecurity guides written for parents — no jargon, no scare tactics. Just practical advice that actually works.
-    </p>
-    <div class="hero-cta-row">
-      <a href="#guides" class="btn-primary">Browse Guides</a>
-      <a href="#kit" class="btn-ghost">Get the Shield Kit</a>
-    </div>
-  </div>
-
-  <div class="hero-panel">
-    <div class="panel-label">Current threat radar</div>
-
-    <div class="threat-row">
-      <span class="threat-dot dot-red"></span>
-      <span class="threat-label">Phishing targeting school accounts</span>
-      <span class="threat-tag tag-high">High</span>
-    </div>
-
-    <div class="threat-row">
-      <span class="threat-dot dot-amber"></span>
-      <span class="threat-label">Fake gaming reward scams</span>
-      <span class="threat-tag tag-medium">Medium</span>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Freedom from fear
+      </div>
+      <h1 class="hero-title">
+        Your family's<br>
+        digital life,<br>
+        <em>protected.</em>
+      </h1>
+      <p class="hero-sub">
+        Plain-English cybersecurity for parents. No technical degree required — just practical steps to keep your kids, devices, and home network safe from real threats.
+      </p>
+      <div class="hero-actions">
+        <a href="#guides" class="btn-primary">Browse Free Guides</a>
+        <a href="#kit" class="btn-ghost">Get the Shield Kit — $47</a>
+      </div>
+      <div class="hero-trust">
+        <span>✓ No jargon</span>
+        <span class="hero-trust-divider">|</span>
+        <span>✓ Written for parents</span>
+        <span class="hero-trust-divider">|</span>
+        <span>✓ Free weekly alerts</span>
+      </div>
     </div>
 
-    <div class="threat-row">
-      <span class="threat-dot dot-green"></span>
-      <span class="threat-label">Home router firmware patches</span>
-      <span class="threat-tag tag-low">Info</span>
-    </div>
-
-    <div class="threat-row">
-      <span class="threat-dot dot-amber"></span>
-      <span class="threat-label">Social media account takeovers</span>
-      <span class="threat-tag tag-medium">Medium</span>
+    <!-- Threat Radar Panel -->
+    <div class="hero-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Family Threat Radar</div>
+        </div>
+        <div class="panel-live"><span class="live-dot"></span> Live</div>
+      </div>
+      <div class="panel-body">
+        <div class="threat-item">
+          <span class="threat-icon">📧</span>
+          <div class="threat-text">
+            <div class="threat-label">Phishing targeting school email accounts</div>
+            <div class="threat-meta">Impersonating school IT departments</div>
+          </div>
+          <span class="threat-badge badge-high">High</span>
+        </div>
+        <div class="threat-item">
+          <span class="threat-icon">🎮</span>
+          <div class="threat-text">
+            <div class="threat-label">Fake gaming reward scams on Roblox</div>
+            <div class="threat-meta">Targeting kids ages 7–14</div>
+          </div>
+          <span class="threat-badge badge-medium">Medium</span>
+        </div>
+        <div class="threat-item">
+          <span class="threat-icon">📱</span>
+          <div class="threat-text">
+            <div class="threat-label">Social media account takeovers rising</div>
+            <div class="threat-meta">Instagram & Snapchat credential theft</div>
+          </div>
+          <span class="threat-badge badge-medium">Medium</span>
+        </div>
+        <div class="threat-item">
+          <span class="threat-icon">📡</span>
+          <div class="threat-text">
+            <div class="threat-label">Home router firmware updates available</div>
+            <div class="threat-meta">Patch your router now — quick 5-min fix</div>
+          </div>
+          <span class="threat-badge badge-info">Info</span>
+        </div>
+      </div>
+      <div class="panel-footer">Updated daily · Free alerts in your inbox →</div>
     </div>
   </div>
 </section>
 
-<hr class="section-divider">
+<!-- ═══════════════════════════════════════
+     TRUST BAR
+═══════════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item"><span>🛡️</span> Family-first approach</div>
+    <div class="trust-item"><span>📖</span> Plain-English guides</div>
+    <div class="trust-item"><span>🔔</span> Weekly threat alerts</div>
+    <div class="trust-item"><span>✅</span> 30-day money-back guarantee</div>
+    <div class="trust-item"><span>📧</span> ruel@cyberdadkit.com</div>
+  </div>
+</div>
 
-<!-- ══════════════════════════════════════════
-     LATEST POSTS + SIDEBAR
-══════════════════════════════════════════ -->
-<div class="two-col" id="guides">
+<!-- ═══════════════════════════════════════
+     TOPICS STRIP
+═══════════════════════════════════════ -->
+<div class="topics-strip">
+  <div class="topics-inner">
+    <div class="strip-label">What we cover</div>
+    <div class="topics-grid">
+      <a href="/tag/social-media" class="topic-chip">
+        <span class="topic-chip-icon">📲</span>
+        <span class="topic-chip-label">Social Media Safety</span>
+      </a>
+      <a href="/tag/devices" class="topic-chip">
+        <span class="topic-chip-icon">💻</span>
+        <span class="topic-chip-label">Device Security</span>
+      </a>
+      <a href="/tag/passwords" class="topic-chip">
+        <span class="topic-chip-icon">🔑</span>
+        <span class="topic-chip-label">Passwords & Accounts</span>
+      </a>
+      <a href="/tag/scams" class="topic-chip">
+        <span class="topic-chip-icon">🎣</span>
+        <span class="topic-chip-label">Scams & Phishing</span>
+      </a>
+      <a href="/tag/wifi" class="topic-chip">
+        <span class="topic-chip-icon">📡</span>
+        <span class="topic-chip-label">Wi-Fi & Home Network</span>
+      </a>
+      <a href="/tag/cyberbullying" class="topic-chip">
+        <span class="topic-chip-icon">💬</span>
+        <span class="topic-chip-label">Cyberbullying & Predators</span>
+      </a>
+      <a href="/tag/browsing" class="topic-chip">
+        <span class="topic-chip-icon">🌐</span>
+        <span class="topic-chip-label">Safe Browsing</span>
+      </a>
+      <a href="/tag/family-rules" class="topic-chip">
+        <span class="topic-chip-icon">📋</span>
+        <span class="topic-chip-label">Family Tech Rules</span>
+      </a>
+      <a href="/tag/recovery" class="topic-chip">
+        <span class="topic-chip-icon">🔄</span>
+        <span class="topic-chip-label">Emergency Plans</span>
+      </a>
+      <a href="/tag/privacy" class="topic-chip">
+        <span class="topic-chip-icon">🔒</span>
+        <span class="topic-chip-label">Digital Privacy</span>
+      </a>
+    </div>
+  </div>
+</div>
 
-  <!-- Posts -->
-  <div>
-    <div class="section-header">
-      <h2 class="section-title">Latest guides</h2>
-      <a href="/blog" class="section-link">View all →</a>
+<!-- ═══════════════════════════════════════
+     GUIDES GRID
+═══════════════════════════════════════ -->
+<section class="guides-section" id="guides">
+  <div class="section-wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Latest guides</div>
+        <h2 class="section-title">Practical protection for your family</h2>
+      </div>
+      <a href="/blog" class="section-link">View all guides →</a>
     </div>
 
-    <div class="posts-grid">
+    <div class="guides-grid">
       {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
       {% for post in sorted_posts limit: 6 %}
-      <article class="post-card">
-        <div class="post-thumb">🛡️</div>
-        <div class="post-body">
-          <div class="post-cat">{{ post.categories | first | default: "Security" }}</div>
-          <h3 class="post-title">{{ post.title }}</h3>
-          <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 22 }}</p>
-          <div class="post-footer">
-            <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
-            <a href="{{ post.url }}" class="post-link">Read →</a>
+      <a href="{{ post.url }}" class="guide-card">
+        <div class="guide-thumb guide-thumb-{{ forloop.index | modulo: 6 | plus: 1 }}">
+          {% case post.categories | first %}
+            {% when 'Social Media' %}📲
+            {% when 'Devices' %}💻
+            {% when 'Passwords' %}🔑
+            {% when 'Scams' %}🎣
+            {% when 'WiFi' %}📡
+            {% else %}🛡️
+          {% endcase %}
+        </div>
+        <div class="guide-body">
+          <div class="guide-cat">{{ post.categories | first | default: "Family Security" }}</div>
+          <h3 class="guide-title">{{ post.title }}</h3>
+          <p class="guide-excerpt">{{ post.excerpt | strip_html | truncatewords: 24 }}</p>
+          <div class="guide-footer">
+            <span class="guide-date">{{ post.date | date: "%b %d, %Y" }}</span>
+            <span class="guide-cta">Read guide →</span>
           </div>
         </div>
-      </article>
+      </a>
       {% endfor %}
 
       {% if site.posts.size == 0 %}
-      <article class="post-card">
-        <div class="post-thumb">🛡️</div>
-        <div class="post-body">
-          <div class="post-cat">Getting Started</div>
-          <h3 class="post-title">Your first family cybersecurity checklist</h3>
-          <p class="post-excerpt">The five things every parent should set up today to protect their household from the most common online threats.</p>
-          <div class="post-footer">
-            <span class="post-date">Coming soon</span>
-            <span class="post-link" style="color:var(--text-muted)">Soon</span>
+      <a href="#" class="guide-card">
+        <div class="guide-thumb guide-thumb-kids">📲</div>
+        <div class="guide-body">
+          <div class="guide-cat">Social Media Safety</div>
+          <h3 class="guide-title">How to set up Instagram privacy controls for your teen (2025)</h3>
+          <p class="guide-excerpt">A step-by-step walkthrough of every setting that matters — covering who can see posts, who can contact your child, and how to spot warning signs.</p>
+          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+        </div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-thumb guide-thumb-pass">🔑</div>
+        <div class="guide-body">
+          <div class="guide-cat">Passwords & Accounts</div>
+          <h3 class="guide-title">The family password manager guide: set it up in 20 minutes</h3>
+          <p class="guide-excerpt">Stop reusing passwords. This beginner-friendly guide walks you through choosing and setting up a password manager the whole family can use safely.</p>
+          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+        </div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-thumb guide-thumb-wifi">📡</div>
+        <div class="guide-body">
+          <div class="guide-cat">Wi-Fi & Home Network</div>
+          <h3 class="guide-title">Is your home router a security risk? Here's how to find out</h3>
+          <p class="guide-excerpt">Most families never touch their router settings after setup. Here are the five things you should check today to close the most common gaps.</p>
+          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+        </div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-thumb guide-thumb-scams">🎣</div>
+        <div class="guide-body">
+          <div class="guide-cat">Scams & Phishing</div>
+          <h3 class="guide-title">The scam scripts targeting kids right now (and how to talk about them)</h3>
+          <p class="guide-excerpt">Gaming rewards, fake giveaways, impersonated friends — these are the exact tactics scammers use on children and how to inoculate your family against them.</p>
+          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+        </div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-thumb guide-thumb-devices">💻</div>
+        <div class="guide-body">
+          <div class="guide-cat">Device Security</div>
+          <h3 class="guide-title">Setting up your kid's first phone: the secure way</h3>
+          <p class="guide-excerpt">Before handing over a new device, run through this checklist. Covers screen time, parental controls, location sharing, and app permissions.</p>
+          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+        </div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-thumb guide-thumb-rules">📋</div>
+        <div class="guide-body">
+          <div class="guide-cat">Family Tech Rules</div>
+          <h3 class="guide-title">How to write a family technology agreement (free template)</h3>
+          <p class="guide-excerpt">A living document your family actually uses — covering screen time, content boundaries, device-free zones, and what happens when rules are broken.</p>
+          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+        </div>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     ALERTS + SIDEBAR
+═══════════════════════════════════════ -->
+<div class="content-sidebar">
+
+  <!-- Alert Feed -->
+  <div>
+    <div class="section-head" style="margin-bottom: 1.5rem;">
+      <div>
+        <div class="section-eyebrow">Threat Alerts</div>
+        <h2 class="section-title">What families should know this week</h2>
+      </div>
+    </div>
+
+    <div class="alert-strip">
+      <div class="alert-strip-header">
+        <div>
+          <div class="alert-strip-title">Current Family Threat Alerts</div>
+          <div class="alert-strip-sub">Plain-English summaries of the threats that matter to your household</div>
+        </div>
+        <div class="panel-live"><span class="live-dot"></span> Updated daily</div>
+      </div>
+      <div class="alerts-list">
+        <div class="alert-item">
+          <div class="alert-sev sev-high">High</div>
+          <div class="alert-text">
+            <div class="alert-head">School phishing campaign impersonating IT departments</div>
+            <div class="alert-desc">Emails asking parents and students to "verify accounts" are circulating across multiple school districts. Do not click links — go directly to your school's website instead.</div>
+            <div class="alert-date">Apr 13, 2025 · Education</div>
           </div>
         </div>
-      </article>
-      {% endif %}
+        <div class="alert-item">
+          <div class="alert-sev sev-medium">Medium</div>
+          <div class="alert-text">
+            <div class="alert-head">Fake Robux giveaway sites targeting kids on Roblox</div>
+            <div class="alert-desc">Children are being directed to third-party sites promising free in-game currency. These sites steal login credentials. Talk to your kids and check their browser history.</div>
+            <div class="alert-date">Apr 11, 2025 · Gaming</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-sev sev-medium">Medium</div>
+          <div class="alert-text">
+            <div class="alert-head">Instagram and Snapchat account takeover wave</div>
+            <div class="alert-desc">Attackers are using credential-stuffing to take over teen accounts and message friends with scam links. Enable two-factor authentication on all your family's accounts now.</div>
+            <div class="alert-date">Apr 9, 2025 · Social Media</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-sev sev-info">Info</div>
+          <div class="alert-text">
+            <div class="alert-head">Critical router firmware updates from ASUS and TP-Link</div>
+            <div class="alert-desc">Both manufacturers have released security patches that close a known vulnerability. Log into your router's admin panel and check for firmware updates — it takes about 5 minutes.</div>
+            <div class="alert-date">Apr 7, 2025 · Home Network</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-sev sev-info">Info</div>
+          <div class="alert-text">
+            <div class="alert-head">iOS and Android security patches released — update now</div>
+            <div class="alert-desc">Both Apple and Google have pushed important security updates this week. Make sure every device in your household — especially your kids' devices — is running the latest OS version.</div>
+            <div class="alert-date">Apr 5, 2025 · Devices</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Sidebar -->
   <aside class="sidebar">
 
-    <!-- Email capture -->
+    <!-- Email Signup -->
     <div class="sidebar-card">
-      <div class="sidebar-card-title">Get new guides by email</div>
-      <form class="email-form" onsubmit="handleSignup(event)">
-        <p>New articles drop weekly. No spam, unsubscribe anytime.</p>
-        <input type="email" class="email-input" placeholder="you@email.com" required>
-        <button type="submit" class="btn-primary" style="width:100%;">Subscribe free →</button>
-      </form>
-      <div id="signup-success" style="display:none; color:var(--teal); font-size:0.875rem; margin-top:0.75rem;">
-        ✓ You're in. Check your inbox.
+      <div class="sidebar-card-head">
+        <div class="sidebar-card-title">Get weekly alerts by email</div>
+        <div class="sidebar-card-sub">Free · No spam · Unsubscribe anytime</div>
+      </div>
+      <div class="sidebar-card-body">
+        <div class="email-form-wrap">
+          <p>New guides and family threat alerts every week. Parents-only content, written to actually help.</p>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════
+             MAILERLITE EMBED — Replace this entire block
+             with your MailerLite embed code when ready.
+             The surrounding .sidebar-card-body div stays.
+        ═══════════════════════════════════════════════════ -->
+        <div class="ml-embed-placeholder" id="ml-form">
+          <input type="email" class="ml-embed-input" placeholder="your@email.com" id="ml-email-input">
+          <button type="button" class="ml-embed-btn" onclick="handleMLSignup()">Send me free alerts →</button>
+          <p class="ml-disclaimer">Unsubscribe with one click. No spam, ever.</p>
+        </div>
+        <div id="ml-success">✓ You're in! Check your inbox for a welcome email.</div>
+        <!-- ══ END MAILERLITE EMBED AREA ══ -->
+
       </div>
     </div>
 
-    <!-- Popular guides -->
+    <!-- Popular Guides -->
     <div class="sidebar-card">
-      <div class="sidebar-card-title">Popular guides</div>
-      <ul class="guide-list">
-        {% for post in site.posts limit: 5 %}
-        <li>
-          <a href="{{ post.url }}">
-            {{ post.title | truncatewords: 7 }}
-            <span>{{ post.date | date: "%b %d, %Y" }}</span>
-          </a>
-        </li>
-        {% else %}
-        <li><a href="#">Family password manager guide <span>Coming soon</span></a></li>
-        <li><a href="#">Setting up parental controls in 2025 <span>Coming soon</span></a></li>
-        <li><a href="#">Is your kid's school using secure tools? <span>Coming soon</span></a></li>
-        {% endfor %}
-      </ul>
+      <div class="sidebar-card-head">
+        <div class="sidebar-card-title">Most-read guides</div>
+      </div>
+      <div class="sidebar-card-body" style="padding-top: 0.25rem; padding-bottom: 0.25rem;">
+        <ul class="pop-guide-list">
+          {% for post in site.posts limit: 5 %}
+          <li>
+            <a href="{{ post.url }}">
+              <span class="pop-guide-num">{{ forloop.index }}</span>
+              <div class="pop-guide-text">
+                <div class="pop-guide-title">{{ post.title | truncatewords: 9 }}</div>
+                <div class="pop-guide-date">{{ post.date | date: "%b %d, %Y" }}</div>
+              </div>
+            </a>
+          </li>
+          {% else %}
+          <li><a href="#"><span class="pop-guide-num">1</span><div class="pop-guide-text"><div class="pop-guide-title">Family password manager setup guide</div><div class="pop-guide-date">Coming soon</div></div></a></li>
+          <li><a href="#"><span class="pop-guide-num">2</span><div class="pop-guide-text"><div class="pop-guide-title">Parental controls on iPhone & Android</div><div class="pop-guide-date">Coming soon</div></div></a></li>
+          <li><a href="#"><span class="pop-guide-num">3</span><div class="pop-guide-text"><div class="pop-guide-title">How to spot a phishing email — for kids</div><div class="pop-guide-date">Coming soon</div></div></a></li>
+          <li><a href="#"><span class="pop-guide-num">4</span><div class="pop-guide-text"><div class="pop-guide-title">Home router security checklist</div><div class="pop-guide-date">Coming soon</div></div></a></li>
+          <li><a href="#"><span class="pop-guide-num">5</span><div class="pop-guide-text"><div class="pop-guide-title">What to do if your child's account is hacked</div><div class="pop-guide-date">Coming soon</div></div></a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Quick Wins -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">
+        <div class="sidebar-card-title">Do these today</div>
+        <div class="sidebar-card-sub">5 quick wins for your family</div>
+      </div>
+      <div class="sidebar-card-body">
+        <ul class="tip-list">
+          <li>Turn on two-factor authentication for all family email accounts</li>
+          <li>Check if your router firmware is up to date</li>
+          <li>Review your child's privacy settings on Instagram or TikTok</li>
+          <li>Set up a family password manager (Bitwarden is free)</li>
+          <li>Create a family rule about sharing personal info online</li>
+        </ul>
+      </div>
     </div>
 
   </aside>
 </div>
 
-<!-- ══════════════════════════════════════════
+<!-- ═══════════════════════════════════════
      SHIELD KIT CTA
-══════════════════════════════════════════ -->
+═══════════════════════════════════════ -->
 <section class="kit-section" id="kit">
-  <div class="kit-card">
+  <div class="kit-inner">
     <div>
-      <div class="kit-tag">Digital download</div>
-      <h2 class="kit-title">CyberDad Shield Kit</h2>
+      <div class="kit-eyebrow">Digital Download · Instant Access</div>
+      <h2 class="kit-title">
+        The CyberDad<br>
+        <em>Shield Kit</em>
+      </h2>
       <p class="kit-desc">
-        A step-by-step system to secure your family's Wi-Fi, passwords, and devices. No tech background needed — just follow the checklist.
+        A complete system to secure your family's digital life — designed for parents with no technical background. Follow the checklist. Protect your family.
       </p>
-      <ul class="kit-features">
-        <li>Full home network security checklist</li>
-        <li>Device setup guides for kids' phones & tablets</li>
-        <li>Password vault setup walkthrough</li>
-        <li>30-day money-back guarantee</li>
+      <ul class="kit-checklist">
+        <li><span class="kit-check">✓</span>Full home network security checklist (Wi-Fi, router, guest network)</li>
+        <li><span class="kit-check">✓</span>Device setup guides for kids' phones, tablets, and laptops</li>
+        <li><span class="kit-check">✓</span>Password vault setup walkthrough — step by step</li>
+        <li><span class="kit-check">✓</span>Social media safety checklist for each platform</li>
+        <li><span class="kit-check">✓</span>Family technology agreement template — ready to print</li>
+        <li><span class="kit-check">✓</span>Emergency response plan for account hacks and breaches</li>
       </ul>
-      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-primary">
-        Get instant access →
-      </a>
+      <div class="kit-actions">
+        <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
+          Get instant access — $47 →
+        </a>
+        <span class="kit-guarantee">🔒 30-day money-back guarantee</span>
+      </div>
     </div>
-    <div class="kit-visual">
-      <div class="kit-icon">🛡️</div>
-      <div class="kit-price">Shield Kit</div>
-      <div class="kit-price-label">Instant download</div>
+
+    <div class="kit-card">
+      <span class="kit-card-icon">🛡️</span>
+      <div class="kit-price-label">One-time purchase</div>
+      <div class="kit-price">$47</div>
+      <div class="kit-price-sub">Instant digital download</div>
+      <hr class="kit-divider">
+      <ul class="kit-includes">
+        <li>Home network checklist</li>
+        <li>Device setup guides</li>
+        <li>Password vault walkthrough</li>
+        <li>Social media safety kit</li>
+        <li>Family tech agreement template</li>
+        <li>Emergency response plan</li>
+      </ul>
+      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
+        Buy now →
+      </a>
     </div>
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer class="cd-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">CyberDadKit</div>
+      <div class="footer-brand-desc">
+        Practical cybersecurity for families who want real protection without the jargon. Written by a parent, for parents.
+      </div>
+      <a href="mailto:ruel@cyberdadkit.com" class="footer-email">ruel@cyberdadkit.com</a>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Guides</div>
+      <ul class="footer-links">
+        <li><a href="/tag/social-media">Social Media Safety</a></li>
+        <li><a href="/tag/devices">Device Security</a></li>
+        <li><a href="/tag/passwords">Passwords & Accounts</a></li>
+        <li><a href="/tag/scams">Scams & Phishing</a></li>
+        <li><a href="/tag/wifi">Wi-Fi Security</a></li>
+        <li><a href="/tag/family-rules">Family Tech Rules</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">CyberDadKit</div>
+      <ul class="footer-links">
+        <li><a href="/about">About</a></li>
+        <li><a href="#kit">Shield Kit — $47</a></li>
+        <li><a href="#newsletter">Free Email Alerts</a></li>
+        <li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li>
+        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+        <li><a href="/cyberdadkit-privacy-policy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 CyberDadKit. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="/cyberdadkit-privacy-policy.html">Privacy</a>
+      <a href="/cookie-policy.html">Cookies</a>
+      <a href="/affiliate-disclosure.html">Affiliate Disclosure</a>
+    </div>
+  </div>
+</footer>
+
 <script>
-function handleSignup(e) {
-  e.preventDefault();
-  const form = e.target;
-  const success = document.getElementById('signup-success');
-  form.style.display = 'none';
-  success.style.display = 'block';
-  // TODO: wire to your actual email provider (MailerLite, ConvertKit, etc.)
+function handleMLSignup() {
+  const input = document.getElementById('ml-email-input');
+  if (!input.value || !input.value.includes('@')) {
+    input.focus();
+    input.style.borderColor = '#dc2626';
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  document.getElementById('ml-form').style.display = 'none';
+  document.getElementById('ml-success').style.display = 'block';
+  // TODO: Replace this function with your MailerLite embed code
+  // or wire up the form action to your MailerLite endpoint
 }
 </script>
