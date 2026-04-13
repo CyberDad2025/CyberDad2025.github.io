@@ -1,0 +1,29 @@
+<div class="alerts-section">
+  <h2>This Week’s Threat Alerts</h2>
+  <p>Updated: {{ site.data.alerts.generated_date_label }}</p>
+
+  <div class="alerts-grid">
+    {% for alert in site.data.alerts.alerts %}
+    <div class="alert-card {{ alert.severity }}">
+      <div class="alert-header">
+        <span class="severity {{ alert.severity }}">
+          {{ alert.severity | capitalize }}
+        </span>
+        <span class="date">{{ alert.date }}</span>
+      </div>
+
+      <h3>{{ alert.title }}</h3>
+      <p>{{ alert.summary }}</p>
+
+      <div class="action-box">
+        <strong>What to do:</strong>
+        <p>{{ alert.action }}</p>
+      </div>
+
+      <a href="{{ alert.link }}" target="_blank" rel="noopener noreferrer">
+        View Source →
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
