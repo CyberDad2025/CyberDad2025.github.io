@@ -2,8 +2,8 @@ name: CyberDad Daily Post
 
 on:
   schedule:
-    - cron: '0 14 * * *'   # Runs once daily at 9 AM EST (14:00 UTC)
-  workflow_dispatch:         # Allow manual trigger from GitHub Actions tab
+    - cron: '0 14 * * *'   # 9 AM EST daily
+  workflow_dispatch:
 
 jobs:
   generate-post:
@@ -22,7 +22,12 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install dependencies
+        run: pip install feedparser openai
+
       - name: Run post generator
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python main.py
 
       - name: Commit and push
@@ -31,7 +36,7 @@ jobs:
           git config --local user.name "CyberDad Bot"
           git add _posts/ logs/
           if git diff --staged --quiet; then
-            echo "Nothing new to commit — post already exists for today."
+            echo "Nothing new to commit"
           else
             git commit -m "Daily post $(date +'%Y-%m-%d')"
             git push
