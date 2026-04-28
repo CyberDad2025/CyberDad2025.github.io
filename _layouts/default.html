@@ -18,6 +18,86 @@
       gtag('js', new Date());
       gtag('config', 'G-5B1LNCPB56');
     </script>
+    <!--
+  CyberDad Kit — Schema.org Trust Markup
+  ----------------------------------------
+  Paste this block inside the <head> tag of your _layouts/default.html
+  (or whatever your main Jekyll layout is). It tells Google there's a
+  real organization, a real person, and an actual editorial process behind
+  the site. This is one of the highest-leverage moves for E-E-A-T.
+
+  After pasting, validate at https://search.google.com/test/rich-results
+-->
+
+<!-- Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://cyberdad2025.github.io/#organization",
+  "name": "CyberDad Kit",
+  "alternateName": "CyberDadKit",
+  "url": "https://cyberdad2025.github.io",
+  "logo": "https://cyberdad2025.github.io/assets/logo.png",
+  "description": "Family cybersecurity guidance, written by a parent. Plain English. No jargon. No fear tactics.",
+  "founder": {
+    "@type": "Person",
+    "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
+    "name": "Ruel Miller"
+  },
+  "sameAs": [
+    "https://www.pinterest.com/cyberdadkit"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "ruel.miller@icloud.com",
+    "contactType": "customer support"
+  }
+}
+</script>
+
+<!-- Person / Author -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
+  "name": "Ruel Miller",
+  "jobTitle": "Founder",
+  "worksFor": {
+    "@id": "https://cyberdad2025.github.io/#organization"
+  },
+  "url": "https://cyberdad2025.github.io/about/",
+  "email": "ruel.miller@icloud.com",
+  "knowsAbout": [
+    "Family cybersecurity",
+    "Online safety for children",
+    "Home network security",
+    "Parental controls",
+    "Phishing prevention"
+  ],
+  "description": "Parent and founder of CyberDad Kit. Writes daily about family-relevant cybersecurity threats, translating CISA advisories into plain English for parents."
+}
+</script>
+
+<!-- WebSite (helps Google's sitelinks search box) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://cyberdad2025.github.io/#website",
+  "url": "https://cyberdad2025.github.io",
+  "name": "CyberDad Kit",
+  "publisher": {
+    "@id": "https://cyberdad2025.github.io/#organization"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://cyberdad2025.github.io/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 </head>
 <body>
     <div class="site-wrapper">
