@@ -1,102 +1,113 @@
-<!--
-  CyberDad Kit — Schema.org Trust Markup
-  ----------------------------------------
-  Paste this block inside the <head> tag of your _layouts/default.html
-  (or whatever your main Jekyll layout is). It tells Google there's a
-  real organization, a real credentialed person, and an actual editorial
-  process behind the site. This is one of the highest-leverage moves
-  for E-E-A-T.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9689026854281225"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title | escape }} - {% endif %}CyberDad</title>
 
-  After pasting, validate at https://search.google.com/test/rich-results
--->
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
-<!-- Organization -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": "https://cyberdad2025.github.io/#organization",
-  "name": "CyberDad Kit",
-  "alternateName": "CyberDadKit",
-  "url": "https://cyberdad2025.github.io",
-  "logo": "https://cyberdad2025.github.io/assets/logo.png",
-  "description": "Family cybersecurity guidance from a Security+ certified SOC analyst. Enterprise-grade threat intelligence translated to home network defense.",
-  "founder": {
-    "@type": "Person",
-    "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
-    "name": "Ruel Miller"
-  },
-  "sameAs": [
-    "https://www.pinterest.com/cyberdadkit"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "ruel@getcyberdadkit.com",
-    "contactType": "customer support"
-  }
-}
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5B1LNCPB56"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5B1LNCPB56');
+    </script>
 
-<!-- Person / Author with credentials -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
-  "name": "Ruel Miller",
-  "jobTitle": "SOC Analyst & Incident Responder",
-  "worksFor": {
-    "@id": "https://cyberdad2025.github.io/#organization"
-  },
-  "url": "https://cyberdad2025.github.io/about/",
-  "email": "ruel@getcyberdadkit.com",
-  "hasCredential": [
+    <script type="application/ld+json">
     {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "certification",
-      "name": "CompTIA Security+",
-      "recognizedBy": {
-        "@type": "Organization",
-        "name": "CompTIA"
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://cyberdad2025.github.io/#organization",
+      "name": "CyberDad Kit",
+      "alternateName": "CyberDadKit",
+      "url": "https://cyberdad2025.github.io",
+      "logo": "https://cyberdad2025.github.io/assets/logo.png",
+      "description": "Family cybersecurity guidance from a Security+ certified SOC analyst. Enterprise-grade threat intelligence translated to home network defense.",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
+        "name": "Ruel Miller"
+      },
+      "sameAs": [
+        "https://www.pinterest.com/cyberdadkit"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "ruel@getcyberdadkit.com",
+        "contactType": "customer support"
       }
     }
-  ],
-  "knowsAbout": [
-    "Cyber Threat Intelligence (CTI)",
-    "Security Operations Center (SOC) analysis",
-    "Incident response",
-    "Threat hunting",
-    "Network monitoring",
-    "Family cybersecurity",
-    "Online safety for children",
-    "Home network security",
-    "Phishing prevention",
-    "Parental controls"
-  ],
-  "alumniOf": {
-    "@type": "Organization",
-    "name": "L3Harris Technologies",
-    "description": "Contractor experience monitoring the FAA network — applying enterprise threat hunting and CTI workflows used to defend critical national infrastructure."
-  },
-  "description": "Security+ certified SOC Analyst and Incident Responder. Founder of CyberDad Kit, where he translates enterprise-grade threat intelligence into plain-English protection for families. Father of one."
-}
-</script>
+    </script>
 
-<!-- WebSite (helps Google's sitelinks search box) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://cyberdad2025.github.io/#website",
-  "url": "https://cyberdad2025.github.io",
-  "name": "CyberDad Kit",
-  "publisher": {
-    "@id": "https://cyberdad2025.github.io/#organization"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://cyberdad2025.github.io/?s={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
+      "name": "Ruel Miller",
+      "jobTitle": "SOC Analyst & Incident Responder",
+      "worksFor": {
+        "@id": "https://cyberdad2025.github.io/#organization"
+      },
+      "url": "https://cyberdad2025.github.io/about/",
+      "email": "ruel@getcyberdadkit.com",
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "certification",
+          "name": "CompTIA Security+",
+          "recognizedBy": {
+            "@type": "Organization",
+            "name": "CompTIA"
+          }
+        }
+      ],
+      "knowsAbout": [
+        "Cyber Threat Intelligence (CTI)",
+        "Security Operations Center (SOC) analysis",
+        "Incident response",
+        "Threat hunting",
+        "Network monitoring",
+        "Family cybersecurity",
+        "Online safety for children",
+        "Home network security",
+        "Phishing prevention",
+        "Parental controls"
+      ],
+      "alumniOf": {
+        "@type": "Organization",
+        "name": "L3Harris Technologies",
+        "description": "Contractor experience monitoring the FAA network — applying enterprise threat hunting and CTI workflows used to defend critical national infrastructure."
+      },
+      "description": "Security+ certified SOC Analyst and Incident Responder. Founder of CyberDad Kit, where he translates enterprise-grade threat intelligence into plain-English protection for families. Father of one."
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://cyberdad2025.github.io/#website",
+      "url": "https://cyberdad2025.github.io",
+      "name": "CyberDad Kit",
+      "publisher": {
+        "@id": "https://cyberdad2025.github.io/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://cyberdad2025.github.io/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+</head>
+<body>
+    <div class="site-wrapper">
+        {{ content }}
+    </div>
+</body>
+</html>
