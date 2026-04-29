@@ -481,7 +481,7 @@ description: "{lead[:155] if lead else safe_title}"
 reading_time: {rt}
 ---
 
-![{safe_title}]({image_url})
+<img src="{image_url}" alt="{safe_title}" style="max-width: 400px; width: 100%; height: auto; display: block; margin: 1.5rem auto;" />
 
 {lead}
 
