@@ -481,8 +481,7 @@ description: "{lead[:155] if lead else safe_title}"
 reading_time: {rt}
 ---
 
-<img src="{image_url}" alt="{safe_title}" style="max-width: 400px; width: 100%; height: auto; display: block; margin: 1.5rem auto;" />
-
+<div style="text-align: center; margin: 1.5rem 0;"><img src="{image_url}" alt="{safe_title}" style="max-width: 180px; width: 100%; height: auto;" /></div>
 {lead}
 
 {post['body']}{source_block}{author_footer}{cta_block}
