@@ -26,10 +26,18 @@ POSTS_DIR = Path("_posts")
 LOG_FILE = Path("logs/posted.json")
 IMAGES_DIR = Path("assets/pins")
 
-# Author config — change these to YOUR real name and bio for max E-E-A-T
+# Author config — your real credentials drive E-E-A-T
 AUTHOR_NAME = "Ruel Miller"
-AUTHOR_TITLE = "Founder, CyberDad Kit"
+AUTHOR_TITLE = "SOC Analyst, Security+ Certified | Founder, CyberDad Kit"
+AUTHOR_EMAIL = "ruel@getcyberdadkit.com"
 AUTHOR_SLUG = "ruel-miller"
+AUTHOR_BIO = (
+    "Ruel Miller is a Security+ certified SOC Analyst and Incident Responder. "
+    "He worked as a contractor for L3Harris monitoring the FAA network, where he "
+    "applied the same threat hunting and Cyber Threat Intelligence workflows used to "
+    "defend critical national infrastructure. He founded CyberDad Kit to translate "
+    "those enterprise-grade techniques into plain-English protection for families."
+)
 
 # CISA has shifted feeds before. Try multiple in order so the script doesn't
 # fail when one URL gets retired.
@@ -171,6 +179,35 @@ FALLBACK_POSTS = [
             "muscle memory is what protects them — not a rule you read out once."
         ),
     },
+    {
+        "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed for My 5-Year-Old",
+        "category": "Privacy",
+        "lead": "If your kid lives in CocoMelon and Blippi territory like mine does, here's what most parents miss about the YouTube Kids app.",
+        "body": (
+            "I have a five-year-old. He's deep in CocoMelon, Blippi, the whole autoplay rabbit "
+            "hole. YouTube Kids markets itself as a walled garden — and it mostly is — but "
+            "'mostly' is doing a lot of work in that sentence.\n\n"
+            "Two things parents miss: the app still serves ads (some of them weirdly targeted), "
+            "and the content recommendation algorithm still occasionally surfaces low-quality, "
+            "knock-off, or unsettling videos that slip past the filters. The 'Elsagate' problem "
+            "from a few years back hasn't been fully solved — it's just gotten more subtle.\n\n"
+            "Three settings I changed for my own kid:\n\n"
+            "**Switch to 'Approved Content Only' mode.** Settings → your child's profile → "
+            "'Approved content only.' This flips the model — instead of YouTube deciding what's "
+            "okay, you do. Yes, it means more work upfront. It also means no algorithm-driven "
+            "surprises.\n\n"
+            "**Turn off Search.** In the same profile settings. With Search off, your kid can "
+            "only watch the channels and videos you've approved. No discovery, no rabbit hole. "
+            "For a 5-year-old this is the right call — the 'discovery' use case isn't real at "
+            "that age.\n\n"
+            "**Disable autoplay.** Each session, tap the autoplay toggle off. Autoplay is the "
+            "single biggest driver of kids ending up on weird content — they finish a normal "
+            "Blippi video and the next one starts before anyone's reviewing it.\n\n"
+            "From a threat-model perspective, YouTube Kids is collecting behavioral data on a "
+            "minor. That's a privacy concern, not just a content concern. These three settings "
+            "tighten both at once."
+        ),
+    },
 ]
 
 # -------- HELPERS --------
@@ -254,16 +291,18 @@ def translate_with_ai(alert: dict):
         "Direct and a bit blunt, like a friend who works in IT",
         "Calm and reassuring, like a school counselor",
         "Slightly skeptical, like an older sibling who's seen the scams before",
+        "Analyst-tone, like an incident responder briefing the team — but stripped of jargon for a parent audience",
     ]
     voice = random.choice(voices)
 
-    prompt = f"""You are writing for CyberDad Kit, a family cybersecurity blog written by Ruel Miller, a parent.
+    prompt = f"""You are writing for CyberDad Kit, a family cybersecurity blog by Ruel Miller — a Security+ certified SOC Analyst and Incident Responder who worked as a contractor for L3Harris monitoring the FAA network. He has one young child and writes for parents who want enterprise-grade threat awareness translated to home use.
 
 Take this CISA cybersecurity alert and turn it into a 350-word post for parents.
 
 VOICE: {voice}
 RULES:
-- Write in first person where natural ("I noticed", "in my house we...")
+- Write in first person where natural ("I noticed", "in the SOC we'd see this as...", "in my house we...")
+- Where it fits naturally, draw the parallel between how this attack pattern shows up in enterprise networks vs. home networks — that's our differentiator
 - No corporate hedge phrases ("It's important to note", "in today's digital age")
 - Lead with one specific scenario, not a definition
 - Give 3 concrete actions a parent can take tonight
@@ -418,8 +457,8 @@ def write_post(post: dict, slug: str, image_path: Path, source: dict | None) -> 
     author_footer = (
         f"\n\n---\n\n"
         f"**Written by {AUTHOR_NAME}** — {AUTHOR_TITLE}. "
-        f"I write CyberDad Kit for parents who want straight-talking, no-jargon guidance "
-        f"on keeping their families safer online. "
+        f"{AUTHOR_BIO} "
+        f"Reach Ruel directly at [{AUTHOR_EMAIL}](mailto:{AUTHOR_EMAIL}). "
         f"Last reviewed: {today}."
     )
 
