@@ -5,14 +5,7 @@ description: Practical cybersecurity for families. No jargon. No fear tactics. J
 ---
 {% seo %}
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
-</script>
+<!-- Google Analytics: real GA4 tag (G-5B1LNCPB56) is loaded once by _layouts/default.html; the duplicate placeholder GA tag was removed. -->
 
 <!-- Schema Markup -->
 <script type="application/ld+json">
@@ -1324,17 +1317,12 @@ body {
           <p>New guides and family threat alerts every week. Parents-only content, written to actually help.</p>
         </div>
 
-        <!-- ══════════════════════════════════════════════════
-             MAILERLITE EMBED — Replace this entire block
-             with your MailerLite embed code when ready.
-             The surrounding .sidebar-card-body div stays.
-        ═══════════════════════════════════════════════════ -->
-        <div class="ml-embed-placeholder" id="ml-form">
-          <input type="email" class="ml-embed-input" placeholder="your@email.com" id="ml-email-input">
-          <button type="button" class="ml-embed-btn" onclick="handleMLSignup()">Send me free alerts →</button>
-          <p class="ml-disclaimer">Unsubscribe with one click. No spam, ever.</p>
-        </div>
-        <div id="ml-success">✓ You're in! Check your inbox for a welcome email.</div>
+        <!-- MailerLite embedded form: "CyberDad Free Tech Checklist" (slug KxzppG, form id 163100466988713175).
+             Adds subscribers to group FREE_DOWNLOAD, which triggers the active
+             "CyberDad Free Tech Checklist Workflow" automation (5 emails).
+             Requires the MailerLite universal script (loaded in _layouts/default.html).
+             NOTE: the form is currently INACTIVE in MailerLite and must be enabled there for this to render. -->
+        <div class="ml-embedded" id="ml-form" data-form="KxzppG"></div>
         <!-- ══ END MAILERLITE EMBED AREA ══ -->
 
       </div>
@@ -1487,18 +1475,3 @@ body {
   </div>
 </footer>
 
-<script>
-function handleMLSignup() {
-  const input = document.getElementById('ml-email-input');
-  if (!input.value || !input.value.includes('@')) {
-    input.focus();
-    input.style.borderColor = '#dc2626';
-    setTimeout(() => input.style.borderColor = '', 1500);
-    return;
-  }
-  document.getElementById('ml-form').style.display = 'none';
-  document.getElementById('ml-success').style.display = 'block';
-  // TODO: Replace this function with your MailerLite embed code
-  // or wire up the form action to your MailerLite endpoint
-}
-</script>

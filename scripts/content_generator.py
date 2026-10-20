@@ -113,7 +113,7 @@ def generate_seo_post():
     content += "## 🔒 Get FREE Cybersecurity Alerts\n\n"
     content += "**Join 12,000+ families getting instant notifications about threats affecting their devices!**\n\n"
     content += "<div style=\"background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;\">\n"
-    content += "    <div class=\"ml-embedded\" data-form=\"158915078478890584\"></div>\n"
+    content += "    <div class=\"ml-embedded\" data-form=\"KxzppG\"></div>\n"
     content += "    <p style=\"font-size: 12px; color: #666; margin-top: 10px;\">✅ Real-time threat alerts • Unsubscribe anytime</p>\n"
     content += "</div>\n\n"
     

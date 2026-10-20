@@ -299,7 +299,7 @@
             This affiliate disclosure was last updated on January 17, 2025, and complies with FTC guidelines and international regulations.
         </p>
         <p style="margin-top: 15px;">
-            <a href="/privacy-policy.html" style="color: #3b82f6; margin: 0 10px;">Privacy Policy</a> |
+            <a href="/cyberdadkit-privacy-policy.html" style="color: #3b82f6; margin: 0 10px;">Privacy Policy</a> |
             <a href="/terms-of-service.html" style="color: #3b82f6; margin: 0 10px;">Terms of Service</a> |
             <a href="/cookie-policy.html" style="color: #3b82f6; margin: 0 10px;">Cookie Policy</a>
         </p>
