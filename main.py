@@ -26,17 +26,14 @@ POSTS_DIR = Path("_posts")
 LOG_FILE = Path("logs/posted.json")
 IMAGES_DIR = Path("assets/pins")
 
-# Author config — your real credentials drive E-E-A-T
+# Author config — verified facts only
 AUTHOR_NAME = "Ruel Miller"
-AUTHOR_TITLE = "SOC Analyst, Security+ Certified | Founder, CyberDad Kit"
+AUTHOR_TITLE = "Founder, CyberDadKit"
 AUTHOR_EMAIL = "ruel@getcyberdadkit.com"
 AUTHOR_SLUG = "ruel-miller"
 AUTHOR_BIO = (
-    "Ruel Miller is a Security+ certified SOC Analyst and Incident Responder. "
-    "He worked as a contractor for L3Harris monitoring the FAA network, where he "
-    "applied the same threat hunting and Cyber Threat Intelligence workflows used to "
-    "defend critical national infrastructure. He founded CyberDad Kit to translate "
-    "those enterprise-grade techniques into plain-English protection for families."
+    "Ruel Miller, founder of CyberDadKit and a dad focused on family online safety. "
+    "Each post turns official guidance from the FBI, FTC, and CISA into plain-English steps for families."
 )
 
 # CISA has shifted feeds before. Try multiple in order so the script doesn't
@@ -291,18 +288,18 @@ def translate_with_ai(alert: dict):
         "Direct and a bit blunt, like a friend who works in IT",
         "Calm and reassuring, like a school counselor",
         "Slightly skeptical, like an older sibling who's seen the scams before",
-        "Analyst-tone, like an incident responder briefing the team — but stripped of jargon for a parent audience",
+        "Calm and precise, like a parent walking another parent through official guidance step by step",
     ]
     voice = random.choice(voices)
 
-    prompt = f"""You are writing for CyberDad Kit, a family cybersecurity blog by Ruel Miller — a Security+ certified SOC Analyst and Incident Responder who worked as a contractor for L3Harris monitoring the FAA network. He has one young child and writes for parents who want enterprise-grade threat awareness translated to home use.
+    prompt = f"""You are writing for CyberDad Kit, a family cybersecurity blog by Ruel Miller, founder of CyberDadKit and a dad focused on family online safety. He has one young child and writes for parents who want official FBI, FTC, and CISA guidance translated into plain-English steps for home.
 
 Take this CISA cybersecurity alert and turn it into a 350-word post for parents.
 
 VOICE: {voice}
 RULES:
-- Write in first person where natural ("I noticed", "in the SOC we'd see this as...", "in my house we...")
-- Where it fits naturally, draw the parallel between how this attack pattern shows up in enterprise networks vs. home networks — that's our differentiator
+- Write in first person where natural ("I noticed", "CISA's advisory says...", "in my house we..."). Never claim professional credentials, job titles, employers, or first-hand incident experience.
+- Where it fits naturally, explain what the official advisory means for a home network and link the source (CISA, FBI/IC3, or FTC)
 - No corporate hedge phrases ("It's important to note", "in today's digital age")
 - Lead with one specific scenario, not a definition
 - Give 3 concrete actions a parent can take tonight

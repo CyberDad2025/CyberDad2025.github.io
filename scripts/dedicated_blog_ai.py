@@ -222,7 +222,7 @@ If you have questions about implementing these security measures, consider:
 - [Kids Online Safety Guide](/kids-internet-safety)
 - [Family Privacy Settings Guide](/family-privacy-settings)
 
-**📧 Questions?** Email us at help@cyberdad2025.com
+**📧 Questions?** Email us at ruel@getcyberdadkit.com
 
 **🔒 Stay Protected**: Follow us for daily family security tips and updates.
 
