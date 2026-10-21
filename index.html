@@ -813,7 +813,7 @@ body {
 .kit-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
 
 .btn-kit {
-  background: #0a9e84;
+  background: #087f6a; /* was #0a9e84: white text was 3.37:1; now 4.94:1 (WCAG AA) */
   color: var(--white);
   font-family: var(--font-body);
   font-weight: 700;
@@ -827,8 +827,9 @@ body {
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   box-shadow: 0 4px 16px rgba(10,158,132,0.3);
 }
+.btn-kit:link, .btn-kit:visited, .btn-kit:focus { color: var(--white); } /* theme a:visited (#154895) was overriding */
 .btn-kit:hover {
-  background: #0c8a73;
+  background: #067462; /* white text 5.70:1 */
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(10,158,132,0.35);
   color: var(--white);
