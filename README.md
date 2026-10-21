@@ -70,7 +70,7 @@ GitHub Actions → Python Scripts → Jekyll → GitHub Pages
 - ✅ **4 posts daily** (Premium + Regular content)
 - ✅ **120+ posts monthly** 
 - ✅ **SEO-optimized** for family cybersecurity keywords
-- ✅ **100% uptime** automated publishing
+- ✅ **Automated** publishing
 
 ### **Traffic Growth**
 - 📊 **Organic discovery** across multiple countries
@@ -98,9 +98,9 @@ GitHub Actions → Python Scripts → Jekyll → GitHub Pages
 
 ---
 
-## 🛡️ **Why Families Trust CyberDad**
+## 🛡️ **How CyberDad Helps Families**
 
-### **📚 Expert Knowledge, Simple Language**
+### **📚 Simple Language**
 We translate complex cybersecurity concepts into practical advice that busy parents can actually use.
 
 ### **🎯 Real-World Focus**
@@ -109,7 +109,7 @@ Our content addresses actual threats families face, not theoretical security con
 ### **⚡ Always Current**
 Automated daily updates ensure families get the latest protection strategies.
 
-### **👨‍👩‍👧‍👦 Family-Tested Advice**
+### **👨‍👩‍👧‍👦 Practical Advice**
 Every recommendation is practical for real families with real constraints.
 
 ---
