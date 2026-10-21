@@ -35,7 +35,7 @@ While the NSA GRASSMARLIN vulnerability might sound like a distant threat, it ha
 
 ---
 
-**Written by Ruel Miller** — U.S. Marine Corps veteran, CompTIA Security+ | Founder, CyberDadKit. Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online. Reach Ruel directly at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Last reviewed: 2026-04-29.
+**Written by Ruel Miller** — U.S. Marine Corps veteran, CompTIA Security+ · Founder, CyberDadKit. Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online. Reach Ruel directly at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Last reviewed: 2026-04-29.
 
 ---
 
