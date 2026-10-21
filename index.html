@@ -1071,9 +1071,13 @@ body {
 </section>
 
 <!-- 🔐 LIVE THREAT INTELLIGENCE SECTION -->
+{%- comment -%} Shown only when _data/alerts.json exists and has at least one alert (written by the fetch-alerts workflow). Otherwise the block is omitted, so there is no empty "Updated:" heading or gap. {%- endcomment -%}
+{%- assign cdk_alerts = site.data.alerts.alerts -%}
+{%- if cdk_alerts and cdk_alerts.size > 0 %}
 <section class="live-alerts-wrapper">
   {% include alerts-feed.html %}
 </section>
+{%- endif %}
 
 <!-- TRUST BAR -->
 <!-- ═══════════════════════════════════════
