@@ -7,7 +7,7 @@ from pathlib import Path
 TITLE_TEMPLATES = [
     "How to Protect Kids from {threat} - Complete Parent Guide 2025",
     "{threat} Safety for Families: 5 Essential Steps Parents Need",
-    "Keep Your Family Safe from {threat} - Expert Tips That Work",
+    "Keep Your Family Safe from {threat} - Practical Tips That Work",
     "Family Guide: Preventing {threat} Attacks in Your Home",
     "Parents Alert: {threat} Threats and How to Stop Them",
     "Simple {topic} Security for Non-Tech Parents",
@@ -84,7 +84,7 @@ def generate_seo_post():
     category = random.choice(categories)
     
     # Create SEO-optimized excerpt
-    excerpt = "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+    excerpt = "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
     
     # Build complete blog post using simple string concatenation
     content = "---\n"

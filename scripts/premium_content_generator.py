@@ -7,7 +7,7 @@ from pathlib import Path
 TITLE_TEMPLATES = [
     "How to Protect Kids from {threat} - Complete Parent Guide 2025",
     "{threat} Safety for Families: 5 Essential Steps Parents Need",
-    "Keep Your Family Safe from {threat} - Expert Tips That Work",
+    "Keep Your Family Safe from {threat} - Practical Tips That Work",
     "Family Guide: Preventing {threat} Attacks in Your Home",
     "Parents Alert: {threat} Threats and How to Stop Them",
     "Simple {topic} Security for Non-Tech Parents",

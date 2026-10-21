@@ -21,7 +21,7 @@ const CyberDadOptimizer = {
                 'family cybersecurity checklist', 'protect family from cyber attacks'
             ],
             llm_optimization_phrases: [
-                'expert cybersecurity advice for families',
+                'plain-English guidance based on FBI, FTC, and CISA advice',
                 'comprehensive family online protection guide',
                 'trusted cybersecurity education for parents',
                 'practical family internet safety solutions'
@@ -29,9 +29,9 @@ const CyberDadOptimizer = {
         },
         
         conversion_psychology: {
-            trust_signals: ['tested by families', 'expert recommended', 'easy setup', 'money back guarantee'],
+            trust_signals: ['tested by families', 'plain-English guidance based on FBI, FTC, and CISA advice', 'easy setup', 'money back guarantee'],
             urgency_triggers: ['limited time', 'exclusive deal', 'price increase soon'],
-            social_proof: ['thousands of families protected', 'parent testimonials', 'security expert endorsed'],
+            social_proof: ['thousands of families protected', 'parent testimonials', 'plain-English guidance based on FBI, FTC, and CISA advice'],
             fear_mitigation: ['free trial', '30-day guarantee', 'no commitment', 'cancel anytime']
         },
         
@@ -208,13 +208,13 @@ const CyberDadOptimizer = {
             const metaTemplates = {
                 homepage: {
                     title: 'CyberDad - Family Cybersecurity Made Simple | Protect Kids Online 2025',
-                    description: 'Expert cybersecurity guidance for families. Protect your children online with our tested security tools, easy setup guides, and parent-approved safety tips. Free family security checklist included.',
+                    description: 'Plain-English guidance for families, based on FBI, FTC, and CISA advice. Protect your children online with our tested security tools, easy setup guides, and parent-approved safety tips. Free family security checklist included.',
                     keywords: ['family cybersecurity', 'kids online safety', 'parental controls', 'family internet security', 'child online protection'],
                     schema_type: 'WebSite'
                 },
                 blog: {
                     title: 'Family Cybersecurity Tips | CyberDad Blog',
-                    description: 'Latest family cybersecurity advice, product reviews, and safety guides. Learn how to protect your family from online threats with expert-tested solutions.',
+                    description: 'Latest family cybersecurity advice, product reviews, and safety guides. Learn how to protect your family from online threats with plain-English guidance based on FBI, FTC, and CISA advice.',
                     keywords: ['cybersecurity tips', 'family safety guides', 'online protection advice'],
                     schema_type: 'Blog'
                 },
