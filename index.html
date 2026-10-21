@@ -894,6 +894,8 @@ body {
 
 .kit-includes li::before { content: '→'; color: #4dd9bf; font-weight: 700; flex-shrink: 0; }
 
+#kit-signup { scroll-margin-top: 80px; margin-top: 1.5rem; text-align: left; }
+
 .kit-divider {
   border: none;
   border-top: 1px solid rgba(255,255,255,0.07);
@@ -974,7 +976,7 @@ body {
   .content-sidebar { grid-template-columns: 1fr; }
   .sidebar { display: none; }
   .kit-inner { grid-template-columns: 1fr; gap: 3rem; }
-  .kit-card { display: none; }
+  .kit-card { padding: 1.75rem 1.25rem; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
 }
 
@@ -1317,13 +1319,8 @@ body {
           <p>New guides and family threat alerts every week. Parents-only content, written to actually help.</p>
         </div>
 
-        <!-- MailerLite embedded form: "CyberDad Free Tech Checklist" (slug KxzppG, form id 163100466988713175).
-             Adds subscribers to group FREE_DOWNLOAD, which triggers the active
-             "CyberDad Free Tech Checklist Workflow" automation (5 emails).
-             Requires the MailerLite universal script (loaded in _layouts/default.html).
-             Verified Oct 20, 2026: signups through this form reach FREE_DOWNLOAD and receive welcome email 1. -->
-        <div class="ml-embedded" id="ml-form" data-form="KxzppG"></div>
-        <!-- ══ END MAILERLITE EMBED AREA ══ -->
+        <!-- The single KxzppG signup form lives in the Shield Kit section (#kit-signup) so it is visible at every width. -->
+        <a href="#kit-signup" class="btn-kit" style="display:block; text-align:center; font-size:0.9rem; padding:0.8rem 1rem;">Get the free checklist →</a>
 
       </div>
     </div>
@@ -1401,7 +1398,7 @@ body {
       <div class="kit-actions">
         <!-- Checkout is OFF until the Shield Kit file is attached and delivery is tested.
              Buttons point to the free FREE_DOWNLOAD signup (form KxzppG) instead of the disabled checkout. -->
-        <a href="#ml-form" class="btn-kit">
+        <a href="#kit-signup" class="btn-kit">
           Coming soon — get the free checklist &amp; be first to know →
         </a>
         <span class="kit-guarantee">🔒 30-day money-back guarantee</span>
@@ -1422,9 +1419,17 @@ body {
         <li>Family tech agreement template</li>
         <li>Emergency response plan</li>
       </ul>
-      <a href="#ml-form" class="btn-kit" style="display:block; text-align:center;">
+      <a href="#kit-signup" class="btn-kit" style="display:block; text-align:center;">
         Notify me at launch →
       </a>
+      <!-- MailerLite embedded form: "CyberDad Free Tech Checklist" (slug KxzppG, form id 163100466988713175).
+           Adds subscribers to group FREE_DOWNLOAD, which triggers the active
+           "CyberDad Free Tech Checklist Workflow" automation (5 emails).
+           Requires the MailerLite universal script (loaded in _layouts/default.html).
+           Only instance of this form on the page; visible at every width. -->
+      <div id="kit-signup">
+        <div class="ml-embedded" id="ml-form" data-form="KxzppG"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1459,7 +1464,7 @@ body {
       <ul class="footer-links">
         <li><a href="/about">About</a></li>
         <li><a href="#kit">Shield Kit — $67</a></li>
-        <li><a href="#ml-form">Free Email Alerts</a></li>
+        <li><a href="#kit-signup">Free Email Alerts</a></li>
         <li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li>
         <li><a href="/cookie-policy.html">Cookie Policy</a></li>
         <li><a href="/cyberdadkit-privacy-policy.html">Privacy Policy</a></li>
