@@ -36,7 +36,7 @@ Take these actions right now to secure your family:
 
 **Complete Family Security:** Get both Norton Family + VPN for maximum protection of your loved ones.
 
-**Need Help?** Contact us at help@cyberdad2025.com
+**Need Help?** Email ruel@getcyberdadkit.com
 
 ---
 

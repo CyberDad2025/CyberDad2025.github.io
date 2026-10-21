@@ -37,7 +37,7 @@ Teach your children these essential safety rules:
 
 **Complete Family Security:** Get both Norton Family + VPN for maximum protection of your loved ones.
 
-**Need Help?** Contact us at help@cyberdad2025.com
+**Need Help?** Email ruel@getcyberdadkit.com
 
 ---
 

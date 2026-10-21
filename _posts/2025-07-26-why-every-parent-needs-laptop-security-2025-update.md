@@ -31,7 +31,7 @@ Teach your children these essential safety rules:
 
 **Take Action Today:** Download our free family security checklist and start protecting your loved ones immediately. Remember: cybersecurity is not optional for modern families.
 
-**Emergency Support:** If you suspect a security breach, contact us immediately at help@cyberdad2025.com
+**If you suspect a breach:** follow the official steps at IdentityTheft.gov or ReportFraud.ftc.gov. Questions about this guide? Email ruel@getcyberdadkit.com
 
 ---
 
