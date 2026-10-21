@@ -180,7 +180,7 @@ FALLBACK_POSTS = [
     {
         "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed at Home",
         "category": "Privacy",
-        "lead": "If your kid lives in CocoMelon and Blippi territory like mine does, here's what most parents miss about the YouTube Kids app.",
+        "lead": "If your kid lives in CocoMelon and Blippi territory, here's what to check in the YouTube Kids app.",
         "body": (
             "In my family it's popular kids' videos and the whole autoplay rabbit "
             "hole. YouTube Kids markets itself as a walled garden — and it mostly is — but "
@@ -196,7 +196,7 @@ FALLBACK_POSTS = [
             "surprises.\n\n"
             "**Turn off Search.** In the same profile settings. With Search off, your kid can "
             "only watch the channels and videos you've approved. No discovery, no rabbit hole. "
-            "For a 5-year-old this is the right call — the 'discovery' use case isn't real at "
+            "For younger kids this is usually the right call — the 'discovery' use case isn't real at "
             "that age.\n\n"
             "**Disable autoplay.** Each session, tap the autoplay toggle off. Autoplay is the "
             "single biggest driver of kids ending up on weird content — they finish a normal "
