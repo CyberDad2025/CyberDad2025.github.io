@@ -74,9 +74,9 @@ FALLBACK_POSTS = [
             "reason for strangers to be able to message your kid through the platform.\n\n"
             "**Lock the account PIN.** Settings → Security → Account PIN. Your kid won't know "
             "the PIN. That means they can't change privacy settings back without you.\n\n"
-            "I'll be honest — my 9-year-old wasn't thrilled about losing the open chat. But "
-            "after I showed her one of the messages from a stranger that came in the previous "
-            "week, she got it. Have that conversation with your kid before you change the "
+            "I'll be honest — my family wasn't thrilled about losing the open chat. But "
+            "after I showed them one of the messages from a stranger that came in the previous "
+            "week, they got it. Have that conversation with your kid before you change the "
             "settings, not after."
         ),
     },
@@ -178,11 +178,11 @@ FALLBACK_POSTS = [
         ),
     },
     {
-        "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed for My 5-Year-Old",
+        "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed at Home",
         "category": "Privacy",
         "lead": "If your kid lives in CocoMelon and Blippi territory like mine does, here's what most parents miss about the YouTube Kids app.",
         "body": (
-            "I have a five-year-old. He's deep in CocoMelon, Blippi, the whole autoplay rabbit "
+            "In my family it's popular kids' videos and the whole autoplay rabbit "
             "hole. YouTube Kids markets itself as a walled garden — and it mostly is — but "
             "'mostly' is doing a lot of work in that sentence.\n\n"
             "Two things parents miss: the app still serves ads (some of them weirdly targeted), "
