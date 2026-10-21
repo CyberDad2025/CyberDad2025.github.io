@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Device Tracking - Expert Tips That Work"
+title: "Keep Your Family Safe from Device Tracking - Practical Tips That Work"
 date: 2026-04-27
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips

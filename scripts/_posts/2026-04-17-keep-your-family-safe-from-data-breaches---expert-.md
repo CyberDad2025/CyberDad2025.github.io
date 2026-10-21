@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Data Breaches - Expert Tips That Work"
+title: "Keep Your Family Safe from Data Breaches - Practical Tips That Work"
 date: 2026-04-17
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips

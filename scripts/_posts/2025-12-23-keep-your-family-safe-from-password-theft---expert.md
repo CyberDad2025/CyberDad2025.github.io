@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Password Theft - Expert Tips That Work"
+title: "Keep Your Family Safe from Password Theft - Practical Tips That Work"
 date: 2025-12-23
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips

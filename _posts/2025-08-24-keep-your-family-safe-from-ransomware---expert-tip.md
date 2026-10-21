@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Ransomware - Expert Tips That Work"
+title: "Keep Your Family Safe from Ransomware - Practical Tips That Work"
 date: 2025-08-24 17:15:28 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, ransomware, parents-guide]

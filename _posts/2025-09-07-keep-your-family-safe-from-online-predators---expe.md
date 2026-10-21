@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Online Predators - Expert Tips That Work"
+title: "Keep Your Family Safe from Online Predators - Practical Tips That Work"
 date: 2025-09-07 17:13:43 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, online-predators, parents-guide]

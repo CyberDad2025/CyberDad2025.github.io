@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from WiFi Hacking - Expert Tips That Work"
+title: "Keep Your Family Safe from WiFi Hacking - Practical Tips That Work"
 date: 2025-10-21 13:33:04 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]

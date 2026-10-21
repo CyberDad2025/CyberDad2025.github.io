@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Phishing - Expert Tips That Work"
+title: "Keep Your Family Safe from Phishing - Practical Tips That Work"
 date: 2026-03-18 14:21:09 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, phishing, parents-guide]
