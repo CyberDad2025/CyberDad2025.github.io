@@ -180,9 +180,9 @@ FALLBACK_POSTS = [
     {
         "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed at Home",
         "category": "Privacy",
-        "lead": "If your kid lives in CocoMelon and Blippi territory, here's what most parents miss about the YouTube Kids app.",
+        "lead": "If your kid lives on kids' YouTube channels, here's what most parents miss about the YouTube Kids app.",
         "body": (
-            "In my family it's CocoMelon, Blippi, the whole autoplay rabbit "
+            "In my family it's popular kids' videos and the whole autoplay rabbit "
             "hole. YouTube Kids markets itself as a walled garden — and it mostly is — but "
             "'mostly' is doing a lot of work in that sentence.\n\n"
             "Two things parents miss: the app still serves ads (some of them weirdly targeted), "
@@ -200,7 +200,7 @@ FALLBACK_POSTS = [
             "them yet.\n\n"
             "**Disable autoplay.** Each session, tap the autoplay toggle off. Autoplay is the "
             "single biggest driver of kids ending up on weird content — they finish a normal "
-            "Blippi video and the next one starts before anyone's reviewing it.\n\n"
+            "kids' video and the next one starts before anyone's reviewing it.\n\n"
             "From a threat-model perspective, YouTube Kids is collecting behavioral data on a "
             "minor. That's a privacy concern, not just a content concern. These three settings "
             "tighten both at once."
