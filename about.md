@@ -2,16 +2,16 @@
 layout: default
 title: "About CyberDad Kit — Why I Started This"
 permalink: /about/
-description: "Ruel Miller, founder of CyberDadKit and a dad focused on family online safety. Why I turn official FBI, FTC, and CISA guidance into plain-English steps for families."
+description: "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on SOC experience. Why I built CyberDadKit to help families protect themselves online."
 ---
 
 # Why CyberDad Kit Exists
 
-I'm Ruel Miller, founder of CyberDadKit and a dad focused on family online safety. I spend my time reading the official guidance that agencies like the FBI, the FTC, and CISA publish for the public, and turning it into steps a busy parent can actually follow.
+I'm Ruel Miller, a U.S. Marine Corps veteran and CompTIA Security+ certified dad. I have hands-on Security Operations Center experience from a past role in security analysis and threat response, and I built CyberDadKit to help families protect themselves online.
 
 By every other hour of the day I'm a dad. I have a five-year-old who's into YouTube, CocoMelon, and the kind of bright-colored autoplay rabbit holes every parent of a small kid recognizes.
 
-Most of that guidance is written for IT teams, not for the Wi-Fi router in your living room. But the threats are the same shape: phishing, malware, social engineering, data theft. Just at a different scale.
+Those two worlds don't usually talk to each other. The tools and playbooks I used in the SOC exist to protect large organizations' networks — not the Wi-Fi router in your living room. But the threats are the same shape: phishing, malware, social engineering, data theft. Just at a different scale.
 
 CyberDadKit is me bridging that gap.
 
@@ -21,25 +21,26 @@ Every weekday, CyberDad Kit publishes one post about a real, current cybersecuri
 
 The pipeline is straightforward:
 
-**CISA advisories.** The U.S. Cybersecurity and Infrastructure Security Agency publishes verified threat intelligence daily. I subscribe to CISA's public alert feed and translate the family-relevant advisories into plain English. Every post based on a CISA alert links back to the original advisory so you can verify the source yourself.
+**CISA advisories.** The U.S. Cybersecurity and Infrastructure Security Agency publishes verified threat intelligence daily. When I worked in a SOC, reading CISA bulletins was part of the job. For this site I subscribe to CISA's public feed and translate the family-relevant advisories into plain English. Every post based on a CISA alert links back to the original advisory so you can verify the source yourself.
 
-**FBI and FTC consumer warnings.** The FBI's Internet Crime Complaint Center (IC3) and the FTC publish warnings about the scams hitting families right now: phishing, sextortion, account takeovers, fake tech support. I link the original warning so you can check it yourself.
+**Patterns I saw in the SOC.** During my time in a Security Operations Center I saw phishing campaigns and credential-stuffing attempts up close. The same techniques show up in home networks too; they don't change just because the target is a Chromebook in a kid's bedroom. I pair that with the official FBI, FTC, and CISA warnings, and I link them.
 
-**My own household as the test environment.** Every recommendation I publish gets tested on my own family's setup first. If I wouldn't run it for my five-year-old, I don't recommend it for yours.
+**Built for families like mine.** Every recommendation is written for a household like mine: a young kid, shared devices, and busy parents. If I wouldn't run it for my five-year-old, I don't recommend it for yours.
 
 ## What this site is not
 
 It's not a parental control app. It's not a monitoring service. I don't sell software that tracks your kid's location or reads their messages. There are companies that do that, and some of them are decent — but that's not what this is.
 
-It's also not generic AI content shipped to a content farm. I use AI as a translation tool — turning dense CISA bulletins into plain English faster than I could do alone — but every post passes through my own editorial review before it goes live. The recommendations come from official guidance (CISA, FBI, FTC, and the device makers' own help pages), and every source is linked.
+It's also not generic AI content shipped to a content farm. I use AI as a translation tool — turning dense CISA bulletins into plain English faster than I could do alone — but every post passes through my own editorial review before it goes live. The recommendations come from official guidance (CISA, FBI, FTC, and the device makers' help pages), my Security+ training, and my past hands-on SOC work. Every source is linked.
 
-## How I check what I publish
+## My background
 
-- Every setting is checked against the device maker's own help pages (Apple, Google, Microsoft) on the date shown
-- Threat posts link to the original CISA, FBI/IC3, or FTC advisory
+- **CompTIA Security+** certified
+- Hands-on **Security Operations Center** experience (past role: security analysis and threat response)
+- **U.S. Marine Corps** veteran
 - I read CISA, FBI/IC3, and FTC consumer alerts every weekday
 
-I'm not a security company, and I won't pretend to be. What I can do is bridge the language gap between official security guidance and the questions a parent actually asks at the dinner table — and that's the gap this site fills.
+I'm not the most senior person in this field, and I won't pretend to be. What I can do is bridge the language gap between official security guidance and the questions a parent actually asks at the dinner table — and that's the gap this site fills.
 
 ## How I make money
 
@@ -58,4 +59,4 @@ I read everything. I can't promise to reply to every message but I do try. If yo
 Posts get reviewed and updated when something changes. The "Last reviewed" date at the bottom of each post is the actual date I last reviewed it — not the original publish date. If you see a post older than 12 months without a recent review date, take the specific app-setting steps with a grain of salt. UIs change.
 
 — Ruel Miller
-Founder, CyberDadKit | Dad of one
+U.S. Marine Corps veteran | CompTIA Security+ | Founder, CyberDadKit | Dad of one

@@ -26,14 +26,15 @@ POSTS_DIR = Path("_posts")
 LOG_FILE = Path("logs/posted.json")
 IMAGES_DIR = Path("assets/pins")
 
-# Author config — verified facts only
+# Author config — owner-approved claims only (claims-audit-2026-10-20.md). No employers, no current-SOC wording, no "expert".
 AUTHOR_NAME = "Ruel Miller"
-AUTHOR_TITLE = "Founder, CyberDadKit"
+AUTHOR_TITLE = "U.S. Marine Corps veteran, CompTIA Security+ | Founder, CyberDadKit"
 AUTHOR_EMAIL = "ruel@getcyberdadkit.com"
 AUTHOR_SLUG = "ruel-miller"
 AUTHOR_BIO = (
-    "Ruel Miller, founder of CyberDadKit and a dad focused on family online safety. "
-    "Each post turns official guidance from the FBI, FTC, and CISA into plain-English steps for families."
+    "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad "
+    "with hands-on Security Operations Center experience, who built CyberDadKit "
+    "to help families protect themselves online."
 )
 
 # CISA has shifted feeds before. Try multiple in order so the script doesn't
@@ -292,13 +293,13 @@ def translate_with_ai(alert: dict):
     ]
     voice = random.choice(voices)
 
-    prompt = f"""You are writing for CyberDad Kit, a family cybersecurity blog by Ruel Miller, founder of CyberDadKit and a dad focused on family online safety. He has one young child and writes for parents who want official FBI, FTC, and CISA guidance translated into plain-English steps for home.
+    prompt = f"""You are writing for CyberDadKit, a family cybersecurity blog by Ruel Miller, a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online. He has one young child and writes for parents who want official FBI, FTC, and CISA guidance translated into plain-English steps for home.
 
 Take this CISA cybersecurity alert and turn it into a 350-word post for parents.
 
 VOICE: {voice}
 RULES:
-- Write in first person where natural ("I noticed", "CISA's advisory says...", "in my house we..."). Never claim professional credentials, job titles, employers, or first-hand incident experience.
+- Write in first person where natural ("I noticed", "CISA's advisory says...", "in my house we..."). If you mention Ruel's background, use ONLY these facts, in the past tense for SOC work: U.S. Marine Corps veteran; CompTIA Security+; past hands-on Security Operations Center experience (e.g., "when I worked in a SOC"). NEVER say or imply he currently works in a SOC or as an analyst. NEVER name, describe, or hint at any employer, agency, contractor, or client. NEVER use the words "expert", "professional", "pro", or any number of years of experience.
 - Where it fits naturally, explain what the official advisory means for a home network and link the source (CISA, FBI/IC3, or FTC)
 - No corporate hedge phrases ("It's important to note", "in today's digital age")
 - Lead with one specific scenario, not a definition
@@ -461,7 +462,7 @@ def write_post(post: dict, slug: str, image_path: Path, source: dict | None) -> 
 
     cta_block = (
         f"\n\n---\n\n"
-        f"**Want the full system?** [Get the Shield Kit]({SITE_URL}/shield-kit) — "
+        f"**Want the full system?** [Get the Shield Kit]({SITE_URL}/#kit) — "
         f"the complete family cybersecurity playbook in one place."
     )
 
