@@ -143,7 +143,6 @@
     <div class="promise-box">
         <h3>✅ What We Promise You:</h3>
         <ul>
-            <li><strong>Family-Tested Only:</strong> Every product we recommend has been tested by our own family for at least 3 months</li>
             <li><strong>Always Disclose:</strong> Affiliate relationships are clearly marked with badges and disclosures</li>
             <li><strong>Your Security First:</strong> We never recommend products just for commissions - your family's safety comes first</li>
             <li><strong>Honest Reviews:</strong> We share both the good and bad about every product we review</li>
