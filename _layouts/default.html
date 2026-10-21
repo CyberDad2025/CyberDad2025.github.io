@@ -110,6 +110,10 @@
         (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
         n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
         (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+        // Phones and portrait tablets (<=960px, the site's single-column breakpoint): don't fetch/show MailerLite popups.
+        // There the full-screen popup covered the page and the Shield Kit buttons; the in-page KxzppG form stays.
+        // Must run before ml('account'); embedded forms are unaffected. Desktop keeps the popup.
+        if (window.matchMedia && window.matchMedia('(max-width: 960px)').matches) { ml('enablePopups', false); }
         ml('account', '1632878');
       }
     </script>
