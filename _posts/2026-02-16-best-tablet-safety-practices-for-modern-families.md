@@ -4,7 +4,7 @@ title: "Best Tablet Safety Practices for Modern Families"
 date: 2026-02-16 17:37:38 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, ransomware, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

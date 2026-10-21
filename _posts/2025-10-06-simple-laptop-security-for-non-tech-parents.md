@@ -4,7 +4,7 @@ title: "Simple Laptop Security for Non-Tech Parents"
 date: 2025-10-06 17:16:48 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

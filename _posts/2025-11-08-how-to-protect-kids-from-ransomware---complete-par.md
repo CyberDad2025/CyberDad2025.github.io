@@ -4,7 +4,7 @@ title: "How to Protect Kids from Ransomware - Complete Parent Guide 2025"
 date: 2025-11-08 17:15:12 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, ransomware, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

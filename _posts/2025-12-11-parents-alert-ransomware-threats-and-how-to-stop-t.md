@@ -4,7 +4,7 @@ title: "Parents Alert: Ransomware Threats and How to Stop Them"
 date: 2025-12-11 13:38:42 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, ransomware, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

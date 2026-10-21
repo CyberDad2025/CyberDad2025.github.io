@@ -4,7 +4,7 @@ title: "Family Phone Protection in 5 Minutes or Less"
 date: 2025-11-16 01:42:39 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, malware, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

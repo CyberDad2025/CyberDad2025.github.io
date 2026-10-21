@@ -4,7 +4,7 @@ title: "Child-Safe Parental Controls Setup: Step-by-Step Guide"
 date: 2025-08-15 17:17:33 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, phishing, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

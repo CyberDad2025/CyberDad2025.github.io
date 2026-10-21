@@ -4,7 +4,7 @@ title: "Best IoT Device Safety Practices for Modern Families"
 date: 2025-11-30 17:16:35 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

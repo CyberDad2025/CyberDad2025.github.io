@@ -4,7 +4,7 @@ title: "Parents Alert: Online Predators Threats and How to Stop Them"
 date: 2025-10-01 17:16:41 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, online-predators, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

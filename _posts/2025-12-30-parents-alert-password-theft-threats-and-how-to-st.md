@@ -4,7 +4,7 @@ title: "Parents Alert: Password Theft Threats and How to Stop Them"
 date: 2025-12-30 01:44:43 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, password-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

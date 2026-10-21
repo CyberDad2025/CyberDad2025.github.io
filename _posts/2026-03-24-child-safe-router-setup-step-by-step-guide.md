@@ -4,7 +4,7 @@ title: "Child-Safe Router Setup: Step-by-Step Guide"
 date: 2026-03-24 14:18:38 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, ransomware, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

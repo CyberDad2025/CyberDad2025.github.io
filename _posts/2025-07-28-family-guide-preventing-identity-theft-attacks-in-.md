@@ -4,7 +4,7 @@ title: "Family Guide: Preventing Identity Theft Attacks in Your Home"
 date: 2025-07-28 17:45:34 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]
-excerpt: "Learn how to protect your family from identity theft with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from identity theft with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 image: /assets/images/cybersecurity-family.jpg
 ---

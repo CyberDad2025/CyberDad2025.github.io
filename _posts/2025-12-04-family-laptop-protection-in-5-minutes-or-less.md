@@ -4,7 +4,7 @@ title: "Family Laptop Protection in 5 Minutes or Less"
 date: 2025-12-04 17:22:41 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English guide based on FBI, FTC, and CISA advice. Simple steps every parent can implement today."
 author: CyberDad
 ---
 
