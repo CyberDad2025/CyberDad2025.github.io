@@ -117,7 +117,7 @@ Every recommendation is practical for real families with real constraints.
 ## 📧 **Stay Protected**
 
 ### **🔔 Get Instant Cybersecurity Alerts**
-Join **12,000+ families** getting real-time notifications about threats affecting their devices.
+Get free email alerts about threats affecting your family's devices.
 
 **👉 [Subscribe for FREE alerts](https://cyberdad2025.github.io) 👈**
 
