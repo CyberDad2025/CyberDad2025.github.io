@@ -1,9 +1,7 @@
 name: CyberDad Daily Post
 
 on:
-  schedule:
-    - cron: '0 14 * * *'   # 9am-10am EST daily
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
   generate-post:
