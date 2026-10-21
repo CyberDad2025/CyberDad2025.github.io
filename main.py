@@ -74,9 +74,9 @@ FALLBACK_POSTS = [
             "reason for strangers to be able to message your kid through the platform.\n\n"
             "**Lock the account PIN.** Settings → Security → Account PIN. Your kid won't know "
             "the PIN. That means they can't change privacy settings back without you.\n\n"
-            "I'll be honest — my 9-year-old wasn't thrilled about losing the open chat. But "
-            "after I showed her one of the messages from a stranger that came in the previous "
-            "week, she got it. Have that conversation with your kid before you change the "
+            "I'll be honest — my kids weren't thrilled about losing the open chat. But "
+            "after I showed them one of the messages from a stranger that came in the previous "
+            "week, they got it. Have that conversation with your kid before you change the "
             "settings, not after."
         ),
     },
@@ -178,26 +178,26 @@ FALLBACK_POSTS = [
         ),
     },
     {
-        "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed for My 5-Year-Old",
+        "title": "YouTube Kids Isn't Actually Safe by Default — What I Changed for My Kids",
         "category": "Privacy",
-        "lead": "If your kid lives in CocoMelon and Blippi territory like mine does, here's what most parents miss about the YouTube Kids app.",
+        "lead": "If your kid lives in CocoMelon and Blippi territory like mine do, here's what most parents miss about the YouTube Kids app.",
         "body": (
-            "I have a five-year-old. He's deep in CocoMelon, Blippi, the whole autoplay rabbit "
+            "My kids are deep in CocoMelon, Blippi, the whole autoplay rabbit "
             "hole. YouTube Kids markets itself as a walled garden — and it mostly is — but "
             "'mostly' is doing a lot of work in that sentence.\n\n"
             "Two things parents miss: the app still serves ads (some of them weirdly targeted), "
             "and the content recommendation algorithm still occasionally surfaces low-quality, "
             "knock-off, or unsettling videos that slip past the filters. The 'Elsagate' problem "
             "from a few years back hasn't been fully solved — it's just gotten more subtle.\n\n"
-            "Three settings I changed for my own kid:\n\n"
+            "Three settings I changed for my own kids:\n\n"
             "**Switch to 'Approved Content Only' mode.** Settings → your child's profile → "
             "'Approved content only.' This flips the model — instead of YouTube deciding what's "
             "okay, you do. Yes, it means more work upfront. It also means no algorithm-driven "
             "surprises.\n\n"
             "**Turn off Search.** In the same profile settings. With Search off, your kid can "
             "only watch the channels and videos you've approved. No discovery, no rabbit hole. "
-            "For a 5-year-old this is the right call — the 'discovery' use case isn't real at "
-            "that age.\n\n"
+            "For young kids this is the right call — the 'discovery' use case isn't real for "
+            "them yet.\n\n"
             "**Disable autoplay.** Each session, tap the autoplay toggle off. Autoplay is the "
             "single biggest driver of kids ending up on weird content — they finish a normal "
             "Blippi video and the next one starts before anyone's reviewing it.\n\n"

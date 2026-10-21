@@ -9,7 +9,7 @@ description: "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ c
 
 I'm Ruel Miller, a U.S. Marine Corps veteran and CompTIA Security+ certified dad. I have hands-on Security Operations Center experience from a past role in security analysis and threat response, and I built CyberDadKit to help families protect themselves online.
 
-By every other hour of the day I'm a dad. I have a five-year-old who's into YouTube, CocoMelon, and the kind of bright-colored autoplay rabbit holes every parent of a small kid recognizes.
+By every other hour of the day I'm a dad. My kid is into YouTube, CocoMelon, and the kind of bright-colored autoplay rabbit holes every parent of a small kid recognizes.
 
 Those two worlds don't usually talk to each other. The tools and playbooks I used in the SOC exist to protect large organizations' networks — not the Wi-Fi router in your living room. But the threats are the same shape: phishing, malware, social engineering, data theft. Just at a different scale.
 
@@ -25,7 +25,7 @@ The pipeline is straightforward:
 
 **Patterns I saw in the SOC.** During my time in a Security Operations Center I saw phishing campaigns and credential-stuffing attempts up close. The same techniques show up in home networks too; they don't change just because the target is a Chromebook in a kid's bedroom. I pair that with the official FBI, FTC, and CISA warnings, and I link them.
 
-**Built for families like mine.** Every recommendation is written for a household like mine: a young kid, shared devices, and busy parents. If I wouldn't run it for my five-year-old, I don't recommend it for yours.
+**Built for families like mine.** Every recommendation is written for a household like mine: a young kid, shared devices, and busy parents. If I wouldn't run it for my own kid, I don't recommend it for yours.
 
 ## What this site is not
 
