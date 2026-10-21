@@ -217,7 +217,7 @@ If you have questions about implementing these security measures, consider:
 ## 🛡️ More Family Security Resources
 
 - [Complete Family Password Guide](/2025/07/30/simple-password-safety.html)
-- [Smart Home Security Checklist](/2025/07/24/home-network-security.html)
+- [Home Network Security Guide](/2025/07/24/home-network-security.html)
 - [Kids Online Safety Guide](/2025/07/26/safe-internet-browsing-for-kids.html)
 - [Family Privacy Settings Guide](/2025/07/24/family-digital-privacy.html)
 

@@ -47,7 +47,7 @@ Check one device today for available security updates. Your family's safety is w
 ## 🛡️ Family Cybersecurity Resources
 
 - [Family Password Security Guide](/2025/07/30/simple-password-safety.html)
-- [Smart Home Security Checklist](/2025/07/24/home-network-security.html)
+- [Home Network Security Guide](/2025/07/24/home-network-security.html)
 - [Kids Online Safety Guide](/2025/07/26/safe-internet-browsing-for-kids.html)
 
 **Content Security**: This post has been verified for family safety and security.
