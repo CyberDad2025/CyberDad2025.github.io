@@ -44,7 +44,7 @@ I'm not the most senior person in this field, and I won't pretend to be. There a
 
 ## How I make money
 
-I sell one product: the **Shield Kit** — a complete family cybersecurity playbook in PDF format. It's $47. That's the whole business model. No subscription, no monitoring fees, no data sales, no upsell ladder.
+I sell one product: the **CyberDad Shield Kit** — a complete family cybersecurity playbook in PDF format. It's $47. That's the whole business model. No subscription, no monitoring fees, no data sales, no upsell ladder.
 
 If the free posts on this site are useful and you want the consolidated playbook, you can buy it. If you don't, the free content stays free.
 
