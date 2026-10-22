@@ -8,7 +8,7 @@ author: CyberDad
 description: "Learn how to make strong passwords that protect your accounts, explained in simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
-age_appropriate: "All ages (4-99)"
+age_appropriate: "For the whole family"
 ---
 
 <div class="post-header">
@@ -16,7 +16,7 @@ age_appropriate: "All ages (4-99)"
   <div class="post-meta">
     <span class="reading-time">⏱️ Takes 5 minutes to read</span>
     <span class="difficulty">📊 Super Easy</span>
-    <span class="age-range">👨‍👩‍👧‍👦 Perfect for ages 4-99</span>
+    <span class="age-range">🏠 Perfect for the whole family</span>
   </div>
   <div class="post-summary">
     <p><strong>Quick Summary:</strong> Learn how to make strong passwords that protect your accounts, explained in simple steps anyone can follow.</p>

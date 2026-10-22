@@ -8,14 +8,14 @@ author: CyberDad
 description: "Learn safe internet browsing for kids with simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
-age_appropriate: "All ages (8-99)"
+age_appropriate: "For the whole family"
 ---
 
 # Safe Internet Browsing for Kids
 
 🔒 **Quick Summary:** Learn how to safe internet browsing for kids with simple steps anyone can follow.
 
-⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for ages 8-99**
+⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for the whole family**
 
 **Quick Summary:** Essential cybersecurity guide to help families stay safe online.
 

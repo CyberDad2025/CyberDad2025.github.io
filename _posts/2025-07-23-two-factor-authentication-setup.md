@@ -9,14 +9,14 @@ author: CyberDad
 description: "Learn two-factor authentication setup with simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
-age_appropriate: "All ages (8-99)"
+age_appropriate: "For the whole family"
 ---
 
 # Two-Factor Authentication Setup
 
 🔒 **Quick Summary:** Learn how to two-factor authentication setup with simple steps anyone can follow.
 
-⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for ages 8-99**
+⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for the whole family**
 
 **Quick Summary:** Essential cybersecurity guide to help families stay safe online.
 
