@@ -1,0 +1,28 @@
+{%- comment -%} Home-only top nav (P5). Included from index.html only, so posts and policy pages (_layouts/default.html)
+    are unchanged. No JavaScript. The kit button links to the #kit section, never to the checkout. {%- endcomment %}
+<style>
+.cdk-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+.cdk-nav-inner { max-width: 1160px; margin: 0 auto; padding: 0.5rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.cdk-nav-brand { font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; display: inline-flex; align-items: center; min-height: 44px; }
+.cdk-nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+.cdk-nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.75rem; color: var(--text-mid); font-size: 0.92rem; font-weight: 500; text-decoration: none; }
+.cdk-nav-links a:hover { color: var(--teal-mid); }
+.cdk-nav-links a.cdk-nav-kit { margin-left: 0.5rem; padding: 0 1rem; border: 1.5px solid var(--teal); border-radius: var(--radius-sm); color: var(--teal-mid); font-weight: 600; }
+.cdk-nav-links a.cdk-nav-kit:hover { background: var(--teal-light); }
+#kit, #guides, #kit-signup { scroll-margin-top: 72px; }
+@media (max-width: 620px) {
+  .cdk-nav-inner { padding: 0.4rem 1rem; }
+  .cdk-nav-links .cdk-nav-text { display: none; }
+}
+</style>
+<header class="cdk-nav">
+  <nav class="cdk-nav-inner" aria-label="Main">
+    <a href="/" class="cdk-nav-brand">CyberDadKit</a>
+    <ul class="cdk-nav-links">
+      <li class="cdk-nav-text"><a href="#guides">Guides</a></li>
+      <li class="cdk-nav-text"><a href="#kit-signup">Free checklist</a></li>
+      <li class="cdk-nav-text"><a href="/about/">About</a></li>
+      <li><a href="/#kit" class="cdk-nav-kit">Get the kit — $47</a></li>
+    </ul>
+  </nav>
+</header>
