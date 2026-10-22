@@ -1523,3 +1523,25 @@ body {
   }, true);
 })();
 </script>
+
+<!-- GA4 begin_checkout on Shield Kit buy clicks (Revenue M-V13 §2 fix 2). Fire-and-forget:
+     no preventDefault, guarded so the link still opens if gtag is missing or blocked. -->
+<script>
+(function () {
+  if (window.__cdkBeginCheckout) return; window.__cdkBeginCheckout = 1;
+  var links = document.querySelectorAll('a[href*="checkout.mailerlite.com/checkout/4435"]');
+  for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', function () {
+      try {
+        if (typeof window.gtag !== 'function') return;
+        window.gtag('event', 'begin_checkout', {
+          currency: 'USD',
+          value: 47,
+          items: [{ item_id: 'shield-kit', item_name: 'CyberDad Shield Kit', price: 47, quantity: 1 }],
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    });
+  }
+})();
+</script>
