@@ -8,7 +8,7 @@ author: CyberDad
 excerpt: "Essential cybersecurity guidance to keep your family safe online"
 ---
 
-Cybersecurity experts warn that attacks targeting families have increased 300% this year. Here's how to protect your loved ones:
+Many families are online all day, so it helps to have a plan. Here's how to protect your loved ones:
 
 **Step 1: Immediate Protection**
 Take these actions right now to secure your family:

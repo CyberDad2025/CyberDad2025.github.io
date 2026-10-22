@@ -8,7 +8,7 @@ excerpt: "Learn how to protect your family from cyber threats with our expert cy
 author: CyberDad
 ---
 
-Recent data shows that 85% of families experience security incidents. This comprehensive guide will help you prevent becoming a statistic:
+Many families are online all day, so a few simple habits go a long way. This guide walks you through them:
 
 **Step 2: Family Education**
 Teach your children these essential safety rules:

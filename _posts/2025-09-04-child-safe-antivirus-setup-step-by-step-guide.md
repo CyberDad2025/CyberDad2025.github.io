@@ -8,7 +8,7 @@ excerpt: "Learn how to protect your family from cyber threats with our expert cy
 author: CyberDad
 ---
 
-Cybersecurity experts warn that attacks targeting families have increased 300% this year. Here's how to protect your loved ones:
+Many families are online all day, so it helps to have a plan. Here's how to protect your loved ones:
 
 **Step 2: Family Education**
 Teach your children these essential safety rules:
