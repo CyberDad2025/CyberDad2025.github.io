@@ -1,5 +1,6 @@
 ---
 layout: default
+no_ads: true
 title: "Terms of Sale"
 description: "CyberDad Shield Kit terms of sale: $47 one-time price, digital delivery by email, and a 30-day full refund of what you paid."
 permalink: /terms-of-sale/
