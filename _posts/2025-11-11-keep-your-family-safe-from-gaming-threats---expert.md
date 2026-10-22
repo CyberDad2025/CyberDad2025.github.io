@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Gaming Threats - Expert Tips That Work"
+title: "Keep Your Family Safe from Gaming Threats - Practical Tips That Work"
 date: 2025-11-11 17:17:30 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, gaming-threats, parents-guide]

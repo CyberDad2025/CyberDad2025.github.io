@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Password Theft - Expert Tips That Work"
+title: "Keep Your Family Safe from Password Theft - Practical Tips That Work"
 date: 2026-03-03 02:09:42 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, password-theft, parents-guide]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Identity Theft - Expert Tips That Work"
+title: "Keep Your Family Safe from Identity Theft - Practical Tips That Work"
 date: 2026-01-24 17:18:11 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from Social Media Scams - Expert Tips That Work"
+title: "Keep Your Family Safe from Social Media Scams - Practical Tips That Work"
 date: 2026-03-26 02:26:02 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
