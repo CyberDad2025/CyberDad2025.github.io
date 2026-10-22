@@ -4,6 +4,9 @@ date: 2026-04-28
 categories: [Cybersecurity, "Gaming Security"]
 layout: post
 description: "Your Kid's Gaming Account Is a Target — Here's How to Lock It Down — Plain-English cybersecurity advice for parents from CyberDadKit."
+# M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
+noindex: false
+sitemap: true
 ---
 
 ## Your Kid's Gaming Account Is a Target — Here's How to Lock It Down

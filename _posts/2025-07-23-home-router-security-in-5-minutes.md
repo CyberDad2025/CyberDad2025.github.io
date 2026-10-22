@@ -17,6 +17,9 @@ tags:
 - cybersecurity
 - digital-parenting
 title: "Home Router Security: A Step-by-Step Guide"
+# M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
+noindex: false
+sitemap: true
 ---
 
 Title: Home Router Security: Protecting Your Family's Digital Life

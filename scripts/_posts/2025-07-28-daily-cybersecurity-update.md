@@ -6,6 +6,9 @@ categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips
 author: CyberDad
 excerpt: "Essential cybersecurity guidance to keep your family safe online"
+# M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
+noindex: false
+sitemap: true
 ---
 
 In today's digital age, cybersecurity threats are more prevalent than ever before. From ransomware attacks to phishing scams, families are increasingly at risk of falling victim to online threats. One recent threat that has been making headlines is the rise of social engineering attacks targeting children and teenagers. Imagine if your child received a message from someone claiming to be a friend, only to realize too late that it was actually a hacker looking to steal personal information. This scenario is becoming all too common in today's interconnected world.

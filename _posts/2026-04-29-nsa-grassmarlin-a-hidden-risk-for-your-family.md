@@ -9,6 +9,9 @@ tags: [family safety, privacy, parents]
 image: /assets/pins/nsa-grassmarlin-a-hidden-risk-for-your-family.png
 description: "If you’ve ever sent an innocent text, think twice—your info could be at risk."
 reading_time: 1
+# M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
+noindex: false
+sitemap: true
 ---
 
 ![NSA GRASSMARLIN: A Hidden Risk for Your Family](https://cyberdad2025.github.io/assets/pins/nsa-grassmarlin-a-hidden-risk-for-your-family.png)

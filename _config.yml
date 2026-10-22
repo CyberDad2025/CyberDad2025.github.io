@@ -35,9 +35,10 @@ collections:
 
 # Default layout for posts
 defaults:
-  # M-P21: every post (_posts/ and scripts/_posts/) is noindex (plain <meta name="robots" content="noindex">, links still
-  # followed; printed by _layouts/default.html) and left out of sitemap.xml (jekyll-sitemap skips sitemap: false), EXCEPT the
-  # 8 keep-list posts below (Growth M-G20 keep-list: 3 canonicals + 5 Tier A). Reversible: delete these keys. No files deleted.
+  # M-P21: noindex is the DEFAULT for every post, in _posts/ and scripts/_posts/ and any post a generator adds later
+  # (plain <meta name="robots" content="noindex">, links still followed; printed by _layouts/default.html), and posts are
+  # left out of sitemap.xml by default (jekyll-sitemap skips sitemap: false). Indexing is OPT-IN per post: front matter
+  # "noindex: false" + "sitemap: true", set only on Growth's M-G20 keep-list posts. Reversible: delete these two keys.
   - scope:
       path: ""
       type: "posts"
@@ -46,54 +47,6 @@ defaults:
       author: "CyberDad2025"
       noindex: true
       sitemap: false
-  - scope:
-      path: "_posts/2025-07-30-simple-password-safety.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "_posts/2025-08-10-easy-wifi-protection.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "_posts/2025-08-12-avoid-bad-emails.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "_posts/2025-07-23-home-router-security-in-5-minutes.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "_posts/2025-07-23-family-data-backup-strategy.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "_posts/2026-04-28-your-kids-gaming-account-is-a-target-heres-how-to-lock-it-do.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "_posts/2026-04-29-nsa-grassmarlin-a-hidden-risk-for-your-family.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
-  - scope:
-      path: "scripts/_posts/2025-07-28-daily-cybersecurity-update.md"
-      type: "posts"
-    values:
-      noindex: false
-      sitemap: true
   # M-P21: thin/legacy pages kept out of the sitemap (not deleted). logs/sync-report also gets noindex + no_ads.
   # cyber_*.html are plain HTML (no front matter), so their noindex meta is written in the files themselves.
   - scope:
