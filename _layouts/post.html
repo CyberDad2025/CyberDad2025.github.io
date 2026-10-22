@@ -2,6 +2,20 @@
 layout: default
 ---
 
+<style>
+/* P16 post chrome: top bar + kit CTA note. Scoped class names (cdk-post-*), no JS. */
+.cdk-post-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; max-width: 780px; margin: 0 auto 1rem; padding: 0.25rem 1rem; border-bottom: 1px solid #e2e8f0; font-family: inherit; }
+.cdk-post-bar a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.cdk-post-bar .cdk-post-brand { font-weight: 700; color: #0e1117; font-size: 1.1rem; }
+.cdk-post-bar .cdk-post-kit { padding: 0 1rem; border: 1.5px solid #0a9e84; border-radius: 8px; color: #0c8a73; font-weight: 600; }
+.post-cta .cdk-cta-note { margin: 1rem 0 0; font-size: 0.9rem; }
+.post-cta .cdk-cta-note a { color: #fff; text-decoration: underline; }
+</style>
+<div class="cdk-post-bar">
+  <a href="/" class="cdk-post-brand">CyberDadKit</a>
+  <a href="/#kit" class="cdk-post-kit">Shield Kit</a>
+</div>
+
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
@@ -39,19 +53,28 @@ layout: default
     </div>
   </div>
 
-  <!-- POPULAR POSTS -->
+  <!-- MORE GUIDES (latest, de-duplicated by title, excluding this page; no popularity claim) -->
   <div class="popular-posts">
-    <h3>🔥 Most Popular This Week</h3>
-    {% for post in site.posts limit: 5 %}
+    <h3>📚 More guides</h3>
+    {%- assign cdk_seen = "" -%}{%- assign cdk_n = 0 -%}
+    {%- for post in site.posts limit: 40 -%}
+      {%- if cdk_n < 5 and post.url != page.url -%}
+        {%- capture cdk_key -%}|{{ post.title }}|{%- endcapture -%}
+        {%- unless cdk_seen contains cdk_key -%}
       <a href="{{ post.url }}">{{ post.title | truncatewords: 6 }}</a>
-    {% endfor %}
+          {%- assign cdk_seen = cdk_seen | append: cdk_key -%}{%- assign cdk_n = cdk_n | plus: 1 -%}
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor %}
   </div>
 
   <!-- CALL TO ACTION -->
   <div class="post-cta">
-    <h3>🛡️ Keep Your Family Safe</h3>
-    <p>Get alerts about new cybersecurity threats affecting families.</p>
-    <a href="/#kit" class="cta-button">Download Security Guides →</a>
+    <!-- Copy: M-D17 Option C headline/subhead + button label (Product draft); publishing needs Ruel's approval. -->
+    <h3>🛡️ Know exactly what to tap to keep your family safer online.</h3>
+    <p>Seven step-by-step modules covering passwords, Wi-Fi, scams, social media and kids' devices, plus printable templates and an emergency plan.</p>
+    <a href="/#kit" class="cta-button">Get the CyberDad Shield Kit, $47</a>
+    <p class="cdk-cta-note">One-time $47 · PDF download · <a href="/refund-policy/">30-day full refund</a></p>
   </div>
 
   <!-- M-P20: ad units sit below the kit CTA, never above it. -->
