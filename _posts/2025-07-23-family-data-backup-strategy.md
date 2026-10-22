@@ -14,6 +14,9 @@ tags:
 - cybersecurity
 - digital-parenting
 title: Family Data Backup Strategy
+# M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
+noindex: false
+sitemap: true
 ---
 
 Title: CyberDad's Guide to a Family Data Backup Strategy 

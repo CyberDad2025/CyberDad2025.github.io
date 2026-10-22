@@ -1,5 +1,6 @@
 ---
 layout: default
+no_ads: true
 title: "Refund Policy"
 description: "CyberDad Shield Kit refund policy: a 30-day full refund of what you paid. Email the support address in your order confirmation."
 permalink: /refund-policy/

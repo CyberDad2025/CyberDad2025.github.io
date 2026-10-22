@@ -1,5 +1,6 @@
 ---
 layout: default
+no_ads: true
 title: "About CyberDad Kit — Why I Started This"
 permalink: /about/
 description: "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on SOC experience. Why I built CyberDadKit to help families protect themselves online."

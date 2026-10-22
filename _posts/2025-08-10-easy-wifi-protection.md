@@ -9,6 +9,9 @@ description: "Simple steps to protect your home internet so bad people can't get
 reading_time: "5 minutes"
 difficulty: "Super Easy"
 age_appropriate: "For the whole family"
+# M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
+noindex: false
+sitemap: true
 ---
 
 <div class="post-header">

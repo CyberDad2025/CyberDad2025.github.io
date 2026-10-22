@@ -35,12 +35,42 @@ collections:
 
 # Default layout for posts
 defaults:
+  # M-P21: noindex is the DEFAULT for every post, in _posts/ and scripts/_posts/ and any post a generator adds later
+  # (plain <meta name="robots" content="noindex">, links still followed; printed by _layouts/default.html), and posts are
+  # left out of sitemap.xml by default (jekyll-sitemap skips sitemap: false). Indexing is OPT-IN per post: front matter
+  # "noindex: false" + "sitemap: true", set only on Growth's M-G20 keep-list posts. Reversible: delete these two keys.
   - scope:
       path: ""
       type: "posts"
     values:
       layout: "post"
       author: "CyberDad2025"
+      noindex: true
+      sitemap: false
+  # M-P21: thin/legacy pages kept out of the sitemap (not deleted). logs/sync-report also gets noindex + no_ads.
+  # cyber_*.html are plain HTML (no front matter), so their noindex meta is written in the files themselves.
+  - scope:
+      path: "logs/sync-report.md"
+    values:
+      noindex: true
+      no_ads: true
+      sitemap: false
+  - scope:
+      path: "cyberdadkit-privacy-policy-cyberdadkit.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "cyber_2025-07-15_1752577965.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "cyber_2025-07-15_1752580178.html"
+    values:
+      sitemap: false
+  - scope:
+      path: "cyber_parenting_global_blog.html"
+    values:
+      sitemap: false
   - scope:
       path: ""
     values:

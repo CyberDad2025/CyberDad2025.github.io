@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{%- comment -%} AdSense loader. Pages that set no_ads: true in front matter (homepage and its /pageN/ copies, about,
+    refund-policy, terms-of-sale, contact) do not load it, so no auto ad can appear on them. Posts and other pages still load it. {%- endcomment -%}
+{%- unless page.no_ads %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9689026854281225"
      crossorigin="anonymous"></script>
+{%- endunless %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%- comment -%} M-P21: noindex for pages with noindex: true (all posts except the keep-list, via _config.yml defaults) and for the
+        /page2/../pageN/ copies of the homepage (index.html doesn't use the paginator, so they repeat the homepage). Links are still followed. {%- endcomment %}
+    {%- if page.noindex or paginator.page > 1 %}
+    <meta name="robots" content="noindex">
+    {%- endif %}
     {%- comment -%} SEO-only: jekyll-seo-tag renders the single <title>, meta description, canonical, Open Graph and Twitter tags in <head>. {%- endcomment %}
     {% seo %}
 
