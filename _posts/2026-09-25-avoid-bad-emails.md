@@ -8,7 +8,7 @@ author: CyberDad
 description: "Learn how to make strong passwords that protect your accounts, explained in simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
-age_appropriate: "All ages (4-99)"
+age_appropriate: "For the whole family"
 ---
 
 <div class="post-header">
@@ -16,7 +16,7 @@ age_appropriate: "All ages (4-99)"
   <div class="post-meta">
     <span class="reading-time">⏱️ Takes 5 minutes to read</span>
     <span class="difficulty">📊 Super Easy</span>
-    <span class="age-range">👨‍👩‍👧‍👦 Perfect for ages 4-99</span>
+    <span class="age-range">🏠 Perfect for the whole family</span>
   </div>
   <div class="post-summary">
     <p><strong>Quick Summary:</strong> Learn how to make strong passwords that protect your accounts, explained in simple steps anyone can follow.</p>
@@ -70,13 +70,13 @@ Think of your password like the key to your house. If someone gets your key, the
 ## 🛠️ How to Make a Great Password (Step by Step)
 
 ### Step 1: Pick a Sentence You'll Remember
-Example: "My daughter loves pizza every Friday night!"
+Example: "My family loves pizza every Friday night!"
 
 ### Step 2: Make It Into a Password
-- **Start with:** My daughter loves pizza every Friday night!
-- **Add numbers:** My daughter loves pizza every Friday night 2024!
-- **Mix capitals:** My Daughter Loves Pizza Every Friday Night 2024!
-- **Add symbols:** My-Daughter-Loves-Pizza-Every-Friday-Night-2024!
+- **Start with:** My family loves pizza every Friday night!
+- **Add numbers:** My family loves pizza every Friday night 2024!
+- **Mix capitals:** My Family Loves Pizza Every Friday Night 2024!
+- **Add symbols:** My-Family-Loves-Pizza-Every-Friday-Night-2024!
 
 ### Step 3: Test Your Password
 **Ask yourself:**

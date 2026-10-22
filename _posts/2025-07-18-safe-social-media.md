@@ -8,7 +8,7 @@ author: CyberDad
 description: "Learn how to spot fake emails that try to trick you into giving away your information, explained in simple terms."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
-age_appropriate: "All ages (4-99)"
+age_appropriate: "For the whole family"
 ---
 
 <div class="post-header">

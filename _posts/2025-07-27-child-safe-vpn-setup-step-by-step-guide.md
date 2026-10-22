@@ -4,12 +4,12 @@ title: "Child-Safe VPN Setup: Step-by-Step Guide"
 date: 2025-07-27 17:41:45 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from data breaches with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from data breaches with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 image: /assets/images/cybersecurity-family.jpg
 ---
 
-Cybersecurity experts warn that Data Breaches attacks targeting families have increased 300% this year. Here's how to protect your loved ones:
+Many families are online all day, so it helps to have a plan. Here's how to protect your loved ones:
 
 **Step 1: Immediate Protection**
 Take these actions right now to secure your family:

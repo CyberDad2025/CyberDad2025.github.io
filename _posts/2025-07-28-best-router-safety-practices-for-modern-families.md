@@ -4,12 +4,12 @@ title: "Best Router Safety Practices for Modern Families"
 date: 2025-07-28 04:10:49 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyberbullying with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyberbullying with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 image: /assets/images/cybersecurity-family.jpg
 ---
 
-Cybersecurity experts warn that Cyberbullying attacks targeting families have increased 300% this year. Here's how to protect your loved ones:
+Many families are online all day, so it helps to have a plan. Here's how to protect your loved ones:
 
 **Step 3: Technology Setup**
 Configure your home network for maximum security:

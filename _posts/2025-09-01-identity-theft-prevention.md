@@ -8,14 +8,14 @@ author: CyberDad
 description: "Learn identity theft prevention with simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
-age_appropriate: "All ages (8-99)"
+age_appropriate: "For the whole family"
 ---
 
 # Identity Theft Prevention
 
 🔒 **Quick Summary:** Learn how to identity theft prevention with simple steps anyone can follow.
 
-⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for ages 8-99**
+⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for the whole family**
 
 **Quick Summary:** Essential cybersecurity guide to help families stay safe online.
 
@@ -42,7 +42,7 @@ Here are the essential steps every family needs to know:
 - Stay informed about new threats
 - Backup important family data
 
-## 🛡️ Pro Tips for Families
+## 🛡️ More Tips for Families
 
 - **Talk to your kids** about cybersecurity regularly
 - **Lead by example** with good security habits  
@@ -52,4 +52,4 @@ Here are the essential steps every family needs to know:
 
 Start with just one security improvement today. Your family's digital safety is worth the effort!
 
-**Need help?** Join thousands of families getting expert cybersecurity guidance designed specifically for parents and kids.
+**Need help?** Join other families getting plain-English cybersecurity guidance designed specifically for parents and kids.
