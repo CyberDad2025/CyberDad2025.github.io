@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Family Antivirus Protection in 5 Minutes or Less"
+title: "Family Antivirus Protection: A Step-by-Step Setup Guide"
 date: 2026-04-22
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Family Tablet Protection in 5 Minutes or Less"
+title: "Family Tablet Protection: A Step-by-Step Setup Guide"
 date: 2025-08-03 17:18:28 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]

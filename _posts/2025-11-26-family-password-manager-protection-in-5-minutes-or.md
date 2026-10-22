@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Family Password Manager Protection in 5 Minutes or Less"
+title: "Family Password Manager Protection: A Step-by-Step Setup Guide"
 date: 2025-11-26 01:38:14 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, gaming-threats, parents-guide]

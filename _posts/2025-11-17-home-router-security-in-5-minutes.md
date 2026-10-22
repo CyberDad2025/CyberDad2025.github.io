@@ -1,17 +1,17 @@
 ---
 layout: post
-title: "Home Router Security in 5 Minutes"
+title: "Home Router Security: A Step-by-Step Guide"
 date: 2025-11-17 14:15:21 -0500
 categories: [cybersecurity, family-safety, security-guide]
 tags: [security, family, guide, protection, cybersecurity]
 author: CyberDad
-description: "Learn home router security in 5 minutes with simple steps anyone can follow."
+description: "Learn home router security with simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
 age_appropriate: "For the whole family"
 ---
 
-# Home Router Security in 5 Minutes
+# Home Router Security: A Step-by-Step Guide
 
 🔒 **Quick Summary:** Learn home router security with simple steps anyone can follow.
 
