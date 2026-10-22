@@ -1,0 +1,8 @@
+# Homepage testimonials slot (P6). Ships EMPTY: while this list is empty, nothing renders on the site.
+# Add ONLY real customer quotes, with the customer's written permission, exactly as they wrote them.
+# Never invent quotes, names, results or counts. No child details (age, gender, count), no employer names.
+# Format (example shown commented out on purpose; do not uncomment with made-up text):
+# - quote: "..."
+#   name: "First name + last initial, or leave blank"
+#   detail: "Parent, Shield Kit buyer"
+[]

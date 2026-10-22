@@ -227,8 +227,29 @@ body {
 }
 
 .hero-trust-divider { color: var(--border); }
+.hero-trust { flex-wrap: wrap; gap: 0.5rem 0.75rem; color: var(--text-mid); }
+.hero-trust a { color: var(--teal-mid); }
 
-/* Hero visual: threat panel */
+.hero-link {
+  color: var(--teal-mid);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.75rem 0;
+  display: inline-block;
+}
+.hero-link:hover { color: var(--ink); }
+
+/* Hero kit summary card */
+.hero-kit-price { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--teal-mid); line-height: 1; }
+.hero-kit-list { list-style: none; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.hero-kit-list li { display: flex; gap: 0.6rem; font-size: 0.92rem; color: var(--text); line-height: 1.4; }
+.hero-kit-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+.hero-kit .panel-footer a { color: var(--teal-mid); font-weight: 600; text-decoration: none; }
+.hero-kit .panel-footer a:hover { text-decoration: underline; }
+
+/* Hero visual: kit summary card */
 .hero-panel {
   background: var(--white);
   border: 1px solid var(--border);
@@ -253,63 +274,6 @@ body {
   text-transform: uppercase;
   color: var(--text-soft);
 }
-
-.panel-live {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--teal);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.live-dot {
-  width: 6px; height: 6px;
-  background: var(--teal);
-  border-radius: 50%;
-  animation: pulse 1.8s ease-in-out infinite;
-}
-
-.panel-body { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.625rem; }
-
-.threat-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.875rem;
-  padding: 0.9rem 1rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: #fafbfc;
-  transition: border-color 0.2s;
-}
-.threat-item:hover { border-color: rgba(10,158,132,0.25); }
-
-.threat-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.threat-text { flex: 1; }
-.threat-label { font-size: 0.875rem; font-weight: 500; color: var(--text); line-height: 1.35; }
-.threat-meta  { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.2rem; }
-
-.threat-badge {
-  flex-shrink: 0;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  align-self: flex-start;
-  margin-top: 2px;
-}
-.badge-high   { background: var(--red-bg);   color: var(--red); }
-.badge-medium { background: var(--amber-bg); color: var(--amber); }
-.badge-info   { background: var(--green-bg); color: var(--green); }
 
 .panel-footer {
   padding: 1rem 1.5rem;
@@ -346,54 +310,16 @@ body {
 }
 
 .trust-item span { font-size: 1.1rem; }
-
-/* ── TOPICS STRIP ── */
-.topics-strip {
-  background: var(--mist);
-  border-bottom: 1px solid var(--border);
-  padding: 3rem 1.5rem;
-}
-
-.topics-inner {
-  max-width: 1160px;
-  margin: 0 auto;
-}
-
-.strip-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-soft);
+.trust-item a { color: #cbd5e1; text-decoration: underline; text-underline-offset: 3px; display: inline-block; padding: 0.6rem 0; }
+.trust-item a:hover { color: #4dd9bf; }
+.trust-founder {
+  max-width: 760px;
+  margin: 1rem auto 0;
   text-align: center;
-  margin-bottom: 1.75rem;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
-
-.topics-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
-}
-
-.topic-chip {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 1rem;
-  text-align: center;
-  text-decoration: none;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-}
-
-.topic-chip:hover {
-  border-color: var(--teal);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
-
-.topic-chip-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
-.topic-chip-label { font-size: 0.8rem; font-weight: 500; color: var(--text-mid); line-height: 1.3; }
 
 /* ── SECTION SHARED ── */
 .section-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
@@ -532,67 +458,8 @@ body {
   align-items: start;
 }
 
-/* ── ALERT STRIP ── */
-.alert-strip {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-
-.alert-strip-header {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.alert-strip-title {
-  font-family: var(--font-head);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.alert-strip-sub { font-size: 0.8rem; color: var(--text-soft); margin-top: 0.1rem; }
-
-.alerts-list { display: flex; flex-direction: column; }
-
-.alert-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-}
-.alert-item:last-child { border-bottom: none; }
-.alert-item:hover { background: var(--mist); }
-
-.alert-sev {
-  flex-shrink: 0;
-  width: 3.5rem;
-  padding: 0.25rem 0;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-.sev-high   { background: var(--red-bg);   color: var(--red); }
-.sev-medium { background: var(--amber-bg); color: var(--amber); }
-.sev-info   { background: var(--green-bg); color: var(--green); }
-
-.alert-text { flex: 1; }
-.alert-head { font-weight: 600; font-size: 0.9rem; color: var(--text); line-height: 1.35; margin-bottom: 0.25rem; }
-.alert-desc { font-size: 0.82rem; color: var(--text-soft); line-height: 1.5; }
-.alert-date { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.35rem; }
-
 /* ── SIDEBAR ── */
+.signup-section { grid-template-columns: 1fr 1fr; padding-top: 0; }
 .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
 
 .sidebar-card {
@@ -668,38 +535,6 @@ body {
 .ml-disclaimer { font-size: 0.73rem !important; color: var(--text-soft) !important; text-align: center; margin-bottom: 0 !important; }
 
 #ml-success { display: none; background: var(--green-bg); border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 1rem; font-size: 0.875rem; color: var(--green); font-weight: 500; }
-
-/* Popular guides sidebar list */
-.pop-guide-list { list-style: none; display: flex; flex-direction: column; }
-
-.pop-guide-list li { border-bottom: 1px solid var(--border); }
-.pop-guide-list li:last-child { border-bottom: none; }
-
-.pop-guide-list a {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.85rem 0;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.pop-guide-list a:hover .pop-guide-title { color: var(--teal); }
-
-.pop-guide-num {
-  flex-shrink: 0;
-  width: 22px; height: 22px;
-  background: var(--teal-light);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--teal);
-  margin-top: 1px;
-}
-
-.pop-guide-text { flex: 1; }
-.pop-guide-title { font-size: 0.85rem; font-weight: 500; color: var(--text); line-height: 1.35; }
-.pop-guide-date { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.15rem; }
 
 /* Quick tips card */
 .tip-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -871,7 +706,7 @@ body {
   margin-bottom: 0.25rem;
 }
 
-.kit-price-sub { font-size: 0.85rem; color: #475569; margin-bottom: 1.75rem; }
+.kit-price-sub { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.75rem; }
 
 .kit-includes {
   list-style: none;
@@ -897,6 +732,30 @@ body {
   border-top: 1px solid rgba(255,255,255,0.07);
   margin: 0 0 1.5rem;
 }
+
+.kit-guarantee a { color: #cbd5e1; text-decoration: underline; }
+.kit-guarantee a:hover { color: #4dd9bf; }
+
+/* What happens after you buy */
+.kit-after {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.03);
+  max-width: 520px;
+}
+.kit-after-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4dd9bf;
+  margin-bottom: 0.75rem;
+}
+.kit-steps { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.kit-steps li { font-size: 0.9rem; color: #cbd5e1; line-height: 1.55; }
+.kit-steps a { color: #4dd9bf; }
 
 /* ── FOOTER ── */
 .cd-footer {
@@ -967,24 +826,24 @@ body {
 @media (max-width: 960px) {
   .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
   .hero-panel { display: none; }
-  .topics-grid { grid-template-columns: repeat(3, 1fr); }
   .guides-grid { grid-template-columns: repeat(2, 1fr); }
   .content-sidebar { grid-template-columns: 1fr; }
-  .sidebar > .sidebar-card:not(.cdk-signup-card) { display: none; }
   .kit-inner { grid-template-columns: 1fr; gap: 3rem; }
-  .kit-card { display: none; }
+  .kit-card { width: 100%; max-width: 440px; padding: 2rem 1.5rem; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 620px) {
-  .topics-grid { grid-template-columns: repeat(2, 1fr); }
   .guides-grid { grid-template-columns: 1fr; }
-  .trust-inner { gap: 1.5rem; }
+  .trust-inner { gap: 0.75rem 1.5rem; justify-content: flex-start; }
+  .trust-founder { text-align: left; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .footer-inner { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 </style>
+
+{% include home-header.html %}
 
 <!-- ═══════════════════════════════════════
      HERO
@@ -993,147 +852,126 @@ body {
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        Freedom from fear
+        From a U.S. Marine Corps veteran and dad
       </div>
       <h1 class="hero-title">
-        Your family's<br>
-        digital life,<br>
-        <em>protected.</em>
+        A dad's plain-English plan to
+        <em>protect your family online.</em>
       </h1>
       <p class="hero-sub">
-        Plain-English cybersecurity for parents. No technical degree required — just practical steps to keep your kids, devices, and home network safe from real threats.
+        The CyberDad Shield Kit walks you through your home network, devices, passwords and scam defenses step by step. Written for parents, not IT departments.
       </p>
       <div class="hero-actions">
-        <a href="#guides" class="btn-primary">Browse Free Guides</a>
-        <a href="#kit" class="btn-ghost">See the CyberDad Shield Kit ($47)</a>
+        <a href="/#kit" class="btn-primary">Get the Shield Kit — $47</a>
+        <a href="#kit-signup" class="hero-link">Not ready? Start with the free family tech safety checklist →</a>
       </div>
       <div class="hero-trust">
-        <span>✓ No jargon</span>
-        <span class="hero-trust-divider">|</span>
-        <span>✓ Written for parents</span>
-        <span class="hero-trust-divider">|</span>
-        <span>✓ Free weekly alerts</span>
+        <span>One-time $47</span>
+        <span class="hero-trust-divider">·</span>
+        <span>PDF download</span>
+        <span class="hero-trust-divider">·</span>
+        <span>30-day money-back guarantee (<a href="/refund-policy/">Refund policy</a>)</span>
       </div>
     </div>
 
-    <!-- Threat Radar Panel -->
-    <div class="hero-panel">
+    <!-- Kit summary card (desktop; hidden at <=960px where the kit section follows the trust strip) -->
+    <div class="hero-panel hero-kit">
       <div class="panel-header">
-        <div>
-          <div class="panel-title">Family Threat Radar</div>
-        </div>
-        <div class="panel-live"><span class="live-dot"></span> Live</div>
+        <div class="panel-title">The CyberDad Shield Kit</div>
+        <div class="hero-kit-price">$47</div>
       </div>
-      <div class="panel-body">
-        <div class="threat-item">
-          <span class="threat-icon">📧</span>
-          <div class="threat-text">
-            <div class="threat-label">Phishing targeting school email accounts</div>
-            <div class="threat-meta">Impersonating school IT departments</div>
-          </div>
-          <span class="threat-badge badge-high">High</span>
-        </div>
-        <div class="threat-item">
-          <span class="threat-icon">🎮</span>
-          <div class="threat-text">
-            <div class="threat-label">Fake gaming reward scams on Roblox</div>
-            <div class="threat-meta">Targeting young players</div>
-          </div>
-          <span class="threat-badge badge-medium">Medium</span>
-        </div>
-        <div class="threat-item">
-          <span class="threat-icon">📱</span>
-          <div class="threat-text">
-            <div class="threat-label">Social media account takeovers rising</div>
-            <div class="threat-meta">Instagram & Snapchat credential theft</div>
-          </div>
-          <span class="threat-badge badge-medium">Medium</span>
-        </div>
-        <div class="threat-item">
-          <span class="threat-icon">📡</span>
-          <div class="threat-text">
-            <div class="threat-label">Home router firmware updates available</div>
-            <div class="threat-meta">Patch your router: check for a firmware update</div>
-          </div>
-          <span class="threat-badge badge-info">Info</span>
-        </div>
-      </div>
-      <div class="panel-footer">Updated daily · Free alerts in your inbox →</div>
+      <ul class="hero-kit-list">
+        <li>Home network security checklist</li>
+        <li>Device setup guides</li>
+        <li>Password vault walkthrough</li>
+        <li>Social media safety checklist</li>
+        <li>Family technology agreement template</li>
+        <li>Emergency response plan for account hacks</li>
+      </ul>
+      <div class="panel-footer"><a href="/#kit">See what's inside and what happens after you buy →</a></div>
     </div>
   </div>
 
-</section>
-
-<!-- 🔐 LIVE THREAT INTELLIGENCE SECTION -->
-<section class="live-alerts-wrapper">
-  {% include alerts-feed.html %}
 </section>
 
 <!-- TRUST BAR -->
 <!-- ═══════════════════════════════════════
      TRUST BAR
 ═══════════════════════════════════════ -->
-<div class="trust-bar">
+<div class="trust-bar" aria-label="Who is behind CyberDadKit">
   <div class="trust-inner">
-    <div class="trust-item"><span>🛡️</span> Family-first approach</div>
-    <div class="trust-item"><span>📖</span> Plain-English guides</div>
-    <div class="trust-item"><span>🔔</span> Weekly threat alerts</div>
-    <div class="trust-item"><span>✅</span> 30-day money-back guarantee</div>
-    <div class="trust-item"><span>📧</span> ruel@getcyberdadkit.com</div>
+    <div class="trust-item"><span aria-hidden="true">🎖️</span> U.S. Marine Corps veteran</div>
+    <div class="trust-item"><span aria-hidden="true">🛡️</span> CompTIA Security+ certified</div>
+    <div class="trust-item"><span aria-hidden="true">🖥️</span> Past hands-on Security Operations Center (SOC) experience</div>
+    <div class="trust-item"><span aria-hidden="true">✅</span> <a href="/refund-policy/">30-day money-back guarantee</a></div>
+    <div class="trust-item"><span aria-hidden="true">📧</span> <a href="mailto:ruel@getcyberdadkit.com">Questions? ruel@getcyberdadkit.com</a></div>
   </div>
+  <p class="trust-founder">I'm Ruel Miller, founder of CyberDadKit. I'm a U.S. Marine Corps veteran with CompTIA Security+ and past hands-on SOC experience, and I'm a dad. I built this kit to give my family, and yours, a clear plan for staying safer online.</p>
 </div>
 
 <!-- ═══════════════════════════════════════
-     TOPICS STRIP
+     SHIELD KIT CTA
 ═══════════════════════════════════════ -->
-<div class="topics-strip">
-  <div class="topics-inner">
-    <div class="strip-label">What we cover</div>
-    <div class="topics-grid">
-      <a href="/tag/social-media" class="topic-chip">
-        <span class="topic-chip-icon">📲</span>
-        <span class="topic-chip-label">Social Media Safety</span>
-      </a>
-      <a href="/tag/devices" class="topic-chip">
-        <span class="topic-chip-icon">💻</span>
-        <span class="topic-chip-label">Device Security</span>
-      </a>
-      <a href="/tag/passwords" class="topic-chip">
-        <span class="topic-chip-icon">🔑</span>
-        <span class="topic-chip-label">Passwords & Accounts</span>
-      </a>
-      <a href="/tag/scams" class="topic-chip">
-        <span class="topic-chip-icon">🎣</span>
-        <span class="topic-chip-label">Scams & Phishing</span>
-      </a>
-      <a href="/tag/wifi" class="topic-chip">
-        <span class="topic-chip-icon">📡</span>
-        <span class="topic-chip-label">Wi-Fi & Home Network</span>
-      </a>
-      <a href="/tag/cyberbullying" class="topic-chip">
-        <span class="topic-chip-icon">💬</span>
-        <span class="topic-chip-label">Cyberbullying & Predators</span>
-      </a>
-      <a href="/tag/browsing" class="topic-chip">
-        <span class="topic-chip-icon">🌐</span>
-        <span class="topic-chip-label">Safe Browsing</span>
-      </a>
-      <a href="/tag/family-rules" class="topic-chip">
-        <span class="topic-chip-icon">📋</span>
-        <span class="topic-chip-label">Family Tech Rules</span>
-      </a>
-      <a href="/tag/recovery" class="topic-chip">
-        <span class="topic-chip-icon">🔄</span>
-        <span class="topic-chip-label">Emergency Plans</span>
-      </a>
-      <a href="/tag/privacy" class="topic-chip">
-        <span class="topic-chip-icon">🔒</span>
-        <span class="topic-chip-label">Digital Privacy</span>
+<section class="kit-section" id="kit">
+  <div class="kit-inner">
+    <div>
+      <div class="kit-eyebrow">Digital Download · PDF</div>
+      <h2 class="kit-title">
+        The CyberDad<br>
+        <em>Shield Kit</em>
+      </h2>
+      <p class="kit-desc">
+        A complete system to secure your family's digital life — designed for parents with no technical background. Follow the checklist. Protect your family.
+      </p>
+      <ul class="kit-checklist">
+        <li><span class="kit-check">✓</span>Full home network security checklist (Wi-Fi, router, guest network)</li>
+        <li><span class="kit-check">✓</span>Device setup guides for kids' phones, tablets, and laptops</li>
+        <li><span class="kit-check">✓</span>Password vault setup walkthrough — step by step</li>
+        <li><span class="kit-check">✓</span>Social media safety checklist for each platform</li>
+        <li><span class="kit-check">✓</span>Family technology agreement template — ready to print</li>
+        <li><span class="kit-check">✓</span>Emergency response plan for account hacks and breaches</li>
+      </ul>
+      <div class="kit-actions">
+        <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
+          Get the CyberDad Shield Kit — $47 →
+        </a>
+        <span class="kit-guarantee">🔒 30-day money-back guarantee · <a href="/refund-policy/">Refund policy</a></span>
+      </div>
+      <!-- "After you buy" wording is limited to what the live MailerLite order-confirmation template says
+           (saved copy: /workspace/cdk/product/M-D16/qa/oc-live.txt, checked 8:31 PM ET Oct 21, 2026):
+           kit PDF download link in the order confirmation email + 30-day full refund of what you paid. No time promises. -->
+      <div class="kit-after">
+        <div class="kit-after-title">What happens after you buy</div>
+        <ol class="kit-steps">
+          <li>Check out securely for $47.</li>
+          <li>We email your order confirmation with your Shield Kit (PDF) download link.</li>
+          <li>Not right for your family? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> within 30 days of purchase for a full refund of what you paid. See our <a href="/refund-policy/">refund policy</a>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="kit-card">
+      <span class="kit-card-icon">🛡️</span>
+      <div class="kit-price-label">One-time purchase</div>
+      <div class="kit-price">$47</div>
+      <div class="kit-price-sub">Digital download (PDF)</div>
+      <hr class="kit-divider">
+      <ul class="kit-includes">
+        <li>Home network checklist</li>
+        <li>Device setup guides</li>
+        <li>Password vault walkthrough</li>
+        <li>Social media safety kit</li>
+        <li>Family tech agreement template</li>
+        <li>Emergency response plan</li>
+      </ul>
+      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
+        Buy now →
       </a>
     </div>
   </div>
-</div>
+</section>
+
+{% include testimonials.html %}
 
 <!-- ═══════════════════════════════════════
      GUIDES GRID
@@ -1145,7 +983,6 @@ body {
         <div class="section-eyebrow">Latest guides</div>
         <h2 class="section-title">Practical protection for your family</h2>
       </div>
-      <a href="/blog" class="section-link">View all guides →</a>
     </div>
 
     <div class="guides-grid">
@@ -1235,74 +1072,9 @@ body {
 </section>
 
 <!-- ═══════════════════════════════════════
-     ALERTS + SIDEBAR
+     FREE CHECKLIST SIGNUP + QUICK WINS
 ═══════════════════════════════════════ -->
-<div class="content-sidebar">
-
-  <!-- Alert Feed -->
-  <div>
-    <div class="section-head" style="margin-bottom: 1.5rem;">
-      <div>
-        <div class="section-eyebrow">Threat Alerts</div>
-        <h2 class="section-title">What families should know this week</h2>
-      </div>
-    </div>
-
-    <div class="alert-strip">
-      <div class="alert-strip-header">
-        <div>
-          <div class="alert-strip-title">Current Family Threat Alerts</div>
-          <div class="alert-strip-sub">Plain-English summaries of the threats that matter to your household</div>
-        </div>
-        <div class="panel-live"><span class="live-dot"></span> Updated daily</div>
-      </div>
-      <div class="alerts-list">
-        <div class="alert-item">
-          <div class="alert-sev sev-high">High</div>
-          <div class="alert-text">
-            <div class="alert-head">School phishing campaign impersonating IT departments</div>
-            <div class="alert-desc">Emails asking parents and students to "verify accounts" are circulating across multiple school districts. Do not click links — go directly to your school's website instead.</div>
-            <div class="alert-date">Apr 13, 2025 · Education</div>
-          </div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-sev sev-medium">Medium</div>
-          <div class="alert-text">
-            <div class="alert-head">Fake Robux giveaway sites targeting kids on Roblox</div>
-            <div class="alert-desc">Children are being directed to third-party sites promising free in-game currency. These sites steal login credentials. Talk to your kids and check their browser history.</div>
-            <div class="alert-date">Apr 11, 2025 · Gaming</div>
-          </div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-sev sev-medium">Medium</div>
-          <div class="alert-text">
-            <div class="alert-head">Instagram and Snapchat account takeover wave</div>
-            <div class="alert-desc">Attackers are using credential-stuffing to take over teen accounts and message friends with scam links. Enable two-factor authentication on all your family's accounts now.</div>
-            <div class="alert-date">Apr 9, 2025 · Social Media</div>
-          </div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-sev sev-info">Info</div>
-          <div class="alert-text">
-            <div class="alert-head">Critical router firmware updates from ASUS and TP-Link</div>
-            <div class="alert-desc">Both manufacturers have released security patches that close a known vulnerability. Log into your router's admin panel and check for firmware updates.</div>
-            <div class="alert-date">Apr 7, 2025 · Home Network</div>
-          </div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-sev sev-info">Info</div>
-          <div class="alert-text">
-            <div class="alert-head">iOS and Android security patches released — update now</div>
-            <div class="alert-desc">Both Apple and Google have pushed important security updates this week. Make sure every device in your household — especially your kids' devices — is running the latest OS version.</div>
-            <div class="alert-date">Apr 5, 2025 · Devices</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sidebar -->
-  <aside class="sidebar">
+<div class="content-sidebar signup-section">
 
     <!-- Email Signup -->
     <div class="sidebar-card cdk-signup-card">
@@ -1325,34 +1097,6 @@ body {
       </div>
     </div>
 
-    <!-- Popular Guides -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-head">
-        <div class="sidebar-card-title">Most-read guides</div>
-      </div>
-      <div class="sidebar-card-body" style="padding-top: 0.25rem; padding-bottom: 0.25rem;">
-        <ul class="pop-guide-list">
-          {% for post in site.posts limit: 5 %}
-          <li>
-            <a href="{{ post.url }}">
-              <span class="pop-guide-num">{{ forloop.index }}</span>
-              <div class="pop-guide-text">
-                <div class="pop-guide-title">{{ post.title | truncatewords: 9 }}</div>
-                <div class="pop-guide-date">{{ post.date | date: "%b %d, %Y" }}</div>
-              </div>
-            </a>
-          </li>
-          {% else %}
-          <li><a href="#"><span class="pop-guide-num">1</span><div class="pop-guide-text"><div class="pop-guide-title">Family password manager setup guide</div><div class="pop-guide-date">Coming soon</div></div></a></li>
-          <li><a href="#"><span class="pop-guide-num">2</span><div class="pop-guide-text"><div class="pop-guide-title">Parental controls on iPhone & Android</div><div class="pop-guide-date">Coming soon</div></div></a></li>
-          <li><a href="#"><span class="pop-guide-num">3</span><div class="pop-guide-text"><div class="pop-guide-title">How to spot a phishing email — for kids</div><div class="pop-guide-date">Coming soon</div></div></a></li>
-          <li><a href="#"><span class="pop-guide-num">4</span><div class="pop-guide-text"><div class="pop-guide-title">Home router security checklist</div><div class="pop-guide-date">Coming soon</div></div></a></li>
-          <li><a href="#"><span class="pop-guide-num">5</span><div class="pop-guide-text"><div class="pop-guide-title">What to do if your child's account is hacked</div><div class="pop-guide-date">Coming soon</div></div></a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-
     <!-- Quick Wins -->
     <div class="sidebar-card">
       <div class="sidebar-card-head">
@@ -1370,59 +1114,7 @@ body {
       </div>
     </div>
 
-  </aside>
 </div>
-
-<!-- ═══════════════════════════════════════
-     SHIELD KIT CTA
-═══════════════════════════════════════ -->
-<section class="kit-section" id="kit">
-  <div class="kit-inner">
-    <div>
-      <div class="kit-eyebrow">Digital Download · PDF</div>
-      <h2 class="kit-title">
-        The CyberDad<br>
-        <em>Shield Kit</em>
-      </h2>
-      <p class="kit-desc">
-        A complete system to secure your family's digital life — designed for parents with no technical background. Follow the checklist. Protect your family.
-      </p>
-      <ul class="kit-checklist">
-        <li><span class="kit-check">✓</span>Full home network security checklist (Wi-Fi, router, guest network)</li>
-        <li><span class="kit-check">✓</span>Device setup guides for kids' phones, tablets, and laptops</li>
-        <li><span class="kit-check">✓</span>Password vault setup walkthrough — step by step</li>
-        <li><span class="kit-check">✓</span>Social media safety checklist for each platform</li>
-        <li><span class="kit-check">✓</span>Family technology agreement template — ready to print</li>
-        <li><span class="kit-check">✓</span>Emergency response plan for account hacks and breaches</li>
-      </ul>
-      <div class="kit-actions">
-        <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
-          Get the CyberDad Shield Kit — $47 →
-        </a>
-        <span class="kit-guarantee">🔒 30-day money-back guarantee</span>
-      </div>
-    </div>
-
-    <div class="kit-card">
-      <span class="kit-card-icon">🛡️</span>
-      <div class="kit-price-label">One-time purchase</div>
-      <div class="kit-price">$47</div>
-      <div class="kit-price-sub">Digital download (PDF)</div>
-      <hr class="kit-divider">
-      <ul class="kit-includes">
-        <li>Home network checklist</li>
-        <li>Device setup guides</li>
-        <li>Password vault walkthrough</li>
-        <li>Social media safety kit</li>
-        <li>Family tech agreement template</li>
-        <li>Emergency response plan</li>
-      </ul>
-      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
-        Buy now →
-      </a>
-    </div>
-  </div>
-</section>
 
 <!-- ═══════════════════════════════════════
      FOOTER
@@ -1438,14 +1130,11 @@ body {
     </div>
 
     <div>
-      <div class="footer-col-title">Guides</div>
+      <div class="footer-col-title">Start here</div>
       <ul class="footer-links">
-        <li><a href="/tag/social-media">Social Media Safety</a></li>
-        <li><a href="/tag/devices">Device Security</a></li>
-        <li><a href="/tag/passwords">Passwords & Accounts</a></li>
-        <li><a href="/tag/scams">Scams & Phishing</a></li>
-        <li><a href="/tag/wifi">Wi-Fi Security</a></li>
-        <li><a href="/tag/family-rules">Family Tech Rules</a></li>
+        <li><a href="#guides">Latest guides</a></li>
+        <li><a href="#kit-signup">Free family tech safety checklist</a></li>
+        <li><a href="/#kit">CyberDad Shield Kit — $47</a></li>
       </ul>
     </div>
 
@@ -1453,8 +1142,6 @@ body {
       <div class="footer-col-title">CyberDadKit</div>
       <ul class="footer-links">
         <li><a href="/about">About</a></li>
-        <li><a href="#kit">CyberDad Shield Kit — $47</a></li>
-        <li><a href="#newsletter">Free Email Alerts</a></li>
         <li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li>
         <li><a href="/cookie-policy.html">Cookie Policy</a></li>
         <li><a href="/cyberdadkit-privacy-policy.html">Privacy Policy</a></li>

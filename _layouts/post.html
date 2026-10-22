@@ -49,7 +49,7 @@ layout: default
   <div class="related-posts">
     <h3>🔗 Related Security Guides</h3>
     <div class="related-grid">
-      {% assign related_posts = site.posts | where_exp: "post", "post.categories contains page.categories.first" | limit: 3 %}
+      {% assign related_posts = site.posts | where_exp: "post", "post.categories contains page.categories.first" | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
       {% for post in related_posts %}
         {% unless post.url == page.url %}
           <a href="{{ post.url }}" class="related-link">
