@@ -759,6 +759,12 @@ body {
 .kit-steps li { font-size: 0.9rem; color: #cbd5e1; line-height: 1.55; }
 .kit-steps a { color: #4dd9bf; }
 
+/* M-D18: bonus line under the kit list; question line + sign-off under the buy button */
+.kit-bonus { font-size: 0.9rem; color: #cbd5e1; line-height: 1.55; margin: -1rem 0 1.75rem; }
+.kit-card-note { font-size: 0.82rem; color: #94a3b8; line-height: 1.55; margin: 1.25rem 0 0; overflow-wrap: anywhere; }
+.kit-card-note a { color: #4dd9bf; }
+.kit-signoff { margin-top: 0.5rem; font-size: 0.78rem; color: #64748b; }
+
 /* ── FOOTER ── */
 .cd-footer {
   background: var(--ink);
@@ -924,31 +930,37 @@ body {
         <em>Shield Kit</em>
       </h2>
       <p class="kit-desc">
-        A complete system to secure your family's digital life — designed for parents with no technical background. Follow the checklist. Protect your family.
+        A 51-page, plain-English guide that shows you the exact settings to change on the phones, tablets, computers, Wi-Fi and game consoles in your house. Built for parents with no technical background.
       </p>
+      <!-- Kit list: Product M-D18 section 2 (COPY.md sha256 7503b0b0…a85e); each line maps to kit v3.4. -->
       <ul class="kit-checklist">
-        <li><span class="kit-check">✓</span>Full home network security checklist (Wi-Fi, router, guest network)</li>
-        <li><span class="kit-check">✓</span>Device setup guides for kids' phones, tablets, and laptops</li>
-        <li><span class="kit-check">✓</span>Password vault setup walkthrough — step by step</li>
-        <li><span class="kit-check">✓</span>Social media safety checklist for each platform</li>
-        <li><span class="kit-check">✓</span>Family technology agreement template — ready to print</li>
-        <li><span class="kit-check">✓</span>Emergency response plan for account hacks and breaches</li>
+        <li><span class="kit-check">✓</span>Device setup guides for kids' iPhones, iPads, Android phones, Windows PCs, Macs and game consoles</li>
+        <li><span class="kit-check">✓</span>Password vault walkthrough, step by step, plus two-step verification and passkeys</li>
+        <li><span class="kit-check">✓</span>Scam and phishing guide, including AI voice-clone scams and a family safe word</li>
+        <li><span class="kit-check">✓</span>Home network checklist for your router, Wi-Fi and guest network</li>
+        <li><span class="kit-check">✓</span>Printable Family Tech Agreement and a kids' rules poster</li>
+        <li><span class="kit-check">✓</span>Social media safety checklists for Instagram, Facebook, TikTok, Snapchat, YouTube, Roblox and Discord</li>
+        <li><span class="kit-check">✓</span>Emergency plan for a hacked account, a stolen phone or lost money</li>
+        <li><span class="kit-check">✓</span>30-Day Action Plan of short daily steps, so it actually gets done</li>
       </ul>
+      <p class="kit-bonus">Also included: the 3 Fast Wins sheet, a one-page list of the first three things to do.</p>
       <div class="kit-actions">
         <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
-          Get the CyberDad Shield Kit — $47 →
+          Get the CyberDad Shield Kit, $47 →
         </a>
         <span class="kit-guarantee">🔒 30-day full refund · <a href="/refund-policy/">Refund policy</a></span>
       </div>
       <!-- "After you buy" wording is limited to what the live MailerLite order-confirmation template says
            (saved copy: /workspace/cdk/product/M-D16/qa/oc-live.txt, checked 8:31 PM ET Oct 21, 2026):
-           kit PDF download link in the order confirmation email + 30-day full refund of what you paid. No time promises. -->
+           kit PDF + 3 Fast Wins download links in the order confirmation email + 30-day full refund of what you paid. No time promises.
+           Steps: Product M-D18 section 5. -->
       <div class="kit-after">
         <div class="kit-after-title">What happens after you buy</div>
         <ol class="kit-steps">
           <li>Check out securely for $47.</li>
-          <li>We email your order confirmation with your Shield Kit (PDF) download link.</li>
-          <li>Not right for your family? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> within 30 days of purchase for a full refund of what you paid. See our <a href="/refund-policy/">refund policy</a>.</li>
+          <li>We email your order confirmation with download links for the Shield Kit (PDF) and the 3 Fast Wins sheet.</li>
+          <li>Can't find it? Check your Spam/Junk folder and, in Gmail, the Promotions tab, or email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</li>
+          <li>Not right for your family? Email within 30 days for a full refund of what you paid.</li>
         </ol>
       </div>
     </div>
@@ -959,19 +971,24 @@ body {
       <span class="kit-card-icon">🛡️</span>
       <div class="kit-price-label">One-time purchase</div>
       <div class="kit-price">$47</div>
-      <div class="kit-price-sub">Digital download (PDF)</div>
+      <div class="kit-price-sub">Digital download (PDF) · no subscription</div>
       <hr class="kit-divider">
       <ul class="kit-includes">
-        <li>Home network checklist</li>
         <li>Device setup guides</li>
         <li>Password vault walkthrough</li>
-        <li>Social media safety kit</li>
-        <li>Family tech agreement template</li>
-        <li>Emergency response plan</li>
+        <li>Scam &amp; phishing guide</li>
+        <li>Home network checklist</li>
+        <li>Family Tech Agreement</li>
+        <li>Social media checklists</li>
+        <li>Emergency plan</li>
+        <li>30-Day Action Plan</li>
       </ul>
       <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
-        Buy now →
+        Get the CyberDad Shield Kit, $47 →
       </a>
+      <!-- Product M-D18 sections 6 and 7 -->
+      <p class="kit-card-note">Questions before you buy? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
+      <p class="kit-card-note kit-signoff">Made by Ruel Miller, U.S. Marine Corps veteran, CompTIA Security+ | Founder, CyberDadKit</p>
     </div>
   </div>
 </section>
