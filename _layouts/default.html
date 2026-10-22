@@ -106,5 +106,6 @@
     <div class="site-wrapper">
         {{ content }}
     </div>
+    {% unless page.cd_footer %}{% include site-footer.html %}{% endunless %}
 </body>
 </html>
