@@ -9,6 +9,8 @@ layout: default
 .cdk-post-bar .cdk-post-brand { font-weight: 700; color: #0e1117; font-size: 1.1rem; }
 .cdk-post-bar .cdk-post-kit { padding: 0 1rem; border: 1.5px solid #0a9e84; border-radius: 8px; color: #0c8a73; font-weight: 600; }
 .post-cta .cdk-cta-note { margin: 1rem 0 0; font-size: 0.9rem; }
+.post-header.cdk-meta-only { background: none; color: #4a5568; padding: 0; margin: 0 0 0.75rem; box-shadow: none; }
+.post-header.cdk-meta-only .post-meta { margin: 0; gap: 0.5rem; font-size: 0.9rem; flex-direction: row; }
 .post-cta .cdk-cta-note a { color: #fff; text-decoration: underline; }
 </style>
 <div class="cdk-post-bar">
@@ -17,8 +19,16 @@ layout: default
 </div>
 
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
+  {%- comment -%} P16: most generated posts carry their own title block (<div class="post-header"><h1>…) in the content.
+      For those, show only the date/meta line here so the title isn't shown twice; the headline stays in schema via <meta>. {%- endcomment -%}
+  {%- assign cdk_own_header = false -%}
+  {%- if content contains '<div class="post-header">' -%}{%- assign cdk_own_header = true -%}{%- endif %}
+  <header class="post-header{% if cdk_own_header %} cdk-meta-only{% endif %}">
+    {%- if cdk_own_header %}
+    <meta itemprop="name headline" content="{{ page.title | escape }}">
+    {%- else %}
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    {%- endif %}
     <p class="post-meta">
       <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
         {{ page.date | date: "%B %d, %Y" }}
