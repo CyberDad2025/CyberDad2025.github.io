@@ -4,9 +4,8 @@ title: "🎣 Avoid Email Tricks - Don't Get Fooled!"
 date: 2025-08-12 08:00:03 -0500
 categories: [cybersecurity, family-safety, easy-guide]
 tags: [security, simple, family, guide, protection]
-author: CyberDad
+author: CyberDadKit
 description: "Learn how to spot fake emails that try to trick you into giving away your information, explained in simple terms."
-reading_time: "5 minutes"
 difficulty: "Super Easy"
 age_appropriate: "For the whole family"
 # M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
@@ -17,7 +16,6 @@ sitemap: true
 <div class="post-header">
   <h1>🎣 Avoid Email Tricks - Don't Get Fooled!</h1>
   <div class="post-meta">
-    <span class="reading-time">⏱️ Takes 5 minutes to read</span>
     <span class="difficulty">📊 Super Easy</span>
     <span class="age-range">🏠 Perfect for the whole family</span>
   </div>
@@ -478,3 +476,5 @@ code {
 
 *Stay safe online! 🔒*
 *- The Cyber Dad Team*
+
+*Drafted with AI assistance.*

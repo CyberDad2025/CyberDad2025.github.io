@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Daily Cybersecurity Update - 2025-07-28"
+title: "7 Everyday Steps to Protect Your Family Online"
 date: 2025-07-28
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips
-author: CyberDad
+author: CyberDadKit
 excerpt: "Essential cybersecurity guidance to keep your family safe online"
 # M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
 noindex: false
@@ -25,7 +25,7 @@ As a dad, I understand the importance of protecting your family online. That's w
 
 5. Be Wary of Phishing Scams: Phishing scams are a common method used by cybercriminals to trick individuals into revealing sensitive information, such as passwords and credit card numbers. Teach your family members how to recognize phishing emails and messages, and encourage them to verify the sender's identity before clicking on any links or providing personal information. Remind your children to never share their passwords with anyone, even if they claim to be a friend or classmate.
 
-6. Secure Your Wi-Fi Network: Securing your home Wi-Fi network is crucial for protecting your family's online privacy and security. Make sure to change the default password on your router to a strong, unique password that is difficult to guess. Enable WPA2 encryption on your network to prevent unauthorized access, and consider hiding your network name (SSID) to make it more difficult for hackers to find your network.
+6. Secure Your Wi-Fi Network: Securing your home Wi-Fi network is crucial for protecting your family's online privacy and security. Make sure to change the default password on your router to a strong, unique password that is difficult to guess. Turn on WPA3 encryption if your router supports it, or WPA2 with AES if it doesn't, and use a long, unique Wi-Fi password. Also keep your router's firmware updated; many routers can install updates automatically if you switch that setting on.
 
 7. Create Backup Plans: In the event of a cyber attack or data breach, having a backup plan in place can help minimize the impact on your family. Make regular backups of your important files and store them in a secure location, such as an external hard drive or cloud storage service. Encourage your family members to back up their devices regularly to ensure that their data is safe in case of a cyber incident.
 
@@ -41,9 +41,9 @@ In conclusion, I encourage all families to prioritize cybersecurity and take ste
 
 ## Stay Protected
 
-Want more cybersecurity tips? Follow our daily updates.
+Want a step-by-step plan for the whole family? [See the CyberDad Shield Kit ($47)](/#kit).
 
 **🔒 Remember: Your family's digital safety is worth the extra effort.**
 
 ---
-*This post was generated automatically to provide you with the latest cybersecurity insights and practical protection strategies.*
+*Drafted with AI assistance.*

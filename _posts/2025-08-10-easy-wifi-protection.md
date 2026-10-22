@@ -4,9 +4,8 @@ title: "📶 Make Your Home WiFi Super Safe - Easy Steps"
 date: 2025-08-10 19:00:02 -0500
 categories: [cybersecurity, family-safety, easy-guide]
 tags: [security, simple, family, guide, protection]
-author: CyberDad
+author: CyberDadKit
 description: "Simple steps to protect your home internet so bad people can't get in, explained in words everyone can understand."
-reading_time: "5 minutes"
 difficulty: "Super Easy"
 age_appropriate: "For the whole family"
 # M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
@@ -17,7 +16,6 @@ sitemap: true
 <div class="post-header">
   <h1>📶 Make Your Home WiFi Super Safe - Easy Steps</h1>
   <div class="post-meta">
-    <span class="reading-time">⏱️ Takes 5 minutes to read</span>
     <span class="difficulty">📊 Super Easy</span>
     <span class="age-range">🏠 Perfect for the whole family</span>
   </div>
@@ -422,3 +420,5 @@ code {
 
 *Stay safe online! 🔒*
 *- The Cyber Dad Team*
+
+*Drafted with AI assistance.*
