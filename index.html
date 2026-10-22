@@ -310,6 +310,16 @@ body {
 }
 
 .trust-item span { font-size: 1.1rem; }
+.trust-item a { color: #cbd5e1; text-decoration: underline; text-underline-offset: 3px; display: inline-block; padding: 0.6rem 0; }
+.trust-item a:hover { color: #4dd9bf; }
+.trust-founder {
+  max-width: 760px;
+  margin: 1rem auto 0;
+  text-align: center;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
 
 /* ── SECTION SHARED ── */
 .section-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
@@ -825,7 +835,8 @@ body {
 
 @media (max-width: 620px) {
   .guides-grid { grid-template-columns: 1fr; }
-  .trust-inner { gap: 1.5rem; }
+  .trust-inner { gap: 0.75rem 1.5rem; justify-content: flex-start; }
+  .trust-founder { text-align: left; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .footer-inner { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
@@ -885,14 +896,15 @@ body {
 <!-- ═══════════════════════════════════════
      TRUST BAR
 ═══════════════════════════════════════ -->
-<div class="trust-bar">
+<div class="trust-bar" aria-label="Who is behind CyberDadKit">
   <div class="trust-inner">
-    <div class="trust-item"><span>🛡️</span> Family-first approach</div>
-    <div class="trust-item"><span>📖</span> Plain-English guides</div>
-    <div class="trust-item"><span>🔔</span> Weekly threat alerts</div>
-    <div class="trust-item"><span>✅</span> 30-day money-back guarantee</div>
-    <div class="trust-item"><span>📧</span> ruel@getcyberdadkit.com</div>
+    <div class="trust-item"><span aria-hidden="true">🎖️</span> U.S. Marine Corps veteran</div>
+    <div class="trust-item"><span aria-hidden="true">🛡️</span> CompTIA Security+ certified</div>
+    <div class="trust-item"><span aria-hidden="true">🖥️</span> Past hands-on Security Operations Center (SOC) experience</div>
+    <div class="trust-item"><span aria-hidden="true">✅</span> <a href="/refund-policy/">30-day money-back guarantee</a></div>
+    <div class="trust-item"><span aria-hidden="true">📧</span> <a href="mailto:ruel@getcyberdadkit.com">Questions? ruel@getcyberdadkit.com</a></div>
   </div>
+  <p class="trust-founder">I'm Ruel Miller, founder of CyberDadKit. I'm a U.S. Marine Corps veteran with CompTIA Security+ and past hands-on SOC experience, and I'm a dad. I built this kit to give my family, and yours, a clear plan for staying safer online.</p>
 </div>
 
 <!-- ═══════════════════════════════════════
