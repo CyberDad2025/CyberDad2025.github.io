@@ -38,15 +38,6 @@ Teach your children these essential safety rules:
 
 **Remember:** Cybersecurity is not optional for modern families. Start with one step today and build from there.
 
-## 🛡️ Recommended Security Tools
-
-Protect your family with these trusted cybersecurity solutions:
-
-- **[Norton 360 Deluxe](https://norton.com/affiliate-link)** - Complete family protection with VPN
-
-
-*As a cybersecurity affiliate, I earn from qualifying purchases at no cost to you.*
-
 ## 🔒 Get FREE Cybersecurity Alerts
 
 **Join other families getting alerts about threats affecting their devices.**
