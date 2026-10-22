@@ -227,6 +227,27 @@ body {
 }
 
 .hero-trust-divider { color: var(--border); }
+.hero-trust { flex-wrap: wrap; gap: 0.5rem 0.75rem; color: var(--text-mid); }
+.hero-trust a { color: var(--teal-mid); }
+
+.hero-link {
+  color: var(--teal-mid);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.75rem 0;
+  display: inline-block;
+}
+.hero-link:hover { color: var(--ink); }
+
+/* Hero kit summary card */
+.hero-kit-price { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--teal-mid); line-height: 1; }
+.hero-kit-list { list-style: none; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.hero-kit-list li { display: flex; gap: 0.6rem; font-size: 0.92rem; color: var(--text); line-height: 1.4; }
+.hero-kit-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+.hero-kit .panel-footer a { color: var(--teal-mid); font-weight: 600; text-decoration: none; }
+.hero-kit .panel-footer a:hover { text-decoration: underline; }
 
 /* Hero visual: threat panel */
 .hero-panel {
@@ -1017,73 +1038,43 @@ body {
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        Freedom from fear
+        From a U.S. Marine Corps veteran and dad
       </div>
       <h1 class="hero-title">
-        Your family's<br>
-        digital life,<br>
-        <em>protected.</em>
+        A dad's plain-English plan to
+        <em>protect your family online.</em>
       </h1>
       <p class="hero-sub">
-        Plain-English cybersecurity for parents. No technical degree required — just practical steps to keep your kids, devices, and home network safe from real threats.
+        The CyberDad Shield Kit walks you through your home network, devices, passwords and scam defenses step by step. Written for parents, not IT departments.
       </p>
       <div class="hero-actions">
-        <a href="#guides" class="btn-primary">Browse Free Guides</a>
-        <a href="#kit" class="btn-ghost">See the CyberDad Shield Kit ($47)</a>
+        <a href="/#kit" class="btn-primary">Get the Shield Kit — $47</a>
+        <a href="#kit-signup" class="hero-link">Not ready? Start with the free family tech safety checklist →</a>
       </div>
       <div class="hero-trust">
-        <span>✓ No jargon</span>
-        <span class="hero-trust-divider">|</span>
-        <span>✓ Written for parents</span>
-        <span class="hero-trust-divider">|</span>
-        <span>✓ Free weekly alerts</span>
+        <span>One-time $47</span>
+        <span class="hero-trust-divider">·</span>
+        <span>PDF download</span>
+        <span class="hero-trust-divider">·</span>
+        <span>30-day money-back guarantee (<a href="/refund-policy/">Refund policy</a>)</span>
       </div>
     </div>
 
-    <!-- Threat Radar Panel -->
-    <div class="hero-panel">
+    <!-- Kit summary card (desktop; hidden at <=960px where the kit section follows the trust strip) -->
+    <div class="hero-panel hero-kit">
       <div class="panel-header">
-        <div>
-          <div class="panel-title">Family Threat Radar</div>
-        </div>
-        <div class="panel-live"><span class="live-dot"></span> Live</div>
+        <div class="panel-title">The CyberDad Shield Kit</div>
+        <div class="hero-kit-price">$47</div>
       </div>
-      <div class="panel-body">
-        <div class="threat-item">
-          <span class="threat-icon">📧</span>
-          <div class="threat-text">
-            <div class="threat-label">Phishing targeting school email accounts</div>
-            <div class="threat-meta">Impersonating school IT departments</div>
-          </div>
-          <span class="threat-badge badge-high">High</span>
-        </div>
-        <div class="threat-item">
-          <span class="threat-icon">🎮</span>
-          <div class="threat-text">
-            <div class="threat-label">Fake gaming reward scams on Roblox</div>
-            <div class="threat-meta">Targeting young players</div>
-          </div>
-          <span class="threat-badge badge-medium">Medium</span>
-        </div>
-        <div class="threat-item">
-          <span class="threat-icon">📱</span>
-          <div class="threat-text">
-            <div class="threat-label">Social media account takeovers rising</div>
-            <div class="threat-meta">Instagram & Snapchat credential theft</div>
-          </div>
-          <span class="threat-badge badge-medium">Medium</span>
-        </div>
-        <div class="threat-item">
-          <span class="threat-icon">📡</span>
-          <div class="threat-text">
-            <div class="threat-label">Home router firmware updates available</div>
-            <div class="threat-meta">Patch your router: check for a firmware update</div>
-          </div>
-          <span class="threat-badge badge-info">Info</span>
-        </div>
-      </div>
-      <div class="panel-footer">Updated daily · Free alerts in your inbox →</div>
+      <ul class="hero-kit-list">
+        <li>Home network security checklist</li>
+        <li>Device setup guides</li>
+        <li>Password vault walkthrough</li>
+        <li>Social media safety checklist</li>
+        <li>Family technology agreement template</li>
+        <li>Emergency response plan for account hacks</li>
+      </ul>
+      <div class="panel-footer"><a href="/#kit">See what's inside and what happens after you buy →</a></div>
     </div>
   </div>
 
