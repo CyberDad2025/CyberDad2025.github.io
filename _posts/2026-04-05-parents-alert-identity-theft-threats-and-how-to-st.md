@@ -4,7 +4,7 @@ title: "Parents Alert: Identity Theft Threats and How to Stop Them"
 date: 2026-04-05 02:32:36 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

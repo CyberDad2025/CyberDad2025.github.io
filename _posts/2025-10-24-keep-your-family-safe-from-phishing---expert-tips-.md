@@ -4,7 +4,7 @@ title: "Keep Your Family Safe from Phishing - Expert Tips That Work"
 date: 2025-10-24 17:16:51 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, phishing, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

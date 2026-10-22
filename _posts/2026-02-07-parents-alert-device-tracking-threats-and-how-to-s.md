@@ -4,7 +4,7 @@ title: "Parents Alert: Device Tracking Threats and How to Stop Them"
 date: 2026-02-07 13:43:48 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, device-tracking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

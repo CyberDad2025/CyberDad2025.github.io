@@ -4,7 +4,7 @@ title: "Child-Safe Smart TV Setup: Step-by-Step Guide"
 date: 2026-01-05 13:40:25 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

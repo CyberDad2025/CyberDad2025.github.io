@@ -4,7 +4,7 @@ title: "Family Guide: Preventing Device Tracking Attacks in Your Home"
 date: 2026-03-16 17:59:39 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, device-tracking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

@@ -4,7 +4,7 @@ title: "How to Protect Kids from Gaming Threats - Complete Parent Guide 2025"
 date: 2025-10-13 13:29:36 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, gaming-threats, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

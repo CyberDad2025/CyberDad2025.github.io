@@ -4,7 +4,7 @@ title: "Data Breaches Safety for Families: 5 Essential Steps Parents Need"
 date: 2026-02-09 14:14:09 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

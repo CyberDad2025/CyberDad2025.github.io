@@ -4,7 +4,7 @@ title: "Why Every Parent Needs Password Manager Security (2025 Update)"
 date: 2026-04-18 14:00:21 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

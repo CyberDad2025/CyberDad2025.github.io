@@ -4,7 +4,7 @@ title: "Family Guide: Preventing Data Breaches Attacks in Your Home"
 date: 2026-02-11 02:26:01 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

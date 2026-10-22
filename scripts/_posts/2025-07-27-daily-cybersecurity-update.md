@@ -10,7 +10,7 @@ excerpt: "Essential cybersecurity guidance to keep your family safe online"
 
 In today's digital age, cybersecurity threats are more prevalent than ever before. From phishing scams to ransomware attacks, families are increasingly at risk of falling victim to cybercriminals. One recent threat that has been making headlines is the rise of ransomware attacks targeting households and families. Imagine waking up one day to find that all of your family photos, important documents, and personal information have been encrypted and held for ransom by malicious hackers. This nightmare scenario is becoming all too common in today's interconnected world.
 
-As a cybersecurity expert, I have seen firsthand the devastating effects that a cyberattack can have on families. That's why I'm here to provide you with 5 actionable tips to help protect your family from cyber threats:
+As a dad, I know how much harm a cyberattack can do to a family. That's why I'm here to provide you with 5 actionable tips to help protect your family from cyber threats:
 
 1. Keep your devices and software up to date: One of the most common ways that cybercriminals gain access to your devices is through outdated software. Make sure to regularly update your operating system, antivirus software, and other applications to patch any vulnerabilities that could be exploited by hackers.
 

@@ -4,7 +4,7 @@ title: "Cyberbullying Safety for Families: 5 Essential Steps Parents Need"
 date: 2025-08-03 01:57:08 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

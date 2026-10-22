@@ -4,7 +4,7 @@ title: "Best VPN Safety Practices for Modern Families"
 date: 2025-07-27 13:48:45 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, gaming-threats, parents-guide]
-excerpt: "Learn how to protect your family from gaming threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from gaming threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 image: /assets/images/cybersecurity-family.jpg
 ---

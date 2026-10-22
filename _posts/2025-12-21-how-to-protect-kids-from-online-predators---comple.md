@@ -4,7 +4,7 @@ title: "How to Protect Kids from Online Predators - Complete Parent Guide 2025"
 date: 2025-12-21 13:27:39 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, online-predators, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

@@ -4,7 +4,7 @@ title: "Keep Your Family Safe from Online Predators - Expert Tips That Work"
 date: 2025-09-19 01:23:36 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, online-predators, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

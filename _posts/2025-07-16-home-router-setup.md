@@ -7,7 +7,7 @@ tags: [home, router, setup]
 author: CyberDad2025
 excerpt: "Complete guide to home router setup for 2025"
 seo_title: "Home Router Setup - Essential Guide 2025"
-seo_description: "Learn about home router setup with practical tips and expert recommendations for better cybersecurity."
+seo_description: "Learn about home router setup with practical tips and clear recommendations for better cybersecurity."
 featured: false
 ---
 

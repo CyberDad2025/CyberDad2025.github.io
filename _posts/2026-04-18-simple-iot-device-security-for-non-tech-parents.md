@@ -4,7 +4,7 @@ title: "Simple IoT Device Security for Non-Tech Parents"
 date: 2026-04-18 17:36:16 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

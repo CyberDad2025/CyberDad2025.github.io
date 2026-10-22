@@ -4,7 +4,7 @@ title: "Child-Safe Home Network Setup: Step-by-Step Guide"
 date: 2025-09-13 13:19:26 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, phishing, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

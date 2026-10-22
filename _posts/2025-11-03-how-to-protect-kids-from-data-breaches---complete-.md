@@ -4,7 +4,7 @@ title: "How to Protect Kids from Data Breaches - Complete Parent Guide 2025"
 date: 2025-11-03 13:30:35 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

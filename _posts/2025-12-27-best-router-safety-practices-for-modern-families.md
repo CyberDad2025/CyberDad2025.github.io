@@ -4,7 +4,7 @@ title: "Best Router Safety Practices for Modern Families"
 date: 2025-12-27 17:17:07 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

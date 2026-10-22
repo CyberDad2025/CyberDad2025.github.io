@@ -4,7 +4,7 @@ title: "Parents Alert: Gaming Threats Threats and How to Stop Them"
 date: 2025-11-22 01:25:31 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, gaming-threats, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

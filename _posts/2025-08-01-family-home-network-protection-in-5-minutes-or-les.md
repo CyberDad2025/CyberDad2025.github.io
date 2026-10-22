@@ -4,7 +4,7 @@ title: "Family Home Network Protection in 5 Minutes or Less"
 date: 2025-08-01 04:22:00 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

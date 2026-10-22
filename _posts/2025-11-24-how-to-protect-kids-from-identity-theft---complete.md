@@ -4,7 +4,7 @@ title: "How to Protect Kids from Identity Theft - Complete Parent Guide 2025"
 date: 2025-11-24 01:44:16 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

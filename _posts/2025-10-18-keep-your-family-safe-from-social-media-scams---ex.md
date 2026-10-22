@@ -4,7 +4,7 @@ title: "Keep Your Family Safe from Social Media Scams - Expert Tips That Work"
 date: 2025-10-18 13:22:13 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

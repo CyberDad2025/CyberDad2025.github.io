@@ -4,7 +4,7 @@ title: "Family Gaming Console Protection in 5 Minutes or Less"
 date: 2025-10-12 17:14:10 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

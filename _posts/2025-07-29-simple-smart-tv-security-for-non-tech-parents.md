@@ -4,7 +4,7 @@ title: "Simple Smart TV Security for Non-Tech Parents"
 date: 2025-07-29 11:41:45 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

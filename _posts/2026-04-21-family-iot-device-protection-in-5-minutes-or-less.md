@@ -4,7 +4,7 @@ title: "Family IoT Device Protection in 5 Minutes or Less"
 date: 2026-04-21 17:58:34 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

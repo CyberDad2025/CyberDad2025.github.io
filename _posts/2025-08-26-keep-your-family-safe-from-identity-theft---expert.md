@@ -4,7 +4,7 @@ title: "Keep Your Family Safe from Identity Theft - Expert Tips That Work"
 date: 2025-08-26 01:27:51 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, identity-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

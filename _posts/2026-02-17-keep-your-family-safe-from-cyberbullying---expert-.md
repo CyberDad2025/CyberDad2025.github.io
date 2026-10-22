@@ -4,7 +4,7 @@ title: "Keep Your Family Safe from Cyberbullying - Expert Tips That Work"
 date: 2026-02-17 17:54:32 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

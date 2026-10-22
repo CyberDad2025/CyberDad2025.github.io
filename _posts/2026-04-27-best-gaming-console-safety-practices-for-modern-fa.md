@@ -4,7 +4,7 @@ title: "Best Gaming Console Safety Practices for Modern Families"
 date: 2026-04-27 18:03:30 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, password-theft, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

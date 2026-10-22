@@ -4,7 +4,7 @@ title: "Why Every Parent Needs Phone Security (2025 Update)"
 date: 2025-10-16 13:30:51 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, data-breaches, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

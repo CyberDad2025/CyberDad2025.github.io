@@ -4,7 +4,7 @@ title: "Family Guide: Preventing WiFi Hacking Attacks in Your Home"
 date: 2025-08-12 01:40:02 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

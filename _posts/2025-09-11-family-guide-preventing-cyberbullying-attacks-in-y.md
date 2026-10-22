@@ -4,7 +4,7 @@ title: "Family Guide: Preventing Cyberbullying Attacks in Your Home"
 date: 2025-09-11 13:23:33 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

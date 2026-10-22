@@ -4,7 +4,7 @@ title: "Why Every Parent Needs Social Media Security (2025 Update)"
 date: 2025-07-28 14:00:25 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
-excerpt: "Learn how to protect your family from wifi hacking with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from wifi hacking with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 image: /assets/images/cybersecurity-family.jpg
 ---

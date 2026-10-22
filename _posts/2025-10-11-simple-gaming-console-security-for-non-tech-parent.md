@@ -4,7 +4,7 @@ title: "Simple Gaming Console Security for Non-Tech Parents"
 date: 2025-10-11 01:20:08 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

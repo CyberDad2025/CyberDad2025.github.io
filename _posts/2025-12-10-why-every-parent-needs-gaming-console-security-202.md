@@ -4,7 +4,7 @@ title: "Why Every Parent Needs Gaming Console Security (2025 Update)"
 date: 2025-12-10 17:22:23 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

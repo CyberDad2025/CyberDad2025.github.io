@@ -4,7 +4,7 @@ title: "How to Protect Kids from Device Tracking - Complete Parent Guide 2025"
 date: 2026-04-05 13:54:22 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, device-tracking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

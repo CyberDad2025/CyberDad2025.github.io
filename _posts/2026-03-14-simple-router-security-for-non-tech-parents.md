@@ -4,7 +4,7 @@ title: "Simple Router Security for Non-Tech Parents"
 date: 2026-03-14 02:03:19 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

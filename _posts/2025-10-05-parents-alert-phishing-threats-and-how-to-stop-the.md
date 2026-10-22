@@ -4,7 +4,7 @@ title: "Parents Alert: Phishing Threats and How to Stop Them"
 date: 2025-10-05 13:20:38 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, phishing, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

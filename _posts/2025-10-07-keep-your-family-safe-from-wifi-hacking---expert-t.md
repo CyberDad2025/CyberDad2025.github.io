@@ -4,7 +4,7 @@ title: "Keep Your Family Safe from WiFi Hacking - Expert Tips That Work"
 date: 2025-10-07 17:16:39 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

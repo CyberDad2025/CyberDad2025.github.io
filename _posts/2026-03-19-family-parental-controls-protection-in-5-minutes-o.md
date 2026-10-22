@@ -4,7 +4,7 @@ title: "Family Parental Controls Protection in 5 Minutes or Less"
 date: 2026-03-19 17:52:11 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, device-tracking, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

@@ -4,7 +4,7 @@ title: "Simple Smart Speaker Security for Non-Tech Parents"
 date: 2025-10-13 17:16:22 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, cyberbullying, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 

@@ -4,7 +4,7 @@ title: "Best Smart TV Safety Practices for Modern Families"
 date: 2025-10-11 17:13:50 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, social-media-scams, parents-guide]
-excerpt: "Learn how to protect your family from cyber threats with our expert cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from cyber threats with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 ---
 
