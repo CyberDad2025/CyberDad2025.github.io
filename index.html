@@ -871,7 +871,7 @@ body {
   margin-bottom: 0.25rem;
 }
 
-.kit-price-sub { font-size: 0.85rem; color: #475569; margin-bottom: 1.75rem; }
+.kit-price-sub { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.75rem; }
 
 .kit-includes {
   list-style: none;
@@ -897,6 +897,30 @@ body {
   border-top: 1px solid rgba(255,255,255,0.07);
   margin: 0 0 1.5rem;
 }
+
+.kit-guarantee a { color: #cbd5e1; text-decoration: underline; }
+.kit-guarantee a:hover { color: #4dd9bf; }
+
+/* What happens after you buy */
+.kit-after {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.03);
+  max-width: 520px;
+}
+.kit-after-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4dd9bf;
+  margin-bottom: 0.75rem;
+}
+.kit-steps { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.kit-steps li { font-size: 0.9rem; color: #cbd5e1; line-height: 1.55; }
+.kit-steps a { color: #4dd9bf; }
 
 /* ── FOOTER ── */
 .cd-footer {
@@ -972,7 +996,7 @@ body {
   .content-sidebar { grid-template-columns: 1fr; }
   .sidebar > .sidebar-card:not(.cdk-signup-card) { display: none; }
   .kit-inner { grid-template-columns: 1fr; gap: 3rem; }
-  .kit-card { display: none; }
+  .kit-card { width: 100%; max-width: 440px; padding: 2rem 1.5rem; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
 }
 
@@ -1083,6 +1107,68 @@ body {
     <div class="trust-item"><span>📧</span> ruel@getcyberdadkit.com</div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════
+     SHIELD KIT CTA
+═══════════════════════════════════════ -->
+<section class="kit-section" id="kit">
+  <div class="kit-inner">
+    <div>
+      <div class="kit-eyebrow">Digital Download · PDF</div>
+      <h2 class="kit-title">
+        The CyberDad<br>
+        <em>Shield Kit</em>
+      </h2>
+      <p class="kit-desc">
+        A complete system to secure your family's digital life — designed for parents with no technical background. Follow the checklist. Protect your family.
+      </p>
+      <ul class="kit-checklist">
+        <li><span class="kit-check">✓</span>Full home network security checklist (Wi-Fi, router, guest network)</li>
+        <li><span class="kit-check">✓</span>Device setup guides for kids' phones, tablets, and laptops</li>
+        <li><span class="kit-check">✓</span>Password vault setup walkthrough — step by step</li>
+        <li><span class="kit-check">✓</span>Social media safety checklist for each platform</li>
+        <li><span class="kit-check">✓</span>Family technology agreement template — ready to print</li>
+        <li><span class="kit-check">✓</span>Emergency response plan for account hacks and breaches</li>
+      </ul>
+      <div class="kit-actions">
+        <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
+          Get the CyberDad Shield Kit — $47 →
+        </a>
+        <span class="kit-guarantee">🔒 30-day money-back guarantee · <a href="/refund-policy/">Refund policy</a></span>
+      </div>
+      <!-- "After you buy" wording is limited to what the live MailerLite order-confirmation template says
+           (saved copy: /workspace/cdk/product/M-D16/qa/oc-live.txt, checked 8:31 PM ET Oct 21, 2026):
+           kit PDF download link in the order confirmation email + 30-day full refund of what you paid. No time promises. -->
+      <div class="kit-after">
+        <div class="kit-after-title">What happens after you buy</div>
+        <ol class="kit-steps">
+          <li>Check out securely for $47.</li>
+          <li>We email your order confirmation with your Shield Kit (PDF) download link.</li>
+          <li>Not right for your family? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> within 30 days of purchase for a full refund of what you paid. See our <a href="/refund-policy/">refund policy</a>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="kit-card">
+      <span class="kit-card-icon">🛡️</span>
+      <div class="kit-price-label">One-time purchase</div>
+      <div class="kit-price">$47</div>
+      <div class="kit-price-sub">Digital download (PDF)</div>
+      <hr class="kit-divider">
+      <ul class="kit-includes">
+        <li>Home network checklist</li>
+        <li>Device setup guides</li>
+        <li>Password vault walkthrough</li>
+        <li>Social media safety kit</li>
+        <li>Family tech agreement template</li>
+        <li>Emergency response plan</li>
+      </ul>
+      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
+        Buy now →
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════
      TOPICS STRIP
@@ -1372,57 +1458,6 @@ body {
 
   </aside>
 </div>
-
-<!-- ═══════════════════════════════════════
-     SHIELD KIT CTA
-═══════════════════════════════════════ -->
-<section class="kit-section" id="kit">
-  <div class="kit-inner">
-    <div>
-      <div class="kit-eyebrow">Digital Download · PDF</div>
-      <h2 class="kit-title">
-        The CyberDad<br>
-        <em>Shield Kit</em>
-      </h2>
-      <p class="kit-desc">
-        A complete system to secure your family's digital life — designed for parents with no technical background. Follow the checklist. Protect your family.
-      </p>
-      <ul class="kit-checklist">
-        <li><span class="kit-check">✓</span>Full home network security checklist (Wi-Fi, router, guest network)</li>
-        <li><span class="kit-check">✓</span>Device setup guides for kids' phones, tablets, and laptops</li>
-        <li><span class="kit-check">✓</span>Password vault setup walkthrough — step by step</li>
-        <li><span class="kit-check">✓</span>Social media safety checklist for each platform</li>
-        <li><span class="kit-check">✓</span>Family technology agreement template — ready to print</li>
-        <li><span class="kit-check">✓</span>Emergency response plan for account hacks and breaches</li>
-      </ul>
-      <div class="kit-actions">
-        <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
-          Get the CyberDad Shield Kit — $47 →
-        </a>
-        <span class="kit-guarantee">🔒 30-day money-back guarantee</span>
-      </div>
-    </div>
-
-    <div class="kit-card">
-      <span class="kit-card-icon">🛡️</span>
-      <div class="kit-price-label">One-time purchase</div>
-      <div class="kit-price">$47</div>
-      <div class="kit-price-sub">Digital download (PDF)</div>
-      <hr class="kit-divider">
-      <ul class="kit-includes">
-        <li>Home network checklist</li>
-        <li>Device setup guides</li>
-        <li>Password vault walkthrough</li>
-        <li>Social media safety kit</li>
-        <li>Family tech agreement template</li>
-        <li>Emergency response plan</li>
-      </ul>
-      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
-        Buy now →
-      </a>
-    </div>
-  </div>
-</section>
 
 <!-- ═══════════════════════════════════════
      FOOTER
