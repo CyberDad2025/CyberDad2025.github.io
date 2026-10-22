@@ -13,7 +13,7 @@ age_appropriate: "For the whole family"
 
 # Home Router Security in 5 Minutes
 
-🔒 **Quick Summary:** Learn how to home router security in 5 minutes with simple steps anyone can follow.
+🔒 **Quick Summary:** Learn home router security with simple steps anyone can follow.
 
 ⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for the whole family**
 
