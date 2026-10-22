@@ -26,4 +26,4 @@ A hacked gaming account can expose your payment info, your child's personal deta
 A little setup now prevents a major headache.
 
 ---
-*Stay protected. Get free weekly family threat alerts at [CyberDadKit](https://cyberdadkit.com).*
+*Stay protected. Get the free family checklist at [CyberDadKit](/#kit-signup).*
