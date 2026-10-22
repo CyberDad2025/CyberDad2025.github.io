@@ -11,7 +11,7 @@ excerpt: "Essential cybersecurity guidance to keep your family safe online"
 As a parent in 2025, protecting your family from cyber threats is more critical than ever. Here's what you need to know:
 
 **Step 4: Advanced Protection**
-Implement these professional-grade security measures:
+Implement these strong security measures:
 
 • Use a VPN for all family internet activity
 • Set up network monitoring for suspicious activity

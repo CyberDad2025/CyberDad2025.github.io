@@ -26,7 +26,7 @@ Teach your children these essential safety rules:
 • Use privacy settings on social media platforms
 
 **Step 4: Advanced Protection**
-Implement these professional-grade security measures:
+Implement these strong security measures:
 
 • Use a VPN for all family internet activity
 • Set up network monitoring for suspicious activity

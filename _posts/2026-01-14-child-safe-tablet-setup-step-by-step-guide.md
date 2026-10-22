@@ -27,7 +27,7 @@ Know what to do if your family experiences a cyber attack:
 • Contact your bank if financial information may be compromised
 
 **Step 4: Advanced Protection**
-Implement these professional-grade security measures:
+Implement these strong security measures:
 
 • Use a VPN for all family internet activity
 • Set up network monitoring for suspicious activity
