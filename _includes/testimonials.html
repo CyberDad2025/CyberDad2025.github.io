@@ -1,0 +1,29 @@
+{%- comment -%} Testimonials slot (P6). Renders nothing until _data/testimonials.yml has real, permissioned quotes.
+    No fake quotes, names or counts. {%- endcomment -%}
+<!-- Testimonials slot: hidden until _data/testimonials.yml has real customer quotes (with permission). -->
+{%- assign cdk_testimonials = site.data.testimonials -%}
+{%- if cdk_testimonials and cdk_testimonials.size > 0 %}
+<section class="cdk-testimonials" aria-label="What parents say">
+  <div class="section-wrap">
+    <div class="section-eyebrow">From parents</div>
+    <h2 class="section-title">What parents say about the Shield Kit</h2>
+    <div class="cdk-testimonials-grid">
+      {%- for t in cdk_testimonials %}
+      <figure class="cdk-testimonial">
+        <blockquote>{{ t.quote | escape }}</blockquote>
+        {%- if t.name or t.detail %}
+        <figcaption>{{ t.name | escape }}{% if t.name and t.detail %} · {% endif %}{{ t.detail | escape }}</figcaption>
+        {%- endif %}
+      </figure>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+<style>
+.cdk-testimonials { padding: 4rem 0; background: var(--mist); }
+.cdk-testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.cdk-testimonial { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 0; }
+.cdk-testimonial blockquote { font-size: 1rem; color: var(--text); line-height: 1.6; margin: 0 0 0.75rem; }
+.cdk-testimonial figcaption { font-size: 0.9rem; color: var(--text-mid); }
+</style>
+{%- endif %}
