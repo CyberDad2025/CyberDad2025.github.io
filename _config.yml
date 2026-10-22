@@ -99,6 +99,27 @@ exclude:
   - .sass-cache
   - .jekyll-cache
   - .github
+  # P17: repo-only files that were being published on the live site (generator/automation code, Netlify function
+  # source, logs, dependency manifests, unused JS). Not deleted from the repo, only left out of the built site.
+  # Netlify functions are bundled from the repo's netlify/ folder, not from the Jekyll output, so they are unaffected.
+  # Reversible: remove these lines.
+  - logs
+  - netlify
+  - scripts/analytics_fixed.py
+  - scripts/content_generator.py
+  - scripts/dedicated_blog_ai.py
+  - scripts/multi_ai_blog_generator.py
+  - scripts/pinterest_traffic_blitz.py
+  - scripts/premium_content_generator.py
+  - main.py
+  - smart_fm_update.py
+  - requirements.txt
+  - package.json
+  - "Add ethical compliance system with GDPR controls"
+  - assets/js/ethical-compliance.js
+  - assets/js/complete-optimizer.js
+  - cyberdad-events.js
+  - cyberdadkit-privacy-policy.zip
 
 # Include files
 include:
