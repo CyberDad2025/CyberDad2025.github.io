@@ -42,4 +42,4 @@ While the NSA GRASSMARLIN vulnerability might sound like a distant threat, it ha
 
 ---
 
-**Want the full system?** [Get the Shield Kit](https://cyberdad2025.github.io/shield-kit) — the complete family cybersecurity playbook in one place.
+**Want the full system?** [Get the Shield Kit](/#kit) — the complete family cybersecurity playbook in one place.
