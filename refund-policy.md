@@ -11,7 +11,7 @@ The CyberDad Shield Kit comes with a 30-day money-back guarantee. If it isn't ri
 
 ## How to ask for a refund
 
-Email the support address shown in your order confirmation: [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Please send it from the email address you ordered with, or include that address in your message, so we can find your order.
+Email the support address shown in your order confirmation: [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Please send it from the email address you ordered with, or include that address in your message, so we can find your order. Mailing address (no returns needed; the kit is digital): CyberDadKit, PO Box 940061, Maitland, FL 32794, United States of America.
 
 ## Where your refund goes
 
