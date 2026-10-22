@@ -52,4 +52,4 @@ Here are the essential steps every family needs to know:
 
 Start with just one security improvement today. Your family's digital safety is worth the effort!
 
-**Need help?** Join thousands of families getting expert cybersecurity guidance designed specifically for parents and kids.
+**Need help?** Join other families getting plain-English cybersecurity guidance designed specifically for parents and kids.
