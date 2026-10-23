@@ -1,45 +1,39 @@
 ---
-title: "NSA GRASSMARLIN: A Hidden Risk for Your Family"
+title: "The NSA GRASSMARLIN Advisory: What It Means for Families"
 date: 2026-04-29
 last_modified_at: 2026-04-29
 author: Ruel Miller
 author_slug: ruel-miller
 categories: [Cybersecurity, Privacy]
 tags: [family safety, privacy, parents]
-image: /assets/pins/nsa-grassmarlin-a-hidden-risk-for-your-family.png
-description: "If you’ve ever sent an innocent text, think twice—your info could be at risk."
-reading_time: 1
+description: "CISA flagged a flaw in a retired NSA tool. Here is who it actually affects, and three home-network habits worth keeping."
 # M-P21 keep-list: opt in to indexing (posts default to noindex + no sitemap in _config.yml)
 noindex: false
 sitemap: true
 ---
 
-![NSA GRASSMARLIN: A Hidden Risk for Your Family](https://cyberdad2025.github.io/assets/pins/nsa-grassmarlin-a-hidden-risk-for-your-family.png)
+CISA, the U.S. Cybersecurity and Infrastructure Security Agency, published an advisory on April 28, 2026 about a flaw in NSA GRASSMARLIN. The name sounds alarming, so here is what it actually covers and what, if anything, families need to do.
 
-If you’ve ever sent an innocent text, think twice—your info could be at risk.
+**What the advisory covers.** GRASSMARLIN is a free tool the NSA released years ago for professionals who map industrial control system networks. The flaw is in how the tool reads XML files: crafted session data could expose sensitive information on the computer running it. CISA rates it medium severity, and someone would need access to that computer for it to be used. The NSA says the project reached end of life in 2017 and will not be patched. CISA says it knows of no public exploitation targeting this flaw.
 
-I recently stumbled upon a cybersecurity alert about NSA GRASSMARLIN that made me pause. It’s not just a fancy tech term; it exposes sensitive information through a flaw in how it processes XML data. In the Security Operations Center (SOC) where I worked, we’d see this kind of vulnerability exploited by attackers looking for weaknesses to grab valuable data. The same principle applies to our home networks, where a similar vulnerability can put your family at risk.
+**Who it affects.** People who installed and still use GRASSMARLIN, mostly network and security teams in industrial settings. It is not part of phones, tablets, game consoles, smart TVs or home routers. If you have never installed it, this advisory does not affect your household.
 
-Imagine your child’s device is connected to the Wi-Fi while they’re innocently browsing a cartoon site. If that device is compromised, it could allow attackers to access personal information—like your location or your child’s browsing history—just like how it happens in enterprise environments. It’s alarming, but we can tackle this together.
+**What families can take from it.** The advisory is a good reminder of three habits that do protect a home network:
 
-Here are **three concrete actions you can take** to protect your family from potential exploitation:
+1. **Remove software you no longer use**, especially software that no longer gets updates. If something is retired, uninstall it.
 
-1. **Update your devices**: Check all devices connected to your home network for updates. Most manufacturers release patches for vulnerabilities, and applying them can significantly reduce your risk. 
+2. **Keep devices updated.** Turn on automatic updates for phones, computers and your router where possible.
 
-2. **Limit exposure**: Ensure that devices—like your smart TV or home assistants—are not overly exposed to the internet. Use your router’s settings to limit access and keep these devices on a separate network when possible.
-
-3. **Establish strong passwords**: Use complex and unique passwords for all devices, including your Wi-Fi router. A strong password can act like an additional lock on your front door, keeping unwanted visitors out.
-
-While the NSA GRASSMARLIN vulnerability might sound like a distant threat, it has real implications for our everyday lives. Taking these steps not only secures your family's information, but also gives you peace of mind. You’ve got this!
+3. **Be careful with files and links from strangers.** CISA's own advice in this advisory includes not clicking links or opening attachments in unsolicited email.
 
 ---
 
-**Source:** This post is based on a public advisory from [CISA (Cybersecurity and Infrastructure Security Agency)](https://www.cisa.gov/news-events/ics-advisories/icsa-26-118-01) published recent advisory. CISA is the U.S. federal agency responsible for cybersecurity threat intelligence.
+**Source:** This post is based on a public advisory from [CISA (Cybersecurity and Infrastructure Security Agency)](https://www.cisa.gov/news-events/ics-advisories/icsa-26-118-01), released April 28, 2026. CISA is the U.S. federal agency responsible for cybersecurity threat intelligence.
 
 ---
 
-**Written by Ruel Miller** — U.S. Marine Corps veteran, CompTIA Security+ · Founder, CyberDadKit. Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online. Reach Ruel directly at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Last reviewed: 2026-04-29.
+**Written by Ruel Miller** — U.S. Marine Corps veteran, CompTIA Security+, past hands-on SOC experience · Founder, CyberDadKit. Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with past hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online. Reach Ruel directly at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Last reviewed: 2026-10-23.
 
 ---
 
-**Want the full system?** [Get the Shield Kit](/#kit) — the complete family cybersecurity playbook in one place.
+**Want a step-by-step plan for the whole family?** [See the CyberDad Shield Kit ($47)](/#kit).
