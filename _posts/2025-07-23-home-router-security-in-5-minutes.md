@@ -77,6 +77,6 @@ Stay safe and stay connected. Until next time, this is CyberDad signing off, rem
 - [Smart Home Security Checklist](/2025/08/10/easy-wifi-protection.html) 
 - [Kids Online Safety Guide](/2026/04/28/your-kids-gaming-account-is-a-target-heres-how-to-lock-it-do.html)
 
-*Drafted with AI assistance.*
-
 *Stay safe, CyberDad Team* 🔒
+
+*Drafted with AI assistance.*
