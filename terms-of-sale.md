@@ -14,13 +14,13 @@ Last updated: October 22, 2026
 
 You receive the CyberDad Shield Kit (a 51-page PDF plus the 1-page 3 Fast Wins PDF) as two download links by email.
 
-## 30-Day Money-Back Guarantee
+## 30-Day Full Refund
 
-- **What you receive:** the CyberDad Shield Kit is delivered digitally as two PDFs: the full kit (51 pages: 7 Quick-Action Modules, a 30-Day Action Plan, sources appendix and glossary) and a separate 1-page **3 Fast Wins** quick-start sheet. The guarantee covers the purchase as a whole.
-- The CyberDad Shield Kit comes with a **30-day money-back guarantee**. If it isn't right for your family, for any reason, you may request a **full refund of what you paid, within 30 days of your purchase date**.
+- **What you receive:** the CyberDad Shield Kit is delivered digitally as two PDFs: the full kit (51 pages: 7 Quick-Action Modules, a 30-Day Action Plan, sources appendix and glossary) and a separate 1-page **3 Fast Wins** quick-start sheet. The refund covers the purchase as a whole.
+- The CyberDad Shield Kit comes with a **30-day full refund**. If it isn't right for your family, for any reason, you may request a **full refund of what you paid, within 30 days of your purchase date**.
 - **To request a refund**, email **ruel@getcyberdadkit.com** with the email address used at checkout and your name as it appears on the order. A reason is welcome but not required.
 - Refunds are made to your **original payment method**; once a refund is issued, it may take some time for your bank to show it.
-- The guarantee is limited to **one refund per customer per product**. Requests made more than 30 days after purchase are reviewed case by case.
+- There is **one refund per customer per product**. Requests made more than 30 days after purchase are reviewed case by case.
 - Because the product is a digital download, once you've been refunded please delete your copy and do not share it.
 - **Problems with a file** (it won't download or open, or seems incomplete) are fixed free of charge: email ruel@getcyberdadkit.com and we'll repair the problem or send a fresh copy.
 
