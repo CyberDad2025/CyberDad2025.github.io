@@ -8,7 +8,7 @@ permalink: /refund-policy/
 
 # Refund policy
 
-The CyberDad Shield Kit comes with a 30-day money-back guarantee. If it isn't right for your family, you can ask for a full refund of what you paid within 30 days of your purchase.
+The CyberDad Shield Kit comes with a 30-day full refund. If it isn't right for your family, you can ask for a full refund of what you paid within 30 days of your purchase.
 
 ## How to ask for a refund
 
