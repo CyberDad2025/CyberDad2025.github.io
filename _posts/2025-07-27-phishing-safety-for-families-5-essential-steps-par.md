@@ -32,7 +32,7 @@ Take these actions right now to secure your family:
 
 **🛡️ Professional Recommendations:**
 • [Norton Family Premier →](https://www.dpbolvw.net/click-101495044-13287827) - Essential parental controls (30-day trial)
-• [Norton VPN →](https://www.tkqlhce.com/click-101495044-14039214) - Complete privacy protection (money-back guarantee)
+• [Norton VPN →](https://www.tkqlhce.com/click-101495044-14039214) - Complete privacy protection
 
 **Emergency Support:** If you suspect a security breach, contact us immediately at help@cyberdad2025.com
 
