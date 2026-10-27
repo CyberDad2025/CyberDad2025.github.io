@@ -7,11 +7,16 @@ layout: default
 .cdk-post-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; max-width: 780px; margin: 0 auto 1rem; padding: 0.25rem 1rem; border-bottom: 1px solid #e2e8f0; font-family: inherit; }
 .cdk-post-bar a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
 .cdk-post-bar .cdk-post-brand { font-weight: 700; color: #0e1117; font-size: 1.1rem; }
-.cdk-post-bar .cdk-post-kit { padding: 0 1rem; border: 1.5px solid #0a9e84; border-radius: 8px; color: #0c8a73; font-weight: 600; }
+.cdk-post-bar .cdk-post-kit { padding: 0 1rem; border: 1.5px solid #0a9e84; border-radius: 8px; color: #0c8a73; font-weight: 600; white-space: nowrap; }
 .post-cta .cdk-cta-note { margin: 1rem 0 0; font-size: 0.9rem; }
 .post-header.cdk-meta-only { background: none; color: #4a5568; padding: 0; margin: 0 0 0.75rem; box-shadow: none; }
 .post-header.cdk-meta-only .post-meta { margin: 0; gap: 0.5rem; font-size: 0.9rem; flex-direction: row; }
 .post-cta .cdk-cta-note a { color: #fff; text-decoration: underline; }
+@media (max-width: 340px) {
+  .cdk-post-bar { padding: 0.25rem 0.6rem; gap: 0.5rem; }
+  .cdk-post-bar .cdk-post-brand { font-size: 1.05rem; }
+  .cdk-post-bar .cdk-post-kit { padding: 0 0.55rem; font-size: 0.82rem; }
+}
 </style>
 <div class="cdk-post-bar">
   <a href="/" class="cdk-post-brand">CyberDadKit</a>
