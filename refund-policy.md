@@ -22,4 +22,6 @@ Your refund goes back to your original payment method.
 
 The CyberDad Shield Kit is a digital download (PDF).
 
+[← Back to the CyberDad Shield Kit]({{ '/#kit' | relative_url }})
+
 [← Back to CyberDadKit](/)
