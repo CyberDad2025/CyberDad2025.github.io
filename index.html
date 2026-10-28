@@ -4,6 +4,13 @@ no_ads: true
 cd_footer: true
 title: CyberDadKit — Family Cybersecurity, Simplified
 description: Practical cybersecurity for families. No jargon. No fear tactics. Just real protection for your kids, devices, and home network.
+# P35: social share image (og:image / twitter:image only, not used in the page): Product's kit cover export
+# (cdk-shield-kit-cover-1200.png) scaled uniformly and pillarboxed on --teal-light; evidence/p35/scripts/make_og.py
+image:
+  path: /assets/img/home-trust/cdk-shield-kit-og-cover-1200x630.png
+  width: 1200
+  height: 630
+  alt: "Cover of the CyberDad Shield Kit PDF, version 3.5, October 2026, by Ruel Miller of CyberDadKit, with an orange shield and checkmark on a navy background."
 ---
 
 <!-- Schema Markup -->
@@ -244,9 +251,6 @@ body {
 
 /* Hero kit summary card */
 .hero-kit-price { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--teal-mid); line-height: 1; }
-.hero-kit-list { list-style: none; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
-.hero-kit-list li { display: flex; gap: 0.6rem; font-size: 0.92rem; color: var(--text); line-height: 1.4; }
-.hero-kit-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
 .hero-kit .panel-footer a { color: var(--teal-mid); font-weight: 600; text-decoration: none; }
 .hero-kit .panel-footer a:hover { text-decoration: underline; }
 
@@ -365,88 +369,33 @@ body {
 }
 .section-link:hover { gap: 0.55rem; }
 
-/* ── GUIDES SECTION ── */
-.guides-section { padding: 5rem 1.5rem; }
-
-.guides-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.guide-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-}
-
-.guide-card:hover {
-  border-color: rgba(10,158,132,0.35);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-}
-
-.guide-thumb {
-  height: 148px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.75rem;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-
-.guide-thumb-kids    { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
-.guide-thumb-devices { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
-.guide-thumb-pass    { background: linear-gradient(135deg, #fefce8, #fef9c3); }
-.guide-thumb-scams   { background: linear-gradient(135deg, #fff7ed, #fed7aa); }
-.guide-thumb-wifi    { background: linear-gradient(135deg, #fdf4ff, #f3e8ff); }
-.guide-thumb-rules   { background: linear-gradient(135deg, #f0fdfa, #ccfbf1); }
-
-.guide-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-
-.guide-cat {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 0.6rem;
-}
-
-.guide-title {
-  font-family: var(--font-head);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.35;
-  margin-bottom: 0.7rem;
-}
-
-.guide-excerpt {
-  color: var(--text-soft);
-  font-size: 0.875rem;
-  line-height: 1.6;
-  flex: 1;
-  margin-bottom: 1.25rem;
-}
-
-.guide-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.78rem;
-}
-
-.guide-date { color: var(--text-soft); }
-.guide-cta { color: var(--teal); font-weight: 600; font-size: 0.85rem; }
+/* ── P35: kit cover + page previews (images: Product M-D29 exports of kit v3.5, product/exports/home-trust) ── */
+.hero-cover { display: block; padding: 1.5rem 1.5rem 0.5rem; text-align: center; }
+.hero-cover picture, .preview-card picture { display: block; }
+.hero-cover img, .kit-cover, .preview-card img { display: block; height: auto; max-width: 100%; }
+.hero-cover img { width: 260px; margin: 0 auto; border-radius: 12px; box-shadow: var(--shadow-lg); }
+.hero-cover-meta { padding: 0.5rem 1.5rem 1.25rem; text-align: center; font-size: 0.9rem; color: var(--text-mid); }
+.kit-cover { width: 150px; margin: 0 auto 1.25rem; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+.preview-section { padding: 5rem 1.5rem; background: var(--mist); border-bottom: 1px solid var(--border); }
+.preview-intro { color: var(--text-mid); max-width: 640px; margin-top: 0.5rem; }
+.preview-grid { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.preview-card { margin: 0; height: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+.preview-card img { width: 100%; aspect-ratio: 1200 / 1553; background: var(--cloud); border-bottom: 1px solid var(--border); }
+.preview-card figcaption { padding: 0.9rem 1.1rem; font-size: 0.9rem; color: var(--text); line-height: 1.45; }
+.preview-card figcaption strong { display: block; font-family: var(--font-head); font-size: 1rem; color: var(--ink); }
+.preview-note { margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-mid); }
+.preview-note a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.faq-section { padding: 5rem 1.5rem; }
+.faq-list { max-width: 820px; display: flex; flex-direction: column; gap: 0.75rem; }
+.faq-item { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--white); }
+.faq-item summary { cursor: pointer; list-style: none; padding: 1rem 3rem 1rem 1.25rem; position: relative; font-weight: 600; color: var(--ink); min-height: 44px; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--teal-mid); font-size: 1.25rem; font-weight: 700; }
+.faq-item[open] summary::after { content: '\2212'; }
+.faq-item summary:focus-visible { outline: 2px solid var(--teal-mid); outline-offset: 2px; }
+.faq-answer { padding: 0 1.25rem 1.1rem; color: var(--text-mid); font-size: 0.95rem; line-height: 1.65; }
+.faq-answer p + p { margin-top: 0.6rem; }
+.faq-answer a { color: var(--teal-mid); }
 
 /* ── MAIN + SIDEBAR ── */
 .content-sidebar {
@@ -686,7 +635,6 @@ body {
   backdrop-filter: blur(8px);
 }
 
-.kit-card-icon { font-size: 3.5rem; margin-bottom: 1.25rem; display: block; }
 .kit-for { font-size: 0.95rem; line-height: 1.55; color: #cbd5e1; margin: 0 0 1rem; }
 
 .kit-price-label {
@@ -709,25 +657,6 @@ body {
 }
 
 .kit-price-sub { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.75rem; }
-
-.kit-includes {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  text-align: left;
-  margin-bottom: 2rem;
-}
-
-.kit-includes li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  font-size: 0.83rem;
-  color: #94a3b8;
-}
-
-.kit-includes li::before { content: '→'; color: #4dd9bf; font-weight: 700; flex-shrink: 0; }
 
 .kit-divider {
   border: none;
@@ -834,19 +763,20 @@ body {
 @media (max-width: 960px) {
   .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
   .hero-panel { display: none; }
-  .guides-grid { grid-template-columns: repeat(2, 1fr); }
   .content-sidebar { grid-template-columns: 1fr; }
+  .preview-grid { grid-template-columns: repeat(2, 1fr); }
   .kit-inner { grid-template-columns: 1fr; gap: 3rem; }
   .kit-card { width: 100%; max-width: 440px; padding: 2rem 1.5rem; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 620px) {
-  .guides-grid { grid-template-columns: 1fr; }
   .trust-inner { gap: 0.75rem 1.5rem; justify-content: flex-start; }
   .trust-founder { text-align: left; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .footer-inner { grid-template-columns: 1fr; }
+  .preview-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+  .preview-section, .faq-section { padding: 3.5rem 0; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 </style>
@@ -863,12 +793,15 @@ body {
         From a U.S. Marine Corps veteran and dad
       </div>
       <!-- Hero copy: M-D17 Option C (Product draft, /workspace/cdk/product/M-D17/COPY.md); publishing needs Ruel's approval. -->
+      <!-- P35 headline (CoS revision, Oct 27 8:27 PM ET): sells the $47 Shield Kit (accounts, passwords, a calm family plan);
+           the First Phone kit has its own /first-phone/ waitlist. CoS example "...in one weekend" adapted with no time claim.
+           Previous (generic) line, kept for an easy swap or variant: "Know exactly what to tap to keep your family <em>safer online.</em>" -->
       <h1 class="hero-title">
-        Know exactly what to tap to keep your family
-        <em>safer online.</em>
+        Lock down your family's accounts
+        <em>with a calm, step-by-step plan.</em>
       </h1>
       <p class="hero-sub">
-        Seven step-by-step modules covering passwords, Wi-Fi, scams, social media and kids' devices, plus printable templates and an emergency plan.
+        The CyberDad Shield Kit walks you through passwords, two-step verification, spotting scams, your home Wi-Fi and the devices in your house, in plain English, with printable templates and a plan for when something goes wrong.
       </p>
       <div class="hero-actions">
         <a href="/#kit" class="btn-primary">Get the CyberDad Shield Kit, $47</a>
@@ -889,15 +822,10 @@ body {
         <div class="panel-title">The CyberDad Shield Kit</div>
         <div class="hero-kit-price">$47</div>
       </div>
-      <ul class="hero-kit-list">
-        <li>Home network security checklist</li>
-        <li>Device setup guides</li>
-        <li>Password vault walkthrough</li>
-        <li>Social media safety checklist</li>
-        <li>Family technology agreement template</li>
-        <li>Emergency response plan for account hacks</li>
-      </ul>
-      <div class="panel-footer"><a href="/#kit">See what's inside and what happens after you buy →</a></div>
+      <!-- P35: kit cover (Product M-D29 export, kit v3.5 p1) beside the $47 price; replaces the repeated module list. Not lazy: above the fold. -->
+      <a href="#inside" class="hero-cover"><picture><source srcset="/assets/img/home-trust/cdk-shield-kit-cover-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-cover-1200.png" width="1200" height="1616" decoding="async" alt="Cover of the CyberDad Shield Kit PDF, version 3.5, October 2026, by Ruel Miller of CyberDadKit, with an orange shield and checkmark on a navy background."></picture></a>
+      <div class="hero-cover-meta">51-page PDF · 7 modules · 30-Day Action Plan</div>
+      <div class="panel-footer"><a href="/#kit">See the price and what happens after you buy →</a></div>
     </div>
   </div>
 
@@ -968,21 +896,11 @@ body {
     <div class="kit-card">
       <!-- Who it's for: M-D17 section 4 (Product draft); publishing needs Ruel's approval. -->
       <p class="kit-for">For parents who want their family's devices set up safely but don't know where to start. No tech background needed.</p>
-      <span class="kit-card-icon">🛡️</span>
+      <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-cover-1200.webp" type="image/webp"><img class="kit-cover" src="/assets/img/home-trust/cdk-shield-kit-cover-1200.png" width="1200" height="1616" loading="lazy" decoding="async" alt="Cover of the CyberDad Shield Kit PDF, version 3.5, October 2026, by Ruel Miller of CyberDadKit, with an orange shield and checkmark on a navy background."></picture>
       <div class="kit-price-label">One-time purchase</div>
       <div class="kit-price">$47</div>
       <div class="kit-price-sub">Digital download (PDF) · no subscription</div>
       <hr class="kit-divider">
-      <ul class="kit-includes">
-        <li>Device setup guides</li>
-        <li>Password vault walkthrough</li>
-        <li>Scam &amp; phishing guide</li>
-        <li>Home network checklist</li>
-        <li>Family Tech Agreement</li>
-        <li>Social media checklists</li>
-        <li>Emergency plan</li>
-        <li>30-Day Action Plan</li>
-      </ul>
       <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
         Get the CyberDad Shield Kit, $47 →
       </a>
@@ -996,99 +914,106 @@ body {
 {% include testimonials.html %}
 
 <!-- ═══════════════════════════════════════
-     GUIDES GRID
+     LOOK INSIDE (P35). Replaces the auto-generated "Latest guides" grid: its 6 newest-post cards repeated
+     2 titles 5 times, and none of the 6 titles matched its URL (evidence/p35/REPORT.md).
+     Images: Product M-D29 exports of real kit v3.5 pages (product/exports/home-trust, MANIFEST.md; alt text and captions
+     from the manifest). PNG + WebP, 1200x1553. p23 and p12 dropped in the CoS revision (p12 shows example amounts/numbers; evidence/p35/REPORT.md).
 ═══════════════════════════════════════ -->
-<section class="guides-section" id="guides">
+<section class="preview-section" id="inside" aria-labelledby="inside-title">
   <div class="section-wrap">
     <div class="section-head">
       <div>
-        <div class="section-eyebrow">Latest guides</div>
-        <h2 class="section-title">Practical protection for your family</h2>
+        <div class="section-eyebrow">Look inside</div>
+        <h2 class="section-title" id="inside-title">Real pages from the CyberDad Shield Kit</h2>
+        <p class="preview-intro">Four of the kit's 51 pages, shown smaller than actual size.</p>
       </div>
     </div>
+    <ul class="preview-grid">
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p31-incident-playbooks-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p31-incident-playbooks-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page from the Emergency Tech Plan showing Playbook 1 email account hacked, Playbook 2 social media account hacked, and Playbook 3 lost or stolen phone, as checkbox steps."></picture>
+        <figcaption><strong>Module 6: Emergency Tech Plan playbooks</strong>Module 6: step-by-step playbooks for a hacked account or a lost phone.</figcaption>
+      </figure></li>
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p16-wifi-router-checklist-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p16-wifi-router-checklist-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page titled &quot;WiFi Security Checklist&quot; with checkbox items for router encryption, Wi-Fi passphrase, network name, guest network and family DNS filtering."></picture>
+        <figcaption><strong>Module 3: WiFi Security Checklist</strong>Module 3: home Wi-Fi and router settings, in plain English.</figcaption>
+      </figure></li>
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p19-family-tech-agreement-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p19-family-tech-agreement-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page titled &quot;Our Family Tech Agreement&quot;, a printable fill-in table of device times, overnight charging, apps, games, AI chatbots and spending rules."></picture>
+        <figcaption><strong>Module 4: Our Family Tech Agreement</strong>Module 4: a printable family tech agreement you fill in together.</figcaption>
+      </figure></li>
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p39-iphone-ipad-checklist-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p39-iphone-ipad-checklist-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page titled &quot;Child's iPhone or iPad checklist&quot;, a checkbox list of Screen Time, Ask to Buy, website filter, Communication Safety and Find My settings."></picture>
+        <figcaption><strong>Module 7: Child's iPhone or iPad checklist</strong>Module 7: a checkbox list for setting up a child's iPhone or iPad.</figcaption>
+      </figure></li>
+    </ul>
+    <p class="preview-note"><a href="/assets/img/home-trust/cdk-shield-kit-p31-incident-playbooks-1200.png">See a sample page at full size</a> (the hacked-account and lost-phone playbooks). Want the whole kit? <a href="/#kit">See the price and what happens after you buy</a>.</p>
+  </div>
+</section>
 
-    <div class="guides-grid">
-      {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
-      {% for post in sorted_posts limit: 6 %}
-      <a href="{{ post.url }}" class="guide-card">
-        <div class="guide-thumb guide-thumb-{{ forloop.index | modulo: 6 | plus: 1 }}">
-          {% case post.categories | first %}
-            {% when 'Social Media' %}📲
-            {% when 'Devices' %}💻
-            {% when 'Passwords' %}🔑
-            {% when 'Scams' %}🎣
-            {% when 'WiFi' %}📡
-            {% else %}🛡️
-          {% endcase %}
+<!-- ═══════════════════════════════════════
+     FAQ (P35). Answers use only facts already on this site, the refund policy, the terms of sale and the kit itself
+     (age add-ons: kit v3.5 Family Tech Agreement). No stats, no time promises.
+═══════════════════════════════════════ -->
+<section class="faq-section" id="faq" aria-labelledby="faq-title">
+  <div class="section-wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Questions</div>
+        <h2 class="section-title" id="faq-title">Frequently asked questions</h2>
+      </div>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Which devices does it cover?</summary>
+        <div class="faq-answer">
+          <p>Kids' iPhones, iPads, Android phones, Windows PCs, Macs and game consoles, plus your home router, Wi-Fi and guest network.</p>
+          <p>The social media checklists cover Instagram, Facebook, TikTok, Snapchat, YouTube, Roblox and Discord.</p>
         </div>
-        <div class="guide-body">
-          <div class="guide-cat">{{ post.categories | first | default: "Family Security" }}</div>
-          <h3 class="guide-title">{{ post.title }}</h3>
-          <p class="guide-excerpt">{{ post.excerpt | strip_html | truncatewords: 24 }}</p>
-          <div class="guide-footer">
-            <span class="guide-date">{{ post.date | date: "%b %d, %Y" }}</span>
-            <span class="guide-cta">Read guide →</span>
-          </div>
+      </details>
+      <details class="faq-item">
+        <summary>Who is it for?</summary>
+        <div class="faq-answer">
+          <p>Parents who want their family's accounts and devices set up safely but don't know where to start. The printable Family Tech Agreement includes add-ons for ages 5 to 8, 9 to 12 and 13 to 17.</p>
         </div>
-      </a>
-      {% endfor %}
-
-      {% if site.posts.size == 0 %}
-      <a href="#" class="guide-card">
-        <div class="guide-thumb guide-thumb-kids">📲</div>
-        <div class="guide-body">
-          <div class="guide-cat">Social Media Safety</div>
-          <h3 class="guide-title">How to set up Instagram privacy controls for your teen (2025)</h3>
-          <p class="guide-excerpt">A step-by-step walkthrough of every setting that matters — covering who can see posts, who can contact your child, and how to spot warning signs.</p>
-          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+      </details>
+      <details class="faq-item">
+        <summary>I'm not techy. Can I follow it?</summary>
+        <div class="faq-answer">
+          <p>It's built for parents with no technical background. The steps are in plain English and tell you which settings to change, one at a time.</p>
+          <p>Questions before you buy? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
         </div>
-      </a>
-      <a href="#" class="guide-card">
-        <div class="guide-thumb guide-thumb-pass">🔑</div>
-        <div class="guide-body">
-          <div class="guide-cat">Passwords & Accounts</div>
-          <h3 class="guide-title">The family password manager guide: set it up step by step</h3>
-          <p class="guide-excerpt">Stop reusing passwords. This beginner-friendly guide walks you through choosing and setting up a password manager the whole family can use safely.</p>
-          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+      </details>
+      <details class="faq-item">
+        <summary>How current is it?</summary>
+        <div class="faq-answer">
+          <p>The current edition of the kit was updated in October 2026.</p>
         </div>
-      </a>
-      <a href="#" class="guide-card">
-        <div class="guide-thumb guide-thumb-wifi">📡</div>
-        <div class="guide-body">
-          <div class="guide-cat">Wi-Fi & Home Network</div>
-          <h3 class="guide-title">Is your home router a security risk? Here's how to find out</h3>
-          <p class="guide-excerpt">Router settings are easy to forget after setup. Here are the five things you should check today to close the most common gaps.</p>
-          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+      </details>
+      <details class="faq-item">
+        <summary>What do I get, and how is it delivered?</summary>
+        <div class="faq-answer">
+          <p>Two PDFs: the 51-page CyberDad Shield Kit (7 Quick-Action Modules, a 30-Day Action Plan, a sources appendix and a glossary) and the 1-page 3 Fast Wins quick-start sheet.</p>
+          <p>After checkout, your order confirmation email has download links for both. Can't find it? Check your Spam/Junk folder and, in Gmail, the Promotions tab, or email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
         </div>
-      </a>
-      <a href="#" class="guide-card">
-        <div class="guide-thumb guide-thumb-scams">🎣</div>
-        <div class="guide-body">
-          <div class="guide-cat">Scams & Phishing</div>
-          <h3 class="guide-title">The scam scripts targeting kids right now (and how to talk about them)</h3>
-          <p class="guide-excerpt">Gaming rewards, fake giveaways, impersonated friends — these are the exact tactics scammers use on children and how to inoculate your family against them.</p>
-          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+      </details>
+      <details class="faq-item">
+        <summary>How much is it? Is it a subscription?</summary>
+        <div class="faq-answer">
+          <p>$47, one time. There's no subscription.</p>
         </div>
-      </a>
-      <a href="#" class="guide-card">
-        <div class="guide-thumb guide-thumb-devices">💻</div>
-        <div class="guide-body">
-          <div class="guide-cat">Device Security</div>
-          <h3 class="guide-title">Setting up your kid's first phone: the secure way</h3>
-          <p class="guide-excerpt">Before handing over a new device, run through this checklist. Covers screen time, parental controls, location sharing, and app permissions.</p>
-          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+      </details>
+      <details class="faq-item">
+        <summary>What if it isn't right for my family?</summary>
+        <div class="faq-answer">
+          <p>The kit comes with a 30-day full refund. Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> within 30 days of your purchase for a full refund of what you paid. A reason is welcome but not required. See the <a href="/refund-policy/">Refund policy</a>.</p>
         </div>
-      </a>
-      <a href="#" class="guide-card">
-        <div class="guide-thumb guide-thumb-rules">📋</div>
-        <div class="guide-body">
-          <div class="guide-cat">Family Tech Rules</div>
-          <h3 class="guide-title">How to write a family technology agreement (free template)</h3>
-          <p class="guide-excerpt">A living document your family actually uses — covering screen time, content boundaries, device-free zones, and what happens when rules are broken.</p>
-          <div class="guide-footer"><span class="guide-date">Coming soon</span><span class="guide-cta">Coming soon</span></div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I share it with friends?</summary>
+        <div class="faq-answer">
+          <p>The kit is for personal and family use. Please don't resell, share or distribute it without written permission. See the <a href="/terms-of-sale/">Terms of Sale</a>.</p>
         </div>
-      </a>
-      {% endif %}
+      </details>
     </div>
   </div>
 </section>
@@ -1156,7 +1081,8 @@ body {
     <div>
       <div class="footer-col-title">Start here</div>
       <ul class="footer-links">
-        <li><a href="#guides">Latest guides</a></li>
+        <li><a href="#inside">Look inside the kit</a></li>
+        <li><a href="#faq">FAQ</a></li>
         <li><a href="#kit-signup">Free family tech safety checklist</a></li>
         <li><a href="/#kit">CyberDad Shield Kit — $47</a></li>
       </ul>
@@ -1175,7 +1101,7 @@ body {
   </div>
 
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 CyberDadKit. All rights reserved.</div>
+    <div class="footer-copy">© 2026 CyberDadKit. All rights reserved.</div>
     <div class="footer-legal">
       <a href="/">Home</a>
       <a href="/about/">About</a>
