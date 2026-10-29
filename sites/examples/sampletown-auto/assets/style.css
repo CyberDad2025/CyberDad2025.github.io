@@ -33,7 +33,7 @@ section{padding:2.8rem 0}.alt{background:#f6f6f3}h2{font-size:1.6rem;margin:0 0 
 .btn-call{white-space:nowrap}.brand img{display:block;height:40px;width:auto}
 @media(min-width:760px){.callbar{display:none}body{padding-bottom:0}.hero{display:grid}.hero-txt{padding:2.4rem 1.1rem 3rem}}
 .btn-q{padding:.45rem .8rem;background:#fff;color:var(--brand);white-space:nowrap}
-.bar .btn{font-size:.95rem}
+.bar .btn{font-size:.95rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
 @media(max-width:519px){.btn-call .num{display:none}.bar{gap:.5rem}.brand{font-size:.95rem}}
 
 .demo-banner{margin:0;padding:.5rem 1rem;background:#fff3cd;color:#3d2c00;border-bottom:2px solid #8a6d00;text-align:center;font-size:.95rem}
