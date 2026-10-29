@@ -11,13 +11,13 @@ a{color:var(--brand)}
 .wrap{max-width:1140px;margin:0 auto;padding:0 1.15rem}.narrow{max-width:780px}
 .top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:60px}
-.brand{text-decoration:none;color:var(--brand-d);font-weight:800;line-height:1.15}
+.brand{display:inline-block;min-height:44px;padding:.3rem 0;box-sizing:border-box;text-decoration:none;color:var(--brand-d);font-weight:800;line-height:1.15}
 .brand-by{display:block;font-weight:500;font-size:.78rem;color:var(--mut)}
 .nav{display:none}.nav a{margin-left:1.2rem;color:var(--ink);text-decoration:none;font-weight:600;font-size:.94rem}.nav a:hover{color:var(--brand)}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.65rem 1.2rem;border-radius:999px;font:inherit;font-weight:700;text-decoration:none;border:2px solid transparent;cursor:pointer}
 .btn-p{background:var(--brand);color:#fff}.btn-p:hover{background:var(--brand-d)}
 .btn-o{border-color:currentColor;background:transparent;color:inherit}
-.btn-sm{min-height:42px;padding:.4rem 1rem;font-size:.92rem}
+.btn-sm{min-height:44px;padding:.4rem 1rem;font-size:.92rem}
 .linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--brand);text-decoration:underline;cursor:pointer}
 .hero{background:var(--brand-d);color:#fff}
 .hero-grid{display:grid;gap:2rem;padding:2.6rem 1.15rem 3rem}
@@ -37,7 +37,7 @@ h2{font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.015em;margin:0 0 1.2rem;c
 .note-box.warn{border-left-color:var(--accent);background:#fffbeb}
 .examples{display:grid;gap:1.4rem}
 .ex{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:.6rem}
-.ex figcaption{padding:.6rem .3rem .2rem;color:var(--mut)}
+.ex figcaption{padding:.6rem .3rem .2rem;color:var(--mut)}.ex figcaption a{display:inline-block;padding:11px 0;margin:-11px 0}
 .cards{display:grid;gap:1rem}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem}
 .card h3{margin:0 0 .3rem;font-size:1.06rem}.card p{margin:0;color:var(--mut)}
@@ -58,7 +58,7 @@ details p{margin:0 0 1rem;color:var(--mut)}
 .form{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.4rem}
 .form label{display:block;font-weight:600;margin:.85rem 0 .3rem}
 .form input:not([type=checkbox]):not([type=radio]),.form textarea,.form select{width:100%;font:inherit;padding:.7rem .8rem;border:1.5px solid #c8c5bf;border-radius:10px;background:#fff}
-.form .check{display:flex;gap:.6rem;align-items:flex-start;font-weight:500}
+.form .check{display:flex;gap:.6rem;align-items:flex-start;font-weight:500;min-height:44px;padding:.55rem 0;box-sizing:border-box}
 .form .check input{margin-top:.35rem;width:1.1rem;height:1.1rem}
 .form .btn{width:100%;margin-top:1rem}
 .form-note{margin:0 0 .4rem;font-size:.85rem;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.45rem .7rem}
@@ -98,3 +98,4 @@ details p{margin:0 0 1rem;color:var(--mut)}
 }
 @media (min-width:1040px){.cards{grid-template-columns:repeat(3,1fr)}.tiers{grid-template-columns:repeat(4,1fr)}}
 .foot a{color:#fff}.foot nav{margin:.6rem 0}.foot-grid p{margin:.3rem 0}
+.foot nav a,.foot a[data-email]{display:inline-flex;align-items:center;min-height:44px}.linkbtn{padding:9px 0;margin:-9px 0}
