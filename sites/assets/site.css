@@ -98,3 +98,4 @@ details p{margin:0 0 1rem;color:var(--mut)}
 }
 @media (min-width:1040px){.cards{grid-template-columns:repeat(3,1fr)}.tiers{grid-template-columns:repeat(4,1fr)}}
 .foot a{color:#fff}.foot nav{margin:.6rem 0}.foot-grid p{margin:.3rem 0}
+.foot nav a,.foot a[data-email]{display:inline-flex;align-items:center;min-height:44px}.linkbtn{padding:9px 0;margin:-9px 0}
