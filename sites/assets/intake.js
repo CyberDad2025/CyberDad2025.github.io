@@ -21,12 +21,20 @@
     return Promise.resolve({ ok: true, mode: "mailto", body: body, href: m.href, cut: m.cut });
   }
 
+  // Email version: blank answers are left out and long labels are cut to their short form
+  // ("Your Google review link (optional): the link ..." -> "Your Google review link"), so more answers fit
+  // under MAILTO_MAX. The downloaded file keeps every question, full labels and blanks.
+  function shortLabel(t) { var s = String(t).split(/\s\(|:\s/)[0].trim(); return s.length > 60 ? s.slice(0, 57) + "..." : s; }
   function answersText(payload, labels, forEmail) {
     var lines = forEmail ? ["Hi, here is my website refresh request:", ""] : ["Website refresh request — your answers", "Saved " + new Date().toLocaleString(), ""];
+    var skipped = 0;
     Object.keys(payload).forEach(function (k) {
       var v = payload[k]; if (Array.isArray(v)) v = v.join(", ");
-      lines.push(((labels && labels[k]) || k) + ": " + (v === "" || v == null ? "(blank)" : v));
+      var blank = v === "" || v == null, label = (labels && labels[k]) || k;
+      if (forEmail && blank) { skipped++; return; }
+      lines.push((forEmail ? shortLabel(label) : label) + ": " + (blank ? "(blank)" : v));
     });
+    if (forEmail && skipped) lines.push("", "(" + skipped + " question" + (skipped === 1 ? "" : "s") + " left blank.)");
     if (!forEmail) lines.push("", "Email this file to " + (cfg().CONTACT_EMAIL || "us") + " if your email app didn't open.");
     return lines.join("\n");
   }
@@ -69,7 +77,13 @@
         var t = (l && l.textContent) || (lg && lg.textContent) || (el.closest("label") && el.closest("label").textContent) || "";
         if (t) labels[el.name] = t.replace(/\s*\*\s*$/, "").trim();
       });
-      submitIntake(data, source, labels).then(function (res) {
+      // Email order: required answers first (name, address, form_to, approver...), then the rest in form order,
+      // so the facts we can't build without stay in the email if it has to be shortened. The download keeps form order.
+      var emailData = {}, req = {};
+      Array.prototype.forEach.call(form.elements, function (el) { if (el.name && el.required) req[el.name] = 1; });
+      Object.keys(data).forEach(function (k) { if (req[k]) emailData[k] = data[k]; });
+      Object.keys(data).forEach(function (k) { if (!req[k]) emailData[k] = data[k]; });
+      submitIntake(emailData, source, labels).then(function (res) {
         status.textContent = "";
         var p = document.createElement("p");
         var em = cfg().CONTACT_EMAIL;
