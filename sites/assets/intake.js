@@ -2,7 +2,7 @@
    No third-party services. Default mode is mailto: the visitor's own email app sends it; this page never transmits data. */
 (function () {
   "use strict";
-  function cfg() { return window.SITE_CONFIG || { INTAKE_ENDPOINT: "" }; }
+  function cfg() { return window.SITE_CONFIG || {}; }
 
   function mailtoFor(body, labels) {
     var c = cfg(), subj = "Website request: " + (body.answers.business_name || body.answers.legal_name || "my business");
@@ -11,15 +11,10 @@
     return { href: "mailto:" + c.CONTACT_EMAIL + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(text), cut: cut };
   }
 
-  // Returns {ok, mode, body, href?, cut?}. In "mailto" mode it opens the visitor's own mail app; nothing is sent by this page.
+  // Returns {ok, mode, body, href?, cut?}. Opens the visitor's own mail app (mailto); nothing is sent by this page.
   function submitIntake(payload, source, labels) {
     var body = { source: source, submitted_at: new Date().toISOString(), page: location.pathname, answers: payload };
     var c = cfg();
-    if (c.INTAKE_MODE === "post" && c.INTAKE_ENDPOINT) {
-      return fetch(c.INTAKE_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-        .then(function (r) { return { ok: r.ok, mode: "post", body: body }; })
-        .catch(function () { return { ok: false, mode: "post", body: body }; });
-    }
     if (!c.CONTACT_EMAIL) return Promise.resolve({ ok: false, mode: "none", body: body });
     var m = mailtoFor(body, labels);
     if (!window.SITE_NO_NAVIGATE) window.location.href = m.href;
