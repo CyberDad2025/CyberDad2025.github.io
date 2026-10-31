@@ -13,7 +13,7 @@ a{color:var(--brand)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:60px}
 .brand{display:inline-block;min-height:44px;padding:.3rem 0;box-sizing:border-box;text-decoration:none;color:var(--brand-d);font-weight:800;line-height:1.15}
 .brand-by{display:block;font-weight:500;font-size:.78rem;color:var(--mut)}
-.nav{display:none}.nav a{margin-left:1.2rem;color:var(--ink);text-decoration:none;font-weight:600;font-size:.94rem}.nav a:hover{color:var(--brand)}
+.nav{display:none}.nav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;margin-left:1.2rem;color:var(--ink);text-decoration:none;font-weight:600;font-size:.94rem}.nav a:hover{color:var(--brand)}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.65rem 1.2rem;border-radius:999px;font:inherit;font-weight:700;text-decoration:none;border:2px solid transparent;cursor:pointer}
 .btn-p{background:var(--brand);color:#fff}.btn-p:hover{background:var(--brand-d)}
 .btn-o{border-color:currentColor;background:transparent;color:inherit}
