@@ -1,23 +1,23 @@
 ---
-# Plain HTML page (no layout). Front matter only keeps this noindex page out of sitemap.xml.
+# Plain HTML page (no layout). Indexable and listed in sitemap.xml (P59 commit C).
 layout: null
-sitemap: false
 ---
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Section of the existing site at https://cyberdad2025.github.io/sites/ (no new domain). BRAND "CyberDad Kit Sites" is one variable: build/brand.conf + assets/config.js; rename with build/swap-brand.sh "New Name". -->
-<title>CyberDad Kit Sites, a service of CyberDad Kit LLC — website refresh for small businesses</title>
-<meta name="description" content="We rebuild outdated small-business websites into fast, mobile-friendly sites. Everything happens by email — no sales calls.">
-<meta name="robots" content="noindex, nofollow"><!-- staging: remove only when Ruel approves publishing -->
+<!-- Section of the existing site at https://cyberdad2025.github.io/sites/ (no new domain). BRAND "CyberDad Kit Sites" (P59 rename) is one variable: build/brand.conf + assets/config.js; rename with build/swap-brand.sh "New Name". -->
+<title>CyberDad Kit Sites, website rebuilds for small businesses — a service of CyberDad Kit LLC</title>
+<meta name="description" content="We rebuild outdated business websites so they work on phones. From $499, one-time, with a written price before you pay. Everything happens by email.">
+<meta property="og:site_name" content="CyberDad Kit Sites"><meta property="og:title" content="CyberDad Kit Sites, website rebuilds for small businesses">
 <link rel="canonical" href="https://cyberdad2025.github.io/sites/">
 <link rel="stylesheet" href="assets/site.css">
 {% include ga4.html %}
 <script src="assets/config.js" defer></script>
 <script src="assets/intake.js" defer></script>
-<script src="assets/chat.js" defer></script>
+<script src="assets/order-config.js" defer></script>
+<script src="assets/order.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -26,23 +26,23 @@ sitemap: false
   <nav class="nav" aria-label="Main">
     <a href="#examples">Examples</a><a href="#included">What's included</a><a href="#pricing">Pricing</a><a href="#how">How it works</a><a href="#faq">FAQ</a>
   </nav>
-  <a class="btn btn-p btn-sm" href="#start">Get started</a>
+  <a class="btn btn-p btn-sm" href="#start">Start my website rebuild</a>
 </div></header>
 
 <main id="main">
 <section class="hero"><div class="wrap hero-grid">
   <div>
-    <p class="kicker">Website refresh for small businesses</p>
-    <h1>Your website, rebuilt to work on phones, load fast and look current.</h1>
-    <p class="lead">We take the site you already have — your words, your services, your contact details — and rebuild it as a clean, mobile-first site with working HTTPS. Everything happens by email. No sales calls, ever.</p>
+    <p class="kicker">CyberDad Kit Sites · website rebuilds for small businesses</p>
+    <h1>Your business website, rebuilt so customers can reach you from their phone.</h1>
+    <p class="hero-price"><strong>Refresh $499 · Refresh Plus $799 · Custom from $1,499</strong>, one-time.</p>
+    <p class="lead">We rebuild the site you already have, using your words, services and photos, so it works on phones and loads fast. Everything happens by email, in writing.</p>
     <div class="ctas">
-      <a class="btn btn-p" href="#start">Tell us about your site</a>
-      <button class="btn btn-o" type="button" data-open-chat>Use the request assistant</button>
+      <a class="btn btn-p" href="#start">Start my website rebuild</a>
     </div>
     <ul class="ticks">
+      <li>Your domain and content stay yours</li>
+      <li>See a preview before anything goes live</li>
       <li>A written scope and price by email before you pay anything</li>
-      <li>You keep ownership of your domain and content</li>
-      <li>Plain pricing, written scope, no contract on Site Care</li>
     </ul>
   </div>
   <figure class="hero-art">
@@ -94,16 +94,16 @@ sitemap: false
 </div></section>
 
 <section id="included" class="band" aria-labelledby="inc-h"><div class="wrap">
-  <h2 id="inc-h">What's included in a refresh</h2>
+  <h2 id="inc-h">What's included in a rebuild</h2>
   <div class="cards">
-    <article class="card"><h3>Mobile-first design</h3><p>Built for the phone your customers are holding, then opened up for desktop.</p></article>
+    <article class="card"><h3>Built for phones</h3><p>Designed for the phone your customers are holding, then opened up for desktop.</p></article>
     <article class="card"><h3>Your real content</h3><p>We reuse and tidy your existing text, services, hours and photos you own. Nothing replaced with filler.</p></article>
-    <article class="card"><h3>HTTPS and speed</h3><p>A valid security certificate and a lightweight static site that loads quickly.</p></article>
-    <article class="card"><h3>Working contact path</h3><p>Click-to-call, email, map link and a contact form that opens a pre-filled email to you — all tested.</p></article>
-    <article class="card"><h3>"Get a quote" on every page</h3><p>A "Get a quote" button in the header of every page that opens your contact form.</p></article>
+    <article class="card"><h3>Secure and fast</h3><p>A valid security certificate (the padlock in the browser) and a light site that loads quickly.</p></article>
+    <article class="card"><h3>Working contact path</h3><p>Click-to-call, email, a map link and a contact form that sends a pre-filled email to you — all tested.</p></article>
+    <article class="card"><h3>A quote button on your site</h3><p>A "Get a quote" button in the header of every page of your new site that opens your contact form.</p></article>
     <article class="card"><h3>Google Business Profile check</h3><p>At launch we check that the name, phone, hours and website link on your Google Business Profile match your new site, and tell you about any mismatches. We don't log in to or edit your profile.</p></article>
     <article class="card"><h3>Review link</h3><p>A "Leave us a review" button that opens your own Google review page: a review link you can share with all your customers.</p></article>
-    <article class="card"><h3>Search basics</h3><p>Page titles, descriptions, business info markup and a link to your Google Business Profile.</p></article>
+    <article class="card"><h3>Search basics</h3><p>Page titles, descriptions, your business details in a form Google can read, and a link to your Google Business Profile.</p></article>
     <article class="card"><h3>Accessibility basics</h3><p>Readable contrast, keyboard navigation and image descriptions. (We don't promise legal "ADA compliance".)</p></article>
   </div>
   <p class="muted">Not included: online stores, booking systems or logo design. Rewritten wording comes with Refresh Plus. We can quote other work separately in writing.</p>
@@ -111,77 +111,127 @@ sitemap: false
 
 <section id="pricing" aria-labelledby="pr-h"><div class="wrap">
   <h2 id="pr-h">Simple pricing</h2>
-  <p class="note-box">Every job gets a written quote before you pay anything. Refresh and Refresh Plus are paid in full up front after you approve the scope. Custom is a 50% deposit to start and 50% before launch, by Stripe invoice. See our <a href="/sites/refund/">refund and cancellation terms</a>.</p>
+  <p class="note-box">Every job gets a written price before you pay anything. Refresh and Refresh Plus are paid in full after you approve the scope. Custom is half to start and half before launch, by Stripe invoice. See our <a href="/sites/refund/">refund and cancellation terms</a>.</p>
   <div class="tiers">
-    <article class="tier featured"><h3>Refresh</h3><p class="price">$499 <small>one-time</small></p><ul><li>Up to 5 pages rebuilt from your current site</li><li>Mobile-first, HTTPS, contact form, search basics</li><li>The Love the Preview promise: see your new site as a preview before it goes live</li><li>One round of revisions</li><li>Preview on an unlisted link about 6 business days after we have your content, and launch about 3 business days after you approve (targets, not promises)</li></ul></article>
-    <article class="tier"><h3>Refresh Plus</h3><p class="price">$799 <small>one-time</small></p><ul><li>Up to 10 pages</li><li>Wording rewritten from your answers</li><li>A gallery or menu/price-list page</li><li>Links to the booking or ordering tools you already use</li><li>Two rounds of revisions</li><li>Preview on an unlisted link about 7 business days after we have your content, and launch about 3 business days after you approve (targets, not promises)</li></ul></article>
-    <article class="tier"><h3>Custom</h3><p class="price">From $1,499 <small>quoted</small></p><ul><li>Up to 15 pages, or a multi-location or bilingual site</li><li>Static pages plus links to the tools you already use</li><li>No online stores or custom apps</li><li>Price and timeline in a written quote by email</li></ul></article>
-    <article class="tier"><h3>Site Care</h3><p class="price">$89/mo <small>month to month</small></p><ul><li>Hosting, certificate renewals, monthly checks, a monthly report and small text and photo edits by email</li><li>Larger changes get a written quote first</li><li>Optional with any tier</li><li>Month to month, cancel by email</li></ul></article>
+    <article class="tier featured"><h3>Refresh</h3><p class="price">$499 <small>one-time</small></p><ul><li>Up to 5 pages rebuilt from your current site</li><li>Built for phones, with a security certificate, a contact form and search basics</li><li>See your new site as a preview before it goes live</li><li>One round of revisions</li><li>Preview on a private link about 6 business days after we have your content, and launch about 3 business days after you approve</li></ul><p class="tier-cta"><a class="btn btn-p" href="#start" data-package="Refresh ($499 one-time, up to 5 pages)">Start my website rebuild</a></p></article>
+    <article class="tier"><h3>Refresh Plus</h3><p class="price">$799 <small>one-time</small></p><ul><li>Up to 10 pages</li><li>Wording rewritten from your answers</li><li>A gallery or menu/price-list page</li><li>Links to the booking or ordering tools you already use</li><li>Two rounds of revisions</li><li>Preview on a private link about 7 business days after we have your content, and launch about 3 business days after you approve</li></ul><p class="tier-cta"><a class="btn btn-p" href="#start" data-package="Refresh Plus ($799 one-time, up to 10 pages)">Start my website rebuild</a></p></article>
+    <article class="tier"><h3>Custom</h3><p class="price">From $1,499 <small>quoted</small></p><ul><li>Up to 15 pages, or a multi-location or bilingual site</li><li>Your pages plus links to the tools you already use</li><li>No online stores or custom apps</li><li>Price and timeline in a written quote by email</li></ul><p class="tier-cta"><a class="btn btn-p" href="#start" data-package="Custom (from $1,499, quoted)">Start my website rebuild</a></p></article>
+    <article class="tier"><h3>Site Care</h3><p class="price">$89/mo <small>month to month</small></p><ul><li>Hosting, certificate renewals, monthly checks, a monthly report and small text and photo edits by email</li><li>Larger changes get a written quote first</li><li>Optional with any tier</li><li>Month to month, cancel by email</li></ul><p class="tier-cta"><a class="care-link" href="#start" data-care="yes">Add Site Care to my rebuild</a></p></article>
   </div>
-  <p class="note-box"><strong>Love the Preview promise on Refresh and Refresh Plus:</strong> you see your new site as a preview before anything goes live, and you decide whether it launches. <a href="/sites/refund/#love-the-preview">Full terms</a></p>
-  <p class="note-box"><strong>Not ready for a full refresh? Website Check-Up, $49.</strong> A written report on how your current site works on a phone (tap-to-call, tap targets, load time, broken links and more) with the 3 fixes we'd make first, by email in about 3 business days (a target, not a promise). The $49 comes off a Refresh or Refresh Plus if you start within 60 days. <a href="/sites/refund/#check-up">Terms</a></p>
-  <p><a class="btn btn-p" href="https://buy.stripe.com/eVq28q7qm9aodKZg6Hds403">Get a Website Check-Up for $49</a></p>
+  <p class="muted" id="timing-note">All timelines on this page are targets, not promises.</p>
+  <p class="note-box"><strong>See it before it goes live (our Love the Preview promise on Refresh and Refresh Plus):</strong> you see your new site as a preview first and decide whether it launches. <a href="/sites/refund/#love-the-preview">Full terms</a></p>
+  <p class="small-line">Not ready for a rebuild? A Website Check-Up ($49) is a written report on how your current site works on a phone, with the 3 fixes we'd make first. <a href="#faq-checkup">More about the Check-Up</a></p>
 </div></section>
 
-<section id="how" class="band" aria-labelledby="how-h"><div class="wrap">
-  <h2 id="how-h">How it works — all by email</h2>
+<section id="compare" class="band" aria-labelledby="cmp-h"><div class="wrap narrow">
+  <h2 id="cmp-h">Many agencies vs. working with us</h2>
+  <table class="compare">
+    <thead><tr><th scope="col">Many agencies</th><th scope="col">With us</th></tr></thead>
+    <tbody>
+      <tr><td>Give you a price after a sales call</td><td>Show the price on this page, and send a written scope and price by email before you pay</td></tr>
+      <tr><td>Sign you up for a long contract</td><td>One price for the rebuild, no contract. Site Care is month to month; cancel by email</td></tr>
+      <tr><td>Keep the site if you leave</td><td>Your domain stays in your name, and once you've paid in full, the site files are yours</td></tr>
+      <tr><td>Promise rankings or leads</td><td>Don't promise traffic, rankings or leads. We tell you what we can't promise</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section id="how" aria-labelledby="how-h"><div class="wrap">
+  <h2 id="how-h">How ordering works — 4 steps, all by email</h2>
   <ol class="steps">
-    <li><strong>Tell us about your site.</strong> Use the form below or the request assistant. A few short questions.</li>
-    <li><strong>Hear back by email.</strong> If it looks like a fit, we reply with a short questionnaire. Nothing is charged at this stage.</li>
-    <li><strong>Answer a short questionnaire.</strong> It covers pages, photos, hours and where form messages should go. Anything you leave blank, we reuse from your current site.</li>
-    <li><strong>Get a written scope and price.</strong> Based on your answers: exactly what's included, what isn't, and the timeline. Nothing is charged until you approve it.</li>
-    <li><strong>Approve and pay.</strong> Reply to approve the scope, then pay by secure card link (Stripe).</li>
-    <li><strong>Kickoff and build.</strong> After payment we send a short kickoff note and a checklist for any photos or details still needed, then we build.</li>
-    <li><strong>Review the preview.</strong> About 6 business days for Refresh, 7 for Refresh Plus, or the date in your Custom quote (a target, not a promise) after we have your content, you get a preview on an unlisted link and the revision rounds in your scope. If we see we'll miss it, we email you before that date.</li>
-    <li><strong>Launch.</strong> About 3 business days (a target, not a promise) after you approve, we connect your domain without touching your email settings and send you a handoff note.</li>
+    <li><strong>Start your rebuild.</strong> Send your current website address and what you want, using the form below. Nothing is charged at this stage.</li>
+    <li><strong>Approve your written scope and price.</strong> We email you a short questionnaire, then exactly what's included, what isn't, and the timeline. Reply to approve, then pay by secure card link (Refresh, Refresh Plus) or Stripe invoice (Custom).</li>
+    <li><strong>Review your preview.</strong> About 6 business days for Refresh, or 7 for Refresh Plus, after we have your content, you get a preview on a private link and the revision rounds in your scope. Custom: the date in your quote.</li>
+    <li><strong>Launch.</strong> About 3 business days after you approve, we connect your domain without touching your email settings and send you a handoff note.</li>
   </ol>
-  <p class="muted">We don't do phone or video calls. Every question gets a written answer, so you always have a record.</p>
+  <p class="muted">Every question gets a written answer, so you always have a record.</p>
 </div></section>
 
-<section id="faq" aria-labelledby="faq-h"><div class="wrap narrow">
+<section id="faq" class="band" aria-labelledby="faq-h"><div class="wrap narrow">
   <h2 id="faq-h">Questions</h2>
   <details><summary>Why no calls?</summary><p>We work entirely by email so everything is in writing and you can reply when it suits you. Most small-business sites can be scoped from a short questionnaire.</p></details>
-  <details><summary>Do I keep my domain and email?</summary><p>Yes. Your domain stays registered in your name. When we launch, we change only the website records and leave your email (MX) settings alone.</p></details>
-  <details><summary>Who owns the finished site?</summary><p>Your content is yours. Once the refresh is paid in full, you can take the site files with you if you move to another provider.</p></details>
-  <details><summary>Can you work with my WordPress, Wix or Squarespace site?</summary><p>We rebuild sites as fast static sites hosted for you on Site Care. If you skip Site Care, you get the files and simple hosting steps. If you need to stay on your current platform, tell us and we'll say honestly whether we can help.</p></details>
-  <details><summary>Will my old page links still work?</summary><p>We keep your existing page addresses working: any page that moves gets a permanent redirect to its new home, and we test every old link after launch. No one can promise search rankings, and Google says some movement is normal for a few weeks after any redesign. We'll show you the before-and-after link check.</p></details>
-  <details><summary>Do you build online stores or booking systems?</summary><p>Not in the standard refresh. We can link to the store or booking tool you already use.</p></details>
+  <details><summary>Do I keep my domain and email?</summary><p>Yes. Your domain stays registered in your name. When we launch, we change only the website records and leave your email settings alone.</p></details>
+  <details><summary>Who owns the finished site?</summary><p>Your content is yours. Once the rebuild is paid in full, you can take the site files with you if you move to another provider.</p></details>
+  <details><summary>Can you work with my WordPress, Wix or Squarespace site?</summary><p>We rebuild sites as fast, simple sites hosted for you on Site Care. If you skip Site Care, you get the files and simple hosting steps. If you need to stay on your current platform, tell us and we'll say honestly whether we can help.</p></details>
+  <details><summary>Will my old page links still work?</summary><p>We keep your existing page addresses working: any page that moves is pointed to its new address, and we test every old link after launch. No one can promise search rankings, and Google says some movement is normal for a few weeks after any redesign. We'll show you the before-and-after link check.</p></details>
+  <details><summary>Do you build online stores or booking systems?</summary><p>Not in the standard rebuild. We can link to the store or booking tool you already use.</p></details>
   <details><summary>How are sites built?</summary><p>We use templates and automated tools. Every page is checked with automated tests and against your written scope before you see it. We'll always tell you how something was made if you ask.</p></details>
   <details><summary>How do I pay?</summary><p>By card through a secure payment link we email you after you approve the written scope. We never ask for card details by email.</p></details>
+  <details id="faq-checkup"><summary>Can I start with a Website Check-Up?</summary><p>Yes. The Website Check-Up ($49) is a written report on how your current site works on a phone (tap-to-call, tap targets, load time, broken links and more) with the 3 fixes we'd make first, by email in about 3 business days. The $49 comes off a Refresh or Refresh Plus if you start within 60 days. To order one, email ruel@getcyberdadkit.com. <a href="/sites/refund/#check-up">Terms</a></p></details>
   <details><summary>Who are you?</summary><p><span data-brand>CyberDad Kit Sites</span> is a service of CyberDad Kit LLC, a Florida company. Email <a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>; mail: PO Box 940061, Maitland, FL 32794.</p></details>
 </div></section>
 
 <section id="start" class="band" aria-labelledby="start-h"><div class="wrap contact-grid">
   <div>
-    <h2 id="start-h">Tell us about your website</h2>
-    <p>Answer a few questions and we'll reply by email with next steps and, if it's a fit, a written scope and price. Prefer to go step by step? <button class="linkbtn" type="button" data-open-chat>Open the request assistant</button>.</p>
+    <h2 id="start-h">Start your website rebuild</h2>
+    <p>Show us your current site, tell us what you want, and choose a package. We'll reply by email with next steps and, if it's a fit, a written scope and price.</p>
+    <ul class="ticks ticks-dark">
+      <li>A written scope and price by email before you pay anything</li>
+      <li>Your domain stays in your name</li>
+    </ul>
     <p class="muted">Prefer plain email? Write to <a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>. Already heard back from us? Use the <a href="intake/">full build questionnaire</a>.</p>
   </div>
-  <form id="quick-intake" class="form" action="mailto:ruel@getcyberdadkit.com?subject=Website%20request" method="post" enctype="text/plain" novalidate>
-    <p class="form-note" role="note">Sending opens your own email app with a new email addressed to <a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> and copies your answers so you can paste them in. Nothing is sent until you press Send there. How we handle your answers: <a href="/cyberdadkit-privacy-policy.html#sites-requests">privacy policy</a>.</p>
-    <label for="qi-biz">Business name</label><input id="qi-biz" name="business_name" required autocomplete="organization">
-    <label for="qi-url">Current website</label><input id="qi-url" name="current_url" type="url" inputmode="url" placeholder="https://" required>
-    <label for="qi-want">What do you want fixed or changed?</label><textarea id="qi-want" name="what_to_change" rows="4" required></textarea>
-    <label for="qi-email">Your email</label><input id="qi-email" name="email" type="email" autocomplete="email" required>
-    <label class="check"><input type="checkbox" name="consent" required> It's OK to email me about this request.</label>
-    <button class="btn btn-p" type="submit">Email my request</button>
+  <div>
+  <form id="order-form" class="form" novalidate aria-describedby="of-required-note">
+    <p class="form-note" role="note" data-note-mode="email-fallback">After you press the button, your own email app opens with a new email addressed to <a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>, and your answers are copied so you can paste them in. Nothing is sent until you press Send there. How we handle your answers: <a href="/cyberdadkit-privacy-policy.html#sites-requests">privacy policy</a>.</p>
+    <p class="form-note" role="note" data-note-mode="mailerlite" hidden>Your answers are sent to us through MailerLite, the email service we use, and we reply by email. How we handle your answers: <a href="/cyberdadkit-privacy-policy.html#sites-requests">privacy policy</a>.</p>
+    <p id="of-required-note" class="hint">All fields are required unless marked optional. Nothing is charged now.</p>
+    <div class="field"><label for="of-biz">Business name</label><input id="of-biz" name="business_name" required autocomplete="organization" aria-describedby="of-err-business_name"><span id="of-err-business_name" class="err" hidden></span></div>
+    <div class="field"><label for="of-name">Your name</label><input id="of-name" name="contact_name" required autocomplete="name" aria-describedby="of-err-contact_name"><span id="of-err-contact_name" class="err" hidden></span></div>
+    <div class="field"><label for="of-email">Your email</label><input id="of-email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="of-err-email"><span id="of-err-email" class="err" hidden></span></div>
+    <div class="field"><label for="of-url">Current website address</label><span id="of-url-hint" class="hint">For example yourbusiness.com</span><input id="of-url" name="current_url" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="https://" required aria-describedby="of-url-hint of-err-current_url"><span id="of-err-current_url" class="err" hidden></span></div>
+    <div class="field"><label for="of-pagecount">How many pages does your current site have? <span class="opt">(optional)</span></label><select id="of-pagecount" name="page_count" aria-describedby="of-pagecount-hint"><option value="">Not sure</option><option value="1 to 5">1 to 5</option><option value="6 to 10">6 to 10</option><option value="More than 10, or more than one location">More than 10, or more than one location</option></select><span id="of-pagecount-hint" class="hint" aria-live="polite"></span></div>
+    <fieldset class="field" aria-describedby="of-pkg-hint of-err-package"><legend>Which package?</legend><p id="of-pkg-hint" class="hint">Prices from <a href="#pricing">Simple pricing</a>. Your written scope confirms the final price.</p>
+      <label class="pkg"><input type="radio" name="package" value="Refresh ($499 one-time, up to 5 pages)" required> <span><strong>Refresh</strong>, $499 one-time: up to 5 pages</span></label>
+      <label class="pkg"><input type="radio" name="package" value="Refresh Plus ($799 one-time, up to 10 pages)" required> <span><strong>Refresh Plus</strong>, $799 one-time: up to 10 pages, wording rewritten</span></label>
+      <label class="pkg"><input type="radio" name="package" value="Custom (from $1,499, quoted)" required> <span><strong>Custom</strong>, from $1,499, quoted: up to 15 pages, or multi-location or bilingual</span></label>
+      <label class="pkg"><input type="radio" name="package" value="Not sure yet" required> <span><strong>Not sure yet</strong></span></label>
+      <span id="of-err-package" class="err" hidden></span></fieldset>
+    <label class="check"><input type="checkbox" name="site_care" value="yes"> <span>Add Site Care, $89/mo, month to month <span class="opt">(optional)</span></span></label>
+    <div class="field"><label for="of-want">What do you want changed or rebuilt?</label><textarea id="of-want" name="what_you_want" rows="4" maxlength="2000" required aria-describedby="of-err-what_you_want"></textarea><span id="of-err-what_you_want" class="err" hidden></span></div>
+    <div class="field"><label for="of-goals">Main goals for the new site <span class="opt">(optional)</span></label><textarea id="of-goals" name="goals" rows="2" maxlength="1000" placeholder="e.g. more quote requests from phones"></textarea></div>
+    <div class="field"><label for="of-pages">Pages you want <span class="opt">(optional)</span></label><input id="of-pages" name="pages" maxlength="500" placeholder="e.g. Home, Services, About, Contact"></div>
+    <div class="field"><label for="of-deadline">Any deadline? <span class="opt">(optional)</span></label><input id="of-deadline" name="deadline" maxlength="200" placeholder="e.g. before our busy season"></div>
+    <div class="field"><label for="of-budget">Budget range <span class="opt">(optional)</span></label><select id="of-budget" name="budget"><option value="">Prefer not to say</option><option value="About $499 (Refresh)">About $499 (Refresh)</option><option value="About $799 (Refresh Plus)">About $799 (Refresh Plus)</option><option value="$1,499 or more (Custom)">$1,499 or more (Custom)</option><option value="Not sure yet">Not sure yet</option></select></div>
+    <div class="hp" aria-hidden="true"><label for="of-hp">Leave this empty</label><input id="of-hp" name="website_hp" tabindex="-1" autocomplete="off"></div>
+    <div class="field"><label class="check"><input type="checkbox" name="consent" value="yes" required aria-describedby="of-err-consent"> <span>It's OK to email me about this order request. I've read the <a href="/cyberdadkit-privacy-policy.html#sites-requests">privacy policy</a>.</span></label><span id="of-err-consent" class="err" hidden></span></div>
+    <button class="btn btn-p" type="submit" disabled>Continue to email my order</button>
+    <noscript><p class="form-note">This form needs JavaScript. You can email your current website address and what you want to <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> instead.</p></noscript>
     <p class="form-status" role="status" aria-live="polite"></p>
   </form>
+  <div id="order-done" class="order-panel" tabindex="-1" role="region" aria-labelledby="order-done-h" hidden>
+    <h3 id="order-done-h">Order request received</h3>
+    <p>Thanks. We have your request for <strong data-order-biz></strong>. Here's what happens next, all by email:</p>
+    <ol>
+      <li><strong>Hear back by email.</strong> If it looks like a fit, we reply with a short questionnaire. Nothing is charged at this stage.</li>
+      <li><strong>Get a written scope and price.</strong> Based on your answers: exactly what's included, what isn't, and the timeline. Nothing is charged until you approve it.</li>
+      <li><strong>Approve and pay.</strong> Reply to approve the scope, then pay by secure card link (Stripe). Custom projects start with half by Stripe invoice.</li>
+    </ol>
+    <p class="muted">We don't do phone or video calls. Every question gets a written answer, so you always have a record. Questions? Email <a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
+  </div>
+  <div id="order-fallback" class="order-panel" tabindex="-1" role="region" aria-labelledby="order-fb-h" hidden>
+    <h3 id="order-fb-h">One more step: send it from your email app</h3>
+    <p data-order-failed hidden><strong>We couldn't send your answers from this page.</strong> Nothing was lost. Please email them instead.</p>
+    <p>Your email app should open with a new email addressed to <a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>. Paste your answers into it and press Send. This page doesn't send anything by itself.</p>
+    <p class="form-status" role="status" aria-live="polite" data-order-copied></p>
+    <a class="btn btn-p" data-order-mailto href="mailto:ruel@getcyberdadkit.com?subject=Website%20rebuild%20order%20request">Open my email app again</a>
+    <button class="btn btn-o" type="button" data-order-copy>Copy my answers</button>
+    <button class="btn btn-o" type="button" data-order-download>Download my answers</button>
+    <p class="muted">After you send it: if it looks like a fit, we reply with a short questionnaire. Nothing is charged at this stage.</p>
+  </div>
+  </div>
 </div></section>
+
 </main>
 
 <footer class="foot"><div class="wrap foot-grid">
   <div>
-    <p><strong><span data-brand>CyberDad Kit Sites</span>, a service of CyberDad Kit LLC</strong> — website refresh for small businesses, handled by email.</p>
+    <p><strong><span data-brand>CyberDad Kit Sites</span>, a service of CyberDad Kit LLC</strong> — fixed prices, handled by email.</p>
     <p><a data-email href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>
     <p>CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794</p>
   </div>
   <nav aria-label="Footer"><a href="/sites/refund/">Refunds</a> · <a href="/cyberdadkit-privacy-policy.html">Privacy</a> · <a href="/cookie-policy.html">Cookies</a></nav>
   <p class="muted">Example designs use fictional businesses — not real companies or client work. © 2026 CyberDad Kit LLC.</p>
 </div></footer>
-
-<!-- Request assistant (guided chat, no AI, no third-party service). Markup filled by assets/chat.js -->
-<button class="chat-launch" type="button" data-open-chat aria-haspopup="dialog" aria-controls="chat-panel">Request assistant</button>
-<div id="chat-panel" class="chat" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden></div>
 </body>
 </html>

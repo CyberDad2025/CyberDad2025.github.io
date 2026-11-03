@@ -1,7 +1,7 @@
-# Jekyll Configuration for CyberDadKit
+# Jekyll Configuration for CyberDad Kit LLC
 # G2 (Growth): one value per key. Duplicate title/description/author/plugins keys removed (YAML keeps only the last one, which silently overrode the first block).
 title: "CyberDadKit"
-description: "Plain-English family online safety from CyberDadKit: home Wi-Fi, kids' devices, passwords and scams, with a free family tech safety checklist."
+description: "We rebuild outdated business websites into fast, mobile-friendly sites, all by email, with a written scope and price before you pay."
 author:
   name: "Ruel Miller"
   email: "ruel@getcyberdadkit.com"
@@ -24,7 +24,7 @@ timezone: America/New_York
 remote_theme: jekyll/minima
 
 # Social links
-twitter_username: cyberdad2025
+twitter_username: DadCyber80348
 github_username: CyberDad2025
 
 # Collections

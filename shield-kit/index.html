@@ -1,0 +1,1193 @@
+---
+layout: default
+# P59: the kit page moved here from the homepage, unchanged (Oct 29 owner order: the $47 kit path stays live).
+# Off the nav and CTAs; noindex and left out of sitemap.xml (Ruel decision D3, reversible). Old /#kit links redirect here (index.html).
+permalink: /shield-kit/
+noindex: true
+sitemap: false
+no_ads: true
+cd_footer: true
+title: CyberDadKit — Family Cybersecurity, Simplified
+description: Practical cybersecurity for families. No jargon. No fear tactics. Just real protection for your kids, devices, and home network.
+# P35: social share image (og:image / twitter:image only, not used in the page): Product's kit cover export
+# (cdk-shield-kit-cover-1200.png) scaled uniformly and pillarboxed on --teal-light; evidence/p35/scripts/make_og.py
+image:
+  path: /assets/img/home-trust/cdk-shield-kit-og-cover-1200x630.png
+  width: 1200
+  height: 630
+  alt: "Cover of the CyberDad Shield Kit PDF, version 3.5, October 2026, by Ruel Miller of CyberDadKit, with an orange shield and checkmark on a navy background."
+---
+
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "CyberDadKit",
+  "description": "Practical cybersecurity for families. No jargon, no fear tactics.",
+  "url": "https://cyberdad2025.github.io",
+  "author": { "@type": "Person", "name": "CyberDad" },
+  "contactPoint": { "@type": "ContactPoint", "email": "ruel@getcyberdadkit.com" }
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+
+/* ── TOKENS ── */
+:root {
+  --ink:        #0e1117;
+  --ink-soft:   #1c2333;
+  --slate:      #2d3748;
+  --mist:       #f0f4f8;
+  --cloud:      #e8edf4;
+  --teal:       #0a9e84;
+  --teal-light: #e6f7f4;
+  --teal-mid:   #0c8a73;
+  --amber:      #d97706;
+  --amber-bg:   #fffbeb;
+  --red:        #dc2626;
+  --red-bg:     #fef2f2;
+  --green:      #059669;
+  --green-bg:   #ecfdf5;
+  --text:       #1a202c;
+  --text-mid:   #4a5568;
+  --text-soft:  #718096;
+  --border:     #e2e8f0;
+  --white:      #ffffff;
+  --radius-sm:  8px;
+  --radius:     14px;
+  --radius-lg:  20px;
+  --font-head:  'Fraunces', Georgia, serif;
+  --font-body:  'DM Sans', sans-serif;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:     0 4px 16px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── OVERRIDE MINIMA THEME ── */
+.site-header {
+  background: var(--white) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.site-title, .site-title:visited {
+  color: var(--ink) !important;
+  font-family: var(--font-head) !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: -0.3px !important;
+}
+.site-nav .page-link { color: var(--text-mid) !important; font-family: var(--font-body) !important; font-size: 0.9rem !important; }
+.site-nav .page-link:hover { color: var(--teal) !important; }
+.site-footer { background: var(--ink) !important; color: var(--text-soft) !important; border-top: none !important; }
+.page-content { padding: 0 !important; }
+.wrapper { max-width: 1160px !important; }
+
+/* ── UTILITY ── */
+.cd-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* ── NAV BAR OVERRIDE ── */
+.site-header .wrapper { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem !important; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #f7fbfa 0%, #edf6f3 45%, #f8fafc 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 5rem 1.5rem 4.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(10,158,132,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 5rem;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.75rem;
+  border: 1px solid rgba(10,158,132,0.2);
+}
+
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--teal);
+}
+
+.hero-sub {
+  color: var(--text-mid);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2.25rem;
+  max-width: 460px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.875rem 1.875rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(10,158,132,0.25);
+}
+.btn-primary:hover {
+  background: var(--teal-mid);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10,158,132,0.3);
+  color: var(--white);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-mid);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+.hero-trust {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+.hero-trust-divider { color: var(--border); }
+.hero-trust { flex-wrap: wrap; gap: 0.5rem 0.75rem; color: var(--text-mid); }
+.hero-trust a { color: var(--teal-mid); }
+
+.hero-link {
+  color: var(--teal-mid);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.75rem 0;
+  display: inline-block;
+}
+.hero-link:hover { color: var(--ink); }
+
+/* Hero kit summary card */
+.hero-kit-price { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--teal-mid); line-height: 1; }
+.hero-kit .panel-footer a { color: var(--teal-mid); font-weight: 600; text-decoration: none; }
+.hero-kit .panel-footer a:hover { text-decoration: underline; }
+
+/* Hero visual: kit summary card */
+.hero-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.panel-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--mist);
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  background: var(--ink);
+  padding: 1.25rem 1.5rem;
+}
+
+.trust-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #94a3b8;
+  font-size: 0.83rem;
+  font-weight: 500;
+}
+
+.trust-item span { font-size: 1.1rem; }
+.trust-item a { color: #cbd5e1; text-decoration: underline; text-underline-offset: 3px; display: inline-block; padding: 0.6rem 0; }
+.trust-item a:hover { color: #4dd9bf; }
+.trust-founder {
+  max-width: 760px;
+  margin: 1rem auto 0;
+  text-align: center;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* ── SECTION SHARED ── */
+.section-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.4rem;
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.section-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: gap 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+.section-link:hover { gap: 0.55rem; }
+
+/* ── P35: kit cover + page previews (images: Product M-D29 exports of kit v3.5, product/exports/home-trust) ── */
+.hero-cover { display: block; padding: 1.5rem 1.5rem 0.5rem; text-align: center; }
+.hero-cover picture, .preview-card picture { display: block; }
+.hero-cover img, .kit-cover, .preview-card img { display: block; height: auto; max-width: 100%; }
+.hero-cover img { width: 260px; margin: 0 auto; border-radius: 12px; box-shadow: var(--shadow-lg); }
+.hero-cover-meta { padding: 0.5rem 1.5rem 1.25rem; text-align: center; font-size: 0.9rem; color: var(--text-mid); }
+.kit-cover { width: 150px; margin: 0 auto 1.25rem; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+.preview-section { padding: 5rem 1.5rem; background: var(--mist); border-bottom: 1px solid var(--border); }
+.preview-intro { color: var(--text-mid); max-width: 640px; margin-top: 0.5rem; }
+.preview-grid { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.preview-card { margin: 0; height: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+.preview-card img { width: 100%; aspect-ratio: 1200 / 1553; background: var(--cloud); border-bottom: 1px solid var(--border); }
+.preview-card figcaption { padding: 0.9rem 1.1rem; font-size: 0.9rem; color: var(--text); line-height: 1.45; }
+.preview-card figcaption strong { display: block; font-family: var(--font-head); font-size: 1rem; color: var(--ink); }
+.preview-note { margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-mid); }
+.preview-note a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.faq-section { padding: 5rem 1.5rem; }
+.faq-list { max-width: 820px; display: flex; flex-direction: column; gap: 0.75rem; }
+.faq-item { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--white); }
+.faq-item summary { cursor: pointer; list-style: none; padding: 1rem 3rem 1rem 1.25rem; position: relative; font-weight: 600; color: var(--ink); min-height: 44px; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--teal-mid); font-size: 1.25rem; font-weight: 700; }
+.faq-item[open] summary::after { content: '\2212'; }
+.faq-item summary:focus-visible { outline: 2px solid var(--teal-mid); outline-offset: 2px; }
+.faq-answer { padding: 0 1.25rem 1.1rem; color: var(--text-mid); font-size: 0.95rem; line-height: 1.65; }
+.faq-answer p + p { margin-top: 0.6rem; }
+.faq-answer a { color: var(--teal-mid); }
+
+/* ── MAIN + SIDEBAR ── */
+.content-sidebar {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ── SIDEBAR ── */
+.signup-section { grid-template-columns: 1fr 1fr; padding-top: 0; }
+.sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.sidebar-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar-card-head {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--mist);
+}
+
+.sidebar-card-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sidebar-card-sub { font-size: 0.8rem; color: var(--text-soft); margin-top: 0.15rem; }
+.sidebar-card-body { padding: 1.25rem 1.5rem; }
+
+/* Email form */
+.email-form-wrap p { font-size: 0.875rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 1rem; }
+
+/*
+  ──────────────────────────────────────────────
+  MAILERLITE EMBED AREA
+  Replace everything inside .ml-embed-placeholder
+  with your actual MailerLite embed code.
+  ──────────────────────────────────────────────
+*/
+.ml-embed-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ml-embed-input {
+  background: var(--mist);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+.ml-embed-input:focus { border-color: var(--teal); background: var(--white); }
+.ml-embed-input::placeholder { color: var(--text-soft); }
+
+.ml-embed-btn {
+  background: var(--teal);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ml-embed-btn:hover { background: var(--teal-mid); }
+
+.ml-disclaimer { font-size: 0.73rem !important; color: var(--text-soft) !important; text-align: center; margin-bottom: 0 !important; }
+
+#ml-success { display: none; background: var(--green-bg); border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 1rem; font-size: 0.875rem; color: var(--green); font-weight: 500; }
+
+/* Quick tips card */
+.tip-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+
+.tip-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.45;
+}
+
+.tip-list li::before {
+  content: '✓';
+  flex-shrink: 0;
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+/* ── SHIELD KIT SECTION ── */
+.kit-section {
+  background: linear-gradient(160deg, #0c1a2e 0%, #0e2438 50%, #0a1628 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.kit-section::before {
+  content: '';
+  position: absolute;
+  top: -120px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(10,158,132,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.kit-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 5rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.kit-eyebrow {
+  display: inline-block;
+  background: rgba(10,158,132,0.15);
+  border: 1px solid rgba(10,158,132,0.3);
+  color: #4dd9bf;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.9rem;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.kit-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  color: #f0f6f4;
+  line-height: 1.12;
+  letter-spacing: -0.75px;
+  margin-bottom: 1rem;
+}
+
+.kit-title em { font-style: italic; font-weight: 300; color: #4dd9bf; }
+
+.kit-desc {
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.kit-checklist { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2.25rem; }
+
+.kit-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.kit-check {
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  background: rgba(10,158,132,0.2);
+  border: 1px solid rgba(10,158,132,0.35);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  color: #4dd9bf;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.kit-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+.btn-kit {
+  background: #0a9e84;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem 2.25rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(10,158,132,0.3);
+}
+.btn-kit:hover {
+  background: #0c8a73;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10,158,132,0.35);
+  color: var(--white);
+}
+
+.kit-guarantee {
+  font-size: 0.8rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Kit price card */
+.kit-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.kit-for { font-size: 0.95rem; line-height: 1.55; color: #cbd5e1; margin: 0 0 1rem; }
+
+.kit-price-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.kit-price {
+  font-family: var(--font-head);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #4dd9bf;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.kit-price-sub { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.75rem; }
+
+.kit-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin: 0 0 1.5rem;
+}
+
+.kit-guarantee a { color: #cbd5e1; text-decoration: underline; }
+.kit-guarantee a:hover { color: #4dd9bf; }
+
+/* What happens after you buy */
+.kit-after {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.03);
+  max-width: 520px;
+}
+.kit-after-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4dd9bf;
+  margin-bottom: 0.75rem;
+}
+.kit-steps { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.kit-steps li { font-size: 0.9rem; color: #cbd5e1; line-height: 1.55; }
+.kit-steps a { color: #4dd9bf; }
+
+/* M-D18: bonus line under the kit list; question line + sign-off under the buy button */
+.kit-bonus { font-size: 0.9rem; color: #cbd5e1; line-height: 1.55; margin: -1rem 0 1.75rem; }
+.kit-card-note { font-size: 0.82rem; color: #94a3b8; line-height: 1.55; margin: 1.25rem 0 0; overflow-wrap: anywhere; }
+.kit-card-note a { color: #4dd9bf; }
+.kit-signoff { margin-top: 0.5rem; font-size: 0.78rem; color: #64748b; }
+
+/* ── FOOTER ── */
+.cd-footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 3.5rem 1.5rem 2rem;
+}
+
+.footer-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand-name {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.footer-brand-desc { font-size: 0.875rem; color: #64748b; line-height: 1.65; margin-bottom: 1rem; }
+.footer-email { font-size: 0.82rem; color: #4dd9bf; text-decoration: none; }
+.footer-email:hover { text-decoration: underline; }
+
+.footer-col-title {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #475569;
+  margin-bottom: 1rem;
+}
+
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #4dd9bf; }
+
+.footer-bottom {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copy { font-size: 0.8rem; color: #334155; }
+.footer-legal { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.footer-legal a { font-size: 0.8rem; color: #334155; text-decoration: none; }
+.footer-legal a:hover { color: #4dd9bf; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-panel { display: none; }
+  .content-sidebar { grid-template-columns: 1fr; }
+  .preview-grid { grid-template-columns: repeat(2, 1fr); }
+  .kit-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .kit-card { width: 100%; max-width: 440px; padding: 2rem 1.5rem; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 620px) {
+  .trust-inner { gap: 0.75rem 1.5rem; justify-content: flex-start; }
+  .trust-founder { text-align: left; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .preview-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+  .preview-section, .faq-section { padding: 3.5rem 0; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+{% include home-header.html %}
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">
+        From a U.S. Marine Corps veteran and dad
+      </div>
+      <!-- Hero copy: M-D17 Option C (Product draft, /workspace/cdk/product/M-D17/COPY.md); publishing needs Ruel's approval. -->
+      <!-- P35 headline (CoS revision, Oct 27 8:27 PM ET): sells the $47 Shield Kit (accounts, passwords, a calm family plan);
+           the First Phone kit has its own /first-phone/ waitlist. CoS example "...in one weekend" adapted with no time claim.
+           Previous (generic) line, kept for an easy swap or variant: "Know exactly what to tap to keep your family <em>safer online.</em>" -->
+      <h1 class="hero-title">
+        Lock down your family's accounts
+        <em>with a calm, step-by-step plan.</em>
+      </h1>
+      <p class="hero-sub">
+        The CyberDad Shield Kit walks you through passwords, two-step verification, spotting scams, your home Wi-Fi and the devices in your house, in plain English, with printable templates and a plan for when something goes wrong.
+      </p>
+      <div class="hero-actions">
+        <a href="#kit" class="btn-primary">Get the CyberDad Shield Kit, $47</a>
+        <a href="#kit-signup" class="hero-link">Get the free checklist</a>
+      </div>
+      <div class="hero-trust">
+        <span>One-time $47</span>
+        <span class="hero-trust-divider">·</span>
+        <span>PDF download</span>
+        <span class="hero-trust-divider">·</span>
+        <span>30-day full refund (<a href="/refund-policy/">Refund policy</a>)</span>
+      </div>
+    </div>
+
+    <!-- Kit summary card (desktop; hidden at <=960px where the kit section follows the trust strip) -->
+    <div class="hero-panel hero-kit">
+      <div class="panel-header">
+        <div class="panel-title">The CyberDad Shield Kit</div>
+        <div class="hero-kit-price">$47</div>
+      </div>
+      <!-- P35: kit cover (Product M-D29 export, kit v3.5 p1) beside the $47 price; replaces the repeated module list. Not lazy: above the fold. -->
+      <a href="#inside" class="hero-cover"><picture><source srcset="/assets/img/home-trust/cdk-shield-kit-cover-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-cover-1200.png" width="1200" height="1616" decoding="async" alt="Cover of the CyberDad Shield Kit PDF, version 3.5, October 2026, by Ruel Miller of CyberDadKit, with an orange shield and checkmark on a navy background."></picture></a>
+      <div class="hero-cover-meta">51-page PDF · 7 modules · 30-Day Action Plan</div>
+      <div class="panel-footer"><a href="#kit">See the price and what happens after you buy →</a></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- TRUST BAR -->
+<!-- ═══════════════════════════════════════
+     TRUST BAR
+═══════════════════════════════════════ -->
+<div class="trust-bar" aria-label="Who is behind CyberDadKit">
+  <div class="trust-inner">
+    <!-- Trust strip: M-D17 section 2 (Product draft); publishing needs Ruel's approval. -->
+    <div class="trust-item"><span aria-hidden="true">🎖️</span> U.S. Marine Corps veteran</div>
+    <div class="trust-item"><span aria-hidden="true">🛡️</span> CompTIA Security+ certified</div>
+    <div class="trust-item"><span aria-hidden="true">✅</span> <a href="/refund-policy/">30-day full refund</a></div>
+    <div class="trust-item"><span aria-hidden="true">📮</span> U.S. business mailing address: PO Box, Maitland, FL</div>
+  </div>
+  <p class="trust-founder">I'm Ruel Miller, founder of CyberDadKit. I'm a U.S. Marine Corps veteran with CompTIA Security+ and past hands-on SOC experience, and I'm a dad. I built this kit to give my family, and yours, a clear plan for staying safer online.</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SHIELD KIT CTA
+═══════════════════════════════════════ -->
+<section class="kit-section" id="kit">
+  <div class="kit-inner">
+    <div>
+      <div class="kit-eyebrow">Digital Download · PDF</div>
+      <h2 class="kit-title">
+        The<br>
+        <em>CyberDad Shield Kit</em>
+      </h2>
+      <p class="kit-desc">
+        A 51-page, plain-English guide that shows you the exact settings to change on the phones, tablets, computers, Wi-Fi and game consoles in your house. Built for parents with no technical background.
+      </p>
+      <!-- Kit list: Product M-D18 section 2 (COPY.md sha256 7503b0b0…a85e); each line maps to kit v3.4. -->
+      <ul class="kit-checklist">
+        <li><span class="kit-check">✓</span>Device setup guides for kids' iPhones, iPads, Android phones, Windows PCs, Macs and game consoles</li>
+        <li><span class="kit-check">✓</span>Password vault walkthrough, step by step, plus two-step verification and passkeys</li>
+        <li><span class="kit-check">✓</span>Scam and phishing guide, including AI voice-clone scams and a family safe word</li>
+        <li><span class="kit-check">✓</span>Home network checklist for your router, Wi-Fi and guest network</li>
+        <li><span class="kit-check">✓</span>Printable Family Tech Agreement and a kids' rules poster</li>
+        <li><span class="kit-check">✓</span>Social media safety checklists for Instagram, Facebook, TikTok, Snapchat, YouTube, Roblox and Discord</li>
+        <li><span class="kit-check">✓</span>Emergency plan for a hacked account, a stolen phone or lost money</li>
+        <li><span class="kit-check">✓</span>30-Day Action Plan of short daily steps, so it actually gets done</li>
+      </ul>
+      <p class="kit-bonus">Also included: the 3 Fast Wins sheet, a one-page list of the first three things to do.</p>
+      <div class="kit-actions">
+        <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit">
+          Get the CyberDad Shield Kit, $47 →
+        </a>
+        <span class="kit-guarantee">🔒 30-day full refund · <a href="/refund-policy/">Refund policy</a></span>
+      </div>
+      <!-- "After you buy" wording is limited to what the live MailerLite order-confirmation template says
+           (saved copy: /workspace/cdk/product/M-D16/qa/oc-live.txt, checked 8:31 PM ET Oct 21, 2026):
+           kit PDF + 3 Fast Wins download links in the order confirmation email + 30-day full refund of what you paid. No time promises.
+           Steps: Product M-D18 section 5. -->
+      <div class="kit-after">
+        <div class="kit-after-title">What happens after you buy</div>
+        <ol class="kit-steps">
+          <li>Check out securely for $47.</li>
+          <li>We email your order confirmation with download links for the CyberDad Shield Kit (PDF) and the 3 Fast Wins sheet.</li>
+          <li>Can't find it? Check your Spam/Junk folder and, in Gmail, the Promotions tab, or email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</li>
+          <li>Not right for your family? Email within 30 days for a full refund of what you paid.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="kit-card">
+      <!-- Who it's for: M-D17 section 4 (Product draft); publishing needs Ruel's approval. -->
+      <p class="kit-for">For parents who want their family's devices set up safely but don't know where to start. No tech background needed.</p>
+      <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-cover-1200.webp" type="image/webp"><img class="kit-cover" src="/assets/img/home-trust/cdk-shield-kit-cover-1200.png" width="1200" height="1616" loading="lazy" decoding="async" alt="Cover of the CyberDad Shield Kit PDF, version 3.5, October 2026, by Ruel Miller of CyberDadKit, with an orange shield and checkmark on a navy background."></picture>
+      <div class="kit-price-label">One-time purchase</div>
+      <div class="kit-price">$47</div>
+      <div class="kit-price-sub">Digital download (PDF) · no subscription</div>
+      <hr class="kit-divider">
+      <a href="https://checkout.mailerlite.com/checkout/4435" target="_blank" class="btn-kit" style="display:block; text-align:center;">
+        Get the CyberDad Shield Kit, $47 →
+      </a>
+      <!-- Product M-D18 sections 6 and 7 -->
+      <p class="kit-card-note">Questions before you buy? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
+      <p class="kit-card-note kit-signoff">Made by Ruel Miller, U.S. Marine Corps veteran, CompTIA Security+ | Founder, CyberDadKit</p>
+    </div>
+  </div>
+</section>
+
+{% include testimonials.html %}
+
+<!-- ═══════════════════════════════════════
+     LOOK INSIDE (P35). Replaces the auto-generated "Latest guides" grid: its 6 newest-post cards repeated
+     2 titles 5 times, and none of the 6 titles matched its URL (evidence/p35/REPORT.md).
+     Images: Product M-D29 exports of real kit v3.5 pages (product/exports/home-trust, MANIFEST.md; alt text and captions
+     from the manifest). PNG + WebP, 1200x1553. p23 and p12 dropped in the CoS revision (p12 shows example amounts/numbers; evidence/p35/REPORT.md).
+═══════════════════════════════════════ -->
+<section class="preview-section" id="inside" aria-labelledby="inside-title">
+  <div class="section-wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Look inside</div>
+        <h2 class="section-title" id="inside-title">Real pages from the CyberDad Shield Kit</h2>
+        <p class="preview-intro">Four of the kit's 51 pages, shown smaller than actual size.</p>
+      </div>
+    </div>
+    <ul class="preview-grid">
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p31-incident-playbooks-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p31-incident-playbooks-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page from the Emergency Tech Plan showing Playbook 1 email account hacked, Playbook 2 social media account hacked, and Playbook 3 lost or stolen phone, as checkbox steps."></picture>
+        <figcaption><strong>Module 6: Emergency Tech Plan playbooks</strong>Module 6: step-by-step playbooks for a hacked account or a lost phone.</figcaption>
+      </figure></li>
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p16-wifi-router-checklist-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p16-wifi-router-checklist-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page titled &quot;WiFi Security Checklist&quot; with checkbox items for router encryption, Wi-Fi passphrase, network name, guest network and family DNS filtering."></picture>
+        <figcaption><strong>Module 3: WiFi Security Checklist</strong>Module 3: home Wi-Fi and router settings, in plain English.</figcaption>
+      </figure></li>
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p19-family-tech-agreement-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p19-family-tech-agreement-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page titled &quot;Our Family Tech Agreement&quot;, a printable fill-in table of device times, overnight charging, apps, games, AI chatbots and spending rules."></picture>
+        <figcaption><strong>Module 4: Our Family Tech Agreement</strong>Module 4: a printable family tech agreement you fill in together.</figcaption>
+      </figure></li>
+      <li><figure class="preview-card">
+        <picture><source srcset="/assets/img/home-trust/cdk-shield-kit-p39-iphone-ipad-checklist-1200.webp" type="image/webp"><img src="/assets/img/home-trust/cdk-shield-kit-p39-iphone-ipad-checklist-1200.png" width="1200" height="1553" loading="lazy" decoding="async" alt="Kit page titled &quot;Child's iPhone or iPad checklist&quot;, a checkbox list of Screen Time, Ask to Buy, website filter, Communication Safety and Find My settings."></picture>
+        <figcaption><strong>Module 7: Child's iPhone or iPad checklist</strong>Module 7: a checkbox list for setting up a child's iPhone or iPad.</figcaption>
+      </figure></li>
+    </ul>
+    <p class="preview-note"><a href="/assets/img/home-trust/cdk-shield-kit-p31-incident-playbooks-1200.png">See a sample page at full size</a> (the hacked-account and lost-phone playbooks). Want the whole kit? <a href="#kit">See the price and what happens after you buy</a>.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FAQ (P35). Answers use only facts already on this site, the refund policy, the terms of sale and the kit itself
+     (age add-ons: kit v3.5 Family Tech Agreement). No stats, no time promises.
+═══════════════════════════════════════ -->
+<section class="faq-section" id="faq" aria-labelledby="faq-title">
+  <div class="section-wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Questions</div>
+        <h2 class="section-title" id="faq-title">Frequently asked questions</h2>
+      </div>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Which devices does it cover?</summary>
+        <div class="faq-answer">
+          <p>Kids' iPhones, iPads, Android phones, Windows PCs, Macs and game consoles, plus your home router, Wi-Fi and guest network.</p>
+          <p>The social media checklists cover Instagram, Facebook, TikTok, Snapchat, YouTube, Roblox and Discord.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Who is it for?</summary>
+        <div class="faq-answer">
+          <p>Parents who want their family's accounts and devices set up safely but don't know where to start. The printable Family Tech Agreement includes add-ons for ages 5 to 8, 9 to 12 and 13 to 17.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>I'm not techy. Can I follow it?</summary>
+        <div class="faq-answer">
+          <p>It's built for parents with no technical background. The steps are in plain English and tell you which settings to change, one at a time.</p>
+          <p>Questions before you buy? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How current is it?</summary>
+        <div class="faq-answer">
+          <p>The current edition of the kit was updated in October 2026.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What do I get, and how is it delivered?</summary>
+        <div class="faq-answer">
+          <p>Two PDFs: the 51-page CyberDad Shield Kit (7 Quick-Action Modules, a 30-Day Action Plan, a sources appendix and a glossary) and the 1-page 3 Fast Wins quick-start sheet.</p>
+          <p>After checkout, your order confirmation email has download links for both. Can't find it? Check your Spam/Junk folder and, in Gmail, the Promotions tab, or email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How much is it? Is it a subscription?</summary>
+        <div class="faq-answer">
+          <p>$47, one time. There's no subscription.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What if it isn't right for my family?</summary>
+        <div class="faq-answer">
+          <p>The kit comes with a 30-day full refund. Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> within 30 days of your purchase for a full refund of what you paid. A reason is welcome but not required. See the <a href="/refund-policy/">Refund policy</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I share it with friends?</summary>
+        <div class="faq-answer">
+          <p>The kit is for personal and family use. Please don't resell, share or distribute it without written permission. See the <a href="/terms-of-sale/">Terms of Sale</a>.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FREE CHECKLIST SIGNUP + QUICK WINS
+═══════════════════════════════════════ -->
+<div class="content-sidebar signup-section">
+
+    <!-- Email Signup -->
+    <div class="sidebar-card cdk-signup-card">
+      <div class="sidebar-card-head">
+        <div class="sidebar-card-title">Get the free checklist</div>
+        <div class="sidebar-card-sub">Free · Unsubscribe anytime</div>
+      </div>
+      <div class="sidebar-card-body">
+        <div class="email-form-wrap">
+          <p>A 2-page family tech safety checklist, plus a few short emails with tips from the CyberDad Shield Kit.</p>
+        </div>
+
+        <!-- MailerLite embedded form: "CyberDad Free Tech Checklist" (slug KxzppG, form id 163100466988713175),
+             ported from int/all 244479d. Adds subscribers to group FREE_DOWNLOAD (double opt-in), which starts the
+             checklist workflow. Rendered by the MailerLite universal script loaded at the end of this page. -->
+        <span id="kit-signup." aria-hidden="true" style="display:block;scroll-margin-top:72px"></span><!-- M-D21: alias for sent blurb links ending "#kit-signup." -->
+        <div id="kit-signup">
+          <div class="ml-embedded" id="ml-form" data-form="KxzppG"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Quick Wins -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">
+        <div class="sidebar-card-title">Do these today</div>
+        <div class="sidebar-card-sub">5 quick wins for your family</div>
+      </div>
+      <div class="sidebar-card-body">
+        <ul class="tip-list">
+          <li>Turn on two-factor authentication for all family email accounts</li>
+          <li>Check if your router firmware is up to date</li>
+          <li>Review your child's privacy settings on Instagram or TikTok</li>
+          <li>Set up a family password manager (Bitwarden is free)</li>
+          <li>Create a family rule about sharing personal info online</li>
+        </ul>
+      </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer class="cd-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">CyberDadKit</div>
+      <div class="footer-brand-desc">
+        Practical cybersecurity for families who want real protection without the jargon. Written by a parent, for parents.
+      </div>
+      <a href="mailto:ruel@getcyberdadkit.com" class="footer-email">ruel@getcyberdadkit.com</a>
+      <div class="footer-address" style="font-size:0.82rem; color:#64748b; margin-top:0.5rem;">Mailing address: PO Box 940061, Maitland, FL 32794, United States of America</div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Start here</div>
+      <ul class="footer-links">
+        <li><a href="#inside">Look inside the kit</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kit-signup">Free family tech safety checklist</a></li>
+        <li><a href="#kit">CyberDad Shield Kit — $47</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">CyberDadKit</div>
+      <ul class="footer-links">
+        <li><a href="/about">About</a></li>
+        <li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li>
+        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+        <li><a href="/cyberdadkit-privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="/refund-policy/">Refund policy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 CyberDadKit. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/cyberdadkit-privacy-policy.html">Privacy</a>
+      <a href="/terms-of-sale/">Terms of Sale</a>
+      <a href="/cookie-policy.html">Cookies</a>
+      <a href="/refund-policy/">Refund</a>
+      <a href="/affiliate-disclosure.html">Affiliate</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MailerLite Universal (account 1632878): renders the KxzppG embedded form above.
+     Same loader as _layouts/default.html on int/all 244479d (fix/sales-path e07840e), guarded so it never loads twice.
+     Popups are turned off on this page: this hotfix adds the embedded form only. -->
+<script>
+  if (!window.ml) {
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('enablePopups', false);
+    ml('account', '1632878');
+  }
+</script>
+<!-- Honeypot for the KxzppG form: inline copy of assets/js/cdk-honeypot.js (R6 fix/ga-events d31d092).
+     Client-side only: the trap field has no form owner, so it is never sent to MailerLite;
+     if a bot fills it, the submit is stopped before MailerLite's handler runs. -->
+<script>
+(function () {
+  if (window.__cdkHoneypot) return; window.__cdkHoneypot = 1;
+  var SEL = '.ml-embedded[data-form="KxzppG"] form.ml-block-form';
+  var n = 0, tries = 0;
+  function add() {
+    var forms = document.querySelectorAll(SEL);
+    for (var i = 0; i < forms.length; i++) {
+      var f = forms[i];
+      if (f.querySelector('.cdk-hp')) continue;
+      var id = 'cdk-hp-' + (++n);
+      var w = document.createElement('div');
+      w.className = 'cdk-hp';
+      w.setAttribute('aria-hidden', 'true');
+      w.style.cssText = 'position:absolute!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;';
+      w.innerHTML = '<label for="' + id + '">Leave this field empty</label>' +
+        '<input type="text" id="' + id + '" name="cdk_hp" form="cdk-hp-none" value="" tabindex="-1" autocomplete="off">';
+      f.appendChild(w);
+    }
+    return forms.length;
+  }
+  var t = setInterval(function () { if (add() || ++tries > 60) clearInterval(t); }, 500);
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (!f || !f.matches || !f.matches(SEL)) return;
+    add();
+    var hp = f.querySelector('.cdk-hp input');
+    if (hp && hp.value) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
+})();
+</script>
+
+<!-- GA4 begin_checkout on Shield Kit buy clicks (Revenue M-V13 §2 fix 2). Fire-and-forget:
+     no preventDefault, guarded so the link still opens if gtag is missing or blocked. -->
+<script>
+(function () {
+  if (window.__cdkBeginCheckout) return; window.__cdkBeginCheckout = 1;
+  var links = document.querySelectorAll('a[href*="checkout.mailerlite.com/checkout/4435"]');
+  for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', function () {
+      try {
+        if (typeof window.gtag !== 'function') return;
+        window.gtag('event', 'begin_checkout', {
+          currency: 'USD',
+          value: 47,
+          items: [{ item_id: 'shield-kit', item_name: 'CyberDad Shield Kit', price: 47, quantity: 1 }],
+          transport_type: 'beacon'
+        });
+      } catch (e) {}
+    });
+  }
+})();
+</script>
