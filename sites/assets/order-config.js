@@ -1,17 +1,13 @@
 /* Rebuild order form config (P60, adopted in P59): the ONLY place to wire the /sites/#start order form to a backend.
    GitHub Pages is static, so answers go to a MailerLite embedded form (the owner's existing $0 tool).
 
-   >>> PLACEHOLDER: ACTION_URL is empty on purpose. The MailerLite form does not exist yet. <<<
-   While ACTION_URL is "", the form uses the email fallback: it copies the answers for the visitor and opens their
-   own email app with a FIXED subject and NO body (answers are never put in a mailto: link or any URL).
-
-   To wire it (after the privacy policy is updated to name MailerLite for website requests):
-     1. Create the MailerLite embedded form + fields listed in platform/evidence/p59/ORDER-BACKEND.md.
-     2. Paste its action URL below: https://assets.mailerlite.com/jsonp/<ACCOUNT_ID>/forms/<FORM_ID>/subscribe
-     3. Make sure every FIELDS value matches the field "tag" MailerLite shows in the form's HTML code.
-   Nothing else changes. Do not put API keys or tokens here: the action URL is public by design. */
+   WIRED (P59 v2, Nov 3, 2026): ACTION_URL is the action of MailerLite embedded form "CyberDad Kit Sites order requests"
+   (form 203101607592724479, group "Sites order requests", double opt-in off). FIELDS and EXTRA match the inputs in that
+   form's HTML embed code. If a post fails, times out or MailerLite doesn't answer {"success":true}, the page shows the
+   email fallback (copies the answers, offers a download and an email-app button with a FIXED subject and NO body;
+   answers are never put in a mailto: link or any URL). Set ACTION_URL back to "" to use only the email fallback. Do not put API keys or tokens here: the action URL is public by design. */
 window.SITE_ORDER_CONFIG = {
-  ACTION_URL: "",              // PLACEHOLDER: MailerLite embedded-form action URL (leave "" to keep the email fallback)
+  ACTION_URL: "https://assets.mailerlite.com/jsonp/1632878/forms/203101607592724479/subscribe", // MailerLite embedded-form action (method post)
   MODE: "cors",                // "cors": read MailerLite's {"success":true}; any network/CORS error shows the email fallback
   TIMEOUT_MS: 15000,
   FIELDS: {                    // our input name -> MailerLite field name
