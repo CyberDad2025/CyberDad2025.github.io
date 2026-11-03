@@ -16,7 +16,7 @@ window.SITE_ORDER_CONFIG = {
     business_name:  "fields[company]",        // default field
     current_url:    "fields[current_website]",// custom text field
     package:        "fields[sites_package]",  // custom text field
-    site_care:      "fields[site_care]",      // custom text field ("yes"/"no")
+    site_care:      "fields[site_care]",      // custom text field ("no"/"yes"/"plus"; plus = Site Care Plus)
     what_you_want:  "fields[what_you_want]",  // custom text field
     goals:          "fields[sites_goals]",    // custom text field (optional)
     pages:          "fields[pages_needed]",   // custom text field (optional)

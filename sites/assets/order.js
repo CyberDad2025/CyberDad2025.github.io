@@ -39,7 +39,7 @@
     return {
       business_name: g("business_name"), contact_name: g("contact_name"), email: g("email"),
       current_url: g("current_url") ? normUrl(g("current_url")) : "",
-      package: pkg ? pkg.value : "", site_care: form.elements.site_care && form.elements.site_care.checked ? "yes" : "no",
+      package: pkg ? pkg.value : "", site_care: (form.querySelector('input[name="site_care"]:checked') || { value: "no" }).value,
       what_you_want: g("what_you_want"), goals: g("goals"), pages: g("pages"), deadline: g("deadline"),
       page_count: g("page_count"), budget: g("budget"),
       consent: form.elements.consent && form.elements.consent.checked ? "yes" : "no"
@@ -47,9 +47,10 @@
   }
   var LABELS = { business_name: "Business name", contact_name: "Your name", email: "Email", current_url: "Current website",
     package: "Package", site_care: "Add Site Care", what_you_want: "What I want", goals: "Main goals", pages: "Pages I want", deadline: "Deadline", page_count: "Pages on current site", budget: "Budget range", consent: "OK to email me about this request" };
+  var CARE = { no: "No", yes: "Yes - Site Care $89/mo", plus: "Yes - Site Care Plus $149/mo" };
   function answersText(d) {
     var lines = ["Website rebuild order request", ""];
-    Object.keys(LABELS).forEach(function (k) { if (d[k] !== "" && d[k] != null) lines.push(LABELS[k] + ": " + d[k]); });
+    Object.keys(LABELS).forEach(function (k) { if (d[k] !== "" && d[k] != null) lines.push(LABELS[k] + ": " + (k === "site_care" ? (CARE[d[k]] || d[k]) : d[k])); });
     return lines.join("\n");
   }
 
@@ -182,7 +183,7 @@
     document.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest("a[data-package], a[data-care]"); if (!a) return;
       if (a.hasAttribute("data-package") && pick(form, a.getAttribute("data-package"))) chosen = true;
-      if (a.hasAttribute("data-care") && form.elements.site_care) form.elements.site_care.checked = true;
+      if (a.hasAttribute("data-care")) { var cr = form.querySelector('input[name="site_care"][value="' + (a.getAttribute("data-care") === "plus" ? "plus" : "yes") + '"]'); if (cr) cr.checked = true; }
     });
     var pc = form.elements.page_count, hint = document.getElementById("of-pagecount-hint");
     if (pc) pc.addEventListener("change", function () {
