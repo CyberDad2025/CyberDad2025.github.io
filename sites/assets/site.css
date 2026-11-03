@@ -99,3 +99,28 @@ details p{margin:0 0 1rem;color:var(--mut)}
 @media (min-width:1040px){.cards{grid-template-columns:repeat(3,1fr)}.tiers{grid-template-columns:repeat(4,1fr)}}
 .foot a{color:#fff}.foot nav{margin:.6rem 0}.foot-grid p{margin:.3rem 0}
 .foot nav a,.foot a[data-email]{display:inline-flex;align-items:center;min-height:44px}.linkbtn{padding:9px 0;margin:-9px 0}
+/* P59 order form result panel */
+.order-result{background:#fff;border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;padding:1rem 1.1rem}
+.order-result h3{margin:0 0 .5rem}.order-result h3:focus{outline:none}
+.order-result .btn{margin-top:.5rem}
+/* P59 hero price line, tier buttons, Check-Up text line, comparison table, form hint */
+.hero-price{font-size:1.15rem;margin:.2rem 0 .9rem;color:#fff}.hero-price strong{font-size:1.35rem;color:#fde68a}
+.tier{display:flex;flex-direction:column}.tier ul{flex:1}.tier-cta{margin:1rem 0 0}.tier-cta .btn{width:100%}
+.small-line{font-size:.92rem;color:var(--mut);margin:0 0 1rem}
+.compare{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:.95rem}
+.compare th,.compare td{text-align:left;vertical-align:top;padding:.7rem .8rem;border-bottom:1px solid var(--line)}
+.compare th{background:#f3f1ec;color:var(--brand-d)}.compare td:first-child{color:var(--mut);width:42%}
+.form-hint{font-size:.88rem;color:var(--brand-d);margin:.3rem 0 0;min-height:1.2em}
+/* P60 order form */
+.form fieldset.field{border:0;margin:.85rem 0 0;padding:0;min-width:0}.form fieldset.field legend{font-weight:600;padding:0;margin:0 0 .3rem}
+.form .opt{font-weight:500;color:var(--mut)}.form .req{font-weight:500;color:var(--mut);font-size:.85rem}
+.form .hint{display:block;color:var(--mut);font-size:.88rem;margin:.15rem 0 .25rem}
+.form .err{display:block;color:#b91c1c;font-weight:600;font-size:.9rem;margin:.3rem 0 0}
+.form [aria-invalid=true]{border-color:#b91c1c!important;box-shadow:0 0 0 1px #b91c1c}
+.form .pkg{display:flex;gap:.6rem;align-items:flex-start;font-weight:500;min-height:44px;padding:.55rem .7rem;margin:.35rem 0 0;border:1.5px solid #c8c5bf;border-radius:10px;cursor:pointer}
+.form .pkg input{margin-top:.35rem;width:1.1rem;height:1.1rem;flex:none}.form .pkg:has(input:checked){border-color:var(--brand);background:#eef5f3}
+.form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.order-panel{background:#fff;border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:var(--r);padding:1.4rem}
+.order-panel h3{margin:0 0 .5rem;color:var(--brand-d);font-size:1.3rem}.order-panel ol{padding-left:1.2rem}.order-panel li{margin:.4rem 0}
+.order-panel .btn{width:100%;margin-top:.6rem}.order-panel:focus{outline:3px solid var(--accent);outline-offset:2px}
+.ticks-dark{color:var(--ink);margin:.4rem 0 1rem}

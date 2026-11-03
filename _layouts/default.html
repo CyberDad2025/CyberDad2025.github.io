@@ -15,7 +15,13 @@
     <meta name="robots" content="noindex">
     {%- endif %}
     {%- comment -%} SEO-only: jekyll-seo-tag renders the single <title>, meta description, canonical, Open Graph and Twitter tags in <head>. {%- endcomment %}
+    {%- if page.cd_business_home %}
+    {%- comment -%} P59: on the business homepage only, the title suffix and og:site_name say "CyberDad Kit Sites" instead of the sitewide site.title (_config title unchanged). {%- endcomment -%}
+    {%- capture cd_seo %}{% seo %}{% endcapture %}
+    {{ cd_seo | replace: ' | CyberDadKit</title>', ' | CyberDad Kit Sites</title>' | replace: 'property="og:site_name" content="CyberDadKit"', 'property="og:site_name" content="CyberDad Kit Sites"' }}
+    {%- else %}
     {% seo %}
+    {%- endif %}
 
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
@@ -26,11 +32,13 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "@id": "https://cyberdad2025.github.io/#organization",
-      "name": "CyberDad Kit",
-      "alternateName": "CyberDadKit",
+      "name": "CyberDad Kit LLC",
+      "alternateName": "CyberDad Kit Sites",
       "url": "https://cyberdad2025.github.io",
       "logo": "https://cyberdad2025.github.io/assets/logo.png",
+      {%- unless page.cd_business_home %}
       "description": "Family online safety guidance from Ruel Miller, a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online.",
+      {%- endunless %}
       "founder": {
         "@type": "Person",
         "@id": "https://cyberdad2025.github.io/about/#ruel-miller",
@@ -47,6 +55,8 @@
     }
     </script>
 
+    {%- comment -%} P59: the family-framed Person block is left out on the business homepage (cd_business_home) only. {%- endcomment -%}
+    {%- unless page.cd_business_home %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -86,6 +96,7 @@
       "description": "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online."
     }
     </script>
+    {%- endunless %}
 
     <script type="application/ld+json">
     {
@@ -93,7 +104,7 @@
       "@type": "WebSite",
       "@id": "https://cyberdad2025.github.io/#website",
       "url": "https://cyberdad2025.github.io",
-      "name": "CyberDad Kit",
+      "name": "CyberDad Kit Sites",
       "publisher": {
         "@id": "https://cyberdad2025.github.io/#organization"
       },
