@@ -1,5 +1,5 @@
 /* Request assistant: a scripted, step-by-step chat that collects a website-refresh request.
-   No AI, no third-party service, no live person. Submits through SiteIntake: opens the visitor's own email app with the answers (mailto), nothing is sent by the page. */
+   No AI, no third-party service, no live person. Submits through SiteIntake: copies the answers and opens the visitor's own email app with a blank email (mailto, no answers in the link), nothing is sent by the page. */
 (function () {
   "use strict";
   var STEPS = [
@@ -128,7 +128,7 @@
       if (sent) return; ok.disabled = true;
       window.SiteIntake.submit(answers, "chat-assistant", labels()).then(function (res) {
         var em = (window.SITE_CONFIG || {}).CONTACT_EMAIL;
-        if (res.mode === "mailto") { ok.disabled = false; say("Your email app should open with your answers filled in, addressed to " + em + ". Press Send there to send your request — I can't send it for you." + (res.cut ? " Your answers were long, so the email is shortened; please attach the file from \"Download my answers\"." : "") + " If nothing opened, email " + em + " and attach your downloaded answers."); }
+        if (res.mode === "mailto") { ok.disabled = false; say("Your email app should open with a new email addressed to " + em + ". " + (res.copied ? "Your answers are copied: paste them into the email" : "Your answers aren't in it yet: use \"Download my answers\" and attach the file") + ", then press Send there — I can't send it for you. If nothing opened, email " + em + " and attach your downloaded answers."); }
         else if (res.ok) { sent = true; say("Thanks — your request was received. Our team will reply by email."); }
         else { ok.disabled = false; say("Sorry, that didn't work. Please email " + (em || "us") + " or download your answers."); }
       });

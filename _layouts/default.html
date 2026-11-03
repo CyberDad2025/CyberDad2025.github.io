@@ -19,13 +19,7 @@
 
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5B1LNCPB56"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5B1LNCPB56');
-    </script>
+    {% include ga4.html %}
 
     <script type="application/ld+json">
     {
