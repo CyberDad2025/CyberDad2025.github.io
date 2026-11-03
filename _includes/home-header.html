@@ -25,10 +25,17 @@
     <a href="/" class="cdk-nav-brand">CyberDad Kit Sites</a>
     <ul class="cdk-nav-links">
       {%- comment -%} P59: website-rebuild links only (Ruel, Nov 3: no kit, Shield, $47 or $67 in the nav or CTAs). The kit page stays at /shield-kit/. {%- endcomment %}
+      {%- if page.url == "/" or page.url == "/index.html" %}
+      {%- comment -%} Redesign (Nov 3): homepage nav cut to 3 items plus the one button. Other pages that include this file keep the old links. {%- endcomment %}
+      <li class="cdk-nav-text"><a href="/sites/#pricing">Pricing</a></li>
+      <li class="cdk-nav-text"><a href="/#how">How it works</a></li>
+      <li class="cdk-nav-text"><a href="/#faq-home">FAQ</a></li>
+      {%- else %}
       <li class="cdk-nav-text"><a href="/#included">What's included</a></li>
       <li class="cdk-nav-text"><a href="/sites/#pricing">Pricing</a></li>
       <li class="cdk-nav-text"><a href="/#how">How it works</a></li>
       <li class="cdk-nav-text"><a href="/sites/#examples">Examples</a></li>
+      {%- endif %}
       <li><a href="/sites/#start" class="cdk-nav-cta">Start my website rebuild</a></li>
     </ul>
   </nav>
