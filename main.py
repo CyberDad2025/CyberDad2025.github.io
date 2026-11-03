@@ -429,6 +429,21 @@ def generate_pin_image(title: str, slug: str) -> Path:
 
 # -------- POST WRITING --------
 
+# One plain call to action per post. No kit/product promotion (owner rule, Nov 3 2026):
+# it points only to the website-rebuild order form at /sites/#start.
+CTA_URL = f"{SITE_URL}/sites/#start"
+CTA_TEXT = (
+    "**Run a small business?** CyberDad Kit Sites rebuilds outdated small-business "
+    "websites, with the price shown up front and the scope in writing. "
+    "[Start a website rebuild]({url})"
+)
+
+
+def build_cta_block() -> str:
+    """Return the closing call-to-action block appended to every new post."""
+    return "\n\n---\n\n" + CTA_TEXT.format(url=CTA_URL)
+
+
 def write_post(post: dict, slug: str, image_path: Path, source: dict | None) -> Path:
     today = datetime.date.today().isoformat()
     filename = POSTS_DIR / f"{today}-{slug}.md"
@@ -460,11 +475,7 @@ def write_post(post: dict, slug: str, image_path: Path, source: dict | None) -> 
         f"Last reviewed: {today}."
     )
 
-    cta_block = (
-        f"\n\n---\n\n"
-        f"**Want the full system?** [Get the Shield Kit]({SITE_URL}/shield-kit) — "
-        f"the complete family cybersecurity playbook in one place."
-    )
+    cta_block = build_cta_block()
 
     content = f"""---
 title: "{safe_title}"
