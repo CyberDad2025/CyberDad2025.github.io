@@ -4,21 +4,36 @@
   "use strict";
   function cfg() { return window.SITE_CONFIG || {}; }
 
-  function mailtoFor(body, labels, emailLabels) {
-    var c = cfg(), subj = "Website request: " + (body.answers.business_name || body.answers.legal_name || "my business");
-    var text = answersText(body.answers, labels, true, emailLabels), max = c.MAILTO_MAX || 1800, cut = false;
-    if (text.length > max) { text = text.slice(0, max) + "\n\n[Shortened to fit an email link. I'll attach the full answers file.]"; cut = true; }
-    return { href: "mailto:" + c.CONTACT_EMAIL + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(text), cut: cut };
+  // P57 v3: the mailto link never carries answers (fixed subject, no body), so no answer text is ever put in an href or URL.
+  // The visitor pastes the answers (copied for them when they press send) or attaches the downloaded file.
+  function mailtoFor(source) {
+    var c = cfg(), subj = source === "full-questionnaire" ? "Website intake" : "Website request";
+    return { href: "mailto:" + c.CONTACT_EMAIL + "?subject=" + encodeURIComponent(subj), cut: false };
   }
 
-  // Returns {ok, mode, body, href?, cut?}. Opens the visitor's own mail app (mailto); nothing is sent by this page.
+  // Copies text to the visitor's clipboard during their own click; resolves true/false. Nothing is sent anywhere.
+  function copyText(text) {
+    function legacy() {
+      try {
+        var t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+        document.body.appendChild(t); t.select(); var ok = document.execCommand("copy"); t.remove(); return ok;
+      } catch (e) { return false; }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacy(); });
+    return Promise.resolve(legacy());
+  }
+
+  // Returns {ok, mode, body, href?, copied?, text?}. Copies the answers, then opens the visitor's own mail app with a blank
+  // email (mailto, fixed subject); nothing is sent by this page.
   function submitIntake(payload, source, labels, emailLabels) {
     var body = { source: source, submitted_at: new Date().toISOString(), page: location.pathname, answers: payload };
     var c = cfg();
     if (!c.CONTACT_EMAIL) return Promise.resolve({ ok: false, mode: "none", body: body });
-    var m = mailtoFor(body, labels, emailLabels);
-    if (!window.SITE_NO_NAVIGATE) window.location.href = m.href;
-    return Promise.resolve({ ok: true, mode: "mailto", body: body, href: m.href, cut: m.cut });
+    var m = mailtoFor(source), text = answersText(body.answers, labels, true, emailLabels);
+    return copyText(text).then(function (copied) {
+      if (!window.SITE_NO_NAVIGATE) window.location.href = m.href;
+      return { ok: true, mode: "mailto", body: body, href: m.href, cut: false, copied: copied, text: text };
+    });
   }
 
   // Email version: blank answers are left out and long labels are cut to their short form
@@ -43,7 +58,7 @@
       lines.push((forEmail ? ((emailLabels && emailLabels[k]) || shortLabel(label)) : label) + ": " + (blank ? "(blank)" : v));
     });
     if (forEmail && skipped) lines.push("", "(" + skipped + " question" + (skipped === 1 ? "" : "s") + " left blank.)");
-    if (!forEmail) lines.push("", "Email this file to " + (cfg().CONTACT_EMAIL || "us") + " if your email app didn't open.");
+    if (!forEmail) lines.push("", "Paste these answers into your email to " + (cfg().CONTACT_EMAIL || "us") + ", or attach this file.");
     return lines.join("\n");
   }
 
@@ -98,13 +113,17 @@
         var p = document.createElement("p");
         var em = cfg().CONTACT_EMAIL;
         p.textContent = res.mode === "mailto"
-            ? "Your email app should now open with your answers filled in, addressed to " + em + ". Press Send there to send it — this page doesn't send anything by itself. Nothing opened? Email " + em + " or download your answers below."
-              + (res.cut ? " (Your answers were long, so the email was shortened — please attach the downloaded file.)" : "")
+            ? "Your email app should now open with a new email addressed to " + em + ". "
+              + (res.copied ? "Your answers are copied: paste them into the email" : "Your answers aren't in it yet: use Copy my answers or Download my answers below, then paste them in or attach the file")
+              + ", and press Send there — this page doesn't send anything by itself. Nothing opened? Email " + em + " and paste or attach your answers."
           : res.ok ? "Thanks — your request was received. We'll reply by email."
           : "Sorry, that didn't work. Please email " + (em || "us") + " or download your answers.";
         status.appendChild(p);
         if (res.mode === "mailto") {
           var a = document.createElement("a"); a.href = res.href; a.className = "btn btn-p dl"; a.textContent = "Open my email app again"; status.appendChild(a);
+          var cb = document.createElement("button"); cb.type = "button"; cb.className = "btn btn-o dl"; cb.textContent = "Copy my answers";
+          cb.addEventListener("click", function () { copyText(res.text).then(function (ok) { cb.textContent = ok ? "Answers copied" : "Couldn't copy, use Download my answers"; }); });
+          status.appendChild(cb);
         }
         {
           var b = document.createElement("button"); b.type = "button"; b.className = "btn btn-o dl"; b.textContent = "Download my answers";
