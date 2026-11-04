@@ -2,7 +2,7 @@
 
 > **Protecting families through automated cybersecurity education**
 
-[![Blog Status](https://img.shields.io/badge/Blog-Live-brightgreen)](https://cyberdad2025.github.io)
+[![Blog Status](https://img.shields.io/badge/Blog-Live-brightgreen)](https://getcyberdadkit.com)
 [![Posts Generated](https://img.shields.io/badge/Posts-120+-blue)](#)
 [![Automation](https://img.shields.io/badge/Automation-GitHub%20Actions-orange)](#)
 [![Family Focused](https://img.shields.io/badge/Audience-Families-purple)](#)
@@ -12,7 +12,7 @@
 **CyberDad** is an automated cybersecurity blog that generates **4 daily posts** focused on protecting families online. Using advanced automation, we deliver practical cybersecurity advice that parents can actually understand and implement.
 
 ### 🎯 **Visit Our Live Blog**
-**👉 [cyberdad2025.github.io](https://cyberdad2025.github.io) 👈**
+**👉 [getcyberdadkit.com](https://getcyberdadkit.com) 👈**
 
 ---
 
@@ -119,10 +119,10 @@ Every recommendation is practical for real families with real constraints.
 ### **🔔 Get Instant Cybersecurity Alerts**
 Join **12,000+ families** getting real-time notifications about threats affecting their devices.
 
-**👉 [Subscribe for FREE alerts](https://cyberdad2025.github.io) 👈**
+**👉 [Subscribe for FREE alerts](https://getcyberdadkit.com) 👈**
 
 ### **📱 Follow Our Updates**
-- **📖 Blog**: [cyberdad2025.github.io](https://cyberdad2025.github.io)
+- **📖 Blog**: [getcyberdadkit.com](https://getcyberdadkit.com)
 - **📧 Email**: Get our latest security tips delivered daily
 - **🐙 GitHub**: Follow this repository for technical updates
 
@@ -178,7 +178,7 @@ Join **12,000+ families** getting real-time notifications about threats affectin
 - **💡 Suggest topics** that would help your family
 
 ### **For Parents**
-- **📖 Read our content** at [cyberdad2025.github.io](https://cyberdad2025.github.io)
+- **📖 Read our content** at [getcyberdadkit.com](https://getcyberdadkit.com)
 - **📧 Subscribe** for daily security tips
 - **📱 Share** helpful posts with other parents
 
@@ -197,7 +197,7 @@ Content and automation scripts are designed to help families stay safe online.
 
 ## 🛡️ **Start Protecting Your Family Today**
 
-**👉 [Visit CyberDad Blog](https://cyberdad2025.github.io) 👈**
+**👉 [Visit CyberDad Blog](https://getcyberdadkit.com) 👈**
 
 *Because every family deserves to be safe online.*
 
@@ -209,6 +209,6 @@ Content and automation scripts are designed to help families stay safe online.
 
 *Protecting families through technology*
 
-[![Visit Blog](https://img.shields.io/badge/Visit-CyberDad%20Blog-blue?style=for-the-badge)](https://cyberdad2025.github.io)
+[![Visit Blog](https://img.shields.io/badge/Visit-CyberDad%20Blog-blue?style=for-the-badge)](https://getcyberdadkit.com)
 
 </div>

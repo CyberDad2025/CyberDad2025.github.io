@@ -21,7 +21,7 @@ from openai import OpenAI
 from PIL import Image, ImageDraw, ImageFont
 
 # -------- CONFIG --------
-SITE_URL = "https://cyberdad2025.github.io"
+SITE_URL = "https://getcyberdadkit.com"
 POSTS_DIR = Path("_posts")
 LOG_FILE = Path("logs/posted.json")
 IMAGES_DIR = Path("assets/pins")
