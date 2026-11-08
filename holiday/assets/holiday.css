@@ -1,0 +1,545 @@
+/* CyberDadKit holiday storefront.
+   Local fonts only. No images, no icon fonts, no third-party stylesheets. */
+
+:root {
+  --forest: #244b3d;
+  --forest-deep: #17352a;
+  --pine: #1e4636;
+  --burgundy: #75283d;
+  --burgundy-deep: #5c1e30;
+  --gold: #8c6827;
+  --gold-text: #5e4314;
+  --gold-soft: #e7d3a1;
+  --cream: #f6f1e7;
+  --paper: #fffaf3;
+  --ink: #1c1915;
+  --ink-soft: #3d3832;
+  --line: rgba(28, 25, 21, 0.14);
+  --serif: "Iowan Old Style", Palatino, "Palatino Linotype", "Liberation Serif", "DejaVu Serif", Georgia, "Times New Roman", serif;
+  --sans: "Avenir Next", "Segoe UI", Inter, "Liberation Sans", "Noto Sans", system-ui, sans-serif;
+  --wrap: 1080px;
+  --focus: #6e4e16;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: auto; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(ellipse 70% 40% at 0% -10%, rgba(182, 137, 61, 0.18), transparent 60%),
+    radial-gradient(ellipse 50% 36% at 100% 0%, rgba(109, 36, 52, 0.08), transparent 55%),
+    linear-gradient(180deg, #fbf7f0 0%, var(--cream) 280px);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { max-width: 100%; }
+
+a { color: var(--burgundy-deep); text-underline-offset: 0.18em; }
+
+a:hover { color: var(--burgundy); }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.hday-skip {
+  position: absolute;
+  left: 1rem;
+  top: -5rem;
+  z-index: 20;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+}
+
+.hday-skip:focus { top: 0.75rem; }
+
+.hday-banner {
+  background: var(--burgundy-deep);
+  color: var(--paper);
+}
+
+.hday-banner p {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.hday-banner strong { font-weight: 700; letter-spacing: 0.04em; }
+
+.hday-header {
+  background: var(--forest);
+  color: var(--cream);
+  border-bottom: 3px solid var(--gold);
+}
+
+.hday-header a { color: var(--cream); text-decoration: none; }
+
+.hday-header a:hover { color: var(--gold-soft); }
+
+.hday-header :focus-visible { outline-color: var(--gold-soft); }
+
+.hday-bar {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+}
+
+.hday-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.hday-brand-name {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.hday-brand-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+.hday-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hday-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+.hday-nav a:hover { background: rgba(231, 211, 161, 0.12); }
+
+.hday-main {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3rem;
+}
+
+.hday-hero {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.hday-kicker {
+  margin: 0 0 0.75rem;
+  color: var(--gold-text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--forest);
+}
+
+h1 {
+  margin: 0 0 0.9rem;
+  font-size: clamp(2.1rem, 5vw, 3.35rem);
+  letter-spacing: -0.02em;
+}
+
+.hday-lede {
+  margin: 0 0 1.25rem;
+  max-width: 38rem;
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+}
+
+.hday-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.hday-price-amount {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5vw, 3.1rem);
+  color: var(--burgundy);
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+
+.hday-price-meta {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+.hday-buy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  min-width: 12.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  border: 1.5px dashed var(--burgundy);
+  background: transparent;
+  color: var(--ink);
+  font: 600 1rem var(--sans);
+  letter-spacing: 0.01em;
+  cursor: not-allowed;
+}
+
+.hday-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.8rem 1.25rem;
+  border-radius: 999px;
+  background: var(--burgundy);
+  color: #fffaf3;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hday-download:hover { background: var(--burgundy-deep); color: #fffaf3; }
+
+.hday-buy-note {
+  margin: 0.75rem 0 0;
+  max-width: 38rem;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+.hday-shot {
+  margin: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 0.75rem 0.75rem 0.9rem;
+  box-shadow: 0 16px 36px rgba(23, 53, 42, 0.1);
+}
+
+.hday-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.hday-shot figcaption {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0 0 0.65rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.hday-shot figcaption strong {
+  color: var(--forest);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+
+.hday-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.7rem;
+  width: fit-content;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--burgundy);
+  color: var(--paper);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hday-gallery {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.hday-games {
+  display: grid;
+  gap: 1rem;
+}
+
+.hday-games ol {
+  margin: 0.35rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.hday-games li { margin: 0.28rem 0; }
+
+.hday-games h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.hday-path {
+  margin: 0.8rem 0 0;
+  padding: 0.9rem 1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.hday-path code {
+  font-family: "Cascadia Mono", "Liberation Mono", ui-monospace, monospace;
+  font-size: 0.86rem;
+}
+
+code, .hday-main a, .hday-footer a { overflow-wrap: anywhere; }
+
+.hday-section { margin-top: 2.75rem; }
+
+.hday-section h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+
+.hday-section > p { max-width: 42rem; }
+
+.hday-facts {
+  display: grid;
+  gap: 0.85rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hday-facts li {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--gold);
+  border-radius: 16px;
+  padding: 1rem 1.05rem 1.05rem;
+}
+
+.hday-facts h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.15rem;
+}
+
+.hday-facts p { margin: 0; color: var(--ink-soft); }
+
+.hday-spec {
+  margin: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.hday-spec > div {
+  display: grid;
+  gap: 0.15rem 1rem;
+  padding: 0.9rem 1.05rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hday-spec > div:last-child { border-bottom: 0; }
+
+.hday-spec dt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+
+.hday-spec dd { margin: 0; }
+
+.hday-formats {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hday-formats li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  background: var(--paper);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.hday-formats strong {
+  color: var(--burgundy-deep);
+  font-weight: 650;
+  font-size: 0.92rem;
+}
+
+.hday-faq details {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin: 0 0 0.65rem;
+}
+
+.hday-faq summary {
+  cursor: pointer;
+  font-weight: 650;
+  padding: 0.9rem 1rem;
+  min-height: 48px;
+  color: var(--forest);
+}
+
+.hday-faq details p {
+  margin: 0;
+  padding: 0 1rem 1rem;
+  color: var(--ink-soft);
+}
+
+.hday-links {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hday-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 600;
+}
+
+.hday-steps {
+  margin: 0.6rem 0 0;
+  padding-left: 1.3rem;
+  max-width: 42rem;
+}
+
+.hday-steps li { margin: 0.45rem 0; }
+
+.hday-steps code,
+.hday-path code { overflow-wrap: anywhere; }
+
+.hday-links span { color: var(--ink-soft); font-weight: 400; }
+
+.hday-footer {
+  background: var(--forest-deep);
+  color: var(--gold-soft);
+  padding: 1.75rem 1.25rem 2.25rem;
+}
+
+.hday-footer a { color: var(--paper); }
+
+.hday-footer :focus-visible { outline-color: var(--gold-soft); }
+
+.hday-footer-inner { max-width: var(--wrap); margin: 0 auto; }
+
+.hday-footer p { margin: 0.35rem 0; }
+
+.hday-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  margin-top: 0.8rem;
+}
+
+.hday-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.hday-callout {
+  background: #f3e6c4;
+  border-left: 4px solid var(--burgundy);
+  border-radius: 0 12px 12px 0;
+  padding: 0.9rem 1rem;
+  color: var(--ink);
+}
+
+.hday-callout p { margin: 0; }
+
+#gather-play-refund-wording {
+  max-width: 42rem;
+  margin: 0 0 1rem;
+  padding: 1rem 1.1rem;
+  background: var(--paper);
+  border-left: 4px solid var(--burgundy);
+  border-radius: 0 12px 12px 0;
+  font-size: 1.08rem;
+}
+
+.hday-delivery-hero h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+
+@media (min-width: 720px) {
+  .hday-facts { grid-template-columns: repeat(3, 1fr); }
+  .hday-spec > div { grid-template-columns: 11rem 1fr; align-items: baseline; }
+  .hday-formats { grid-template-columns: 1fr 1fr; }
+  .hday-games { grid-template-columns: 1fr 1fr; }
+  .hday-gallery { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 880px) {
+  .hday-hero { grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.72fr); gap: 2.25rem; }
+  .hday-main { padding-top: 2.5rem; }
+  .hday-facts { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .hday-bar { padding: 0.45rem 1rem 0.35rem; }
+  .hday-nav a { padding: 0 0.55rem; font-size: 0.92rem; }
+  .hday-lede { font-size: 1.02rem; }
+  .hday-main { padding-top: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+@media print {
+  .hday-banner, .hday-header, .hday-footer { background: white; color: black; }
+  .hday-buy { border-style: solid; }
+}

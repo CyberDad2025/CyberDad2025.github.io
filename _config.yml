@@ -120,6 +120,9 @@ exclude:
   - assets/js/complete-optimizer.js
   - cyberdad-events.js
   - cyberdadkit-privacy-policy.zip
+  # Holiday storefront checks and the integrator manifest. Not part of the public site.
+  - tests
+  - holiday/product.json
 
 # Include files
 include:

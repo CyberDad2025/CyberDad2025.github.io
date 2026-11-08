@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Unlisted staging page for the gathering-games bundle. A static URL, not a paywall.
+Disallow: /holiday/delivery/
 
 Sitemap: https://getcyberdadkit.com/sitemap.xml
