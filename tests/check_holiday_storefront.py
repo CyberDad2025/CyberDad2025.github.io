@@ -261,6 +261,9 @@ def main() -> int:
     check("disabled" not in pay[0], "product checkout anchor is not disabled")
     check("$7.99" in element_text(store_html, "holiday-checkout") and "USD" in element_text(store_html, "holiday-checkout"), "product button names $7.99 USD")
     check(US_ELIGIBILITY in store_html, "product page states US eligibility")
+    check("Stripe checkout displays Ruel Miller." in store_html, "product page names the checkout display name")
+    check(store_html.find("Stripe checkout displays Ruel Miller.") < store_html.find('id="holiday-checkout"'), "merchant notice is before the product pay link")
+    check("CyberDad Kit LLC" in store_html and 'href="/holiday/refund/"' in store_html, "seller and refund stay on the product page")
     check('href="/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"' in delivery_html, "delivery ZIP href is present")
     check('name="robots" content="noindex"' in delivery_html, "delivery noindex")
     check("sitemap: false" in DELIVERY.read_text(encoding="utf-8"), "delivery left out of the sitemap")
@@ -329,6 +332,8 @@ def main() -> int:
     check("$7.99" in element_text(sample_html, "holiday-checkout") and "USD" in element_text(sample_html, "holiday-checkout"), "sample button names $7.99 USD")
     check(US_ELIGIBILITY in sample_html and US_ELIGIBILITY in refund_html, "sample and refund state US eligibility")
     check("not limited by country" in sample_html, "free sample is not country-limited")
+    check("Stripe checkout displays Ruel Miller." in sample_html, "sample page names the checkout display name")
+    check(sample_html.find("Stripe checkout displays Ruel Miller.") < sample_html.find('id="holiday-checkout"'), "merchant notice is before the sample pay link")
     check(sha256(ROOT / PIN_REL) == PIN_SHA, "pin bytes match the attached file")
     check("Table Talk Trails" in sample_html and "$7.99 USD" in sample_html, "sample names the free game and the bundle price")
     for anchor in sample.anchors:
