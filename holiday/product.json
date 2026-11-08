@@ -41,11 +41,17 @@
     "16 maze and logic answer keys"
   ],
   "checkout": {
-    "enabled": false,
-    "payment_link": null,
+    "enabled": true,
+    "payment_link": "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405",
+    "price_id": "price_1UZd0hCY2w1YvHLkWwtePVAe",
+    "product_id": "prod_VaodZs1cbYBDdf",
+    "livemode": true,
+    "amount": "7.99",
+    "currency": "USD",
+    "type": "one_time",
     "element_id": "holiday-checkout",
-    "page": "/holiday/index.html",
-    "note": "Do not create Stripe objects from this file. Leave checkout disabled until Ops supplies a verified one-time Payment Link on the existing Stripe account. Then replace the disabled button with an anchor whose href is that exact URL."
+    "pages": ["/holiday/", "/holiday/sample/"],
+    "eligibility": "Available only to customers located in the United States."
   },
   "delivery": {
     "path": "/holiday/delivery/",
@@ -85,6 +91,14 @@
       "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
       "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": "3f9bb5ac9f5c9d83b64df2bc06c82f5bcf80540daf538c2e593feabac7954c3a"
     }
+  },
+  "marketing_pin": {
+    "repo_path": "holiday/assets/pins/01-thanksgiving-host.png",
+    "canonical_url": "https://getcyberdadkit.com/holiday/assets/pins/01-thanksgiving-host.png",
+    "width": 1000,
+    "height": 1500,
+    "sha256": "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e",
+    "caption_link": "https://getcyberdadkit.com/holiday/sample/"
   },
   "previews": [
     {

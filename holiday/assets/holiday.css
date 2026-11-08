@@ -222,7 +222,7 @@ h1 {
   cursor: not-allowed;
 }
 
-.hday-download {
+.hday-download, .hday-pay {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -235,7 +235,17 @@ h1 {
   text-decoration: none;
 }
 
-.hday-download:hover { background: var(--burgundy-deep); color: #fffaf3; }
+.hday-pay:hover, .hday-download:hover { background: var(--burgundy-deep); color: #fffaf3; }
+
+.hday-eligibility {
+  margin: 0 0 0.75rem;
+  max-width: 40rem;
+  padding: 0.75rem 0.95rem;
+  background: #f3e6c4;
+  border-left: 4px solid var(--burgundy);
+  color: var(--ink);
+  font-weight: 700;
+}
 
 .hday-buy-note {
   margin: 0.75rem 0 0;
