@@ -324,7 +324,7 @@ def main() -> int:
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"sample link {href}")
     public_html = store_html + delivery_html + refund_html + sample_html
-    internal = re.compile(r"review draft|launch pass|not deployed|\bproposed\b|\bOps\b", re.I)
+    internal = re.compile(r"\bdraft\b|launch pass|not deployed|\bproposed\b|\bOps\b", re.I)
     check(not internal.search(public_html), "public pages omit internal status wording")
 
     zip_path = ROOT / ZIP_REL
