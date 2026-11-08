@@ -1,0 +1,136 @@
+{
+  "schema": "cyberdadkit.holiday-product/1",
+  "id": "gather-and-play-thanksgiving-christmas",
+  "public_name": "Gather & Play: Thanksgiving + Christmas Gathering Games",
+  "brand": "CyberDadKit",
+  "status": "review_draft_not_for_sale",
+  "approval": "File QA passed for the customer ZIP. Launch is not authorized.",
+  "summary": "Printable gathering games for Thanksgiving and Christmas. Four PDF formats hold the same 12 games. Each PDF is 16 pages.",
+  "price": {
+    "amount": "7.99",
+    "currency": "USD",
+    "type": "one_time",
+    "status": "final_public_price",
+    "recurring": false
+  },
+  "counts": {
+    "games": 12,
+    "thanksgiving_games": 6,
+    "christmas_winter_games": 6,
+    "pdf_formats": 4,
+    "pages_per_pdf": 16,
+    "same_games_in_every_pdf": true,
+    "unique_pages": 16
+  },
+  "page_map": [
+    "1 cover",
+    "2 host guide, print instructions, provisional use terms",
+    "3 Table Talk Trails",
+    "4 Harvest Category Sprint",
+    "5 Thanksgiving Mix-Up",
+    "6 Pass-the-Plate Sketch",
+    "7 Gathering Forecast",
+    "8 Thankful Alphabet Relay",
+    "9 Winter Word Hunt",
+    "10 Parcel Clues",
+    "11 Snowfall Story Switch",
+    "12 Ribbon Route",
+    "13 Seasonal Priority Shuffle",
+    "14 Holiday Table Logic",
+    "15 scramble and word-hunt answer keys",
+    "16 maze and logic answer keys"
+  ],
+  "checkout": {
+    "enabled": false,
+    "payment_link": null,
+    "element_id": "holiday-checkout",
+    "page": "/holiday/index.html",
+    "note": "Do not create Stripe objects from this file. Leave checkout disabled until Ops supplies a verified one-time Payment Link on the existing Stripe account. Then replace the disabled button with an anchor whose href is that exact URL."
+  },
+  "delivery": {
+    "path": "/holiday/delivery/",
+    "repo_file": "holiday/delivery/index.html",
+    "indexable": false,
+    "robots": "noindex",
+    "robots_txt": "Disallow: /holiday/delivery/",
+    "assets_present": true,
+    "access_control": "none",
+    "after_completion_redirect_url": "https://getcyberdadkit.com/holiday/delivery/",
+    "note": "Static URL. Not authentication, not a paywall, and not DRM. Payment is not enforced by this URL."
+  },
+  "final_customer_file": {
+    "ready": true,
+    "element_id": "customer-download",
+    "sha256": "bc2e9c572f1e17af32cfbfc8ea17838878e5ccca1f0c45e066fed09ffc571313",
+    "repo_path": "holiday/delivery/files/CyberDadKit-Gather-and-Play.zip",
+    "public_url": "https://getcyberdadkit.com/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip",
+    "contents": [
+      "US-Letter/CyberDadKit-Gather-and-Play-US-Letter-Color-Release.pdf",
+      "US-Letter/CyberDadKit-Gather-and-Play-US-Letter-Low-Ink-Release.pdf",
+      "A4/CyberDadKit-Gather-and-Play-A4-Color-Release.pdf",
+      "A4/CyberDadKit-Gather-and-Play-A4-Low-Ink-Release.pdf"
+    ]
+  },
+  "sample": {
+    "route": "/holiday/sample/",
+    "indexable": true,
+    "email_gate": false,
+    "game": "Table Talk Trails",
+    "source_page": 3,
+    "files": [
+      "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf",
+      "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf"
+    ],
+    "sha256": {
+      "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
+      "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": "3f9bb5ac9f5c9d83b64df2bc06c82f5bcf80540daf538c2e593feabac7954c3a"
+    }
+  },
+  "previews": [
+    {
+      "page": 1,
+      "role": "cover",
+      "src": "/holiday/assets/previews/CyberDadKit-preview-page-01.png",
+      "repo_path": "holiday/assets/previews/CyberDadKit-preview-page-01.png",
+      "width": 1394,
+      "height": 1804,
+      "sha256": "89fcf00322203cfe543ce7f32cc16adc1aab9d620acdb780eec72d12b9b50e09"
+    },
+    {
+      "page": 9,
+      "role": "Winter Word Hunt",
+      "src": "/holiday/assets/previews/CyberDadKit-preview-page-09.png",
+      "repo_path": "holiday/assets/previews/CyberDadKit-preview-page-09.png",
+      "width": 1394,
+      "height": 1804,
+      "sha256": "86a48f58cc563fa4076749c0770e09af6a31318ad096d92d971c41ab2c747a1c"
+    }
+  ],
+  "preview_note": "Renders of final US Letter color PDF pages 1 and 9. Not the customer download.",
+  "support_email": "ruel@getcyberdadkit.com",
+  "support_route_status": "existing_contact",
+  "refund_route_status": "wording_set_not_a_launch_pass",
+  "launch_pass": false,
+  "legal_name": "CYBERDAD KIT LLC",
+  "florida_document_number": "L25000463998",
+  "mailing_address": "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794",
+  "refund_wording": "Gather & Play is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Gather & Play and does not limit your statutory rights.",
+  "printing_license": "Personal, noncommercial gatherings and internal office use. No resale, rehosting, or commercial event service.",
+  "policy_routes": {
+    "home": "/",
+    "contact": "/contact/",
+    "gather_and_play": "/holiday/",
+    "gather_and_play_sample": "/holiday/sample/",
+    "gather_and_play_delivery": "/holiday/delivery/",
+    "gather_and_play_refund": "/holiday/refund/",
+    "intended_policy_url_after_deploy": "https://cyberdad2025.github.io/holiday/refund/",
+    "deployed": false,
+    "refund_policy_shield_kit_unchanged": "/refund-policy/",
+    "terms_of_sale_shield_kit_unchanged": "/terms-of-sale/",
+    "privacy": "/cyberdadkit-privacy-policy.html",
+    "cookies": "/cookie-policy.html",
+    "sites": "/sites/",
+    "sites_refunds_unchanged": "/sites/refund/",
+    "shield_kit": "/shield-kit/"
+  }
+}
