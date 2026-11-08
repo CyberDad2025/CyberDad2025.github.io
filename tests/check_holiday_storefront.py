@@ -29,6 +29,10 @@ PREVIEW_HASHES = {
         "86a48f58cc563fa4076749c0770e09af6a31318ad096d92d971c41ab2c747a1c",
 }
 ZIP_SHA = "bc2e9c572f1e17af32cfbfc8ea17838878e5ccca1f0c45e066fed09ffc571313"
+PAYMENT_URL = "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"
+US_ELIGIBILITY = "Available only to customers located in the United States."
+PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
+PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
 ZIP_REL = "holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"
 SAMPLE_PDFS = {
     "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
@@ -192,8 +196,12 @@ def main() -> int:
     check(manifest["counts"]["pages_per_pdf"] == 16, "16 pages each")
     check(manifest["counts"]["unique_pages"] == 16, "unique page count stays 16")
     check(manifest["counts"]["same_games_in_every_pdf"] is True, "same games in every PDF")
-    check(manifest["checkout"]["enabled"] is False, "checkout disabled in manifest")
-    check(manifest["checkout"]["payment_link"] is None, "no payment link in manifest")
+    check(manifest["checkout"]["enabled"] is True, "checkout enabled in manifest")
+    check(manifest["checkout"]["payment_link"] == PAYMENT_URL, "manifest payment link is the live URL")
+    check(manifest["checkout"]["livemode"] is True, "manifest records live mode")
+    check(manifest["marketing_pin"]["sha256"] == PIN_SHA, "manifest pin hash")
+    check(manifest["marketing_pin"]["canonical_url"] == "https://getcyberdadkit.com/holiday/assets/pins/01-thanksgiving-host.png", "canonical pin URL")
+    check(manifest["marketing_pin"]["caption_link"] == "https://getcyberdadkit.com/holiday/sample/", "pin caption link is the sample page")
     check(manifest["final_customer_file"]["ready"] is True, "customer ZIP is the release file")
     check(manifest["final_customer_file"]["sha256"] == ZIP_SHA, "manifest ZIP hash")
     check(manifest["price"]["currency"] == "USD", "public price currency is USD")
@@ -220,7 +228,10 @@ def main() -> int:
         if page_name == "delivery":
             check(html.count('href="/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"') == 1, "delivery links the customer ZIP once")
         check("download=" not in html, f"{page_name} has no download attribute")
-        check("buy.stripe.com" not in html and "checkout.stripe.com" not in html, f"{page_name} has no invented Stripe URL")
+        if page_name == "storefront":
+            check(html.count('href="' + PAYMENT_URL + '"') == 1, "storefront has one live payment link")
+        if page_name == "delivery":
+            check("buy.stripe.com" not in html, "delivery page does not sell again")
         check(not re.search(r'href=["\']#["\']', html), f"{page_name} has no empty hash href")
         for img in doc.images:
             src = img.get("src", "")
@@ -233,6 +244,9 @@ def main() -> int:
             if href.startswith("#"):
                 check(href[1:] in doc.ids, f"{page_name} anchor {href}")
                 continue
+            if href == PAYMENT_URL:
+                check(page_name == "storefront", "live payment link stays on the product page")
+                continue
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{page_name} link {href}")
 
@@ -242,14 +256,14 @@ def main() -> int:
     for game in GAMES:
         check(game in store_html, f"lists {game}")
 
-    buttons = [b for b in store.buttons if b.get("id") == "holiday-checkout"]
-    check(len(buttons) == 1, "one checkout control")
-    if buttons:
-        button = buttons[0]
-        check("disabled" in button, "checkout button disabled")
-        check("href" not in button, "checkout button has no href")
-        check(button.get("aria-disabled") == "true", "checkout aria-disabled")
-    check('id="checkout"' in store_html and 'data-payment-link=""' in store_html, "empty payment-link slot")
+    pay = [a for a in store.anchors if a.get("id") == "holiday-checkout"]
+    check(len(pay) == 1 and pay[0].get("href") == PAYMENT_URL, "product checkout is the live payment anchor")
+    check("disabled" not in pay[0], "product checkout anchor is not disabled")
+    check("$7.99" in element_text(store_html, "holiday-checkout") and "USD" in element_text(store_html, "holiday-checkout"), "product button names $7.99 USD")
+    check(US_ELIGIBILITY in store_html, "product page states US eligibility")
+    check("Stripe checkout displays Ruel Miller." in store_html, "product page names the checkout display name")
+    check(store_html.find("Stripe checkout displays Ruel Miller.") < store_html.find('id="holiday-checkout"'), "merchant notice is before the product pay link")
+    check("CyberDad Kit LLC" in store_html and 'href="/holiday/refund/"' in store_html, "seller and refund stay on the product page")
     check('href="/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"' in delivery_html, "delivery ZIP href is present")
     check('name="robots" content="noindex"' in delivery_html, "delivery noindex")
     check("sitemap: false" in DELIVERY.read_text(encoding="utf-8"), "delivery left out of the sitemap")
@@ -312,7 +326,15 @@ def main() -> int:
     check("noindex" not in sample_html.lower(), "sample page is indexable")
     check("<form" not in sample_html.lower(), "sample has no email form")
     check(element_text(sample_html, "gather-play-refund-wording") == EXACT_REFUND, "sample shows the exact refund wording")
-    check('id="holiday-checkout"' in sample_html and "disabled" in sample_html, "sample checkout stays disabled")
+    sample_pay = [a for a in sample.anchors if a.get("id") == "holiday-checkout"]
+    check(len(sample_pay) == 1 and sample_pay[0].get("href") == PAYMENT_URL, "sample paid CTA is the live payment anchor")
+    check("disabled" not in sample_pay[0], "sample paid CTA is not a disabled button")
+    check("$7.99" in element_text(sample_html, "holiday-checkout") and "USD" in element_text(sample_html, "holiday-checkout"), "sample button names $7.99 USD")
+    check(US_ELIGIBILITY in sample_html and US_ELIGIBILITY in refund_html, "sample and refund state US eligibility")
+    check("not limited by country" in sample_html, "free sample is not country-limited")
+    check("Stripe checkout displays Ruel Miller." in sample_html, "sample page names the checkout display name")
+    check(sample_html.find("Stripe checkout displays Ruel Miller.") < sample_html.find('id="holiday-checkout"'), "merchant notice is before the sample pay link")
+    check(sha256(ROOT / PIN_REL) == PIN_SHA, "pin bytes match the attached file")
     check("Table Talk Trails" in sample_html and "$7.99 USD" in sample_html, "sample names the free game and the bundle price")
     for anchor in sample.anchors:
         href = anchor.get("href", "")
@@ -320,12 +342,16 @@ def main() -> int:
             check(href.startswith("mailto:ruel@getcyberdadkit.com"), f"sample mailto {href}")
         elif href.startswith("#"):
             check(href[1:] in sample.ids, f"sample anchor {href}")
+        elif href == PAYMENT_URL:
+            check(True, "sample paid link is the live payment URL")
         else:
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"sample link {href}")
     public_html = store_html + delivery_html + refund_html + sample_html
     internal = re.compile(r"\bdraft\b|launch pass|not deployed|\bproposed\b|\bOps\b", re.I)
     check(not internal.search(public_html), "public pages omit internal status wording")
+    check("plink_" not in public_html and "acct_" not in public_html, "public pages omit internal Stripe ids")
+    check("Checkout unavailable" not in public_html and "not open yet" not in public_html, "checkout is no longer described as closed")
 
     zip_path = ROOT / ZIP_REL
     check(sha256(zip_path) == ZIP_SHA, "customer ZIP hash matches file QA")
