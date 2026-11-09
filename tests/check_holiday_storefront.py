@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import struct
 import subprocess
 import sys
 from html.parser import HTMLParser
@@ -27,6 +28,8 @@ PREVIEW_HASHES = {
         "86a48f58cc563fa4076749c0770e09af6a31318ad096d92d971c41ab2c747a1c",
 }
 PAYMENT_URL = "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"
+TRIVIA_PAYMENT_URL = "https://buy.stripe.com/bJecN4aCyfyM4apbQrds406"
+BUNDLE_PAYMENT_URL = "https://buy.stripe.com/14A5kC7qmdqEfT78Efds407"
 US_ELIGIBILITY = "Available only to customers located in the United States."
 PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
@@ -34,6 +37,39 @@ SAMPLE_PDFS = {
     "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
     "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": "3f9bb5ac9f5c9d83b64df2bc06c82f5bcf80540daf538c2e593feabac7954c3a",
 }
+# Digests are the Trivia v1.0.1 handoff. Pin 03 is the replacement file.
+TRIVIA_FILES = {
+    "holiday/trivia/index.html":
+        "5ac1d305001eb088802a1bea231285ed261b88b78215880bce5e6ebf314cf665",
+    "holiday/trivia/sample/index.html":
+        "60ff984fe51e7dfb611ab687f99c9a8f2f62d22f21df8dfcf77c5bb282514c0c",
+    "holiday/trivia/refund/index.html":
+        "63823a3ebdb67589736fa0756178064ae3fd729504cf74f5789bac4af4a93159",
+    "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
+        "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
+    "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
+        "bfb39dcb827ebd53bb5bf0d57f8818c40f9bd093da5b8b27a7f2434b0ccc1551",
+    "holiday/assets/trivia/pins/01-christmas-trivia-family.png":
+        "9a33e61a6d610d955cbd02c93a245c951ea24bde2416b379210fa0626a6d085c",
+    "holiday/assets/trivia/pins/02-christmas-trivia-80-questions.png":
+        "071bb3a4b58c7716853dfda632d23dff569bc679e79893ba6f553806d74bb524",
+    "holiday/assets/trivia/pins/03-trivia-gather-play-bundle.png":
+        "e73b055eb108170e363d2c5a62fa9ee89d2029056072a400e9a2119664818e4b",
+    "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png":
+        "6426e93479ed34804b67001f20f9bda35541ab56e1a11e7795233ee3878c67ab",
+    "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png":
+        "7b2ba870b4ce50401caa2ed513c115121a9fd3c8b6177929e133ffd2f94c37d2",
+    "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-12.png":
+        "8acd6928392bad7155a24956eac8e7b4f84e428bd84d4b34174b37e903ac70f4",
+}
+TRIVIA_SAMPLE_PDFS = {
+    rel: digest for rel, digest in TRIVIA_FILES.items() if rel.endswith(".pdf")
+}
+TRIVIA_PAGES = [
+    HOLIDAY / "trivia" / "index.html",
+    HOLIDAY / "trivia" / "sample" / "index.html",
+    HOLIDAY / "trivia" / "refund" / "index.html",
+]
 POLICY_URLS = {
     "https://cyberdad2025.github.io/holiday/refund/",
     "https://getcyberdadkit.com/holiday/refund/",
@@ -72,6 +108,17 @@ ROUTES = {
     "/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": HOLIDAY / "sample" / "Free-Sample-Table-Talk-Trails-A4.pdf",
     "/holiday/product.json": MANIFEST,
     "/holiday/assets/holiday.css": HOLIDAY / "assets" / "holiday.css",
+    "/holiday/trivia/": HOLIDAY / "trivia" / "index.html",
+    "/holiday/trivia/sample/": HOLIDAY / "trivia" / "sample" / "index.html",
+    "/holiday/trivia/refund/": HOLIDAY / "trivia" / "refund" / "index.html",
+    "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf": HOLIDAY / "trivia" / "sample" / "CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf",
+    "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf": HOLIDAY / "trivia" / "sample" / "CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf",
+    "/holiday/assets/trivia/pins/01-christmas-trivia-family.png": HOLIDAY / "assets" / "trivia" / "pins" / "01-christmas-trivia-family.png",
+    "/holiday/assets/trivia/pins/02-christmas-trivia-80-questions.png": HOLIDAY / "assets" / "trivia" / "pins" / "02-christmas-trivia-80-questions.png",
+    "/holiday/assets/trivia/pins/03-trivia-gather-play-bundle.png": HOLIDAY / "assets" / "trivia" / "pins" / "03-trivia-gather-play-bundle.png",
+    "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-01.png",
+    "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-05.png",
+    "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-12.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-12.png",
 }
 
 
@@ -234,6 +281,9 @@ def main() -> int:
             if href == PAYMENT_URL:
                 check(page_name == "storefront", "live payment link stays on the product page")
                 continue
+            if href == BUNDLE_PAYMENT_URL:
+                check(page_name == "storefront", "bundle payment link is the live bundle URL")
+                continue
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{page_name} link {href}")
 
@@ -339,7 +389,8 @@ def main() -> int:
     check("Checkout unavailable" not in public_html and "not open yet" not in public_html, "checkout is no longer described as closed")
 
     pdfs = sorted(p.relative_to(ROOT).as_posix() for p in HOLIDAY.rglob("*.pdf"))
-    check(pdfs == sorted(SAMPLE_PDFS), "only the two one-page sample PDFs are loose files")
+    expected_pdfs = sorted([*SAMPLE_PDFS, *TRIVIA_SAMPLE_PDFS])
+    check(pdfs == expected_pdfs, "loose PDFs are the Gather & Play samples and the trivia samples")
     for rel, digest in SAMPLE_PDFS.items():
         check(sha256(ROOT / rel) == digest, f"{rel} matches the final sample hash")
         info = subprocess.run(["pdfinfo", str(ROOT / rel)], capture_output=True, check=True, text=True).stdout
@@ -379,6 +430,100 @@ def main() -> int:
     check(hits == [], "no remaining delivery path or customer ZIP filename" + ("" if not hits else ": " + "; ".join(hits)))
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
+
+    delivery_path = removed[0]
+    check(store_html.count(PAYMENT_URL) == 2, "Gather & Play payment URL still appears twice on /holiday/")
+    check(sample_html.count(PAYMENT_URL) == 2, "Gather & Play payment URL is unchanged on the sample page")
+    check(">Buy Gather &amp; Play for $7.99 USD</a>" in store_html, "Gather & Play buy button text is unchanged")
+    check(store_html.find('id="holiday-checkout"') < store_html.find('id="bundle-checkout-holiday"'), "bundle callout is below the Gather & Play buy button")
+    check(store_html.find('class="hday-facts"') < store_html.find('id="trivia-bundle"') < store_html.find('id="listing-title"'), "bundle callout sits after the facts list and before the product listing")
+    check(store_html.count('href="' + BUNDLE_PAYMENT_URL + '"') == 1, "/holiday/ has one bundle href")
+    check('href="/holiday/trivia/">Christmas Trivia</a>' in store_html, "holiday nav links to Christmas Trivia")
+    check(not (HOLIDAY / "BUNDLE-CALLOUT-SNIPPET.html").exists(), "bundle snippet file is not a page")
+    config = (ROOT / "_config.yml").read_text(encoding="utf-8")
+    check("holiday/trivia" not in config and "assets/trivia" not in config, "Jekyll config does not exclude trivia")
+    check("Disallow: /holiday/trivia" not in robots, "robots.txt does not block trivia")
+
+    for rel, digest in TRIVIA_FILES.items():
+        path = ROOT / rel
+        check(path.is_file() and sha256(path) == digest, f"trivia hash {rel}")
+        if "/previews/" in rel:
+            width, height = struct.unpack(">II", path.read_bytes()[16:24])
+            check((width, height) == (1391, 1800), f"{rel} is 1391x1800")
+
+    trivia_html = body(TRIVIA_PAGES[0])
+    trivia = parse(TRIVIA_PAGES[0])
+    trivia_pay = [a for a in trivia.anchors if a.get("id") == "trivia-checkout"]
+    check(len(trivia_pay) == 1 and trivia_pay[0].get("href") == TRIVIA_PAYMENT_URL, "trivia buy href is exact")
+    check(f'data-payment-link="{TRIVIA_PAYMENT_URL}"' in trivia_html, "trivia checkout attribute matches the buy href")
+    check(trivia_html.count(TRIVIA_PAYMENT_URL) == 2, "trivia page carries the buy URL on the attribute and the href")
+    check(trivia_html.count('href="' + BUNDLE_PAYMENT_URL + '"') == 1, "trivia page has one bundle href")
+    check(PAYMENT_URL not in trivia_html, "trivia page does not use the Gather & Play payment URL")
+    for page in TRIVIA_PAGES:
+        html = page.read_text(encoding="utf-8")
+        label = page.relative_to(ROOT).as_posix()
+        check(delivery_path not in html, f"{label} has no delivery path")
+        check("G-5B1LNCPB56" in html, f"{label} includes the site GA4 id")
+        check("{%" not in html and "layout:" not in html, f"{label} is static HTML, copied as-is by Jekyll")
+        doc = parse(page)
+        urls = re.findall(r'(?:href|src)="([^"]*)"', html)
+        urls += re.findall(r'content="(https://[^"]+)"', html)
+        for url in urls:
+            if url.startswith("mailto:"):
+                check(url.startswith("mailto:ruel@getcyberdadkit.com"), f"{label} mailto {url}")
+                continue
+            if url.startswith("#"):
+                check(url[1:] in doc.ids, f"{label} anchor {url}")
+                continue
+            if url in {TRIVIA_PAYMENT_URL, BUNDLE_PAYMENT_URL, "https://www.googletagmanager.com/gtag/js?id=G-5B1LNCPB56"}:
+                continue
+            if url.startswith("https://getcyberdadkit.com"):
+                path = url[len("https://getcyberdadkit.com"):] or "/"
+            elif url.startswith("/"):
+                path = url
+            else:
+                check(False, f"{label} unrecognized reference {url}")
+                continue
+            path = path.split("#", 1)[0]
+            check(path in ROUTES and ROUTES[path].is_file(), f"{label} link {url}")
+    check('href="/holiday/trivia/refund/"' in trivia_html, "trivia page links to the refund route")
+    check('href="/holiday/trivia/refund/"' in TRIVIA_PAGES[1].read_text(encoding="utf-8"), "sample page links to the refund route")
+    check("buy.stripe.com" not in TRIVIA_PAGES[1].read_text(encoding="utf-8"), "sample page does not sell")
+    check("buy.stripe.com" not in TRIVIA_PAGES[2].read_text(encoding="utf-8"), "refund page does not sell")
+
+    for rel in TRIVIA_SAMPLE_PDFS:
+        info = subprocess.run(["pdfinfo", str(ROOT / rel)], capture_output=True, check=True, text=True).stdout
+        text = subprocess.run(["pdftotext", str(ROOT / rel), "-"], capture_output=True, check=True, text=True).stdout
+        pages = [ln for ln in info.splitlines() if ln.startswith("Pages:")]
+        check(pages and pages[0].split()[-1] == "3", f"{rel} is the 3-page sample")
+        check("getcyberdadkit.com/holiday/trivia/" in text, f"{rel} prints the trivia page URL")
+        check("Round 1" in text, f"{rel} is Round 1")
+
+    gp_files = []
+    bundle_files = []
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or skip_parts.intersection(path.parts) or path.suffix.lower() in skip_suffixes:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        if PAYMENT_URL in text:
+            gp_files.append(rel)
+        if BUNDLE_PAYMENT_URL in text:
+            bundle_files.append(rel)
+    check(sorted(gp_files) == [
+        "holiday/index.html",
+        "holiday/product.json",
+        "holiday/sample/index.html",
+        "tests/check_holiday_storefront.py",
+    ], "Gather & Play payment URL is unchanged everywhere it appears" + ("" if not gp_files else ": " + ", ".join(sorted(gp_files))))
+    check(sorted(bundle_files) == [
+        "holiday/index.html",
+        "holiday/trivia/index.html",
+        "tests/check_holiday_storefront.py",
+    ], "bundle payment URL is only on /holiday/ and the trivia page" + ("" if not bundle_files else ": " + ", ".join(sorted(bundle_files))))
 
     print()
     if failed:
