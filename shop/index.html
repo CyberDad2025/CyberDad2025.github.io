@@ -19,7 +19,7 @@ sitemap: true
 <meta property="og:image" content="https://getcyberdadkit.com/holiday/assets/previews/CyberDadKit-preview-page-01.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://getcyberdadkit.com/shop/">
-<meta name="theme-color" content="#244b3d">
+<meta name="theme-color" content="#7f1d1d">
 <link rel="stylesheet" href="/holiday/assets/holiday.css">
 <style>
 .shop-grid {
@@ -76,9 +76,10 @@ sitemap: true
   .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 </style>
+<link rel="stylesheet" href="/assets/festive/festive.css">
 {% include ga4.html %}
 </head>
-<body>
+<body class="festive festive-shop">
 <a class="hday-skip" href="#main">Skip to content</a>
 <div class="hday-banner">
   <p><strong>Available only to customers located in the United States.</strong> Prices are one-time, in USD.</p>
@@ -106,49 +107,70 @@ sitemap: true
   <p class="hday-lede">Printable games, a Thanksgiving host planner, a Kids' Table Activity Pack and a 2027 Bible verse journal. Each button opens that product's page on this site.</p>
   <ul class="shop-grid">
     <li class="shop-card" id="gather-and-play">
-      <img src="/holiday/assets/previews/CyberDadKit-preview-page-01.png" width="1394" height="1804" alt="Cover of Gather and Play: Thanksgiving + Christmas Gathering Games. It reads 12 original games, 6 Thanksgiving, 6 Christmas or winter, and 16 pages.">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/gather-and-play-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/gather-and-play-cover.jpg" width="720" height="1022" alt="Cover of Gather and Play: Thanksgiving + Christmas Gathering Games. It reads 12 original games, 6 Thanksgiving, 6 Christmas or winter, and 16 pages." decoding="async">
+      </picture>
       <h2>Gather &amp; Play</h2>
       <p>Twelve original Thanksgiving and Christmas gathering games, in four printable PDFs.</p>
       <p class="shop-price"><span class="hday-price-amount">$7.99</span> <span class="hday-price-meta">USD, one-time</span></p>
       <a class="hday-pay" href="/holiday/">View product</a>
     </li>
     <li class="shop-card" id="christmas-trivia">
-      <img src="/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png" width="1391" height="1800" alt="Cover of Christmas Trivia Night. It reads 8 rounds, 80 original questions, host script, scorecards and tie-breakers, and lists the eight round titles." loading="lazy" decoding="async">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/christmas-trivia-night-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/christmas-trivia-night-cover.jpg" width="720" height="1022" alt="Christmas Trivia Night printable cover" loading="lazy" decoding="async">
+      </picture>
       <h2>Christmas Trivia Night</h2>
       <p>Eight rounds and 80 questions, with a host script, team answer sheets and tie-breakers.</p>
       <p class="shop-price"><span class="hday-price-amount">$5.99</span> <span class="hday-price-meta">USD, one-time</span></p>
       <a class="hday-pay" href="/holiday/trivia/">View product</a>
     </li>
     <li class="shop-card" id="trivia-bundle">
-      <img src="/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png" width="1391" height="1800" alt="Cover of Christmas Trivia Night. It reads 8 rounds, 80 original questions, host script, scorecards and tie-breakers, and lists the eight round titles." loading="lazy" decoding="async">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/trivia-gp-bundle-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/trivia-gp-bundle-cover.jpg" width="720" height="1022" alt="Christmas Trivia Night and Gather and Play bundle printable cover" loading="lazy" decoding="async">
+      </picture>
       <h2>Christmas Trivia Night + Gather &amp; Play bundle</h2>
       <p>Christmas Trivia Night and Gather &amp; Play together, in one purchase.</p>
       <p class="shop-price"><span class="hday-price-amount">$12.99</span> <span class="hday-price-meta">USD, one-time</span></p>
       <a class="hday-pay" href="/holiday/trivia/#bundle">View product</a>
     </li>
     <li class="shop-card" id="host-planner">
-      <img src="/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-01.png" width="1391" height="1800" alt="Cover of the Thanksgiving Host Dinner Planner. It reads Plan the meal, the guests and the leftovers, and lists the pages inside." loading="lazy" decoding="async">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/thanksgiving-host-planner-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/thanksgiving-host-planner-cover.jpg" width="720" height="1022" alt="Thanksgiving Host Dinner Planner printable cover" loading="lazy" decoding="async">
+      </picture>
       <h2>Thanksgiving Host Dinner Planner</h2>
       <p>An undated, write-in planner for the Thanksgiving host, as printable PDFs plus a tablet PDF.</p>
       <p class="shop-price"><span class="hday-price-amount">$4.99</span> <span class="hday-price-meta">USD, one-time</span></p>
       <a class="hday-pay" href="/holiday/host-planner/">View product</a>
     </li>
     <li class="shop-card" id="kids-table">
-      <img src="/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png" width="1391" height="1800" alt="Cover of the Kids' Table Activity Pack. It reads 14 original activities for the kids' table, from simple to trickier, with 8 simple pages, 6 trickier pages and answer keys included." loading="lazy" decoding="async">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/kids-table-pack-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/kids-table-pack-cover.jpg" width="720" height="1022" alt="Kids' Table Activity Pack printable cover" loading="lazy" decoding="async">
+      </picture>
       <h2>Kids' Table Activity Pack</h2>
       <p>Fourteen print-at-home Thanksgiving and harvest activities for the kids' table.</p>
       <p class="shop-price"><span class="hday-price-amount">$5.99</span> <span class="hday-price-meta">USD, one-time</span></p>
       <a class="hday-pay" href="/holiday/kids-table/">View product</a>
     </li>
     <li class="shop-card" id="kids-bundle">
-      <img src="/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png" width="1391" height="1800" alt="Cover of the Kids' Table Activity Pack. It reads 14 original activities for the kids' table, from simple to trickier, with 8 simple pages, 6 trickier pages and answer keys included." loading="lazy" decoding="async">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/kids-table-bundle-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/kids-table-bundle-cover.jpg" width="720" height="1022" alt="Kids' Table and Gather and Play bundle printable cover" loading="lazy" decoding="async">
+      </picture>
       <h2>Kids' Table + Gather &amp; Play bundle</h2>
       <p>The Kids' Table Activity Pack and Gather &amp; Play together, in one purchase.</p>
       <p class="shop-price"><span class="hday-price-amount">$11.99</span> <span class="hday-price-meta">USD, one-time</span></p>
       <a class="hday-pay" href="/holiday/kids-table/#bundle">View product</a>
     </li>
     <li class="shop-card" id="bible-journal-2027">
-      <img src="/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.png" width="935" height="1210" alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible." loading="lazy" decoding="async">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/bible-verse-journal-2027-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/bible-verse-journal-2027-cover.jpg" width="720" height="1022" alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible." loading="lazy" decoding="async">
+      </picture>
       <h2>2027 Bible Verse Journal</h2>
       <p>A 365-day 2027 Bible verse journal, with one verse a day and room for a prayer note.</p>
       <p class="shop-price"><span class="hday-price-amount">From $7.99</span> <span class="hday-price-meta">USD, one-time</span></p>

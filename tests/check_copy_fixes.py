@@ -139,7 +139,11 @@ def main() -> int:
     check(not shield_hits, "no /shield-kit/ links on /holiday/ HTML" + ("" if not shield_hits else f" {shield_hits}"))
 
     check(not diff_names("shield-kit"), "shield-kit/ untouched")
-    check(not diff_names("holiday/trivia"), "holiday/trivia/ untouched")
+    trivia_changed = diff_names("holiday/trivia")
+    check(
+        trivia_changed in ([], ["holiday/trivia/index.html"]),
+        "holiday/trivia changes are only the storefront page" + ("" if not trivia_changed else f" {trivia_changed}"),
+    )
     check(not diff_names("scripts/_posts"), "scripts/_posts unchanged vs origin/main")
     delivery_dir = ROOT / "holiday" / "delivery"
     holiday_zips = [p for p in (ROOT / "holiday").rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]

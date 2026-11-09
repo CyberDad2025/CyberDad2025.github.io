@@ -36,11 +36,12 @@ layout: null
   }
 }
 </script>
-<meta name="theme-color" content="#244b3d">
+<meta name="theme-color" content="#7f1d1d">
 <link rel="stylesheet" href="/holiday/assets/holiday.css">
+<link rel="stylesheet" href="/assets/festive/festive.css">
 {% include ga4.html %}
 </head>
-<body>
+<body class="festive festive-holiday">
 <a class="hday-skip" href="#main">Skip to content</a>
 <div class="hday-banner">
   <p><strong>Available only to customers located in the United States.</strong> The paid bundle is $7.99 USD, one-time. The one-game sample stays free.</p>
@@ -91,7 +92,10 @@ layout: null
         <strong>Cover · page 1 of 16</strong>
         <span>US Letter color edition. Twelve games, six Thanksgiving and six Christmas or winter.</span>
       </figcaption>
-      <img src="/holiday/assets/previews/CyberDadKit-preview-page-01.png" width="1394" height="1804" alt="Cover of Gather and Play: Thanksgiving + Christmas Gathering Games. It reads 12 original games, 6 Thanksgiving, 6 Christmas or winter, and 16 pages.">
+      <picture class="festive-cover">
+        <source srcset="/assets/img/festive/gather-and-play-cover.webp" type="image/webp">
+        <img src="/assets/img/festive/gather-and-play-cover.jpg" width="720" height="1022" alt="Cover of Gather and Play: Thanksgiving + Christmas Gathering Games. It reads 12 original games, 6 Thanksgiving, 6 Christmas or winter, and 16 pages." decoding="async">
+      </picture>
     </figure>
   </section>
 
@@ -116,7 +120,7 @@ layout: null
 
   <section class="hday-section" id="trivia-bundle" aria-labelledby="trivia-bundle-title">
     <h2 id="trivia-bundle-title">New: Christmas Trivia Night</h2>
-    <p><a href="/holiday/trivia/">Christmas Trivia Night</a> is a printable family trivia game with 8 rounds and 80 questions, a host script and team scorecards, for $5.99 USD, one-time. You can get it together with Gather &amp; Play for $12.99 USD, one-time. Bought separately, the two cost $13.98. Paid purchases are available only to customers located in the United States. <a href="/holiday/trivia/sample/">Round 1 is free to print</a>, worldwide.</p>
+    <p><a href="/holiday/trivia/">Christmas Trivia Night</a> is a printable family trivia game with 8 rounds and 80 questions, a host script and team scorecards, for $5.99 USD, one-time. You can get it together with Gather &amp; Play for $12.99 USD, one-time. Bought separately, the two cost $13.98. Paid purchases are available only to customers located in the United States. <a href="/holiday/trivia/sample/">Round 1 is free to print</a>.</p>
     <p><a class="hday-pay" id="bundle-checkout-holiday" href="https://buy.stripe.com/14A5kC7qmdqEfT78Efds407">Buy both for $12.99 USD</a> <a class="hday-download" href="/holiday/trivia/">See Christmas Trivia Night</a></p>
   </section>
 

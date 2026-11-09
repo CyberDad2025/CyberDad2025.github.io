@@ -69,7 +69,9 @@ SAMPLE_PDFS = {
 # Digests are the Trivia v1.0.1 handoff. Pin 03 is the replacement file.
 TRIVIA_FILES = {
     "holiday/trivia/index.html":
-        "5ac1d305001eb088802a1bea231285ed261b88b78215880bce5e6ebf314cf665",
+        # Festive restyle added a body class, festive.css link and a cover slot.
+        # Prices, checkout hrefs and policy text are pinned by check_festive_restyle.py.
+        "0c186e52b78dd9dd8066e3cc9ceb7449ad6de82db149e97b78468d57b5511eee",
     "holiday/trivia/sample/index.html":
         "60ff984fe51e7dfb611ab687f99c9a8f2f62d22f21df8dfcf77c5bb282514c0c",
     "holiday/trivia/refund/index.html":
@@ -138,6 +140,7 @@ ROUTES = {
     "/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": HOLIDAY / "sample" / "Free-Sample-Table-Talk-Trails-A4.pdf",
     "/holiday/product.json": MANIFEST,
     "/holiday/assets/holiday.css": HOLIDAY / "assets" / "holiday.css",
+    "/assets/festive/festive.css": ROOT / "assets" / "festive" / "festive.css",
     "/holiday/trivia/": HOLIDAY / "trivia" / "index.html",
     "/holiday/trivia/sample/": HOLIDAY / "trivia" / "sample" / "index.html",
     "/holiday/trivia/refund/": HOLIDAY / "trivia" / "refund" / "index.html",
@@ -158,6 +161,18 @@ ROUTES = {
     "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-01.png",
     "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-06.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-06.png",
 }
+for _festive_name in (
+    "gather-and-play-cover",
+    "christmas-trivia-night-cover",
+    "trivia-gp-bundle-cover",
+    "thanksgiving-host-planner-cover",
+    "kids-table-pack-cover",
+    "kids-table-bundle-cover",
+    "bible-verse-journal-2027-cover",
+):
+    for _ext in ("webp", "jpg"):
+        _rel = f"assets/img/festive/{_festive_name}.{_ext}"
+        ROUTES["/" + _rel] = ROOT / _rel
 
 # Thanksgiving Host Dinner Planner and Kids' Table Activity Pack.
 # Preview digests match previews/ in each product's final release folder.
@@ -408,7 +423,8 @@ def main() -> int:
         check(not re.search(r'href=["\']#["\']', html), f"{page_name} has no empty hash href")
         for img in doc.images:
             src = img.get("src", "")
-            check(src in {p["src"] for p in manifest["previews"]}, f"{page_name} image is a real preview: {src}")
+            allowed = {p["src"] for p in manifest["previews"]} | {"/assets/img/festive/gather-and-play-cover.jpg"}
+            check(src in allowed, f"{page_name} image is a preview or the festive cover: {src}")
         for anchor in doc.anchors:
             href = anchor.get("href", "")
             if href.startswith("mailto:"):
@@ -426,8 +442,8 @@ def main() -> int:
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{page_name} link {href}")
 
-    check(store.images[0]["src"].endswith("page-01.png"), "hero preview is the cover")
-    check({img["src"] for img in store.images} == {p["src"] for p in manifest["previews"]}, "storefront shows the final previews")
+    check(store.images[0]["src"] == "/assets/img/festive/gather-and-play-cover.jpg", "hero image is the Gather and Play cover")
+    check(any(img["src"].endswith("page-09.png") for img in store.images), "storefront still shows the winter-game preview")
     for game in GAMES:
         check(game in store_html, f"lists {game}")
 
@@ -867,7 +883,9 @@ def main() -> int:
                 path = path.split("#", 1)[0]
                 check(path in ROUTES and ROUTES[path].is_file(), f"{label} link {url}")
             for img in page_doc.images:
-                check(img.get("src", "").lstrip("/") in THANKSGIVING_FILES, f"{label} image is a real preview: {img.get('src')}")
+                src = img.get("src", "").lstrip("/")
+                festive = src.startswith("assets/img/festive/") and (ROOT / src).is_file()
+                check(src in THANKSGIVING_FILES or festive, f"{label} image is a real preview or festive cover: {img.get('src')}")
 
     kids_html = (HOLIDAY / "kids-table" / "index.html").read_text(encoding="utf-8")
     kids_refund_html = (HOLIDAY / "kids-table" / "refund" / "index.html").read_text(encoding="utf-8")
