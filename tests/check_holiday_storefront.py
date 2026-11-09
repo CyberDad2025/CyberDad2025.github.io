@@ -130,6 +130,7 @@ ROUTES = {
     "/sites/": ROOT / "sites" / "index.html",
     "/sites/refund/": ROOT / "sites" / "refund" / "index.html",
     "/shield-kit/": ROOT / "shield-kit" / "index.html",
+    "/shop/": ROOT / "shop" / "index.html",
     "/holiday/": STORE,
     "/holiday/refund/": HOLIDAY / "refund" / "index.html",
     "/holiday/sample/": HOLIDAY / "sample" / "index.html",

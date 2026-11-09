@@ -2,9 +2,9 @@
     (_layouts/default.html) are unchanged. No JavaScript. No kit links; the one button goes to the order form on /sites/. {%- endcomment %}
 <style>
 .cdk-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-.cdk-nav-inner { max-width: 1160px; margin: 0 auto; padding: 0.5rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.cdk-nav-inner { max-width: 1160px; margin: 0 auto; padding: 0.5rem 1.5rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
 .cdk-nav-brand { font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; display: inline-flex; align-items: center; min-height: 44px; }
-.cdk-nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+.cdk-nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
 .cdk-nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.75rem; color: var(--text-mid); font-size: 0.92rem; font-weight: 500; text-decoration: none; }
 .cdk-nav-links a:hover { color: var(--teal-mid); }
 .cdk-nav-links a.cdk-nav-cta { margin-left: 0.25rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--teal-mid); color: var(--white); font-weight: 600; white-space: nowrap; }
@@ -36,6 +36,7 @@
       <li class="cdk-nav-text"><a href="/#how">How it works</a></li>
       <li class="cdk-nav-text"><a href="/sites/#examples">Examples</a></li>
       {%- endif %}
+      <li><a href="/shop/">Shop all</a></li>
       <li><a href="/sites/#start" class="cdk-nav-cta">Start my website rebuild</a></li>
     </ul>
   </nav>
