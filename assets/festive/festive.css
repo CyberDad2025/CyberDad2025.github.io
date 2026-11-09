@@ -675,14 +675,28 @@ body.festive .festive-bubble {
 
 body.festive .festive-mood {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 0.45rem;
   margin: 0.9rem 0 0;
 }
 
 body.festive .festive-mood img {
-  height: 96px;
+  height: 110px;
   border: 3px solid var(--festive-card-border);
+  object-position: center;
+}
+
+body.festive .festive-mood-xmas {
+  grid-template-columns: 1fr 1fr;
+}
+
+body.festive .festive-mood-xmas > :first-child {
+  grid-column: 1 / -1;
+}
+
+body.festive .festive-mood-xmas > :first-child img {
+  height: 64px;
+  object-position: center;
 }
 
 body.festive .festive-pair-grid {
@@ -762,7 +776,9 @@ body.festive .festive-sticky[hidden] { display: none !important; }
 
   body.festive a.festive-pill { width: auto; min-width: 16rem; }
 
-  body.festive .festive-mood img { height: 150px; }
+  body.festive .festive-mood img { height: 160px; }
+
+  body.festive .festive-mood-xmas > :first-child img { height: 84px; }
 
   body.festive .festive-sticky { display: none !important; }
 }
