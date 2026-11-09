@@ -1,12 +1,12 @@
 ---
 layout: default
 no_ads: true
-title: "About CyberDad Kit — Why I Started This"
+title: "About CyberDadKit — Why I Started This"
 permalink: /about/
 description: "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on SOC experience. Why I built CyberDadKit to help families protect themselves online."
 ---
 
-# Why CyberDad Kit Exists
+# Why CyberDadKit Exists
 
 I'm Ruel Miller, a U.S. Marine Corps veteran and CompTIA Security+ certified dad. I have hands-on Security Operations Center experience from a past role in security analysis and threat response, and I built CyberDadKit to help families protect themselves online.
 
@@ -14,11 +14,11 @@ By every other hour of the day I'm a dad. My family is into YouTube, kids' chann
 
 Those two worlds don't usually talk to each other. The tools and playbooks I used in the SOC exist to protect large organizations' networks — not the Wi-Fi router in your living room. But the threats are the same shape: phishing, malware, social engineering, data theft. Just at a different scale.
 
-CyberDad Kit is me bridging that gap.
+CyberDadKit is me bridging that gap.
 
 ## What this site actually does
 
-Every weekday, CyberDad Kit publishes one post about a real, current cybersecurity threat that affects families. Not generic "10 tips" listicles. Specific, current, sourced from the same threat intelligence feeds analysts use in enterprise SOCs — translated into language a parent can actually use.
+The posts here are not generic "10 tips" listicles. They are specific and current, sourced from the same threat intelligence feeds analysts use in enterprise SOCs and translated into language a parent can actually use.
 
 The pipeline is straightforward:
 
@@ -45,9 +45,12 @@ I'm not the most senior person in this field, and I won't pretend to be. There a
 
 ## How I make money
 
-I sell one product: the **CyberDad Shield Kit** — a complete family cybersecurity playbook in PDF format. It's $47. That's the whole business model. No subscription, no monitoring fees, no data sales, no upsell ladder.
+Current offers:
 
-If the free posts on this site are useful and you want the consolidated playbook, you can buy it. If you don't, the free content stays free.
+- [Holiday printables](/holiday/)
+- [CyberDadKit Sites](/sites/)
+
+The free posts on this site stay free.
 
 ## Reach me directly
 

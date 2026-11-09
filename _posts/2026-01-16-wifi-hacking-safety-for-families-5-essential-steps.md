@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "WiFi Hacking Safety for Families: 5 Essential Steps Parents Need"
+title: "Wi-Fi Hacking Safety for Families: 5 Essential Steps Parents Need"
 date: 2026-01-16 01:47:56 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]

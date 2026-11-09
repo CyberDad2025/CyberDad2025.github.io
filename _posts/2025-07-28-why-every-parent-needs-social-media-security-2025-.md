@@ -4,7 +4,7 @@ title: "Why Every Parent Needs Social Media Security (2025 Update)"
 date: 2025-07-28 14:00:25 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
-excerpt: "Learn how to protect your family from wifi hacking with our plain-English cybersecurity guide. Simple steps every parent can implement today."
+excerpt: "Learn how to protect your family from Wi-Fi hacking with our plain-English cybersecurity guide. Simple steps every parent can implement today."
 author: CyberDad
 image: /assets/images/cybersecurity-family.jpg
 ---
@@ -15,7 +15,7 @@ Many families are online all day, so a few simple habits go a long way. This gui
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest WiFi networks for visitors
+• Set up guest Wi-Fi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 
@@ -45,4 +45,4 @@ Take these actions right now to secure your family:
 - [Essential Security Tools for Parents](/)
 - [Emergency Cybersecurity Contacts](/)
 
-**Keywords:** family cybersecurity, wifi hacking, parent guide, child safety online, home network security, digital protection
+**Keywords:** family cybersecurity, Wi-Fi hacking, parent guide, child safety online, home network security, digital protection

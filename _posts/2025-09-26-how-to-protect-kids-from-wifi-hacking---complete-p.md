@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How to Protect Kids from WiFi Hacking - Complete Parent Guide 2025"
+title: "How to Protect Kids from Wi-Fi Hacking - Complete Parent Guide 2025"
 date: 2025-09-26 13:27:03 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
@@ -14,7 +14,7 @@ As a parent in 2025, protecting your family from cyber threats is more critical 
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest WiFi networks for visitors
+• Set up guest Wi-Fi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

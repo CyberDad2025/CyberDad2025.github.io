@@ -15,7 +15,7 @@ As a parent in 2025, protecting your family from cyber threats is more critical 
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest WiFi networks for visitors
+• Set up guest Wi-Fi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

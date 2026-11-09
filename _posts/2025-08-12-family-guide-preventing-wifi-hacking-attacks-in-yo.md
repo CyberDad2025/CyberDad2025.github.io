@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Family Guide: Preventing WiFi Hacking Attacks in Your Home"
+title: "Family Guide: Preventing Wi-Fi Hacking Attacks in Your Home"
 date: 2025-08-12 01:40:02 +0000
 categories: [Cybersecurity]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
@@ -22,7 +22,7 @@ Know what to do if your family experiences a cyber attack:
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest WiFi networks for visitors
+• Set up guest Wi-Fi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

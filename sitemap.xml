@@ -1,0 +1,63 @@
+---
+layout: null
+# Liquid template, not a static URL list. Jekyll renders site.posts,
+# site.pages, and static HTML/PDF on each build, so new posts and pages
+# still appear. Skips /page2/ through /page99/, sitemap: false, and noindex.
+# The #993 /privacy/ redirect stays out (sitemap: false). Static HTML with
+# no front matter is listed from site.static_files, including trivia,
+# host-planner, kids-table, and /journal/2027/ plus their refund pages.
+# jekyll-sitemap 1.4 does not also write sitemap.xml when this page exists.
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+{% if page.xsl %}
+  <?xml-stylesheet type="text/xsl" href="{{ "/sitemap.xsl" | absolute_url }}"?>
+{% endif %}
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% for post in site.posts %}
+    {% unless post.sitemap == false or post.noindex %}
+    <url>
+      <loc>{{ post.url | replace:'/index.html','/' | absolute_url | xml_escape }}</loc>
+      {% if post.last_modified_at or post.date %}
+        <lastmod>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</lastmod>
+      {% endif %}
+    </url>
+    {% endunless %}
+  {% endfor %}
+
+  {% for page in site.pages %}
+    {% assign page_url = page.url | replace:'/index.html','/' %}
+    {% assign skip_page = "" %}
+    {% if page.sitemap == false or page.noindex or page_url == "/404.html" or page_url == "/sitemap.xml" %}
+      {% assign skip_page = "yes" %}
+    {% endif %}
+    {% for n in (2..99) %}
+      {% assign page_n = n | prepend:'/page' | append:'/' %}
+      {% assign page_n_index = page_n | append:'index.html' %}
+      {% assign page_n_bare = n | prepend:'/page' %}
+      {% if page_url == page_n or page_url == page_n_index or page_url == page_n_bare %}
+        {% assign skip_page = "yes" %}
+      {% endif %}
+    {% endfor %}
+    {% unless skip_page == "yes" %}
+    <url>
+      <loc>{{ page_url | absolute_url | xml_escape }}</loc>
+      {% if page.last_modified_at %}
+        <lastmod>{{ page.last_modified_at | date_to_xmlschema }}</lastmod>
+      {% endif %}
+    </url>
+    {% endunless %}
+  {% endfor %}
+
+  {% for file in site.static_files %}
+    {% assign ext = file.extname %}
+    {% if ext == ".html" or ext == ".htm" or ext == ".xhtml" or ext == ".pdf" %}
+      {% unless file.name == "404.html" or file.sitemap == false %}
+      <url>
+        <loc>{{ file.path | replace:'/index.html','/' | absolute_url | xml_escape }}</loc>
+        <lastmod>{{ file.modified_time | date_to_xmlschema }}</lastmod>
+      </url>
+      {% endunless %}
+    {% endif %}
+  {% endfor %}
+</urlset>
