@@ -15,9 +15,9 @@
     <meta name="robots" content="noindex">
     {%- endif %}
     {%- comment -%} SEO-only: jekyll-seo-tag renders the single <title>, meta description, canonical, Open Graph and Twitter tags in <head>. {%- endcomment %}
+    {%- capture cd_seo %}{% seo %}{% endcapture %}
     {%- if page.cd_business_home %}
     {%- comment -%} P59: on the business homepage only, the title suffix and og:site_name say "CyberDad Kit Sites" instead of the sitewide site.title (_config title unchanged). {%- endcomment -%}
-    {%- capture cd_seo %}{% seo %}{% endcapture %}
     {%- assign cd_seo = cd_seo | replace: ' | CyberDadKit</title>', ' | CyberDad Kit Sites</title>' | replace: 'property="og:site_name" content="CyberDadKit"', 'property="og:site_name" content="CyberDad Kit Sites"' %}
     {%- comment -%} jekyll-seo-tag also prints this meta. Drop that copy on the homepage so the include below is the only one. {%- endcomment -%}
     {%- if site.google_site_verification %}
@@ -25,10 +25,17 @@
 <meta name="google-site-verification" content="{{ site.google_site_verification }}" />{% endcapture %}
     {%- assign cd_seo = cd_seo | replace: gv_meta, '' %}
     {%- endif %}
-    {{ cd_seo }}{% include site-verification.html %}
-    {%- else %}
-    {% seo %}
     {%- endif %}
+    {%- comment -%} Pagination stays on. Drop the rel=next and rel=prev tags jekyll-seo-tag prints for the homepage and /pageN/ copies. {%- endcomment %}
+{% capture cd_nl %}
+{% endcapture %}
+    {%- assign cd_seo_lines = cd_seo | split: cd_nl -%}
+    {%- for cd_line in cd_seo_lines -%}
+    {%- unless cd_line contains 'rel="next"' or cd_line contains 'rel="prev"' %}
+{{ cd_line }}
+    {%- endunless -%}
+    {%- endfor %}
+    {%- if page.cd_business_home %}{% include site-verification.html %}{% endif %}
 
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 

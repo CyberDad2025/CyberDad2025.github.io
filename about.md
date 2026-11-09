@@ -18,7 +18,7 @@ CyberDad Kit is me bridging that gap.
 
 ## What this site actually does
 
-Every weekday, CyberDad Kit publishes one post about a real, current cybersecurity threat that affects families. Not generic "10 tips" listicles. Specific, current, sourced from the same threat intelligence feeds analysts use in enterprise SOCs — translated into language a parent can actually use.
+Not generic "10 tips" listicles. Specific, current, sourced from the same threat intelligence feeds analysts use in enterprise SOCs — translated into language a parent can actually use.
 
 The pipeline is straightforward:
 
@@ -45,9 +45,12 @@ I'm not the most senior person in this field, and I won't pretend to be. There a
 
 ## How I make money
 
-I sell one product: the **CyberDad Shield Kit** — a complete family cybersecurity playbook in PDF format. It's $47. That's the whole business model. No subscription, no monitoring fees, no data sales, no upsell ladder.
+Current offers:
 
-If the free posts on this site are useful and you want the consolidated playbook, you can buy it. If you don't, the free content stays free.
+- [Holiday printables](/holiday/)
+- [CyberDad Kit Sites](/sites/)
+
+The free posts on this site stay free.
 
 ## Reach me directly
 

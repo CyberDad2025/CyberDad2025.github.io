@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keep Your Family Safe from WiFi Hacking - Practical Tips That Work"
+title: "Keep Your Family Safe from Wi-Fi Hacking - Practical Tips That Work"
 date: 2025-10-21 13:33:04 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
@@ -22,7 +22,7 @@ Teach your children these essential safety rules:
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest WiFi networks for visitors
+• Set up guest Wi-Fi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

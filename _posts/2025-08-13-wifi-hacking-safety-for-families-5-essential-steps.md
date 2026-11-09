@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "WiFi Hacking Safety for Families: 5 Essential Steps Parents Need"
+title: "Wi-Fi Hacking Safety for Families: 5 Essential Steps Parents Need"
 date: 2025-08-13 01:41:41 +0000
 categories: [Digital Protection]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
@@ -14,7 +14,7 @@ Many families are online all day, so it helps to have a plan. Here's how to prot
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest WiFi networks for visitors
+• Set up guest Wi-Fi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

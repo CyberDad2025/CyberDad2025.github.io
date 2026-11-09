@@ -1,19 +1,19 @@
 ---
 layout: post
-title: "Family WiFi Security Checklist"
+title: "Family Wi-Fi Security Checklist"
 date: 2025-10-13 14:15:12 -0500
 categories: [cybersecurity, family-safety, security-guide]
 tags: [security, family, guide, protection, cybersecurity]
 author: CyberDad
-description: "Learn family wifi security checklist with simple steps anyone can follow."
+description: "Learn family Wi-Fi security checklist with simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
 age_appropriate: "For the whole family"
 ---
 
-# Family WiFi Security Checklist
+# Family Wi-Fi Security Checklist
 
-🔒 **Quick Summary:** Learn how to family wifi security checklist with simple steps anyone can follow.
+🔒 **Quick Summary:** Learn how to family Wi-Fi security checklist with simple steps anyone can follow.
 
 ⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for the whole family**
 

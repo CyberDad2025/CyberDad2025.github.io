@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Parents Alert: WiFi Hacking Threats and How to Stop Them"
+title: "Parents Alert: Wi-Fi Hacking Threats and How to Stop Them"
 date: 2026-01-21 01:50:32 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]

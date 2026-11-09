@@ -143,7 +143,6 @@
     <div class="promise-box">
         <h3>✅ What We Promise You:</h3>
         <ul>
-            <li><strong>Family-Tested Only:</strong> Every product we recommend has been tested by our own family for at least 3 months</li>
             <li><strong>Always Disclose:</strong> Affiliate relationships are clearly marked with badges and disclosures</li>
             <li><strong>Your Security First:</strong> We never recommend products just for commissions - your family's safety comes first</li>
             <li><strong>Honest Reviews:</strong> We share both the good and bad about every product we review</li>
@@ -165,38 +164,7 @@
     </div>
 
     <div class="section">
-        <h2>🤝 Our Current Affiliate Partners</h2>
-        <p>We have affiliate relationships with these cybersecurity companies:</p>
-        
-        <div class="partner-grid">
-            <div class="partner-card">
-                <h4>🛡️ Norton Family</h4>
-                <p><strong>What we earn:</strong> 20-30% commission</p>
-                <p><strong>Why we recommend:</strong> Excellent parental controls, easy setup for families</p>
-                <p><strong>Testing period:</strong> 6 months with our family</p>
-            </div>
-            
-            <div class="partner-card">
-                <h4>🔑 1Password</h4>
-                <p><strong>What we earn:</strong> 25% lifetime commission + $2 signup bonus</p>
-                <p><strong>Why we recommend:</strong> Best family password management we've found</p>
-                <p><strong>Testing period:</strong> 2+ years continuous use</p>
-            </div>
-            
-            <div class="partner-card">
-                <h4>🌐 NordVPN</h4>
-                <p><strong>What we earn:</strong> Up to 100% commission on monthly plans</p>
-                <p><strong>Why we recommend:</strong> Reliable family VPN with good speeds</p>
-                <p><strong>Testing period:</strong> 18 months across multiple devices</p>
-            </div>
-            
-            <div class="partner-card">
-                <h4>🔐 Bitdefender</h4>
-                <p><strong>What we earn:</strong> 15-20% commission</p>
-                <p><strong>Why we recommend:</strong> Strong antivirus with minimal system impact</p>
-                <p><strong>Testing period:</strong> 8 months on family computers</p>
-            </div>
-        </div>
+        <p>Some links may be affiliate links; we may earn a commission at no extra cost to you.</p>
     </div>
 
     <div class="section">
@@ -262,7 +230,7 @@
         <p>A: You don't have to! But if our review helped you decide, using our link supports our family security research at no cost to you.</p>
         
         <h4>Q: Do you recommend products you don't use?</h4>
-        <p>A: Never. Every recommendation comes from real family testing. We use these tools to protect our own kids.</p>
+        <p>A: Never. Every recommendation comes from real family testing. We use these tools to protect my family.</p>
         
         <h4>Q: What if I have problems with a product you recommended?</h4>
         <p>A: Contact us! We'll help you resolve issues or find better alternatives. Your experience helps other families too.</p>

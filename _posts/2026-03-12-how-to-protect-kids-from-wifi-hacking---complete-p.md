@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How to Protect Kids from WiFi Hacking - Complete Parent Guide 2025"
+title: "How to Protect Kids from Wi-Fi Hacking - Complete Parent Guide 2025"
 date: 2026-03-12 14:03:00 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]

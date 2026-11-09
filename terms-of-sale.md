@@ -8,7 +8,7 @@ permalink: /terms-of-sale/
 
 # Terms of sale
 
-Last updated: October 22, 2026
+Last updated: November 9, 2026
 
 ## Digital product delivery
 
@@ -33,6 +33,14 @@ The kit is for personal/family use only. You may not resell, share, or distribut
 ## Payment terms
 
 Price: $47 (USD), one-time. Payments are processed securely via Stripe through MailerLite Checkout.
+
+## Holiday digital printables
+
+Gather & Play, Christmas Trivia Night, and the bundle are instant digital downloads for personal/household use.
+
+You may print copies for your own personal, noncommercial gatherings, including internal office use. This license does not include resale of the files, rehosting the files, or a commercial event service.
+
+Refunds follow the 7-day policy at [Holiday refunds](/holiday/refund/): Gather & Play is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Gather & Play and does not limit your statutory rights.
 
 ## Contact
 
