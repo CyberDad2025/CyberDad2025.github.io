@@ -32,17 +32,24 @@ OLD_ABSENT = [
     "I sell one product",
     "on our homepage and some articles",
     "on the homepage and on some articles",
+    "Our family tries cybersecurity tools for months before reviewing",
+    "A: No. We only recommend products we use.",
 ]
 NEW_PRESENT = [
-    (ROOT / "affiliate-disclosure.html", "A: No. We only recommend products we use."),
+    (ROOT / "affiliate-disclosure.html", "A: No. We don't recommend products just to earn a commission."),
+    (ROOT / "affiliate-disclosure.html", "&copy; 2026 CyberDadKit"),
+    (ROOT / "affiliate-disclosure.html", "last updated on November 9, 2026"),
     (ROOT / "affiliate-disclosure.html", "Some links may be affiliate links; we may earn a commission at no extra cost to you."),
-    (ROOT / "assets/js/ethical-compliance.js", "A: No. We only recommend products we use."),
+    (ROOT / "assets/js/ethical-compliance.js", "A: No. We don't recommend products just to earn a commission."),
+    (ROOT / "assets/js/ethical-compliance.js", "&copy; 2026 CyberDadKit"),
+    (ROOT / "assets/js/ethical-compliance.js", "last updated on November 9, 2026"),
     (ROOT / "assets/js/ethical-compliance.js", "Some links may be affiliate links; we may earn a commission at no extra cost to you."),
     (ROOT / "about.md", "[Holiday printables](/holiday/)"),
-    (ROOT / "about.md", "[CyberDad Kit Sites](/sites/)"),
+    (ROOT / "about.md", "[CyberDadKit Sites](/sites/)"),
     (ROOT / "terms-of-sale.md", "## Holiday digital printables"),
     (ROOT / "terms-of-sale.md", "Christmas Trivia Night"),
-    (ROOT / "terms-of-sale.md", "instant digital downloads for personal/household use"),
+    (ROOT / "terms-of-sale.md", "Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States."),
+    (ROOT / "terms-of-sale.md", 'description: "CyberDadKit terms of sale: Shield Kit ($47, 30-day refund) and holiday digital printables (7-day refunds; US customers)."'),
     (ROOT / "terms-of-sale.md", "](/holiday/refund/)"),
     (ROOT / "terms-of-sale.md", "](/holiday/trivia/refund/)"),
     (ROOT / "terms-of-sale.md", "within 7 days of your purchase date"),
@@ -52,7 +59,7 @@ NEW_PRESENT = [
     (ROOT / "terms-of-sale.md", "](/holiday/kids-table/refund/)"),
     (ROOT / "holiday/index.html", 'href="/terms-of-sale/"'),
     (ROOT / "_includes/site-footer.html", "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794"),
-    (ROOT / "cyberdadkit-privacy-policy.html", "&copy; 2026 Cyber Dad Kit"),
+    (ROOT / "cyberdadkit-privacy-policy.html", "&copy; 2026 CyberDadKit"),
     (ROOT / "cyberdadkit-privacy-policy.html", "MailerLite signup form on some articles and on the Shield Kit page"),
     (ROOT / "cookie-policy.html", "email signup form on some articles and on the Shield Kit page"),
     (ROOT / "cyber_parenting_global_blog.html", '<meta name="robots" content="noindex">'),
@@ -73,8 +80,11 @@ ALLOWED_PRICE_REMOVALS = {
     "assets/js/ethical-compliance.js": Counter({"$2": 1}),
 }
 # Prices cited in the holiday terms are copied from the live product pages.
+# shop/index.html prices belong to PR #1000. None means any price tokens are
+# allowed, so this check passes whether that page lands on main first or here.
 ALLOWED_PRICE_ADDITIONS = {
-    "terms-of-sale.md": Counter({"$4.99": 1, "$5.99": 1, "$11.99": 2, "$12.99": 1}),
+    "terms-of-sale.md": Counter({"$4.99": 1, "$5.99": 2, "$7.99": 1, "$11.99": 2, "$12.99": 1}),
+    "shop/index.html": None,
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
@@ -100,7 +110,7 @@ def main() -> int:
     check("$47" not in about, "about page does not state the Shield Kit price")
 
     holiday_section = (ROOT / "terms-of-sale.md").read_text(encoding="utf-8").split("## Holiday digital printables", 1)[1].split("## Contact", 1)[0]
-    for price in ("$4.99", "$5.99", "$11.99", "$12.99"):
+    for price in ("$4.99", "$5.99", "$7.99", "$11.99", "$12.99"):
         check(price in holiday_section, f"holiday terms cite the live price {price}")
     check("$47" not in holiday_section, "holiday terms section does not repeat the Shield Kit price")
     check("the bundle" in holiday_section, "holiday terms section names the bundle")
@@ -245,9 +255,13 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         old_prices = Counter(PRICE_RE.findall(old))
         new_prices = Counter(PRICE_RE.findall(new))
         allowed_removed = ALLOWED_PRICE_REMOVALS.get(name, Counter())
-        allowed_added = ALLOWED_PRICE_ADDITIONS.get(name, Counter())
-        if old_prices - new_prices != allowed_removed or new_prices - old_prices != allowed_added:
-            price_bad.append(name)
+        if name in ALLOWED_PRICE_ADDITIONS and ALLOWED_PRICE_ADDITIONS[name] is None:
+            if old_prices - new_prices != allowed_removed:
+                price_bad.append(name)
+        else:
+            allowed_added = ALLOWED_PRICE_ADDITIONS.get(name, Counter())
+            if old_prices - new_prices != allowed_removed or new_prices - old_prices != allowed_added:
+                price_bad.append(name)
         if Counter(FORM_RE.findall(old)) != Counter(FORM_RE.findall(new)):
             form_bad.append(name)
     return stripe_bad, price_bad, form_bad

@@ -154,7 +154,6 @@
     <div class="section">
         <h2>🔄 How Affiliate Marketing Works</h2>
         <ol>
-            <li><strong>We Test Products:</strong> Our family tries cybersecurity tools for months before reviewing</li>
             <li><strong>We Write Honest Reviews:</strong> Share real experiences, including problems we encounter</li>
             <li><strong>You Click Our Link:</strong> If you find our review helpful and decide to purchase</li>
             <li><strong>We Earn a Small Commission:</strong> The company pays us a percentage of the sale</li>
@@ -230,7 +229,7 @@
         <p>A: You don't have to! But if our review helped you decide, using our link supports our family security research at no cost to you.</p>
         
         <h4>Q: Do you recommend products you don't use?</h4>
-        <p>A: No. We only recommend products we use.</p>
+        <p>A: No. We don't recommend products just to earn a commission.</p>
         
         <h4>Q: What if I have problems with a product you recommended?</h4>
         <p>A: Contact us! We'll help you resolve issues or find better alternatives. Your experience helps other families too.</p>
@@ -262,9 +261,9 @@
     </div>
 
     <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #64748b; border-top: 1px solid #e2e8f0;">
-        <p>&copy; 2025 CyberDad. All rights reserved.</p>
+        <p>&copy; 2026 CyberDadKit. All rights reserved.</p>
         <p style="margin-top: 10px; font-size: 0.9rem;">
-            This affiliate disclosure was last updated on January 17, 2025, and complies with FTC guidelines and international regulations.
+            This affiliate disclosure was last updated on November 9, 2026, and complies with FTC guidelines and international regulations.
         </p>
         <p style="margin-top: 15px;">
             <a href="/privacy-policy.html" style="color: #3b82f6; margin: 0 10px;">Privacy Policy</a> |

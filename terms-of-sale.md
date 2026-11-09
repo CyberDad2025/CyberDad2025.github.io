@@ -2,7 +2,7 @@
 layout: default
 no_ads: true
 title: "Terms of Sale"
-description: "CyberDad Shield Kit terms of sale: $47 one-time price, digital delivery by email, and a 30-day full refund of what you paid."
+description: "CyberDadKit terms of sale: Shield Kit ($47, 30-day refund) and holiday digital printables (7-day refunds; US customers)."
 permalink: /terms-of-sale/
 ---
 
@@ -36,7 +36,7 @@ Price: $47 (USD), one-time. Payments are processed securely via Stripe through M
 
 ## Holiday digital printables
 
-Gather & Play, Christmas Trivia Night, the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99.
+Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99.
 
 You may print copies for your own personal, noncommercial gatherings, including internal office use. This license does not include resale of the files, rehosting the files, or a commercial event service.
 

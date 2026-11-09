@@ -1,12 +1,12 @@
 ---
 layout: default
 no_ads: true
-title: "About CyberDad Kit — Why I Started This"
+title: "About CyberDadKit — Why I Started This"
 permalink: /about/
 description: "Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with hands-on SOC experience. Why I built CyberDadKit to help families protect themselves online."
 ---
 
-# Why CyberDad Kit Exists
+# Why CyberDadKit Exists
 
 I'm Ruel Miller, a U.S. Marine Corps veteran and CompTIA Security+ certified dad. I have hands-on Security Operations Center experience from a past role in security analysis and threat response, and I built CyberDadKit to help families protect themselves online.
 
@@ -14,7 +14,7 @@ By every other hour of the day I'm a dad. My family is into YouTube, kids' chann
 
 Those two worlds don't usually talk to each other. The tools and playbooks I used in the SOC exist to protect large organizations' networks — not the Wi-Fi router in your living room. But the threats are the same shape: phishing, malware, social engineering, data theft. Just at a different scale.
 
-CyberDad Kit is me bridging that gap.
+CyberDadKit is me bridging that gap.
 
 ## What this site actually does
 
@@ -48,7 +48,7 @@ I'm not the most senior person in this field, and I won't pretend to be. There a
 Current offers:
 
 - [Holiday printables](/holiday/)
-- [CyberDad Kit Sites](/sites/)
+- [CyberDadKit Sites](/sites/)
 
 The free posts on this site stay free.
 

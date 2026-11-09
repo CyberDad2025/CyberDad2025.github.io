@@ -488,6 +488,8 @@ def main() -> int:
     sites_refund = (ROOT / "sites" / "refund" / "index.html").read_text(encoding="utf-8")
     check("Gather & Play" not in shield_refund, "Shield Kit refund policy unchanged in scope")
     check("30-day" in shield_refund or "30 days" in shield_refund, "Shield Kit refund period still present")
+    check("Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99." in shield_terms, "terms name each holiday printable, its price, US availability, and both bundles")
+    check("CyberDadKit terms of sale: Shield Kit ($47, 30-day refund) and holiday digital printables (7-day refunds; US customers)." in shield_terms, "terms meta description")
     check("Gather & Play" in shield_terms, "terms of sale include Gather & Play holiday downloads")
     check("Christmas Trivia Night" in shield_terms, "terms of sale name Christmas Trivia Night")
     check("/holiday/refund/" in shield_terms, "terms of sale use the holiday refund page")
