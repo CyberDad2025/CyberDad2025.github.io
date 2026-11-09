@@ -501,10 +501,17 @@ body {
 }
 /* P59: tap targets of 44px minimum for the homepage's inline and footer links */
 .footer-links a, .footer-email, .hero-small a, .trust-item a { display: inline-flex; align-items: center; min-height: 44px; }
+.holiday-callout { background: var(--teal-light); border-bottom: 1px solid rgba(10,158,132,0.2); }
+.holiday-callout a { display: flex; align-items: center; justify-content: center; min-height: 44px; max-width: 1160px; margin: 0 auto; padding: 0.65rem 1.5rem; color: var(--ink); font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; line-height: 1.4; text-align: center; text-decoration: none; }
+.holiday-callout a:hover { color: var(--teal-mid); }
 .footer-links li { margin-bottom: 0; }
 </style>
 
 {% include home-header.html %}
+
+<div class="holiday-callout">
+  <a href="/holiday/">New for the holidays: Gather &amp; Play, 12 printable family gathering games ($7.99 USD, US) + a free sample</a>
+</div>
 
 <!-- HERO (P59): one-sentence premise, the price ladder in one row, ONE start button to /sites/#start, the Check-Up as a small text line.
      Prices exactly as live on /sites/ (main 4f9f1317, checked Nov 3, 2026). No payment link on this page. -->
