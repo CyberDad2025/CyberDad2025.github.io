@@ -687,11 +687,12 @@ body.festive .festive-mood img {
 }
 
 body.festive .festive-mood-xmas {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
-body.festive .festive-mood-xmas > :first-child {
-  grid-column: 1 / -1;
+body.festive .festive-mood img.mood-face {
+  object-fit: cover;
+  object-position: center center;
 }
 
 body.festive .festive-mood-xmas > :first-child img {
