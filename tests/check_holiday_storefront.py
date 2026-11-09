@@ -814,7 +814,13 @@ def main() -> int:
         check("After a successful payment, Stripe's confirmation screen shows the download link." in html, f"{slug} says Stripe's confirmation screen shows the download link")
         check("with your checkout email address" in html, f"{slug} keeps the checkout-email re-send instruction")
         check(" ".join(element_text(html, refund_id).split()) == refund_text, f"{slug} product page refund wording is exact")
-        check(" ".join(element_text(refund_html, refund_id).split()) == refund_text, f"{slug} refund page wording is exact")
+        refund_page_text = refund_text
+        if slug == "kids-table":
+            refund_page_text = refund_text.replace(
+                "This policy applies only to Kids' Table Activity Pack and does not limit your statutory rights.",
+                "This policy does not limit your statutory rights.",
+            )
+        check(" ".join(element_text(refund_html, refund_id).split()) == refund_page_text, f"{slug} refund page wording is exact")
         check(f'href="/holiday/{slug}/refund/"' in html, f"{slug} links its refund page")
         check("buy.stripe.com" not in refund_html and not any(p in refund_html for p in STRIPE_PLACEHOLDERS), f"{slug} refund page does not sell")
         for label, page_html in ((slug, html), (slug + " refund", refund_html)):
@@ -867,7 +873,11 @@ def main() -> int:
     check(not re.search(r"bought separately|savings|\bsave \$|\bsave up|% off", kids_html, re.I), "kids bundle makes no savings or comparison claim")
     for label, page_html in (("kids-table", kids_html), ("kids-table refund", kids_refund_html)):
         check(" ".join(element_text(page_html, "kids-bundle-refund-wording").split()) == KIDS_BUNDLE_REFUND, f"{label} carries the bundle refund sentence")
-    check('href="/holiday/refund/"' in kids_refund_html, "kids refund page points to the Gather & Play policy")
+    check(
+        "The wording does not promise automatic processing or a reply by a set time." in kids_refund_html
+        and "bought on its own" not in kids_refund_html,
+        "kids refund page keeps the processing-time sentence without the extra Gather & Play sentence",
+    )
     host_html = (HOLIDAY / "host-planner" / "index.html").read_text(encoding="utf-8")
     check("bundle" not in host_html.lower(), "host planner has no bundle (single product policy)")
     for p in STRIPE_PLACEHOLDERS:
