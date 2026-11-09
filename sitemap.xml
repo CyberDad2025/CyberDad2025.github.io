@@ -1,10 +1,11 @@
 ---
 layout: null
-# Liquid template, not a static URL list. Jekyll renders site.posts and
-# site.pages on each build, so new posts and pages still appear.
-# Skips /page2/ through /page99/, sitemap: false, and noindex.
+# Liquid template, not a static URL list. Jekyll renders site.posts,
+# site.pages, and static HTML/PDF on each build, so new posts and pages
+# still appear. Skips /page2/ through /page99/, sitemap: false, and noindex.
+# The #993 /privacy/ redirect stays out (sitemap: false). #994 trivia HTML
+# has no front matter, so it is listed from site.static_files.
 # jekyll-sitemap 1.4 does not also write sitemap.xml when this page exists.
-# Reconcile with the SEO PR (#993) at rebase; do not rebase before that.
 sitemap: false
 ---
 <?xml version="1.0" encoding="UTF-8"?>
