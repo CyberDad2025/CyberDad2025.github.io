@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Lock the festive restyle to presentation.
 
-Compares the six restyled pages with main. Checkout hrefs, $ prices,
-refund / terms / US-only sentences and footer text must stay byte-identical.
-The check reads source files only. It does not request buy.stripe.com.
+Compares the six restyled pages with origin/main. Visible text and every
+anchor href must match, except one whitelisted edit on /holiday/: the free
+sample line no longer says "worldwide". Checkout hrefs, prices, and footer
+markup stay identical too. The check reads source files only. It does not
+request buy.stripe.com.
 
 Run: python3 tests/check_festive_restyle.py
 """
@@ -25,6 +27,14 @@ PAGES = (
     "holiday/host-planner/index.html",
     "holiday/kids-table/index.html",
     "journal/2027/index.html",
+)
+BASE = "origin/main"
+# The only allowed visible-text change versus origin/main.
+WORLDWIDE_BEFORE = "Round 1 is free to print, worldwide."
+WORLDWIDE_AFTER = "Round 1 is free to print."
+TERMS_SENTENCE = (
+    'The <a href="/refund-policy/">refund policy</a> still covers only the CyberDad Shield Kit. '
+    '<a href="/terms-of-sale/">Terms of sale</a> cover the Shield Kit and holiday digital printables.'
 )
 LEGAL_ID = re.compile(r"refund|eligibility|seller-note|checkout-note", re.I)
 LEGAL_TEXT = re.compile(r"refund|terms|United States", re.I)
@@ -56,11 +66,16 @@ class Visible(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.parts: list[str] = []
+        self.hrefs: list[str] = []
         self.skip = 0
 
     def handle_starttag(self, tag, attrs):
         if tag in ("script", "style"):
             self.skip += 1
+        if tag == "a":
+            href = dict(attrs).get("href")
+            if href is not None:
+                self.hrefs.append(href)
 
     def handle_endtag(self, tag):
         if tag in ("script", "style") and self.skip:
@@ -121,9 +136,20 @@ class InnerHTML(HTMLParser):
 
 def main_text(rel: str) -> str:
     return subprocess.check_output(
-        ["git", "show", f"main:{rel}"],
+        ["git", "show", f"{BASE}:{rel}"],
         cwd=ROOT,
     ).decode("utf-8")
+
+
+def normalized(parts: list[str]) -> str:
+    return " ".join("".join(parts).split())
+
+
+def allowed_text(rel: str, current: str, previous: str) -> str:
+    """Return the origin/main text after the one whitelisted holiday edit."""
+    if rel != "holiday/index.html":
+        return previous
+    return previous.replace(WORLDWIDE_BEFORE, WORLDWIDE_AFTER, 1)
 
 
 def stripe_hrefs(html: str) -> list[str]:
@@ -139,10 +165,10 @@ def footer_html(html: str) -> str:
     return match.group(0) if match else ""
 
 
-def visible_parts(html: str) -> list[str]:
+def parse_visible(html: str) -> Visible:
     parser = Visible()
     parser.feed(html)
-    return parser.parts
+    return parser
 
 
 def legal_blocks(html: str) -> dict[str, str]:
@@ -173,21 +199,41 @@ def main() -> int:
         check(footer_html(current) == footer_html(previous), f"{label}: footer markup matches main")
         check(script_srcs(current) == script_srcs(previous), f"{label}: script sources match main")
 
-        current_parts = visible_parts(current)
-        previous_parts = visible_parts(previous)
-        current_text = " ".join("".join(current_parts).split())
-        previous_text = " ".join("".join(previous_parts).split())
-        check(current_text == previous_text, f"{label}: visible text matches main")
+        current_doc = parse_visible(current)
+        previous_doc = parse_visible(previous)
+        current_text = normalized(current_doc.parts)
+        previous_text = normalized(previous_doc.parts)
+        expected_text = allowed_text(label, current_text, previous_text)
+        if label == "holiday/index.html":
+            check(WORLDWIDE_BEFORE in previous_text, "origin/main holiday page still has the worldwide phrase")
+            check(current_text == expected_text, "holiday visible text matches origin/main except the worldwide removal")
+            check(previous_text.replace(WORLDWIDE_BEFORE, WORLDWIDE_AFTER, 1) != previous_text, "whitelist replaces exactly one worldwide phrase")
+        else:
+            check(current_text == previous_text, f"{label}: visible text matches origin/main")
+        check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
+        check(current_doc.hrefs == previous_doc.hrefs, f"{label}: every anchor href matches origin/main")
 
-        current_legal = [part for part in current_parts if LEGAL_TEXT.search(part)]
-        previous_legal = [part for part in previous_parts if LEGAL_TEXT.search(part)]
-        check(current_legal == previous_legal, f"{label}: refund, terms and US-only text nodes match main")
-        check(legal_blocks(current) == legal_blocks(previous), f"{label}: refund and eligibility markup matches main")
+        current_legal = [part for part in current_doc.parts if LEGAL_TEXT.search(part)]
+        previous_legal = [part for part in previous_doc.parts if LEGAL_TEXT.search(part)]
+        check(current_legal == previous_legal, f"{label}: refund, terms and US-only text nodes match origin/main")
+        check(legal_blocks(current) == legal_blocks(previous), f"{label}: refund and eligibility markup matches origin/main")
         check(
             current.count("Available only to customers located in the United States.")
             == previous.count("Available only to customers located in the United States."),
-            f"{label}: US-only sentence count matches main",
+            f"{label}: US-only sentence count matches origin/main",
         )
+
+    holiday = (ROOT / "holiday" / "index.html").read_text(encoding="utf-8")
+    footer = footer_html(holiday)
+    header = holiday.split("<main", 1)[0]
+    check('href="/shield-kit/"' not in header and 'href="/shield-kit/"' not in footer, "holiday nav and footer have no /shield-kit/ link")
+    check(TERMS_SENTENCE in holiday, "holiday FAQ has main's #995 terms sentence")
+    check("<span>— Shield Kit and holiday digital printables</span>" in holiday, "holiday terms link note matches #995")
+    journal = (ROOT / "journal" / "2027" / "index.html").read_text(encoding="utf-8")
+    check(
+        'alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible."' in journal,
+        "journal cover alt keeps the Psalm 119:105 (WEB) line from main",
+    )
 
     linked = []
     for path in ROOT.rglob("*.html"):
@@ -198,7 +244,7 @@ def main() -> int:
             linked.append(path.relative_to(ROOT).as_posix())
     check(sorted(linked) == sorted(PAGES), "festive.css is linked only from the six pages")
 
-    shield = subprocess.check_output(["git", "diff", "--name-only", "main", "--", "shield-kit"], cwd=ROOT)
+    shield = subprocess.check_output(["git", "diff", "--name-only", BASE, "--", "shield-kit"], cwd=ROOT)
     check(shield.strip() == b"", "shield-kit is unchanged")
 
     added = 0
