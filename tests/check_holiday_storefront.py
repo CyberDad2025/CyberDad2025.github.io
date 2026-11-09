@@ -66,12 +66,23 @@ SAMPLE_PDFS = {
     "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
     "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": "3f9bb5ac9f5c9d83b64df2bc06c82f5bcf80540daf538c2e593feabac7954c3a",
 }
+HOST_KIDS_SAMPLE_PDFS = {
+    "holiday/host-planner/sample/CyberDadKit-Host-Planner-FREE-SAMPLE-US-Letter.pdf":
+        "406c248c7fba18e0acaa09f4bc8a434bd476d0c88d21b75f4a0858d850fed20f",
+    "holiday/host-planner/sample/CyberDadKit-Host-Planner-FREE-SAMPLE-A4.pdf":
+        "67fae34b631d3c67f938dbfdd43baed46d34e134c4b96797f9face1ec2fa3457",
+    "holiday/kids-table/sample/CyberDadKit-Kids-Table-FREE-SAMPLE-US-Letter.pdf":
+        "918a41eb1d6c6da3f69eda0af6c5cafe34641025c35b44e6a321a50ae8ce3036",
+    "holiday/kids-table/sample/CyberDadKit-Kids-Table-FREE-SAMPLE-A4.pdf":
+        "294e81a741035fa6ee6c87aa8f370637cb612f753a87171915b2c0aea70f1240",
+}
 # Digests are the Trivia v1.0.1 handoff. Pin 03 is the replacement file.
 TRIVIA_FILES = {
     "holiday/trivia/index.html":
         # Festive restyle added a body class, festive.css link and a cover slot.
         # Prices, checkout hrefs and policy text are pinned by check_festive_restyle.py.
-        "0c186e52b78dd9dd8066e3cc9ceb7449ad6de82db149e97b78468d57b5511eee",
+        # Cross-sell "Pairs with…" block added. Checkout hrefs stay pinned below.
+        "babe3a921f089c209ee8d48c3c84a0c8d3a9953a52d24e99eff0c3df82a204c7",
     "holiday/trivia/sample/index.html":
         "60ff984fe51e7dfb611ab687f99c9a8f2f62d22f21df8dfcf77c5bb282514c0c",
     "holiday/trivia/refund/index.html":
@@ -154,8 +165,15 @@ ROUTES = {
     "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-12.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-12.png",
     "/holiday/host-planner/": HOLIDAY / "host-planner" / "index.html",
     "/holiday/host-planner/refund/": HOLIDAY / "host-planner" / "refund" / "index.html",
+    "/holiday/host-planner/sample/": HOLIDAY / "host-planner" / "sample" / "index.html",
+    "/holiday/host-planner/sample/CyberDadKit-Host-Planner-FREE-SAMPLE-US-Letter.pdf": HOLIDAY / "host-planner" / "sample" / "CyberDadKit-Host-Planner-FREE-SAMPLE-US-Letter.pdf",
+    "/holiday/host-planner/sample/CyberDadKit-Host-Planner-FREE-SAMPLE-A4.pdf": HOLIDAY / "host-planner" / "sample" / "CyberDadKit-Host-Planner-FREE-SAMPLE-A4.pdf",
     "/holiday/kids-table/": HOLIDAY / "kids-table" / "index.html",
     "/holiday/kids-table/refund/": HOLIDAY / "kids-table" / "refund" / "index.html",
+    "/holiday/kids-table/sample/": HOLIDAY / "kids-table" / "sample" / "index.html",
+    "/holiday/kids-table/sample/CyberDadKit-Kids-Table-FREE-SAMPLE-US-Letter.pdf": HOLIDAY / "kids-table" / "sample" / "CyberDadKit-Kids-Table-FREE-SAMPLE-US-Letter.pdf",
+    "/holiday/kids-table/sample/CyberDadKit-Kids-Table-FREE-SAMPLE-A4.pdf": HOLIDAY / "kids-table" / "sample" / "CyberDadKit-Kids-Table-FREE-SAMPLE-A4.pdf",
+    "/journal/2027/": ROOT / "journal" / "2027" / "index.html",
     "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-01.png": HOLIDAY / "assets" / "host-planner" / "previews" / "CyberDadKit-Host-Planner-preview-page-01.png",
     "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png": HOLIDAY / "assets" / "host-planner" / "previews" / "CyberDadKit-Host-Planner-preview-page-03.png",
     "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-01.png",
@@ -439,7 +457,7 @@ def main() -> int:
             if href == BUNDLE_PAYMENT_URL:
                 check(page_name == "storefront", "bundle payment link is the live bundle URL")
                 continue
-            path = href.split("#", 1)[0]
+            path = href.split("#", 1)[0].split("?", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{page_name} link {href}")
 
     check(store.images[0]["src"] == "/assets/img/festive/gather-and-play-cover.jpg", "hero image is the Gather and Play cover")
@@ -554,8 +572,8 @@ def main() -> int:
     check("Checkout unavailable" not in public_html and "not open yet" not in public_html, "checkout is no longer described as closed")
 
     pdfs = sorted(p.relative_to(ROOT).as_posix() for p in HOLIDAY.rglob("*.pdf"))
-    expected_pdfs = sorted([*SAMPLE_PDFS, *TRIVIA_SAMPLE_PDFS])
-    check(pdfs == expected_pdfs, "loose PDFs are the Gather & Play samples and the trivia samples")
+    expected_pdfs = sorted([*SAMPLE_PDFS, *TRIVIA_SAMPLE_PDFS, *HOST_KIDS_SAMPLE_PDFS])
+    check(pdfs == expected_pdfs, "published holiday PDFs are the known free samples only")
     for rel, digest in SAMPLE_PDFS.items():
         check(sha256(ROOT / rel) == digest, f"{rel} matches the final sample hash")
         info = subprocess.run(["pdfinfo", str(ROOT / rel)], capture_output=True, check=True, text=True).stdout
@@ -649,7 +667,7 @@ def main() -> int:
             else:
                 check(False, f"{label} unrecognized reference {url}")
                 continue
-            path = path.split("#", 1)[0]
+            path = path.split("#", 1)[0].split("?", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{label} link {url}")
     check('href="/holiday/trivia/refund/"' in trivia_html, "trivia page links to the refund route")
     check('href="/holiday/trivia/refund/"' in TRIVIA_PAGES[1].read_text(encoding="utf-8"), "sample page links to the refund route")
@@ -880,7 +898,7 @@ def main() -> int:
                 else:
                     check(False, f"{label} unrecognized reference {url}")
                     continue
-                path = path.split("#", 1)[0]
+                path = path.split("#", 1)[0].split("?", 1)[0]
                 check(path in ROUTES and ROUTES[path].is_file(), f"{label} link {url}")
             for img in page_doc.images:
                 src = img.get("src", "").lstrip("/")
@@ -917,7 +935,20 @@ def main() -> int:
                 hits.append(path.relative_to(ROOT).as_posix())
         allowed = ["holiday/host-planner/index.html"] if p == "STRIPE_LINK_HOST" else ["holiday/kids-table/index.html"]
         check(hits == [] or hits == allowed, f"{p} appears only on its product page" + ("" if hits in ([], allowed) else ": " + ", ".join(hits)))
-    check(not (HOLIDAY / "host-planner" / "sample").exists() and not (HOLIDAY / "kids-table" / "sample").exists(), "no sample page without a small sample file")
+    for _sample_slug, _pdf_names in (
+        ("host-planner", (
+            "CyberDadKit-Host-Planner-FREE-SAMPLE-US-Letter.pdf",
+            "CyberDadKit-Host-Planner-FREE-SAMPLE-A4.pdf",
+        )),
+        ("kids-table", (
+            "CyberDadKit-Kids-Table-FREE-SAMPLE-US-Letter.pdf",
+            "CyberDadKit-Kids-Table-FREE-SAMPLE-A4.pdf",
+        )),
+    ):
+        _sample_dir = HOLIDAY / _sample_slug / "sample"
+        check((_sample_dir / "index.html").is_file(), f"{_sample_slug} sample page exists with its files")
+        for _pdf_name in _pdf_names:
+            check((_sample_dir / _pdf_name).is_file(), f"{_sample_slug} sample includes {_pdf_name}")
     check('href="/holiday/host-planner/">Host Planner</a>' in store_html and 'href="/holiday/kids-table/">Kids\' Table</a>' in store_html, "holiday nav links to Host Planner and Kids' Table")
     check(store_html.find('id="trivia-bundle"') < store_html.find('id="thanksgiving-packs"') < store_html.find('id="listing-title"'), "Thanksgiving cards sit after the trivia callout and before the listing")
     check('href="/holiday/kids-table/#bundle"' in store_html, "/holiday/ card links the Kids' Table bundle")
