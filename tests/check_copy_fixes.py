@@ -82,9 +82,24 @@ ALLOWED_PRICE_REMOVALS = {
 # Prices cited in the holiday terms are copied from the live product pages.
 # shop/index.html prices belong to PR #1000. None means any price tokens are
 # allowed, so this check passes whether that page lands on main first or here.
+# Cross-sell snippets and the new sample/guide pages repeat those same live
+# prices (Gather $7.99, Trivia $5.99, bundles $12.99/$11.99, Host $4.99,
+# Kids $5.99, Journal $9.99/$7.99). Existing checkout prices are not in this map.
 ALLOWED_PRICE_ADDITIONS = {
     "terms-of-sale.md": Counter({"$4.99": 1, "$5.99": 2, "$7.99": 1, "$11.99": 2, "$12.99": 1}),
     "shop/index.html": None,
+    "holiday/index.html": Counter({"$5.99": 2, "$11.99": 1, "$12.99": 1}),
+    "holiday/trivia/index.html": Counter({"$7.99": 2, "$12.99": 1}),
+    "holiday/host-planner/index.html": Counter({"$5.99": 1, "$7.99": 1}),
+    "holiday/kids-table/index.html": Counter({"$4.99": 1, "$7.99": 1, "$11.99": 1}),
+    "journal/2027/index.html": Counter({"$5.99": 1, "$7.99": 1}),
+    "holiday/host-planner/sample/index.html": Counter({"$4.99": 4}),
+    "holiday/kids-table/sample/index.html": Counter({"$5.99": 4, "$11.99": 1}),
+    "holiday/guides/printable-christmas-trivia/index.html": Counter({"$5.99": 2, "$7.99": 1, "$12.99": 1}),
+    "holiday/guides/thanksgiving-games-printable/index.html": Counter({"$5.99": 2, "$7.99": 2}),
+    "holiday/guides/thanksgiving-hosting-checklist/index.html": Counter({"$4.99": 2, "$5.99": 1}),
+    "holiday/guides/kids-table-activities-thanksgiving/index.html": Counter({"$4.99": 2, "$5.99": 2, "$7.99": 1, "$11.99": 1}),
+    "holiday/guides/bible-verse-journal-2027/index.html": Counter({"$5.99": 1, "$7.99": 3, "$9.99": 2}),
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
