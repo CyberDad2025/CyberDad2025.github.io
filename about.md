@@ -18,7 +18,7 @@ CyberDad Kit is me bridging that gap.
 
 ## What this site actually does
 
-Not generic "10 tips" listicles. Specific, current, sourced from the same threat intelligence feeds analysts use in enterprise SOCs — translated into language a parent can actually use.
+The posts here are not generic "10 tips" listicles. They are specific and current, sourced from the same threat intelligence feeds analysts use in enterprise SOCs and translated into language a parent can actually use.
 
 The pipeline is straightforward:
 

@@ -34,9 +34,9 @@ OLD_ABSENT = [
     "on the homepage and on some articles",
 ]
 NEW_PRESENT = [
-    (ROOT / "affiliate-disclosure.html", "protect my family"),
+    (ROOT / "affiliate-disclosure.html", "A: No. We only recommend products we use."),
     (ROOT / "affiliate-disclosure.html", "Some links may be affiliate links; we may earn a commission at no extra cost to you."),
-    (ROOT / "assets/js/ethical-compliance.js", "protect my family"),
+    (ROOT / "assets/js/ethical-compliance.js", "A: No. We only recommend products we use."),
     (ROOT / "assets/js/ethical-compliance.js", "Some links may be affiliate links; we may earn a commission at no extra cost to you."),
     (ROOT / "about.md", "[Holiday printables](/holiday/)"),
     (ROOT / "about.md", "[CyberDad Kit Sites](/sites/)"),
@@ -47,9 +47,11 @@ NEW_PRESENT = [
     (ROOT / "terms-of-sale.md", "](/holiday/trivia/refund/)"),
     (ROOT / "terms-of-sale.md", "within 7 days of your purchase date"),
     (ROOT / "terms-of-sale.md", "This policy applies only to Gather & Play and does not limit your statutory rights."),
-    (ROOT / "terms-of-sale.md", "This policy applies only to Christmas Trivia Night and does not limit your statutory rights."),
+    (ROOT / "terms-of-sale.md", "This policy applies only to Christmas Trivia Night and the Christmas Trivia Night + Gather & Play bundle and does not limit your statutory rights."),
+    (ROOT / "terms-of-sale.md", "](/holiday/host-planner/refund/)"),
+    (ROOT / "terms-of-sale.md", "](/holiday/kids-table/refund/)"),
     (ROOT / "holiday/index.html", 'href="/terms-of-sale/"'),
-    (ROOT / "_includes/site-footer.html", "CyberDadKit, PO Box 940061, Maitland, FL 32794"),
+    (ROOT / "_includes/site-footer.html", "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794"),
     (ROOT / "cyberdadkit-privacy-policy.html", "&copy; 2026 Cyber Dad Kit"),
     (ROOT / "cyberdadkit-privacy-policy.html", "MailerLite signup form on some articles and on the Shield Kit page"),
     (ROOT / "cookie-policy.html", "email signup form on some articles and on the Shield Kit page"),
@@ -69,6 +71,10 @@ ALLOWED_PRICE_REMOVALS = {
     "about.md": Counter({"$47": 1}),
     "affiliate-disclosure.html": Counter({"$2": 1}),
     "assets/js/ethical-compliance.js": Counter({"$2": 1}),
+}
+# Prices cited in the holiday terms are copied from the live product pages.
+ALLOWED_PRICE_ADDITIONS = {
+    "terms-of-sale.md": Counter({"$4.99": 1, "$5.99": 1, "$11.99": 2, "$12.99": 1}),
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
@@ -94,10 +100,12 @@ def main() -> int:
     check("$47" not in about, "about page does not state the Shield Kit price")
 
     holiday_section = (ROOT / "terms-of-sale.md").read_text(encoding="utf-8").split("## Holiday digital printables", 1)[1].split("## Contact", 1)[0]
-    check("$" not in holiday_section, "holiday terms section has no price")
+    for price in ("$4.99", "$5.99", "$11.99", "$12.99"):
+        check(price in holiday_section, f"holiday terms cite the live price {price}")
+    check("$47" not in holiday_section, "holiday terms section does not repeat the Shield Kit price")
     check("the bundle" in holiday_section, "holiday terms section names the bundle")
     check("/holiday/refund/" in holiday_section and "/holiday/trivia/refund/" in holiday_section, "terms mention both holiday refund URLs")
-    check(holiday_section.count("You may request a full refund for any reason within 7 days of your purchase date.") == 2, "each printable repeats the 7-day refund substance")
+    check(holiday_section.count("You may request a full refund for any reason within 7 days of your purchase date.") == 4, "each printable repeats the 7-day refund substance")
 
     sitemap_src = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     check(sitemap_src.startswith("---\n") and "{% for post in site.posts %}" in sitemap_src and "{% for page in site.pages %}" in sitemap_src, "sitemap.xml is a Liquid template over site.posts and site.pages")
@@ -236,8 +244,9 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             stripe_bad.append(name)
         old_prices = Counter(PRICE_RE.findall(old))
         new_prices = Counter(PRICE_RE.findall(new))
-        allowed = ALLOWED_PRICE_REMOVALS.get(name, Counter())
-        if old_prices - new_prices != allowed or new_prices - old_prices:
+        allowed_removed = ALLOWED_PRICE_REMOVALS.get(name, Counter())
+        allowed_added = ALLOWED_PRICE_ADDITIONS.get(name, Counter())
+        if old_prices - new_prices != allowed_removed or new_prices - old_prices != allowed_added:
             price_bad.append(name)
         if Counter(FORM_RE.findall(old)) != Counter(FORM_RE.findall(new)):
             form_bad.append(name)
