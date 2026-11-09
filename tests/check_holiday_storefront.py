@@ -148,6 +148,55 @@ ROUTES = {
     "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-01.png",
     "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-05.png",
     "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-12.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-12.png",
+    "/holiday/host-planner/": HOLIDAY / "host-planner" / "index.html",
+    "/holiday/host-planner/refund/": HOLIDAY / "host-planner" / "refund" / "index.html",
+    "/holiday/kids-table/": HOLIDAY / "kids-table" / "index.html",
+    "/holiday/kids-table/refund/": HOLIDAY / "kids-table" / "refund" / "index.html",
+    "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-01.png": HOLIDAY / "assets" / "host-planner" / "previews" / "CyberDadKit-Host-Planner-preview-page-01.png",
+    "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png": HOLIDAY / "assets" / "host-planner" / "previews" / "CyberDadKit-Host-Planner-preview-page-03.png",
+    "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-01.png",
+    "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-06.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-06.png",
+}
+
+# Thanksgiving Host Dinner Planner and Kids' Table Activity Pack.
+# Preview digests match previews/ in each product's final release folder.
+# Buy buttons hold these placeholders until the Chief of Staff supplies the live
+# Stripe links. Run with --require-live-links before merging: it fails while any
+# placeholder remains.
+STRIPE_PLACEHOLDERS = ("STRIPE_LINK_HOST", "STRIPE_LINK_KIDS", "STRIPE_LINK_KIDS_BUNDLE")
+LIVE_LINK = re.compile(r"^https://buy\.stripe\.com/[A-Za-z0-9]+$")
+THANKSGIVING_FILES = {
+    "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-01.png":
+        "e1d47ae876940a44da567468919841403be9e856e5722239b4b41771c4b5c5b3",
+    "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png":
+        "3a304463ef3e43c65d54c5d513dc3f8d628ed8675ba441e5843247c6c49951e9",
+    "holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png":
+        "55e22a71f712b07fb7a94d9be7d3959716d052aeca2d63305f96b7802caa218d",
+    "holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-06.png":
+        "6b6b50c8c3cd1d3f4616ab4e507089fdac89c587f7d6854e9cea28715298b417",
+}
+HOST_REFUND = (
+    "Thanksgiving Host Dinner Planner is a digital product. You may request a full refund for any reason "
+    "within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for "
+    "purchase and your order reference. Never send card details. Refunds are returned to the original "
+    "payment method. No physical return is required. This policy applies only to Thanksgiving Host Dinner "
+    "Planner and does not limit your statutory rights."
+)
+KIDS_REFUND = (
+    "Kids' Table Activity Pack is a digital product. You may request a full refund for any reason "
+    "within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for "
+    "purchase and your order reference. Never send card details. Refunds are returned to the original "
+    "payment method. No physical return is required. This policy applies only to Kids' Table Activity "
+    "Pack and does not limit your statutory rights."
+)
+KIDS_BUNDLE_REFUND = (
+    "If you bought the $11.99 bundle of Kids' Table Activity Pack and Gather & Play, "
+    "this 7-day policy covers the whole bundle purchase."
+)
+THANKSGIVING_PRODUCTS = {
+    # page dir: (price, buy id, placeholder, refund wording id, refund wording)
+    "host-planner": ("$4.99", "host-checkout", "STRIPE_LINK_HOST", "host-refund-wording", HOST_REFUND),
+    "kids-table": ("$5.99", "kids-checkout", "STRIPE_LINK_KIDS", "kids-refund-wording", KIDS_REFUND),
 }
 
 
@@ -730,6 +779,137 @@ def main() -> int:
         print("note  built _site sitemap and homepage head checked")
     else:
         print("note  _site not present; skipped built sitemap and homepage head checks")
+
+    # Thanksgiving Host Dinner Planner and Kids' Table Activity Pack
+    require_live = "--require-live-links" in sys.argv[1:]
+    for rel, digest in THANKSGIVING_FILES.items():
+        path = ROOT / rel
+        check(path.is_file() and sha256(path) == digest, f"thanksgiving preview hash {rel}")
+        if path.is_file():
+            width, height = struct.unpack(">II", path.read_bytes()[16:24])
+            check((width, height) == (1391, 1800), f"{rel} is 1391x1800")
+    copy_banned = re.compile(r"guarantee|shield|\bCDK\b|california|\b(?:my|our) (?:son|daughter|kids?|child|children|wife|family)\b", re.I)
+    pending = []
+    for slug, (price, buy_id, placeholder, refund_id, refund_text) in THANKSGIVING_PRODUCTS.items():
+        product = HOLIDAY / slug / "index.html"
+        refund = HOLIDAY / slug / "refund" / "index.html"
+        check(product.is_file() and refund.is_file(), f"{slug} product and refund pages exist")
+        if not (product.is_file() and refund.is_file()):
+            continue
+        html = product.read_text(encoding="utf-8")
+        refund_html = refund.read_text(encoding="utf-8")
+        doc = parse(product)
+        pay = [a for a in doc.anchors if a.get("id") == buy_id]
+        href = pay[0].get("href", "") if len(pay) == 1 else ""
+        check(href == placeholder or bool(LIVE_LINK.match(href)), f"{slug} buy href is its placeholder or a live Stripe link")
+        check(html.count(f'data-payment-link="{href}"') == 1 and html.count(f'"{href}"') == 2, f"{slug} checkout attribute matches the buy href")
+        enabled = f'data-checkout-enabled="true" data-payment-link="{href}"' in html
+        check(enabled == bool(LIVE_LINK.match(href)), f"{slug} checkout is enabled only with a live link")
+        if href == placeholder:
+            pending.append(placeholder)
+            check("TODO: replace " + placeholder in html, f"{slug} placeholder is marked TODO")
+        check(price in element_text(html, buy_id) and "USD" in element_text(html, buy_id), f"{slug} button names {price} USD")
+        check(html.find("Stripe checkout displays Ruel Miller.") < html.find(f'id="{buy_id}"'), f"{slug} merchant notice is before the pay link")
+        check(US_ELIGIBILITY in html and US_ELIGIBILITY in refund_html, f"{slug} states US eligibility")
+        check("After a successful payment, Stripe's confirmation screen shows the download link." in html, f"{slug} says Stripe's confirmation screen shows the download link")
+        check("with your checkout email address" in html, f"{slug} keeps the checkout-email re-send instruction")
+        check(" ".join(element_text(html, refund_id).split()) == refund_text, f"{slug} product page refund wording is exact")
+        refund_page_text = refund_text
+        if slug == "kids-table":
+            refund_page_text = refund_text.replace(
+                "This policy applies only to Kids' Table Activity Pack and does not limit your statutory rights.",
+                "This policy does not limit your statutory rights.",
+            )
+        check(" ".join(element_text(refund_html, refund_id).split()) == refund_page_text, f"{slug} refund page wording is exact")
+        check(f'href="/holiday/{slug}/refund/"' in html, f"{slug} links its refund page")
+        check("buy.stripe.com" not in refund_html and not any(p in refund_html for p in STRIPE_PLACEHOLDERS), f"{slug} refund page does not sell")
+        for label, page_html in ((slug, html), (slug + " refund", refund_html)):
+            visible = re.sub(r"<!--.*?-->", "", page_html, flags=re.S)
+            check(not copy_banned.search(visible), f"{label} copy has no banned terms")
+            check("PO Box 940061, Maitland, FL 32794" in page_html, f"{label} uses the PO Box")
+            check("CyberDadKit" in page_html, f"{label} uses CyberDadKit")
+            check("G-5B1LNCPB56" in page_html, f"{label} includes the site GA4 id")
+            check("{%" not in page_html and "layout:" not in page_html and "sitemap: false" not in page_html, f"{label} is static HTML that jekyll-sitemap lists")
+            check("drive.google.com" not in page_html and "docs.google.com" not in page_html, f"{label} has no Drive delivery URL")
+            check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', page_html, re.I) and "download=" not in page_html, f"{label} links no PDF or ZIP")
+            check(not re.search(r'href=["\']#["\']', page_html), f"{label} has no empty hash href")
+            check(not internal.search(visible), f"{label} omits internal status wording")
+            page_doc = parse(product if label == slug else refund)
+            urls = re.findall(r'(?:href|src)="([^"]*)"', page_html)
+            urls += re.findall(r'content="(https://[^"]+)"', page_html)
+            for url in urls:
+                if url.startswith("mailto:"):
+                    check(url.startswith("mailto:ruel@getcyberdadkit.com"), f"{label} mailto {url}")
+                    continue
+                if url.startswith("#"):
+                    check(url[1:] in page_doc.ids, f"{label} anchor {url}")
+                    continue
+                if url in STRIPE_PLACEHOLDERS or LIVE_LINK.match(url) or url == "https://www.googletagmanager.com/gtag/js?id=G-5B1LNCPB56":
+                    continue
+                if url.startswith("https://getcyberdadkit.com"):
+                    path = url[len("https://getcyberdadkit.com"):] or "/"
+                elif url.startswith("/"):
+                    path = url
+                else:
+                    check(False, f"{label} unrecognized reference {url}")
+                    continue
+                path = path.split("#", 1)[0]
+                check(path in ROUTES and ROUTES[path].is_file(), f"{label} link {url}")
+            for img in page_doc.images:
+                check(img.get("src", "").lstrip("/") in THANKSGIVING_FILES, f"{label} image is a real preview: {img.get('src')}")
+
+    kids_html = (HOLIDAY / "kids-table" / "index.html").read_text(encoding="utf-8")
+    kids_refund_html = (HOLIDAY / "kids-table" / "refund" / "index.html").read_text(encoding="utf-8")
+    kids_doc = parse(HOLIDAY / "kids-table" / "index.html")
+    bundle_pay = [a for a in kids_doc.anchors if a.get("id") == "kids-bundle-checkout"]
+    bundle_href = bundle_pay[0].get("href", "") if len(bundle_pay) == 1 else ""
+    check(bundle_href == "STRIPE_LINK_KIDS_BUNDLE" or bool(LIVE_LINK.match(bundle_href)), "kids bundle buy href is its placeholder or a live Stripe link")
+    check(bundle_href not in {PAYMENT_URL, TRIVIA_PAYMENT_URL, BUNDLE_PAYMENT_URL}, "kids bundle does not reuse another product's link")
+    if bundle_href == "STRIPE_LINK_KIDS_BUNDLE":
+        pending.append(bundle_href)
+        check("STRIPE_LINK_KIDS_BUNDLE (1 place)" in kids_html, "kids bundle placeholder is marked TODO")
+    check("$11.99" in element_text(kids_html, "kids-bundle-checkout"), "kids bundle button names $11.99")
+    check(kids_html.find('id="kids-checkout"') < kids_html.find('id="bundle-title"') < kids_html.find('id="kids-bundle-checkout"'), "kids bundle callout sits below the pack's buy button")
+    check(not re.search(r"bought separately|savings|\bsave \$|\bsave up|% off", kids_html, re.I), "kids bundle makes no savings or comparison claim")
+    for label, page_html in (("kids-table", kids_html), ("kids-table refund", kids_refund_html)):
+        check(" ".join(element_text(page_html, "kids-bundle-refund-wording").split()) == KIDS_BUNDLE_REFUND, f"{label} carries the bundle refund sentence")
+    check(
+        "does not promise automatic processing" not in kids_refund_html
+        and "bought on its own" not in kids_refund_html
+        and "applies only to" not in kids_refund_html,
+        "kids refund page omits the extra policy sentences",
+    )
+    host_html = (HOLIDAY / "host-planner" / "index.html").read_text(encoding="utf-8")
+    check("bundle" not in host_html.lower(), "host planner has no bundle (single product policy)")
+    for p in STRIPE_PLACEHOLDERS:
+        hits = []
+        for path in HOLIDAY.rglob("*.html"):
+            if p in path.read_text(encoding="utf-8"):
+                hits.append(path.relative_to(ROOT).as_posix())
+        allowed = ["holiday/host-planner/index.html"] if p == "STRIPE_LINK_HOST" else ["holiday/kids-table/index.html"]
+        check(hits == [] or hits == allowed, f"{p} appears only on its product page" + ("" if hits in ([], allowed) else ": " + ", ".join(hits)))
+    check(not (HOLIDAY / "host-planner" / "sample").exists() and not (HOLIDAY / "kids-table" / "sample").exists(), "no sample page without a small sample file")
+    check('href="/holiday/host-planner/">Host Planner</a>' in store_html and 'href="/holiday/kids-table/">Kids\' Table</a>' in store_html, "holiday nav links to Host Planner and Kids' Table")
+    check(store_html.find('id="trivia-bundle"') < store_html.find('id="thanksgiving-packs"') < store_html.find('id="listing-title"'), "Thanksgiving cards sit after the trivia callout and before the listing")
+    check('href="/holiday/kids-table/#bundle"' in store_html, "/holiday/ card links the Kids' Table bundle")
+    check(not any(p in store_html for p in STRIPE_PLACEHOLDERS), "/holiday/ carries no placeholder buy link")
+    check("holiday/host-planner" not in config and "holiday/kids-table" not in config, "Jekyll config does not exclude the new pages")
+    check("Disallow: /holiday/host-planner" not in robots and "Disallow: /holiday/kids-table" not in robots, "robots.txt does not block the new pages")
+    drive_hits = []
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or skip_parts.intersection(path.parts) or path.suffix.lower() in skip_suffixes:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        if re.search(r"drive\.google\.com/(?:file|uc|drive)", text) and path.relative_to(ROOT).as_posix().startswith("holiday/"):
+            drive_hits.append(path.relative_to(ROOT).as_posix())
+    check(drive_hits == [], "no Drive delivery URL under holiday/" + ("" if not drive_hits else ": " + ", ".join(drive_hits)))
+    if pending:
+        print("PENDING Stripe link placeholders: " + ", ".join(pending))
+    if require_live:
+        check(pending == [], "--require-live-links: every Thanksgiving buy button has a live Stripe link")
 
     print()
     if failed:
