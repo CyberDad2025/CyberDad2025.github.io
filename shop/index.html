@@ -1,0 +1,178 @@
+---
+# Catalog of live products. Same pattern as /holiday/ and /sites/: layout null, so
+# Jekyll copies the page and still runs the GA4 include.
+# jekyll-sitemap 1.4.0 (GitHub Pages) lists site.html_pages where sitemap != false
+# and the url is not /404.html. sitemap: true puts /shop/ on that list explicitly.
+layout: null
+sitemap: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberDad Kit Shop: Printable Games and Journals</title>
+<meta name="description" content="Printable games, Christmas trivia, a host planner, a kids' table pack and a 2027 Bible verse journal. One-time USD prices for customers located in the United States.">
+<link rel="canonical" href="https://getcyberdadkit.com/shop/">
+<meta property="og:title" content="CyberDad Kit Shop: Printable Games and Journals">
+<meta property="og:description" content="Printable games, Christmas trivia, a host planner, a kids' table pack and a 2027 Bible verse journal. One-time USD prices for customers located in the United States.">
+<meta property="og:image" content="https://getcyberdadkit.com/holiday/assets/previews/CyberDadKit-preview-page-01.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://getcyberdadkit.com/shop/">
+<meta name="theme-color" content="#244b3d">
+<link rel="stylesheet" href="/holiday/assets/holiday.css">
+<style>
+.shop-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.shop-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--gold);
+  border-radius: 16px;
+  padding: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.shop-card img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.shop-card h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 4vw, 1.55rem);
+}
+.shop-card p { margin: 0; }
+.shop-card .shop-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.7rem;
+}
+.shop-card .hday-price-amount { font-size: clamp(1.6rem, 5vw, 2rem); }
+.shop-card .hday-pay {
+  width: 100%;
+  max-width: 100%;
+  margin-top: auto;
+  text-align: center;
+  white-space: normal;
+}
+@media (min-width: 720px) {
+  .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1040px) {
+  .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+</style>
+{% include ga4.html %}
+</head>
+<body>
+<a class="hday-skip" href="#main">Skip to content</a>
+<div class="hday-banner">
+  <p><strong>Available only to customers located in the United States.</strong> Prices are one-time, in USD.</p>
+</div>
+<header class="hday-header">
+  <div class="hday-bar">
+    <a class="hday-brand" href="/shop/">
+      <span class="hday-brand-name">CyberDad Kit</span>
+      <span class="hday-brand-sub">Shop</span>
+    </a>
+    <nav class="hday-nav" aria-label="Shop">
+      <ul>
+        <li><a href="/shop/" aria-current="page">Shop all</a></li>
+        <li><a href="/holiday/">Gather &amp; Play</a></li>
+        <li><a href="/journal/2027/">2027 Journal</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="hday-main">
+  <p class="hday-kicker">CyberDad Kit</p>
+  <h1 id="shop-title">Shop all</h1>
+  <p class="hday-lede">Printable games, a Thanksgiving host planner, a kids' table pack and a 2027 Bible verse journal. Each button opens that product's page on this site.</p>
+  <ul class="shop-grid">
+    <li class="shop-card" id="gather-and-play">
+      <img src="/holiday/assets/previews/CyberDadKit-preview-page-01.png" width="1394" height="1804" alt="Cover of Gather and Play: Thanksgiving + Christmas Gathering Games. It reads 12 original games, 6 Thanksgiving, 6 Christmas or winter, and 16 pages.">
+      <h2>Gather &amp; Play</h2>
+      <p>Twelve original Thanksgiving and Christmas gathering games, in four printable PDFs.</p>
+      <p class="shop-price"><span class="hday-price-amount">$7.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/holiday/">View product</a>
+    </li>
+    <li class="shop-card" id="christmas-trivia">
+      <img src="/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png" width="1391" height="1800" alt="Cover of Christmas Trivia Night. It reads 8 rounds, 80 original questions, host script, scorecards and tie-breakers, and lists the eight round titles." loading="lazy" decoding="async">
+      <h2>Christmas Trivia Night</h2>
+      <p>Eight rounds and 80 questions, with a host script, team answer sheets and tie-breakers.</p>
+      <p class="shop-price"><span class="hday-price-amount">$5.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/holiday/trivia/">View product</a>
+    </li>
+    <li class="shop-card" id="trivia-bundle">
+      <img src="/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png" width="1391" height="1800" alt="Cover of Christmas Trivia Night. It reads 8 rounds, 80 original questions, host script, scorecards and tie-breakers, and lists the eight round titles." loading="lazy" decoding="async">
+      <h2>Christmas Trivia Night + Gather &amp; Play bundle</h2>
+      <p>Christmas Trivia Night and Gather &amp; Play together, in one purchase.</p>
+      <p class="shop-price"><span class="hday-price-amount">$12.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/holiday/trivia/">View product</a>
+    </li>
+    <li class="shop-card" id="host-planner">
+      <img src="/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-01.png" width="1391" height="1800" alt="Cover of the Thanksgiving Host Dinner Planner. It reads Plan the meal, the guests and the leftovers, and lists the pages inside." loading="lazy" decoding="async">
+      <h2>Thanksgiving Host Planner</h2>
+      <p>An undated, write-in planner for the Thanksgiving host, as printable PDFs plus a tablet PDF.</p>
+      <p class="shop-price"><span class="hday-price-amount">$4.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/holiday/host-planner/">View product</a>
+    </li>
+    <li class="shop-card" id="kids-table">
+      <img src="/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png" width="1391" height="1800" alt="Cover of the Kids' Table Activity Pack. It reads 14 original activities for the kids' table, from simple to trickier, with 8 simple pages, 6 trickier pages and answer keys included." loading="lazy" decoding="async">
+      <h2>Kids' Table pack</h2>
+      <p>Fourteen print-at-home Thanksgiving and harvest activities for the kids' table.</p>
+      <p class="shop-price"><span class="hday-price-amount">$5.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/holiday/kids-table/">View product</a>
+    </li>
+    <li class="shop-card" id="kids-bundle">
+      <img src="/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png" width="1391" height="1800" alt="Cover of the Kids' Table Activity Pack. It reads 14 original activities for the kids' table, from simple to trickier, with 8 simple pages, 6 trickier pages and answer keys included." loading="lazy" decoding="async">
+      <h2>Kids' Table + Gather &amp; Play bundle</h2>
+      <p>The Kids' Table Activity Pack and Gather &amp; Play together, in one purchase.</p>
+      <p class="shop-price"><span class="hday-price-amount">$11.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/holiday/kids-table/">View product</a>
+    </li>
+    <li class="shop-card" id="bible-journal-2027">
+      <img src="/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.png" width="935" height="1210" alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible." loading="lazy" decoding="async">
+      <h2>2027 Bible Verse Journal</h2>
+      <p>A 365-day 2027 Bible verse journal, with one verse a day and room for a prayer note.</p>
+      <p class="shop-price"><span class="hday-price-amount">From $7.99</span> <span class="hday-price-meta">USD, one-time</span></p>
+      <a class="hday-pay" href="/journal/2027/">View product</a>
+    </li>
+  </ul>
+  <p class="hday-buy-note">Digital downloads only. No physical item and no shipping. Paid products are available only to customers located in the United States. Refund terms are on each product page.</p>
+</main>
+
+<footer class="hday-footer">
+  <div class="hday-footer-inner">
+    <p><strong>CyberDad Kit</strong> · Shop</p>
+    <p>CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794</p>
+    <p>CYBERDAD KIT LLC · Florida document number L25000463998</p>
+    <p><a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/shop/">Shop all</a>
+      <a href="/holiday/">Gather &amp; Play</a>
+      <a href="/journal/2027/">2027 Bible Verse Journal</a>
+      <a href="/contact/">Contact</a>
+      <a href="/cyberdadkit-privacy-policy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
