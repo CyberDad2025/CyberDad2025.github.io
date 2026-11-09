@@ -84,7 +84,7 @@ GitHub Actions → Python Scripts → Jekyll → GitHub Pages
 
 ### **Core Topics**
 - 🔐 **Password Security** - Family password management
-- 🏠 **Home Network Safety** - Router and WiFi protection  
+- 🏠 **Home Network Safety** - Router and Wi-Fi protection  
 - 👶 **Child Online Safety** - Age-appropriate internet protection
 - 📱 **Device Security** - Phones, tablets, smart devices
 - 🎮 **Gaming Safety** - Protecting kids while gaming

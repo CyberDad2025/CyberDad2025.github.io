@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📶 Make Your Home WiFi Super Safe - Easy Steps"
+title: "📶 Make Your Home Wi-Fi Super Safe - Easy Steps"
 date: 2026-10-05 12:00:07 -0500
 categories: [cybersecurity, family-safety, easy-guide]
 tags: [security, simple, family, guide, protection]
@@ -12,7 +12,7 @@ age_appropriate: "For the whole family"
 ---
 
 <div class="post-header">
-  <h1>📶 Make Your Home WiFi Super Safe - Easy Steps</h1>
+  <h1>📶 Make Your Home Wi-Fi Super Safe - Easy Steps</h1>
   <div class="post-meta">
     <span class="reading-time">⏱️ Takes 5 minutes to read</span>
     <span class="difficulty">📊 Super Easy</span>
@@ -25,11 +25,11 @@ age_appropriate: "For the whole family"
 
 ## 🎯 What You'll Learn Today
 
-You'll learn how to make your home WiFi network safe from bad people who want to steal your information.
+You'll learn how to make your home Wi-Fi network safe from bad people who want to steal your information.
 
-## 🤔 What is WiFi and Why Protect It?
+## 🤔 What is Wi-Fi and Why Protect It?
 
-**WiFi is like a bridge:**
+**Wi-Fi is like a bridge:**
 - It connects your devices to the internet
 - Your phone, computer, and tablet all use it
 - If it's not protected, strangers can use it
@@ -38,9 +38,9 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 **Think of it like your front door:**
 - You wouldn't leave your front door wide open
 - You lock it to keep strangers out
-- WiFi needs a "lock" too
+- Wi-Fi needs a "lock" too
 
-## 🔐 The 5 Simple Steps to Safe WiFi
+## 🔐 The 5 Simple Steps to Safe Wi-Fi
 
 ### Step 1: Change the Default Password
 **What this means:**
@@ -53,12 +53,12 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 2. Write down the web address (like 192.168.1.1)
 3. Type that address in your web browser
 4. Log in with the default username and password
-5. Look for "WiFi Password" or "Network Password"
+5. Look for "Wi-Fi Password" or "Network Password"
 6. Change it to something strong (follow our password rules!)
 
 ### Step 2: Give Your Network a New Name
 **What this means:**
-- Your WiFi probably has a name like "NETGEAR_123"
+- Your Wi-Fi probably has a name like "NETGEAR_123"
 - This tells bad people what type of router you have
 - Change it to something fun but not personal
 
@@ -74,7 +74,7 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 
 ### Step 3: Turn On WPA3 (or WPA2) Security
 **What this means:**
-- This is like putting a strong lock on your WiFi
+- This is like putting a strong lock on your Wi-Fi
 - It scrambles your information so bad people can't read it
 - It's usually in your router settings under "Security"
 
@@ -99,7 +99,7 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 
 ### Step 5: Create a Guest Network
 **What this means:**
-- This is a separate WiFi for visitors
+- This is a separate Wi-Fi for visitors
 - They can use internet but can't see your devices
 - Keeps your main network private
 
@@ -108,7 +108,7 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 - If their device has problems, it won't affect yours
 - You can turn it off when no one is visiting
 
-## 🔍 How to Check If Your WiFi is Safe
+## 🔍 How to Check If Your Wi-Fi is Safe
 
 ### Monthly Safety Check:
 1. **Look at connected devices**
@@ -123,7 +123,7 @@ You'll learn how to make your home WiFi network safe from bad people who want to
    - Make sure security is still turned on
    - Check that your password hasn't changed
 
-### Warning Signs Someone is Using Your WiFi:
+### Warning Signs Someone is Using Your Wi-Fi:
 - ❌ Internet is much slower than usual
 - ❌ You see devices you don't recognize
 - ❌ Your data usage is higher than normal
@@ -132,7 +132,7 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 ## 🛡️ Extra Protection Tips
 
 ### For Advanced Users:
-- **Turn off WPS** (WiFi Protected Setup) - it's not secure
+- **Turn off WPS** (Wi-Fi Protected Setup) - it's not secure
 - **Use MAC address filtering** for important devices
 - **Change the admin password** for your router settings
 - **Turn off remote management** unless you need it
@@ -143,16 +143,16 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 - **Use strong, unique passwords**
 - **Restart your router monthly**
 
-## 👨‍👩‍👧‍👦 Family WiFi Safety
+## 👨‍👩‍👧‍👦 Family Wi-Fi Safety
 
 ### Teaching Kids:
-- Only connect to your home WiFi
-- Never share the WiFi password with friends
+- Only connect to your home Wi-Fi
+- Never share the Wi-Fi password with friends
 - Tell an adult if something seems wrong
-- Don't connect to random public WiFi
+- Don't connect to random public Wi-Fi
 
 ### For Grandparents:
-- Write down your WiFi name and password
+- Write down your Wi-Fi name and password
 - Ask family to help set up the router
 - Don't worry if it seems complicated - ask for help!
 - Focus on using strong passwords
@@ -160,12 +160,12 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 ### For Parents:
 - Set up parental controls on your router
 - Monitor what devices are connected
-- Teach kids about public WiFi dangers
+- Teach kids about public Wi-Fi dangers
 - Create separate networks for smart home devices
 
 ## 🆘 What to Do If Something Goes Wrong
 
-### If Your WiFi Gets Hacked:
+### If Your Wi-Fi Gets Hacked:
 1. **Don't panic** - this can be fixed
 2. **Unplug your router** for 30 seconds
 3. **Change all passwords** immediately
@@ -181,13 +181,13 @@ You'll learn how to make your home WiFi network safe from bad people who want to
 ## 🎉 You're All Set!
 
 Great job! You now know how to:
-- ✅ Change your WiFi password
+- ✅ Change your Wi-Fi password
 - ✅ Pick a good network name
 - ✅ Turn on security features
 - ✅ Keep your router updated
 - ✅ Create a guest network
 
-**Remember:** Your home WiFi is like your front door - keep it locked and only let trusted people in!
+**Remember:** Your home Wi-Fi is like your front door - keep it locked and only let trusted people in!
 
 ---
 

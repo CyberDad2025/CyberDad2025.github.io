@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Family Guide: Preventing WiFi Hacking Attacks in Your Home"
+title: "Family Guide: Preventing Wi-Fi Hacking Attacks in Your Home"
 date: 2025-09-23 13:28:08 +0000
 categories: [Family Safety]
 tags: [cybersecurity, family-safety, wifi-hacking, parents-guide]
