@@ -45,14 +45,14 @@ CARDS = [
     {
         "id": "trivia-bundle",
         "name": "Christmas Trivia Night + Gather & Play bundle",
-        "href": "/holiday/trivia/",
+        "href": "/holiday/trivia/#bundle",
         "price": "$12.99",
         "page": "holiday/trivia/index.html",
         "image": "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png",
     },
     {
         "id": "host-planner",
-        "name": "Thanksgiving Host Planner",
+        "name": "Thanksgiving Host Dinner Planner",
         "href": "/holiday/host-planner/",
         "price": "$4.99",
         "page": "holiday/host-planner/index.html",
@@ -60,7 +60,7 @@ CARDS = [
     },
     {
         "id": "kids-table",
-        "name": "Kids' Table pack",
+        "name": "Kids' Table Activity Pack",
         "href": "/holiday/kids-table/",
         "price": "$5.99",
         "page": "holiday/kids-table/index.html",
@@ -69,7 +69,7 @@ CARDS = [
     {
         "id": "kids-bundle",
         "name": "Kids' Table + Gather & Play bundle",
-        "href": "/holiday/kids-table/",
+        "href": "/holiday/kids-table/#bundle",
         "price": "$11.99",
         "page": "holiday/kids-table/index.html",
         "image": "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png",
@@ -182,6 +182,16 @@ def yaml_list(text: str, key: str) -> list[str]:
     return items
 
 
+def page_file(path: str) -> Path | None:
+    if path in ("", "/"):
+        return ROOT / "index.html"
+    rel = path.strip("/")
+    for candidate in (ROOT / rel, ROOT / rel / "index.html", ROOT / f"{rel}.html", ROOT / f"{rel}.md"):
+        if candidate.is_file():
+            return candidate
+    return None
+
+
 def resolves(href: str) -> bool:
     if href.startswith("mailto:"):
         return href.startswith("mailto:ruel@getcyberdadkit.com")
@@ -240,10 +250,15 @@ def main() -> int:
     for anchor in parser.anchors:
         href = anchor.get("href", "")
         check("stripe.com" not in href.lower(), f"link is not a Stripe URL: {href}")
+        path, sep, frag = href.partition("#")
         if href.startswith("#"):
-            check(href[1:] in parser.ids, f"anchor {href}")
+            check(frag in parser.ids, f"anchor {href}")
             continue
         check(resolves(href), f"link resolves: {href}")
+        if sep and frag:
+            target = page_file(path)
+            found = target is not None and f'id="{frag}"' in target.read_text(encoding="utf-8")
+            check(found, f"anchor {href}")
 
     lowered = html.lower()
     check("stripe.com" not in lowered, "shop page has no stripe.com URL")
@@ -254,7 +269,10 @@ def main() -> int:
     check('name="viewport" content="width=device-width, initial-scale=1"' in html, "viewport is set for small screens")
     title = title_text(html)
     description = meta_content(html, "name", "description")
-    check(bool(title) and "CyberDad Kit" in title, f"title names CyberDad Kit ({title!r})")
+    check(title == "CyberDadKit Shop: Printable Games and Journals", f"title is CyberDadKit Shop ({title!r})")
+    check(description.count("a Kids' Table Activity Pack") == 1, "meta description says a Kids' Table Activity Pack")
+    check(html.count("a Kids' Table Activity Pack") == 3, "description, social description, and lede use a Kids' Table Activity Pack")
+    check("CyberDad Kit LLC" in html, "legal name stays CyberDad Kit LLC")
     check(20 <= len(title) <= 70, f"title length {len(title)}")
     check(bool(description), "meta description is present")
     check(80 <= len(description) <= 200, f"meta description length {len(description)}")
