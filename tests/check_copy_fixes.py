@@ -16,7 +16,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MAIN = "main"
+MAIN = "origin/main"
 SITE = Path(os.environ.get("COPY_FIX_SITE", "/tmp/cdk-copy-site"))
 TEXT_SUFFIXES = {".html", ".md", ".liquid", ".xml", ".yml", ".js", ".txt", ".json"}
 SKIP_DIRS = {".git", "_site", "vendor", ".jekyll-cache"}
@@ -122,7 +122,11 @@ def main() -> int:
 
     check(not diff_names("shield-kit"), "shield-kit/ untouched")
     check(not diff_names("holiday/trivia"), "holiday/trivia/ untouched")
-    check(not diff_names("scripts/_posts"), "scripts/_posts unchanged vs main")
+    check(not diff_names("scripts/_posts"), "scripts/_posts unchanged vs origin/main")
+    delivery_dir = ROOT / "holiday" / "delivery"
+    holiday_zips = [p for p in (ROOT / "holiday").rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]
+    check(not delivery_dir.exists(), "holiday delivery directory is absent")
+    check(not holiday_zips, "no zip files under holiday/" + ("" if not holiday_zips else f" {holiday_zips}"))
 
     llc_bad = changed_llc_lines()
     check(not llc_bad, "approved CyberDad Kit LLC, PO Box lines unchanged" + ("" if not llc_bad else f" {llc_bad[:5]}"))
@@ -244,12 +248,14 @@ def git_show(name: str) -> str | None:
     proc = subprocess.run(
         ["git", "show", f"{MAIN}:{name}"],
         cwd=ROOT,
-        text=True,
         capture_output=True,
     )
     if proc.returncode != 0:
         return None
-    return proc.stdout
+    try:
+        return proc.stdout.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def wifi_in_visible_copy() -> list[str]:
