@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Wi-Fi Hacking Safety for Families: 5 Essential Steps Parents Need"
+title: "WiFi Hacking Safety for Families: 5 Essential Steps Parents Need"
 date: 2026-03-20
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips
@@ -14,7 +14,7 @@ As a parent in 2025, protecting your family from cyber threats is more critical 
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest Wi-Fi networks for visitors
+• Set up guest WiFi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

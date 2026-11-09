@@ -21,7 +21,7 @@ Take these actions right now to secure your family:
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest Wi-Fi networks for visitors
+• Set up guest WiFi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 

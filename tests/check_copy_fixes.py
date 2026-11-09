@@ -44,8 +44,10 @@ NEW_PRESENT = [
     (ROOT / "terms-of-sale.md", "Christmas Trivia Night"),
     (ROOT / "terms-of-sale.md", "instant digital downloads for personal/household use"),
     (ROOT / "terms-of-sale.md", "](/holiday/refund/)"),
+    (ROOT / "terms-of-sale.md", "](/holiday/trivia/refund/)"),
     (ROOT / "terms-of-sale.md", "within 7 days of your purchase date"),
     (ROOT / "terms-of-sale.md", "This policy applies only to Gather & Play and does not limit your statutory rights."),
+    (ROOT / "terms-of-sale.md", "This policy applies only to Christmas Trivia Night and does not limit your statutory rights."),
     (ROOT / "holiday/index.html", 'href="/terms-of-sale/"'),
     (ROOT / "_includes/site-footer.html", "CyberDadKit, PO Box 940061, Maitland, FL 32794"),
     (ROOT / "cyberdadkit-privacy-policy.html", "&copy; 2026 Cyber Dad Kit"),
@@ -94,6 +96,12 @@ def main() -> int:
     holiday_section = (ROOT / "terms-of-sale.md").read_text(encoding="utf-8").split("## Holiday digital printables", 1)[1].split("## Contact", 1)[0]
     check("$" not in holiday_section, "holiday terms section has no price")
     check("the bundle" in holiday_section, "holiday terms section names the bundle")
+    check("/holiday/refund/" in holiday_section and "/holiday/trivia/refund/" in holiday_section, "terms mention both holiday refund URLs")
+    check(holiday_section.count("You may request a full refund for any reason within 7 days of your purchase date.") == 2, "each printable repeats the 7-day refund substance")
+
+    sitemap_src = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+    check(sitemap_src.startswith("---\n") and "{% for post in site.posts %}" in sitemap_src and "{% for page in site.pages %}" in sitemap_src, "sitemap.xml is a Liquid template over site.posts and site.pages")
+    check("https://getcyberdadkit.com/20" not in sitemap_src, "sitemap source is not a static post URL list")
 
     config = (ROOT / "_config.yml").read_text(encoding="utf-8")
     check("paginate: 25" in config and 'paginate_path: "/page:num/"' in config, "pagination is still enabled")
@@ -114,6 +122,7 @@ def main() -> int:
 
     check(not diff_names("shield-kit"), "shield-kit/ untouched")
     check(not diff_names("holiday/trivia"), "holiday/trivia/ untouched")
+    check(not diff_names("scripts/_posts"), "scripts/_posts unchanged vs main")
 
     llc_bad = changed_llc_lines()
     check(not llc_bad, "approved CyberDad Kit LLC, PO Box lines unchanged" + ("" if not llc_bad else f" {llc_bad[:5]}"))
@@ -249,6 +258,8 @@ def wifi_in_visible_copy() -> list[str]:
         if path.suffix.lower() not in {".html", ".md", ".liquid"}:
             continue
         if "shield-kit" in path.parts or ("holiday" in path.parts and "trivia" in path.parts):
+            continue
+        if "scripts" in path.parts and "_posts" in path.parts:
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
         if WIFI_RE.search(text):

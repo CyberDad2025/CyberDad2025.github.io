@@ -40,7 +40,11 @@ Gather & Play, Christmas Trivia Night, and the bundle are instant digital downlo
 
 You may print copies for your own personal, noncommercial gatherings, including internal office use. This license does not include resale of the files, rehosting the files, or a commercial event service.
 
-Refunds follow the 7-day policy at [Holiday refunds](/holiday/refund/): Gather & Play is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Gather & Play and does not limit your statutory rights.
+Each printable has its own 7-day refund policy. The bundle is those printables together. It does not have a separate refund policy. Each printable in the bundle keeps the policy linked for that printable.
+
+[Gather & Play refunds](/holiday/refund/): Gather & Play is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Gather & Play and does not limit your statutory rights.
+
+[Christmas Trivia Night refunds](/holiday/trivia/refund/): Christmas Trivia Night is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Christmas Trivia Night and does not limit your statutory rights.
 
 ## Contact
 

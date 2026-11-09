@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Parents Alert: Wi-Fi Hacking Threats and How to Stop Them"
+title: "Parents Alert: WiFi Hacking Threats and How to Stop Them"
 date: 2026-01-31
 categories: cybersecurity
 tags: family-security online-safety cybersecurity-tips
@@ -30,7 +30,7 @@ Know what to do if your family experiences a cyber attack:
 Configure your home network for maximum security:
 
 • Change default router passwords
-• Set up guest Wi-Fi networks for visitors
+• Set up guest WiFi networks for visitors
 • Enable automatic security updates
 • Install parental control software
 
