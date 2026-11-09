@@ -5,6 +5,14 @@ Confirms the new Host Planner and Kids' Table samples, the five guide pages,
 and the pairs-with blocks. Reads source files and, when the site has been
 built, the Jekyll output. It does not request buy.stripe.com.
 
+Restyle (same PR): sample and guide pages use body.festive plus a theme
+class, a picture hero, a three-thumb peek grid, a Print/Gather/Play strip,
+speech bubbles, and gold-edge pills. Pairs-with blocks are cover cards.
+What this file still requires, unchanged: the two #pairs hrefs in order
+with the cross-sell UTM pattern, hday-download/hday-pay CTAs on site paths
+(PDFs or product pages with UTMs), one H1, canonical, title and description
+lengths, GA4, footer, and no buy.stripe.com on new pages.
+
 Run: python3 tests/check_holiday_samples_guides.py
 """
 
