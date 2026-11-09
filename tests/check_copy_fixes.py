@@ -317,6 +317,17 @@ def check_built_site(check) -> None:
     expected = expected_holiday_urls()
     missing = [url for url in expected if not any(loc.rstrip("/") == url.rstrip("/") for loc in locs)]
     check(not missing, "sitemap still has every existing /holiday/ URL" + ("" if not missing else f" missing {missing}"))
+    required_new = [
+        "https://getcyberdadkit.com/holiday/host-planner/",
+        "https://getcyberdadkit.com/holiday/host-planner/refund/",
+        "https://getcyberdadkit.com/holiday/kids-table/",
+        "https://getcyberdadkit.com/holiday/kids-table/refund/",
+        "https://getcyberdadkit.com/journal/2027/",
+        "https://getcyberdadkit.com/journal/2027/refund/",
+        "https://getcyberdadkit.com/journal/2027/sample/",
+    ]
+    missing_new = [url for url in required_new if not any(loc.rstrip("/") == url.rstrip("/") for loc in locs)]
+    check(not missing_new, "sitemap lists host planner, kids table, journal, and their refund pages" + ("" if not missing_new else f" missing {missing_new}"))
     check(not any(("/holiday/" + "delivery") in loc for loc in locs), "sitemap has no removed delivery URL")
     check(not any("/privacy/" in loc or loc.rstrip("/").endswith("/privacy") for loc in locs), "sitemap omits the privacy redirect")
     check(any(loc.rstrip("/").endswith("getcyberdadkit.com") or loc.rstrip("/").endswith("getcyberdadkit.com/") for loc in locs) or any(loc.rstrip("/") == "https://getcyberdadkit.com" for loc in locs), "homepage remains in the sitemap")

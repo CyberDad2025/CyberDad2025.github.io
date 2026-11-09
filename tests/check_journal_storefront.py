@@ -119,11 +119,24 @@ def main() -> int:
     full = [t for t in tracked if re.search(r"journal-2027-(letter|a4|half)\.pdf$", t)]
     check(not full, "no full journal PDF is tracked in the repo")
 
-    # Sitemap: jekyll-sitemap lists static .html/.pdf files automatically; make sure nothing opts /journal/ out.
+    # Sitemap is the Liquid template at sitemap.xml (not the jekyll-sitemap gem's
+    # own file). Static .html/.pdf files, including /journal/2027/, are listed
+    # from site.static_files. The gem stays installed and does not overwrite it.
     cfg = (ROOT / "_config.yml").read_text(encoding="utf-8")
-    check("- jekyll-sitemap" in cfg, "jekyll-sitemap plugin is on (generates /sitemap.xml with /journal/2027/ pages)")
+    sitemap_src = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+    check("{% for file in site.static_files %}" in sitemap_src and ".html" in sitemap_src and ".pdf" in sitemap_src,
+          "Liquid sitemap lists static HTML and PDF, including /journal/2027/")
     check(not re.search(r'path:\s*"?journal', cfg), "_config.yml does not exclude /journal/ from the sitemap")
     check("Sitemap: https://getcyberdadkit.com/sitemap.xml" in (ROOT / "robots.txt").read_text(encoding="utf-8"), "robots.txt points to the sitemap")
+    built_sitemap = next((p for p in (ROOT / "_site" / "sitemap.xml", Path("/tmp/cdk-copy-site/sitemap.xml")) if p.is_file()), None)
+    if built_sitemap is not None:
+        built_text = built_sitemap.read_text(encoding="utf-8")
+        for loc in (
+            "https://getcyberdadkit.com/journal/2027/",
+            "https://getcyberdadkit.com/journal/2027/refund/",
+            "https://getcyberdadkit.com/journal/2027/sample/",
+        ):
+            check(loc in built_text or loc.rstrip("/") in built_text, f"built sitemap lists {loc}")
 
     # Copy rules.
     public = "\n".join(html.values())
