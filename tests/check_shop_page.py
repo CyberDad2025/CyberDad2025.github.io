@@ -32,7 +32,7 @@ CARDS = [
         "href": "/holiday/",
         "price": "$7.99",
         "page": "holiday/index.html",
-        "image": "/holiday/assets/previews/CyberDadKit-preview-page-01.png",
+        "image": "/assets/img/festive/gather-and-play-cover.jpg",
     },
     {
         "id": "christmas-trivia",
@@ -40,7 +40,7 @@ CARDS = [
         "href": "/holiday/trivia/",
         "price": "$5.99",
         "page": "holiday/trivia/index.html",
-        "image": "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png",
+        "image": "/assets/img/festive/christmas-trivia-night-cover.jpg",
     },
     {
         "id": "trivia-bundle",
@@ -48,7 +48,7 @@ CARDS = [
         "href": "/holiday/trivia/#bundle",
         "price": "$12.99",
         "page": "holiday/trivia/index.html",
-        "image": "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png",
+        "image": "/assets/img/festive/trivia-gp-bundle-cover.jpg",
     },
     {
         "id": "host-planner",
@@ -56,7 +56,7 @@ CARDS = [
         "href": "/holiday/host-planner/",
         "price": "$4.99",
         "page": "holiday/host-planner/index.html",
-        "image": "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-01.png",
+        "image": "/assets/img/festive/thanksgiving-host-planner-cover.jpg",
     },
     {
         "id": "kids-table",
@@ -64,7 +64,7 @@ CARDS = [
         "href": "/holiday/kids-table/",
         "price": "$5.99",
         "page": "holiday/kids-table/index.html",
-        "image": "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png",
+        "image": "/assets/img/festive/kids-table-pack-cover.jpg",
     },
     {
         "id": "kids-bundle",
@@ -72,7 +72,7 @@ CARDS = [
         "href": "/holiday/kids-table/#bundle",
         "price": "$11.99",
         "page": "holiday/kids-table/index.html",
-        "image": "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png",
+        "image": "/assets/img/festive/kids-table-bundle-cover.jpg",
     },
     {
         "id": "bible-journal-2027",
@@ -80,7 +80,7 @@ CARDS = [
         "href": "/journal/2027/",
         "price": "From $7.99",
         "page": "journal/2027/index.html",
-        "image": "/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.png",
+        "image": "/assets/img/festive/bible-verse-journal-2027-cover.jpg",
     },
 ]
 
