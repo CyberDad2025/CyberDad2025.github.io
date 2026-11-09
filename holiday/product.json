@@ -54,28 +54,16 @@
     "eligibility": "Available only to customers located in the United States."
   },
   "delivery": {
-    "path": "/holiday/delivery/",
-    "repo_file": "holiday/delivery/index.html",
-    "indexable": false,
-    "robots": "noindex",
-    "robots_txt": "Disallow: /holiday/delivery/",
-    "assets_present": true,
-    "access_control": "none",
-    "after_completion_redirect_url": "https://getcyberdadkit.com/holiday/delivery/",
-    "note": "Static URL. Not authentication, not a paywall, and not DRM. Payment is not enforced by this URL."
+    "method": "stripe_hosted_confirmation",
+    "site_page": false,
+    "note": "After a successful payment, Stripe's confirmation screen shows the download link. The file is not published on this website. For a re-send, email ruel@getcyberdadkit.com with the checkout email address."
   },
   "final_customer_file": {
-    "ready": true,
-    "element_id": "customer-download",
-    "sha256": "bc2e9c572f1e17af32cfbfc8ea17838878e5ccca1f0c45e066fed09ffc571313",
-    "repo_path": "holiday/delivery/files/CyberDadKit-Gather-and-Play.zip",
-    "public_url": "https://getcyberdadkit.com/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip",
-    "contents": [
-      "US-Letter/CyberDadKit-Gather-and-Play-US-Letter-Color-Release.pdf",
-      "US-Letter/CyberDadKit-Gather-and-Play-US-Letter-Low-Ink-Release.pdf",
-      "A4/CyberDadKit-Gather-and-Play-A4-Color-Release.pdf",
-      "A4/CyberDadKit-Gather-and-Play-A4-Low-Ink-Release.pdf"
-    ]
+    "published_on_site": false,
+    "formats": 4,
+    "pages_per_pdf": 16,
+    "same_games_in_every_pdf": true,
+    "note": "One ZIP of four PDFs. Not hosted in this repository."
   },
   "sample": {
     "route": "/holiday/sample/",
@@ -135,7 +123,7 @@
     "contact": "/contact/",
     "gather_and_play": "/holiday/",
     "gather_and_play_sample": "/holiday/sample/",
-    "gather_and_play_delivery": "/holiday/delivery/",
+    "gather_and_play_delivery": "not_hosted_on_this_site",
     "gather_and_play_refund": "/holiday/refund/",
     "intended_policy_url_after_deploy": "https://cyberdad2025.github.io/holiday/refund/",
     "deployed": false,

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Checks for the Gather & Play review-draft storefront.
+"""Checks for the Gather & Play storefront.
 
-Confirms the public pages use the real preview files, leave checkout off,
-and do not publish the Ops archive, draft PDFs, or a download link.
+Confirms the public pages use the real preview files, keep the live checkout
+link, and do not publish the paid ZIP, a site download page, or the Ops archive.
 """
 
 from __future__ import annotations
@@ -12,14 +12,12 @@ import json
 import re
 import subprocess
 import sys
-import zipfile
 from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 HOLIDAY = ROOT / "holiday"
 STORE = HOLIDAY / "index.html"
-DELIVERY = HOLIDAY / "delivery" / "index.html"
 MANIFEST = HOLIDAY / "product.json"
 
 PREVIEW_HASHES = {
@@ -28,12 +26,10 @@ PREVIEW_HASHES = {
     "holiday/assets/previews/CyberDadKit-preview-page-09.png":
         "86a48f58cc563fa4076749c0770e09af6a31318ad096d92d971c41ab2c747a1c",
 }
-ZIP_SHA = "bc2e9c572f1e17af32cfbfc8ea17838878e5ccca1f0c45e066fed09ffc571313"
 PAYMENT_URL = "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"
 US_ELIGIBILITY = "Available only to customers located in the United States."
 PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
-ZIP_REL = "holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"
 SAMPLE_PDFS = {
     "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
     "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": "3f9bb5ac9f5c9d83b64df2bc06c82f5bcf80540daf538c2e593feabac7954c3a",
@@ -70,12 +66,10 @@ ROUTES = {
     "/sites/refund/": ROOT / "sites" / "refund" / "index.html",
     "/shield-kit/": ROOT / "shield-kit" / "index.html",
     "/holiday/": STORE,
-    "/holiday/delivery/": DELIVERY,
     "/holiday/refund/": HOLIDAY / "refund" / "index.html",
     "/holiday/sample/": HOLIDAY / "sample" / "index.html",
     "/holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": HOLIDAY / "sample" / "Free-Sample-Table-Talk-Trails-US-Letter.pdf",
     "/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": HOLIDAY / "sample" / "Free-Sample-Table-Talk-Trails-A4.pdf",
-    "/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip": HOLIDAY / "delivery" / "files" / "CyberDadKit-Gather-and-Play.zip",
     "/holiday/product.json": MANIFEST,
     "/holiday/assets/holiday.css": HOLIDAY / "assets" / "holiday.css",
 }
@@ -186,9 +180,7 @@ def main() -> int:
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     store_html = body(STORE)
-    delivery_html = body(DELIVERY)
     store = parse(STORE)
-    delivery = parse(DELIVERY)
 
     check(manifest["public_name"].startswith("Gather & Play"), "product name")
     check(manifest["counts"]["games"] == 12, "12 games")
@@ -202,8 +194,9 @@ def main() -> int:
     check(manifest["marketing_pin"]["sha256"] == PIN_SHA, "manifest pin hash")
     check(manifest["marketing_pin"]["canonical_url"] == "https://getcyberdadkit.com/holiday/assets/pins/01-thanksgiving-host.png", "canonical pin URL")
     check(manifest["marketing_pin"]["caption_link"] == "https://getcyberdadkit.com/holiday/sample/", "pin caption link is the sample page")
-    check(manifest["final_customer_file"]["ready"] is True, "customer ZIP is the release file")
-    check(manifest["final_customer_file"]["sha256"] == ZIP_SHA, "manifest ZIP hash")
+    check(manifest["delivery"]["site_page"] is False, "manifest does not publish a delivery page")
+    check(manifest["final_customer_file"]["published_on_site"] is False, "customer file is not published on the site")
+    check("public_url" not in manifest["final_customer_file"], "manifest has no public file URL")
     check(manifest["price"]["currency"] == "USD", "public price currency is USD")
     check(manifest["price"]["status"] == "final_public_price", "public price is final")
     check(len(manifest["previews"]) == 2, "cover and winter-game previews")
@@ -215,7 +208,7 @@ def main() -> int:
         path = ROOT / rel
         check(path.is_file() and sha256(path) == digest, f"preview hash {path.name}")
 
-    for page_name, html, doc in (("storefront", store_html, store), ("delivery", delivery_html, delivery)):
+    for page_name, html, doc in (("storefront", store_html, store),):
         check("Review draft" not in html, f"{page_name} does not call the files a review draft")
         check(not re.search(r"proposed", html, re.I), f"{page_name} does not say the price is proposed")
         check("CyberDadKit" in html, f"{page_name} uses CyberDadKit")
@@ -223,15 +216,9 @@ def main() -> int:
         check("64 unique" not in html.lower(), f"{page_name} makes no 64-unique-page claim")
         check("PO Box 940061, Maitland, FL 32794" in html, f"{page_name} uses the PO Box")
         check("ruel@getcyberdadkit.com" in html, f"{page_name} uses the existing contact")
-        if page_name == "storefront":
-            check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', html, re.I), "storefront does not link the paid ZIP or a PDF")
-        if page_name == "delivery":
-            check(html.count('href="/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"') == 1, "delivery links the customer ZIP once")
+        check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', html, re.I), "storefront does not link the paid ZIP or a PDF")
         check("download=" not in html, f"{page_name} has no download attribute")
-        if page_name == "storefront":
-            check(html.count('href="' + PAYMENT_URL + '"') == 1, "storefront has one live payment link")
-        if page_name == "delivery":
-            check("buy.stripe.com" not in html, "delivery page does not sell again")
+        check(html.count('href="' + PAYMENT_URL + '"') == 1, "storefront has one live payment link")
         check(not re.search(r'href=["\']#["\']', html), f"{page_name} has no empty hash href")
         for img in doc.images:
             src = img.get("src", "")
@@ -252,7 +239,6 @@ def main() -> int:
 
     check(store.images[0]["src"].endswith("page-01.png"), "hero preview is the cover")
     check({img["src"] for img in store.images} == {p["src"] for p in manifest["previews"]}, "storefront shows the final previews")
-    check({img["src"] for img in delivery.images} == {p["src"] for p in manifest["previews"]}, "delivery shows the final previews")
     for game in GAMES:
         check(game in store_html, f"lists {game}")
 
@@ -264,14 +250,13 @@ def main() -> int:
     check("Stripe checkout displays Ruel Miller." in store_html, "product page names the checkout display name")
     check(store_html.find("Stripe checkout displays Ruel Miller.") < store_html.find('id="holiday-checkout"'), "merchant notice is before the product pay link")
     check("CyberDad Kit LLC" in store_html and 'href="/holiday/refund/"' in store_html, "seller and refund stay on the product page")
-    check('href="/holiday/delivery/files/CyberDadKit-Gather-and-Play.zip"' in delivery_html, "delivery ZIP href is present")
-    check('name="robots" content="noindex"' in delivery_html, "delivery noindex")
-    check("sitemap: false" in DELIVERY.read_text(encoding="utf-8"), "delivery left out of the sitemap")
     robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
-    check("Disallow: /holiday/delivery/" in robots, "robots.txt disallows the delivery page")
+    check("User-agent: *" in robots and "Allow: /" in robots, "robots.txt still allows the site")
+    check("Sitemap: https://getcyberdadkit.com/sitemap.xml" in robots, "robots.txt sitemap line unchanged")
+    check("Disallow:" not in robots, "robots.txt has no delivery disallow")
 
     banned = re.compile(r"best seller|bestseller|testimonial|limited time|customers love|selling fast", re.I)
-    check(not banned.search(store_html + delivery_html), "no demand or testimonial claims")
+    check(not banned.search(store_html), "no demand or testimonial claims")
 
     sites = (ROOT / "sites" / "index.html").read_text(encoding="utf-8")
     shield = (ROOT / "shield-kit" / "index.html").read_text(encoding="utf-8")
@@ -289,7 +274,7 @@ def main() -> int:
     refund_path = HOLIDAY / "refund" / "index.html"
     refund_html = body(refund_path)
     refund = parse(refund_path)
-    for label, html in (("storefront", store_html), ("delivery", delivery_html), ("refund", refund_html)):
+    for label, html in (("storefront", store_html), ("refund", refund_html)):
         check(element_text(html, "gather-play-refund-wording") == EXACT_REFUND, f"{label} shows the exact refund wording")
         check("CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794" in html, f"{label} footer uses CyberDad Kit LLC")
         check("L25000463998" in html, f"{label} shows the Florida document number")
@@ -298,7 +283,7 @@ def main() -> int:
     check("personal, noncommercial gatherings" in refund_html, "printing license is personal and noncommercial")
     check("internal office use" in refund_html, "printing license includes internal office use")
     check("commercial event service" in refund_html, "printing license excludes a commercial event service")
-    check('href="/holiday/refund/"' in store_html and 'href="/holiday/refund/"' in delivery_html, "storefront and delivery link to the refund route")
+    check('href="/holiday/refund/"' in store_html, "storefront links to the refund route")
     for anchor in refund.anchors:
         href = anchor.get("href", "")
         if href.startswith("mailto:"):
@@ -318,7 +303,7 @@ def main() -> int:
     check("Gather & Play" not in shield_terms, "terms of sale do not absorb Gather & Play")
     check("Gather & Play" not in sites_refund, "Sites refund page does not absorb Gather & Play")
     promise = re.compile(r"instant refund|refunds are automatic|within 24 hours|reply within", re.I)
-    check(not promise.search(store_html + delivery_html + refund_html), "no automated or timed refund promise")
+    check(not promise.search(store_html + refund_html), "no automated or timed refund promise")
 
     sample_path = HOLIDAY / "sample" / "index.html"
     sample_html = body(sample_path)
@@ -347,22 +332,12 @@ def main() -> int:
         else:
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"sample link {href}")
-    public_html = store_html + delivery_html + refund_html + sample_html
+    public_html = store_html + refund_html + sample_html
     internal = re.compile(r"\bdraft\b|launch pass|not deployed|\bproposed\b|\bOps\b", re.I)
     check(not internal.search(public_html), "public pages omit internal status wording")
     check("plink_" not in public_html and "acct_" not in public_html, "public pages omit internal Stripe ids")
     check("Checkout unavailable" not in public_html and "not open yet" not in public_html, "checkout is no longer described as closed")
 
-    zip_path = ROOT / ZIP_REL
-    check(sha256(zip_path) == ZIP_SHA, "customer ZIP hash matches file QA")
-    with zipfile.ZipFile(zip_path) as zf:
-        names = [n for n in zf.namelist() if not n.endswith("/")]
-        check(len(names) == 4 and all(n.lower().endswith(".pdf") for n in names), "ZIP contains only four PDFs")
-        check(sorted(names) == sorted(manifest["final_customer_file"]["contents"]), "ZIP names match the manifest")
-        for name in names:
-            info = subprocess.run(["pdfinfo", "-"], input=zf.read(name), capture_output=True, check=True)
-            pages = [ln for ln in info.stdout.decode().splitlines() if ln.startswith("Pages:")]
-            check(pages and pages[0].split()[-1] == "16", f"{name} is 16 pages")
     pdfs = sorted(p.relative_to(ROOT).as_posix() for p in HOLIDAY.rglob("*.pdf"))
     check(pdfs == sorted(SAMPLE_PDFS), "only the two one-page sample PDFs are loose files")
     for rel, digest in SAMPLE_PDFS.items():
@@ -378,8 +353,30 @@ def main() -> int:
         if rel.endswith("A4.pdf"):
             check("A4" in info, f"{rel} is A4")
 
-    published_extra = [p for p in HOLIDAY.rglob("*") if p.is_file() and p.suffix.lower() == ".zip" and p != zip_path]
-    check(published_extra == [], "no second ZIP under holiday/")
+    published_zips = [p for p in HOLIDAY.rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]
+    check(published_zips == [], "no ZIP under holiday/")
+    check(not (HOLIDAY / "delivery").exists(), "delivery directory removed")
+    stripe_confirmation = "After a successful payment, Stripe's confirmation screen shows the download link."
+    resend = "with your checkout email address"
+    for label, html in (("storefront", store_html), ("sample", sample_html), ("refund", refund_html)):
+        check(stripe_confirmation in html, f"{label} says Stripe's confirmation screen shows the download link")
+        check(resend in html, f"{label} keeps the checkout-email re-send instruction")
+        check("file page" not in html.lower(), f"{label} does not describe a site file page")
+    removed = ("/holiday/" + "delivery", "CyberDadKit-Gather-and-Play" + ".zip")
+    hits = []
+    skip_parts = {".git", "vendor", "_site", ".jekyll-cache"}
+    skip_suffixes = {".png", ".jpg", ".jpeg", ".webp", ".pdf", ".zip", ".gif"}
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or skip_parts.intersection(path.parts) or path.suffix.lower() in skip_suffixes:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for needle in removed:
+            if needle in text:
+                hits.append(f"{path.relative_to(ROOT)} contains {needle}")
+    check(hits == [], "no remaining delivery path or customer ZIP filename" + ("" if not hits else ": " + "; ".join(hits)))
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
 
