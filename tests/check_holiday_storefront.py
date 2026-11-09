@@ -8,6 +8,7 @@ link, and do not publish the paid ZIP, a site download page, or the Ops archive.
 from __future__ import annotations
 
 import hashlib
+import html as html_lib
 import json
 import re
 import struct
@@ -33,6 +34,34 @@ BUNDLE_PAYMENT_URL = "https://buy.stripe.com/14A5kC7qmdqEfT78Efds407"
 US_ELIGIBILITY = "Available only to customers located in the United States."
 PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
+PIN_FILES = {
+    "holiday/pins/02-christmas-gathering.png": "ace46fa9656ba34c532686983cf09ebac2c8f7f6ec8b4aa6edc13c54cf2914a7",
+    "holiday/pins/03-office-holiday.png": "bea71bf1f06e4f7e5cb247c9b6979f1b0738ca61975a60a61efe720c95816181",
+    "holiday/pins/04-low-ink-last-minute.png": "610f223e21f58593ef23e9eda98908210648f6d785e64564ee74605790a84285",
+    "holiday/pins/pin-free-sample.png": "cb9f9d4385ce3b5ac29d8fb935cc216014212eb74083bf96c273a96c81041dc1",
+    "holiday/pins/pin-gathering-games.png": "cb4a6a67b31d5e6bd4a59f2c06a867aac3e06c0947ed55e2b51ee421f8e93597",
+    "holiday/pins/pin-low-ink.png": "6cbae8be1f50c88bb1e8c34f8aacb2db36981ad9d88fdd12ac883dd15bf681a8",
+}
+HOLIDAY_TITLE = "Gather & Play: Printable Thanksgiving and Christmas Games"
+HOLIDAY_DESC = (
+    "Printable Thanksgiving and Christmas family gathering games. "
+    "Twelve games in four PDFs for $7.99 USD, one-time, for customers located in the United States."
+)
+SAMPLE_TITLE = "Free Thanksgiving Table Talk Trails Printable Sample"
+SAMPLE_DESC = (
+    "Print the free Table Talk Trails sample in US Letter or A4. No email. "
+    "The 12-game bundle is $7.99 USD, one-time, for customers located in the United States."
+)
+PRODUCT_IMAGE = "https://getcyberdadkit.com/holiday/pins/pin-gathering-games.png"
+SAMPLE_IMAGE = "https://getcyberdadkit.com/holiday/pins/pin-free-sample.png"
+SERVED_ADSENSE_FILES = {
+    "_layouts/default.html",
+    "_layouts/post.html",
+}
+UNUSED_ADSENSE_FILES = {
+    "_layouts/home.html",
+}
+ADSENSE_NEEDLES = ("adsbygoogle", "pagead2", "googlesyndication", "ca-pub-")
 SAMPLE_PDFS = {
     "holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf": "20e1cb2b96b03f147efa5a267a796dc2dbb1b5a1b8b64196747fe31c5d2f6c64",
     "holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf": "3f9bb5ac9f5c9d83b64df2bc06c82f5bcf80540daf538c2e593feabac7954c3a",
@@ -197,6 +226,66 @@ class TextGrab(HTMLParser):
     def handle_data(self, data):
         if self.depth:
             self.parts.append(data)
+
+
+def title_text(html: str) -> str:
+    match = re.search(r"<title>(.*?)</title>", html, re.S)
+    return html_lib.unescape(match.group(1).strip()) if match else ""
+
+
+def meta_content(html: str, attr: str, value: str) -> str:
+    pattern = rf'<meta\s+{attr}="{re.escape(value)}"\s+content="([^"]*)"'
+    match = re.search(pattern, html)
+    return html_lib.unescape(match.group(1)) if match else ""
+
+
+def json_ld_blocks(html: str) -> list:
+    blocks = []
+    for match in re.finditer(r'<script type="application/ld\+json">\s*(.*?)\s*</script>', html, re.S):
+        blocks.append(json.loads(match.group(1)))
+    return blocks
+
+
+def has_key(obj, key: str) -> bool:
+    if isinstance(obj, dict):
+        return key in obj or any(has_key(value, key) for value in obj.values())
+    if isinstance(obj, list):
+        return any(has_key(value, key) for value in obj)
+    return False
+
+
+def repo_adsense_hits():
+    # tests/ is excluded from the Jekyll build, so it is not a served file.
+    skip_dirs = {".git", "_site", "vendor", ".jekyll-cache", "docs", ".bundle", "tests"}
+    skip_suffixes = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".zip"}
+    hits = []
+    for path in sorted(ROOT.rglob("*")):
+        if not path.is_file() or skip_dirs.intersection(path.parts) or path.suffix.lower() in skip_suffixes:
+            continue
+        try:
+            lines = path.read_text(encoding="utf-8").splitlines()
+        except (UnicodeDecodeError, OSError):
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        for lineno, line in enumerate(lines, 1):
+            lowered = line.lower()
+            if any(needle in lowered for needle in ADSENSE_NEEDLES):
+                hits.append((rel, lineno, line.strip()))
+    return hits
+
+
+def active_config_value(text: str, key: str):
+    prefix = key + ":"
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith(prefix):
+            value = stripped.split(":", 1)[1].strip()
+            if not value or value.startswith("#"):
+                return ""
+            return value.strip("'\"")
+    return None
 
 
 def element_text(html: str, element_id: str) -> str:
@@ -524,6 +613,123 @@ def main() -> int:
         "holiday/trivia/index.html",
         "tests/check_holiday_storefront.py",
     ], "bundle payment URL is only on /holiday/ and the trivia page" + ("" if not bundle_files else ": " + ", ".join(sorted(bundle_files))))
+    for rel, digest in PIN_FILES.items():
+        path = ROOT / rel
+        check(path.is_file() and sha256(path) == digest, f"pin hash {rel}")
+    config_text = (ROOT / "_config.yml").read_text(encoding="utf-8")
+    exclude_block = config_text.split("exclude:", 1)[-1].split("\n# Include", 1)[0]
+    check("holiday/pins" not in exclude_block and not re.search(r"(?m)^  - holiday/?\s*$", exclude_block), "pin directory is not excluded from the Jekyll build")
+    for rel in ("holiday/index.html", "holiday/sample/index.html", "holiday/refund/index.html"):
+        front = (ROOT / rel).read_text(encoding="utf-8").split("---", 2)[1]
+        check("sitemap: false" not in front, f"{rel} does not set sitemap: false")
+        check("layout: null" in front, f"{rel} keeps layout null")
+
+    check(store_html.count(PAYMENT_URL) == 2, "storefront payment URL still appears twice, unchanged")
+    check(sample_html.count(PAYMENT_URL) == 2, "sample payment URL still appears twice, unchanged")
+    check(title_text(store_html) == HOLIDAY_TITLE, "holiday title")
+    check(meta_content(store_html, "name", "description") == HOLIDAY_DESC, "holiday description")
+    check(meta_content(store_html, "property", "og:title") == HOLIDAY_TITLE, "holiday og:title matches title")
+    check(meta_content(store_html, "property", "og:description") == HOLIDAY_DESC, "holiday og:description matches description")
+    check(meta_content(store_html, "property", "og:image") == PRODUCT_IMAGE, "holiday og:image is the gathering-games pin")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/"' in store_html, "holiday canonical")
+    check(title_text(sample_html) == SAMPLE_TITLE, "sample title")
+    check(meta_content(sample_html, "name", "description") == SAMPLE_DESC, "sample description")
+    check(meta_content(sample_html, "property", "og:title") == SAMPLE_TITLE, "sample og:title matches title")
+    check(meta_content(sample_html, "property", "og:description") == SAMPLE_DESC, "sample og:description matches description")
+    check(meta_content(sample_html, "property", "og:image") == SAMPLE_IMAGE, "sample og:image is the free-sample pin")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/sample/"' in sample_html, "sample canonical")
+    for label, text in (("holiday title", HOLIDAY_TITLE), ("holiday description", HOLIDAY_DESC), ("sample title", SAMPLE_TITLE), ("sample description", SAMPLE_DESC)):
+        check(50 <= len(text) <= 60 if "title" in label else 140 <= len(text) <= 160, f"{label} length {len(text)}")
+        check(not re.search(r"\bCDK\b", text), f"{label} has no CDK")
+    blocks = json_ld_blocks(store_html)
+    check(len(blocks) == 1, "holiday page has one JSON-LD block")
+    product = blocks[0] if blocks else {}
+    offer = product.get("offers", {}) if isinstance(product, dict) else {}
+    brand = product.get("brand", {}) if isinstance(product, dict) else {}
+    brand_name = brand.get("name") if isinstance(brand, dict) else brand
+    check(product.get("@context") == "https://schema.org" and product.get("@type") == "Product", "JSON-LD is a schema.org Product")
+    check(product.get("name") == manifest["public_name"], "JSON-LD name matches product.json")
+    check(product.get("description") == HOLIDAY_DESC, "JSON-LD description matches the meta description")
+    check(product.get("image") == PRODUCT_IMAGE, "JSON-LD image is an absolute pin URL")
+    check(brand_name == "CyberDadKit", "JSON-LD brand is CyberDadKit")
+    check(product.get("sku") == "gather_and_play_v1", "JSON-LD sku")
+    check(offer.get("@type") == "Offer", "JSON-LD offer type")
+    check(offer.get("price") == manifest["price"]["amount"] == "7.99", "JSON-LD price matches product.json 7.99")
+    check(offer.get("priceCurrency") == manifest["price"]["currency"] == "USD", "JSON-LD currency matches product.json USD")
+    check(offer.get("availability") == "https://schema.org/InStock", "JSON-LD availability InStock")
+    check(offer.get("url") == "https://getcyberdadkit.com/holiday/", "JSON-LD offer url")
+    check(offer.get("areaServed") == "US", "JSON-LD areaServed US")
+    check(not has_key(product, "aggregateRating") and not has_key(product, "review") and not has_key(product, "reviews"), "JSON-LD has no rating or review")
+    check(json_ld_blocks(sample_html) == [] and json_ld_blocks(refund_html) == [], "Product JSON-LD is only on /holiday/")
+
+    for key in ("pinterest_domain_verify", "google_site_verification"):
+        check(active_config_value(config_text, key) in (None, ""), f"{key} is unset in _config.yml")
+    verification = (ROOT / "_includes" / "site-verification.html").read_text(encoding="utf-8")
+    layout = (ROOT / "_layouts" / "default.html").read_text(encoding="utf-8")
+    check('{% if page.cd_business_home and site.pinterest_domain_verify %}' in verification, "Pinterest meta renders only when the homepage key is set")
+    check('{% if page.cd_business_home and site.google_site_verification %}' in verification, "Google meta renders only when the homepage key is set")
+    check('name="p:domain_verify"' in verification and 'name="google-site-verification"' in verification, "verification include contains both meta names")
+    check(layout.count("site-verification.html") == 1 and "page.cd_business_home" in layout, "verification include is attached from the homepage head branch")
+    home_source = (ROOT / "index.html").read_text(encoding="utf-8")
+    check("p:domain_verify" not in home_source and "google-site-verification" not in home_source, "homepage content file has no verification meta")
+
+    privacy_redirect = (ROOT / "privacy" / "index.html").read_text(encoding="utf-8")
+    privacy_front = privacy_redirect.split("---", 2)[1]
+    check('http-equiv="refresh" content="0; url=/cyberdadkit-privacy-policy.html"' in privacy_redirect, "privacy redirect target")
+    check('rel="canonical" href="https://getcyberdadkit.com/cyberdadkit-privacy-policy.html"' in privacy_redirect, "privacy redirect canonical")
+    check('name="robots" content="noindex"' in privacy_redirect, "privacy redirect is noindex")
+    check('href="/cyberdadkit-privacy-policy.html"' in privacy_redirect, "privacy redirect has a visible link fallback")
+    check("sitemap: false" in privacy_front and "layout: null" in privacy_front, "privacy redirect stays out of the sitemap")
+    policy_html = (ROOT / "cyberdadkit-privacy-policy.html").read_text(encoding="utf-8")
+    adsense_hits = repo_adsense_hits()
+    print("note  AdSense grep (adsbygoogle, pagead2, googlesyndication, ca-pub-; docs excluded):")
+    for rel, lineno, line in adsense_hits:
+        role = "served" if rel in SERVED_ADSENSE_FILES else "not referenced by a page"
+        print(f"note  {role}: {rel}:{lineno}: {line}")
+    hit_files = {rel for rel, _, _ in adsense_hits}
+    check(hit_files == SERVED_ADSENSE_FILES | UNUSED_ADSENSE_FILES, "AdSense grep matches only the known layout files")
+    if hit_files & SERVED_ADSENSE_FILES:
+        check("AdSense" in policy_html, "privacy policy keeps the AdSense claim while served pages load AdSense")
+        check("Some pages on this site show ads served by Google AdSense" in policy_html, "AdSense claim sentence unchanged")
+        check("Last updated: November 3, 2026" in policy_html, "privacy policy date unchanged while the claim stays")
+    else:
+        check("AdSense" not in policy_html, "privacy policy contains no AdSense")
+
+    site_dir = ROOT / "_site"
+    if (site_dir / "index.html").is_file() and (site_dir / "sitemap.xml").is_file():
+        home_built = (site_dir / "index.html").read_text(encoding="utf-8")
+        home_head = home_built.split("</head>", 1)[0]
+        check('name="p:domain_verify"' not in home_head, "built homepage has no Pinterest verification meta while unset")
+        check('name="google-site-verification"' not in home_head, "built homepage has no Google verification meta while unset")
+        check('content=""' not in home_head, "built homepage head has no empty meta content")
+        stray = []
+        for built in site_dir.rglob("*.html"):
+            text = built.read_text(encoding="utf-8", errors="ignore")
+            if 'name="p:domain_verify"' in text or 'name="google-site-verification"' in text:
+                stray.append(str(built.relative_to(site_dir)))
+        check(stray == [], "built HTML has no verification metas while unset" + ("" if not stray else ": " + ", ".join(stray)))
+        for rel, digest in PIN_FILES.items():
+            built = site_dir / rel
+            check(built.is_file() and sha256(built) == digest, f"built pin {rel}")
+        sitemap = (site_dir / "sitemap.xml").read_text(encoding="utf-8")
+        for loc in (
+            "https://getcyberdadkit.com/holiday/",
+            "https://getcyberdadkit.com/holiday/sample/",
+            "https://getcyberdadkit.com/holiday/refund/",
+        ):
+            check(f"<loc>{loc}</loc>" in sitemap, f"sitemap includes {loc}")
+        removed_delivery = "/holiday/" + "delivery"
+        check(removed_delivery not in sitemap, "sitemap has no removed delivery URL")
+        check("https://getcyberdadkit.com/privacy/" not in sitemap and "/privacy/index.html" not in sitemap, "sitemap omits /privacy/")
+        built_privacy = (site_dir / "privacy" / "index.html").read_text(encoding="utf-8")
+        check('content="0; url=/cyberdadkit-privacy-policy.html"' in built_privacy, "built /privacy/ keeps the redirect target")
+        check('href="https://getcyberdadkit.com/cyberdadkit-privacy-policy.html"' in built_privacy, "built /privacy/ keeps the canonical")
+        for rel in ("holiday/index.html", "holiday/sample/index.html"):
+            built_html = (site_dir / rel).read_text(encoding="utf-8")
+            check("<title>" in built_html and 'name="description"' in built_html, f"built {rel} has a title and description")
+        print("note  built _site sitemap and homepage head checked")
+    else:
+        print("note  _site not present; skipped built sitemap and homepage head checks")
 
     print()
     if failed:

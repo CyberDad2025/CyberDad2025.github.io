@@ -82,7 +82,13 @@ paginate_path: "/page:num/"
 
 # SEO
 lang: en
-google_site_verification: # Add your verification code here later
+# Site-verification tokens. CoS uncomments one key and pastes only the meta
+# content value (not the whole tag). Leave both commented so no empty tag ships.
+#   pinterest_domain_verify — homepage <head> only: <meta name="p:domain_verify">
+#   google_site_verification — <meta name="google-site-verification"> on the
+#   homepage. jekyll-seo-tag reads this same key for other pages that use {% seo %}.
+# pinterest_domain_verify:
+# google_site_verification:
 
 # Navigation
 header_pages:

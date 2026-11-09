@@ -18,7 +18,14 @@
     {%- if page.cd_business_home %}
     {%- comment -%} P59: on the business homepage only, the title suffix and og:site_name say "CyberDad Kit Sites" instead of the sitewide site.title (_config title unchanged). {%- endcomment -%}
     {%- capture cd_seo %}{% seo %}{% endcapture %}
-    {{ cd_seo | replace: ' | CyberDadKit</title>', ' | CyberDad Kit Sites</title>' | replace: 'property="og:site_name" content="CyberDadKit"', 'property="og:site_name" content="CyberDad Kit Sites"' }}
+    {%- assign cd_seo = cd_seo | replace: ' | CyberDadKit</title>', ' | CyberDad Kit Sites</title>' | replace: 'property="og:site_name" content="CyberDadKit"', 'property="og:site_name" content="CyberDad Kit Sites"' %}
+    {%- comment -%} jekyll-seo-tag also prints this meta. Drop that copy on the homepage so the include below is the only one. {%- endcomment -%}
+    {%- if site.google_site_verification %}
+    {%- capture gv_meta %}
+<meta name="google-site-verification" content="{{ site.google_site_verification }}" />{% endcapture %}
+    {%- assign cd_seo = cd_seo | replace: gv_meta, '' %}
+    {%- endif %}
+    {{ cd_seo }}{% include site-verification.html %}
     {%- else %}
     {% seo %}
     {%- endif %}
