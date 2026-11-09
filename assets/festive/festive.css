@@ -243,6 +243,29 @@ body.festive .shop-card {
 
 body.festive .hday-shot { padding: 0.9rem; }
 
+/* Cover sits at the top of the hero, beside the heading on wide screens. */
+body.festive .hday-hero { align-items: start; }
+
+@media (max-width: 879px) {
+  body.festive .hday-hero {
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.festive .hday-hero > div { display: contents; }
+
+  body.festive .hday-hero > div > * { order: 4; }
+
+  body.festive .hday-hero > div > .hday-kicker { order: 1; }
+
+  body.festive .hday-hero > div > h1 { order: 2; }
+
+  body.festive .hday-hero > .hday-shot {
+    order: 3;
+    margin: 0.4rem 0 0.6rem;
+  }
+}
+
 body.festive .hday-facts { gap: 1.15rem; }
 
 body.festive .hday-facts li { padding: 1.05rem 1.1rem 1.15rem; }
