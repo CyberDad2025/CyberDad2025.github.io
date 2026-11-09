@@ -1,3 +1,4 @@
+<!-- pages redeploy nudge 2026-11-09 -->
 # 🛡️ CyberDad - Automated Family Cybersecurity Blog
 
 > **Protecting families through automated cybersecurity education**
