@@ -185,6 +185,9 @@ def expected_legal_parts(label: str, parts: list[str]) -> list[str]:
     """Holiday legal text stays as on main, except the archived-kit lines."""
     if label != "holiday/index.html":
         return parts
+    # #1012 already replaced those lines on main. Do not rewrite them again.
+    if not any(part in {"refund policy", "Shield Kit refund policy"} for part in parts):
+        return parts
     refund_line = REFUND_LINE
     terms_line = "Terms of sale: holiday digital printables."
     terms_left = 2
@@ -241,8 +244,30 @@ def main() -> int:
         current = (ROOT / rel).read_text(encoding="utf-8")
         previous = main_text(rel)
         label = rel
+        # The Holiday Host Kit card is new catalog content. Compare the
+        # rest of /shop/ and /holiday/ with origin/main. The Table Set card
+        # is already on main, so it stays in the comparison.
         if rel == "shop/index.html":
             check('id="table-set"' in current, "shop page includes the Thanksgiving Table Set card")
+            stripped, added = re.subn(
+                r'\n    <li class="shop-card" id="host-kit">.*?</li>',
+                "",
+                current,
+                count=1,
+                flags=re.S,
+            )
+            check(added == 1, "shop page includes one Holiday Host Kit card")
+            current = stripped
+        if rel == "holiday/index.html":
+            stripped, added = re.subn(
+                r'\n  <section class="hday-section" id="host-kit"[^>]*>.*?</section>',
+                "",
+                current,
+                count=1,
+                flags=re.S,
+            )
+            check(added == 1, "holiday page includes one Holiday Host Kit section")
+            current = stripped
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")
@@ -256,7 +281,7 @@ def main() -> int:
         check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")
         check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
         expected_hrefs = previous_doc.hrefs
-        if label == "holiday/index.html":
+        if label == "holiday/index.html" and previous_doc.hrefs.count("/refund-policy/") >= 2:
             # The two former kit-policy links now point at the live Gather & Play refund page.
             expected_hrefs = []
             replaced = 0
@@ -303,7 +328,12 @@ def main() -> int:
         text = path.read_text(encoding="utf-8", errors="ignore")
         if 'href="/assets/festive/festive.css"' in text:
             linked.append(path.relative_to(ROOT).as_posix())
-    festive_pages = list(PAGES) + ["holiday/table-set/index.html", *POLICY_PAGES]
+    festive_pages = list(PAGES) + [
+        "holiday/table-set/index.html",
+        "holiday/host-kit/index.html",
+        "holiday/host-kit/refund/index.html",
+        *POLICY_PAGES,
+    ]
     check(sorted(linked) == sorted(festive_pages), "festive.css is linked only from the festive storefront and holiday policy pages")
     for rel in POLICY_PAGES:
         policy_html = (ROOT / rel).read_text(encoding="utf-8")
@@ -313,7 +343,7 @@ def main() -> int:
         check("buy.stripe.com" not in policy_html, f"{rel} has no buy.stripe.com link")
 
     archive = ROOT / "_archive" / "shield-kit" / "index.html"
-    archived_main = subprocess.check_output(["git", "show", f"{BASE}:shield-kit/index.html"], cwd=ROOT)
+    archived_main = subprocess.check_output(["git", "show", f"{BASE}:_archive/shield-kit/index.html"], cwd=ROOT)
     check(archive.is_file() and archive.read_bytes() == archived_main, "archived kit page matches origin/main")
     public_kit = (ROOT / "shield-kit" / "index.html").read_text(encoding="utf-8")
     check("checkout.mailerlite.com" not in public_kit and "Shield Kit" not in public_kit, "public /shield-kit/ has no sales copy")
@@ -344,8 +374,8 @@ def main() -> int:
     check(shop_imgs and "loading=\"lazy\"" not in shop_imgs[0], "first shop cover is eager")
     check(all("loading=\"lazy\"" in tag for tag in shop_imgs[1:]), "later shop covers are lazy")
     for tag in shop_imgs:
-        if "table-set" in tag:
-            check('width="1200"' in tag and 'height="1600"' in tag, "table set shop cover uses its image size")
+        if "table-set" in tag or "host-kit" in tag:
+            check('width="1200"' in tag and 'height="1600"' in tag, "1200 by 1600 shop cover uses its image size")
         else:
             check('width="720"' in tag and 'height="1022"' in tag, "shop covers set 720 by 1022")
     for rel in PAGES:

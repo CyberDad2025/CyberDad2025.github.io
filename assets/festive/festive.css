@@ -381,7 +381,8 @@ body.festive #bundle {
 
 body.festive #rounds > ol,
 body.festive #activities > ol,
-body.festive #pages > ol {
+body.festive #pages > ol,
+body.festive #games > ol {
   margin: 0.5rem 0 0;
   padding: 1rem 1rem 1rem 2.2rem;
   background: var(--festive-paper);
@@ -390,14 +391,16 @@ body.festive #pages > ol {
   box-shadow: 0 8px 0 var(--festive-shadow);
 }
 
-body.festive-shop #gather-and-play {
+body.festive-shop #gather-and-play,
+body.festive-shop #host-kit {
   --festive-card-border: #c4a35a;
   --festive-shadow: #7f1d1d;
   --festive-price: #9a3412;
   background: linear-gradient(180deg, #fff6e8 0%, #f7fbf4 100%);
 }
 
-body.festive-shop #gather-and-play h2 { color: #7f1d1d; }
+body.festive-shop #gather-and-play h2,
+body.festive-shop #host-kit h2 { color: #7f1d1d; }
 
 body.festive-shop #christmas-trivia,
 body.festive-shop #trivia-bundle {
@@ -426,6 +429,7 @@ body.festive-shop #bible-journal-2027 {
   background: #fff8e7;
 }
 
+body.festive-holiday #host-kit,
 body.festive-holiday #thanksgiving-packs,
 body.festive-holiday #games .hday-games > div:first-child {
   --festive-card-border: #c2410c;
@@ -437,6 +441,7 @@ body.festive-holiday #games .hday-games > div:first-child {
   box-shadow: 0 8px 0 #e0b03a;
 }
 
+body.festive-holiday #host-kit,
 body.festive-holiday #thanksgiving-packs { padding: 1rem 1.1rem 1.15rem; }
 
 body.festive-holiday #games .hday-games > div:first-child { padding: 1rem 1.05rem 1.15rem; }

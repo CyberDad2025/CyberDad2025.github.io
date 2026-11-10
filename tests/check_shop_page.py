@@ -27,6 +27,14 @@ SITEMAP_LOC = "https://getcyberdadkit.com/shop/"
 # Christmas Trivia Night's single price is $5.99 on holiday/trivia/index.html.
 CARDS = [
     {
+        "id": "host-kit",
+        "name": "Holiday Host Kit",
+        "href": "/holiday/host-kit/",
+        "price": "$17.99",
+        "page": "holiday/host-kit/index.html",
+        "image": "/holiday/host-kit/img/CyberDadKit-Holiday-Host-Kit-cover.png",
+    },
+    {
         "id": "gather-and-play",
         "name": "Gather & Play",
         "href": "/holiday/",

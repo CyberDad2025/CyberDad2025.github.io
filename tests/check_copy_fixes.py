@@ -91,6 +91,8 @@ ALLOWED_PRICE_REMOVALS = {
 # Holiday printable prices are already on main, so terms-of-sale.md is not listed.
 ALLOWED_PRICE_ADDITIONS = {
     "shop/index.html": None,
+    # Holiday Host Kit card on /holiday/. Existing prices on that page stay locked.
+    "holiday/index.html": Counter({"$17.99": 1, "$24.96": 1}),
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
@@ -147,7 +149,7 @@ def main() -> int:
 
     archive = ROOT / "_archive" / "shield-kit" / "index.html"
     public_kit = ROOT / "shield-kit" / "index.html"
-    archived_main = git_show("shield-kit/index.html")
+    archived_main = git_show("_archive/shield-kit/index.html")
     check(archive.is_file() and archived_main is not None and archive.read_text(encoding="utf-8") == archived_main, "archived kit page matches origin/main")
     public_kit_text = public_kit.read_text(encoding="utf-8")
     check(
@@ -168,8 +170,8 @@ def main() -> int:
     )
     scripts_posts = diff_names("scripts/_posts")
     check(
-        scripts_posts == ["scripts/_posts/2025-07-28-daily-cybersecurity-update.md"],
-        "scripts/_posts changes are only the archived-kit line"
+        scripts_posts == [],
+        "scripts/_posts unchanged vs origin/main"
         + ("" if not scripts_posts else f" {scripts_posts}"),
     )
     delivery_dir = ROOT / "holiday" / "delivery"
@@ -285,8 +287,10 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             continue
         new = path.read_text(encoding="utf-8", errors="ignore")
         old_raw = git_show(name)
-        # New Thanksgiving Table Set files. Existing checkout links and prices stay locked.
-        if old_raw is None and name.startswith("holiday/table-set/"):
+        # New holiday product files. Existing checkout links and prices stay locked.
+        if old_raw is None and (
+            name.startswith("holiday/table-set/") or name.startswith("holiday/host-kit/")
+        ):
             continue
         old = old_raw or ""
         if Counter(STRIPE_RE.findall(old)) != Counter(STRIPE_RE.findall(new)):
