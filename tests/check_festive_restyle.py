@@ -185,6 +185,9 @@ def expected_legal_parts(label: str, parts: list[str]) -> list[str]:
     """Holiday legal text stays as on main, except the archived-kit lines."""
     if label != "holiday/index.html":
         return parts
+    # #1012 already replaced those lines on main. Do not rewrite them again.
+    if not any(part in {"refund policy", "Shield Kit refund policy"} for part in parts):
+        return parts
     refund_line = REFUND_LINE
     terms_line = "Terms of sale: holiday digital printables."
     terms_left = 2
@@ -278,7 +281,7 @@ def main() -> int:
         check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")
         check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
         expected_hrefs = previous_doc.hrefs
-        if label == "holiday/index.html":
+        if label == "holiday/index.html" and previous_doc.hrefs.count("/refund-policy/") >= 2:
             # The two former kit-policy links now point at the live Gather & Play refund page.
             expected_hrefs = []
             replaced = 0
@@ -340,7 +343,7 @@ def main() -> int:
         check("buy.stripe.com" not in policy_html, f"{rel} has no buy.stripe.com link")
 
     archive = ROOT / "_archive" / "shield-kit" / "index.html"
-    archived_main = subprocess.check_output(["git", "show", f"{BASE}:shield-kit/index.html"], cwd=ROOT)
+    archived_main = subprocess.check_output(["git", "show", f"{BASE}:_archive/shield-kit/index.html"], cwd=ROOT)
     check(archive.is_file() and archive.read_bytes() == archived_main, "archived kit page matches origin/main")
     public_kit = (ROOT / "shield-kit" / "index.html").read_text(encoding="utf-8")
     check("checkout.mailerlite.com" not in public_kit and "Shield Kit" not in public_kit, "public /shield-kit/ has no sales copy")

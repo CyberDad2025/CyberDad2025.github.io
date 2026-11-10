@@ -149,7 +149,7 @@ def main() -> int:
 
     archive = ROOT / "_archive" / "shield-kit" / "index.html"
     public_kit = ROOT / "shield-kit" / "index.html"
-    archived_main = git_show("shield-kit/index.html")
+    archived_main = git_show("_archive/shield-kit/index.html")
     check(archive.is_file() and archived_main is not None and archive.read_text(encoding="utf-8") == archived_main, "archived kit page matches origin/main")
     public_kit_text = public_kit.read_text(encoding="utf-8")
     check(
@@ -170,8 +170,8 @@ def main() -> int:
     )
     scripts_posts = diff_names("scripts/_posts")
     check(
-        scripts_posts == ["scripts/_posts/2025-07-28-daily-cybersecurity-update.md"],
-        "scripts/_posts changes are only the archived-kit line"
+        scripts_posts == [],
+        "scripts/_posts unchanged vs origin/main"
         + ("" if not scripts_posts else f" {scripts_posts}"),
     )
     delivery_dir = ROOT / "holiday" / "delivery"
