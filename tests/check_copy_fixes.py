@@ -49,7 +49,7 @@ NEW_PRESENT = [
     (ROOT / "terms-of-sale.md", "## Holiday digital printables"),
     (ROOT / "terms-of-sale.md", "Christmas Trivia Night"),
     (ROOT / "terms-of-sale.md", "Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States."),
-    (ROOT / "terms-of-sale.md", 'description: "CyberDadKit terms of sale: Shield Kit ($47, 30-day refund) and holiday digital printables (7-day refunds; US customers)."'),
+    (ROOT / "terms-of-sale.md", 'description: "CyberDadKit terms of sale for our digital products, including holiday digital printables (7-day refunds; US customers)."'),
     (ROOT / "terms-of-sale.md", "](/holiday/refund/)"),
     (ROOT / "terms-of-sale.md", "](/holiday/trivia/refund/)"),
     (ROOT / "terms-of-sale.md", "within 7 days of your purchase date"),
@@ -60,8 +60,8 @@ NEW_PRESENT = [
     (ROOT / "holiday/index.html", 'href="/terms-of-sale/"'),
     (ROOT / "_includes/site-footer.html", "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794"),
     (ROOT / "cyberdadkit-privacy-policy.html", "&copy; 2026 CyberDadKit"),
-    (ROOT / "cyberdadkit-privacy-policy.html", "MailerLite signup form on some articles and on the Shield Kit page"),
-    (ROOT / "cookie-policy.html", "email signup form on some articles and on the Shield Kit page"),
+    (ROOT / "cyberdadkit-privacy-policy.html", "MailerLite signup form on some articles may store cookies"),
+    (ROOT / "cookie-policy.html", "The email signup form on some articles is provided by MailerLite."),
     (ROOT / "cyber_parenting_global_blog.html", '<meta name="robots" content="noindex">'),
 ]
 STRIPE_RE = re.compile(r"https://buy\.stripe\.com/[A-Za-z0-9]+")
@@ -78,12 +78,18 @@ ALLOWED_PRICE_REMOVALS = {
     "about.md": Counter({"$47": 1}),
     "affiliate-disclosure.html": Counter({"$2": 1}),
     "assets/js/ethical-compliance.js": Counter({"$2": 1}),
+    # Retired product price, removed when that page was archived.
+    "terms-of-sale.md": Counter({"$47": 2}),
+    "_posts/2026-04-28-your-kids-gaming-account-is-a-target-heres-how-to-lock-it-do.md": Counter({"$47": 1}),
+    "_posts/2026-04-29-nsa-grassmarlin-a-hidden-risk-for-your-family.md": Counter({"$47": 1}),
+    "_posts/2025 couple-loses-106k-email-scam.md": Counter({"$47": 1}),
+    "cyber_2025-07-15_1752580178.html": Counter({"$47": 1}),
+    "scripts/_posts/2025-07-28-daily-cybersecurity-update.md": Counter({"$47": 1}),
 }
-# Prices cited in the holiday terms are copied from the live product pages.
 # shop/index.html prices belong to PR #1000. None means any price tokens are
 # allowed, so this check passes whether that page lands on main first or here.
+# Holiday printable prices are already on main, so terms-of-sale.md is not listed.
 ALLOWED_PRICE_ADDITIONS = {
-    "terms-of-sale.md": Counter({"$4.99": 1, "$5.99": 2, "$7.99": 1, "$11.99": 2, "$12.99": 1}),
     "shop/index.html": None,
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
@@ -138,13 +144,33 @@ def main() -> int:
     shield_hits = shield_kit_hrefs()
     check(not shield_hits, "no /shield-kit/ links on /holiday/ HTML" + ("" if not shield_hits else f" {shield_hits}"))
 
-    check(not diff_names("shield-kit"), "shield-kit/ untouched")
+    archive = ROOT / "_archive" / "shield-kit" / "index.html"
+    public_kit = ROOT / "shield-kit" / "index.html"
+    archived_main = git_show("shield-kit/index.html")
+    check(archive.is_file() and archived_main is not None and archive.read_text(encoding="utf-8") == archived_main, "archived kit page matches origin/main")
+    public_kit_text = public_kit.read_text(encoding="utf-8")
+    check(
+        'http-equiv="refresh"' in public_kit_text
+        and 'url=/' in public_kit_text
+        and 'rel="canonical" href="https://getcyberdadkit.com/"' in public_kit_text
+        and 'name="robots" content="noindex"' in public_kit_text
+        and "checkout.mailerlite.com" not in public_kit_text
+        and "4435" not in public_kit_text
+        and "Shield Kit" not in public_kit_text,
+        "public /shield-kit/ is a noindex homepage redirect with no sales copy",
+    )
+    check("- _archive" in config, "_archive is excluded from the Jekyll build")
     trivia_changed = diff_names("holiday/trivia")
     check(
         trivia_changed in ([], ["holiday/trivia/index.html"]),
         "holiday/trivia changes are only the storefront page" + ("" if not trivia_changed else f" {trivia_changed}"),
     )
-    check(not diff_names("scripts/_posts"), "scripts/_posts unchanged vs origin/main")
+    scripts_posts = diff_names("scripts/_posts")
+    check(
+        scripts_posts == ["scripts/_posts/2025-07-28-daily-cybersecurity-update.md"],
+        "scripts/_posts changes are only the archived-kit line"
+        + ("" if not scripts_posts else f" {scripts_posts}"),
+    )
     delivery_dir = ROOT / "holiday" / "delivery"
     holiday_zips = [p for p in (ROOT / "holiday").rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]
     check(not delivery_dir.exists(), "holiday delivery directory is absent")
@@ -248,6 +274,10 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
     stripe_bad, price_bad, form_bad = [], [], []
     for name in sorted(names):
         if name == "tests/check_copy_fixes.py":
+            continue
+        # The public page is a redirect. The archived sales page keeps its
+        # original checkout href and is excluded from the build.
+        if name == "shield-kit/index.html" or name.startswith("_archive/"):
             continue
         path = ROOT / name
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
@@ -364,6 +394,7 @@ def check_built_site(check) -> None:
     check(not missing_new, "sitemap lists host planner, kids table, journal, and their refund pages" + ("" if not missing_new else f" missing {missing_new}"))
     check(not any(("/holiday/" + "delivery") in loc for loc in locs), "sitemap has no removed delivery URL")
     check(not any("/privacy/" in loc or loc.rstrip("/").endswith("/privacy") for loc in locs), "sitemap omits the privacy redirect")
+    check(not any("/shield-kit" in loc for loc in locs), "sitemap omits /shield-kit/")
     check(any(loc.rstrip("/").endswith("getcyberdadkit.com") or loc.rstrip("/").endswith("getcyberdadkit.com/") for loc in locs) or any(loc.rstrip("/") == "https://getcyberdadkit.com" for loc in locs), "homepage remains in the sitemap")
 
     home = SITE / "index.html"

@@ -29,6 +29,4 @@ A hacked gaming account can expose your payment info, your child's personal deta
 A little setup now prevents a major headache.
 
 ---
-*Want a step-by-step plan for the whole family? [See the CyberDad Shield Kit ($47)](/#kit).*
-
 *Drafted with AI assistance.*

@@ -101,8 +101,6 @@ Scammers fake this every day.
 
 **[Norton 360 with LifeLock](YOUR-NORTON-LINK)** - Monitors for identity theft ($75 commission for you!)
 
-**[$47 Complete Protection Kit](/#kit)** - Full family protection system
-
 **[FREE Scam Prevention Guide](https://cyberdad.gumroad.com)** - Start here
 
 ## The New Scam Tactics

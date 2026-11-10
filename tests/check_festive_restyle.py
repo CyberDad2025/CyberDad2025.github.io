@@ -243,8 +243,11 @@ def main() -> int:
         check("hday-header" in policy_html and "hday-footer" in policy_html and 'class="hday-main"' in policy_html, f"{rel} uses the holiday header, main, and footer")
         check("buy.stripe.com" not in policy_html, f"{rel} has no buy.stripe.com link")
 
-    shield = subprocess.check_output(["git", "diff", "--name-only", BASE, "--", "shield-kit"], cwd=ROOT)
-    check(shield.strip() == b"", "shield-kit is unchanged")
+    archive = ROOT / "_archive" / "shield-kit" / "index.html"
+    archived_main = subprocess.check_output(["git", "show", f"{BASE}:shield-kit/index.html"], cwd=ROOT)
+    check(archive.is_file() and archive.read_bytes() == archived_main, "archived kit page matches origin/main")
+    public_kit = (ROOT / "shield-kit" / "index.html").read_text(encoding="utf-8")
+    check("checkout.mailerlite.com" not in public_kit and "Shield Kit" not in public_kit, "public /shield-kit/ has no sales copy")
 
     added = 0
     for rel in BUDGET_FILES:

@@ -1,4 +1,4 @@
-{%- comment -%} Top nav (P5; P59: website rebuilds). Included from index.html and shield-kit/index.html only, so posts and policy pages
+{%- comment -%} Top nav (P5; P59: website rebuilds). Included from index.html, so posts and policy pages
     (_layouts/default.html) are unchanged. No JavaScript. No kit links; the one button goes to the order form on /sites/. {%- endcomment %}
 <style>
 .cdk-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
@@ -9,7 +9,6 @@
 .cdk-nav-links a:hover { color: var(--teal-mid); }
 .cdk-nav-links a.cdk-nav-cta { margin-left: 0.25rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--teal-mid); color: var(--white); font-weight: 600; white-space: nowrap; }
 .cdk-nav-links a.cdk-nav-cta:hover { background: var(--ink); color: var(--white); }
-#kit, #inside, #faq, #kit-signup { scroll-margin-top: 72px; }
 @media (max-width: 900px) {
   .cdk-nav-inner { padding: 0.4rem 1rem; }
   .cdk-nav-links .cdk-nav-text { display: none; }
@@ -24,7 +23,7 @@
   <nav class="cdk-nav-inner" aria-label="Main">
     <a href="/" class="cdk-nav-brand">CyberDad Kit Sites</a>
     <ul class="cdk-nav-links">
-      {%- comment -%} P59: website-rebuild links only (Ruel, Nov 3: no kit, Shield, $47 or $67 in the nav or CTAs). The kit page stays at /shield-kit/. {%- endcomment %}
+      {%- comment -%} P59: website-rebuild links only (Ruel, Nov 3: no kit, Shield, $47 or $67 in the nav or CTAs). {%- endcomment %}
       {%- if page.url == "/" or page.url == "/index.html" %}
       {%- comment -%} Redesign (Nov 3): homepage nav cut to 3 items plus the one button. Other pages that include this file keep the old links. {%- endcomment %}
       <li class="cdk-nav-text"><a href="/sites/#pricing">Pricing</a></li>

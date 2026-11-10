@@ -129,6 +129,9 @@ exclude:
   # Holiday storefront checks and the integrator manifest. Not part of the public site.
   - tests
   - holiday/product.json
+  # Archived sales page (kept in git, never published). Underscore folders are
+  # already skipped; this line keeps that exclusion obvious and reversible.
+  - _archive
 
 # Include files
 include:
