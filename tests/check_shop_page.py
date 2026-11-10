@@ -59,6 +59,14 @@ CARDS = [
         "image": "/assets/img/festive/thanksgiving-host-planner-cover.jpg",
     },
     {
+        "id": "table-set",
+        "name": "Thanksgiving Table Set",
+        "href": "/holiday/table-set/",
+        "price": "$4.99",
+        "page": "holiday/table-set/index.html",
+        "image": "/holiday/table-set/img/CyberDadKit-Thanksgiving-Table-Set-cover.png",
+    },
+    {
         "id": "kids-table",
         "name": "Kids' Table Activity Pack",
         "href": "/holiday/kids-table/",

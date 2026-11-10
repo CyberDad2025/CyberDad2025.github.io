@@ -253,7 +253,11 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         new = path.read_text(encoding="utf-8", errors="ignore")
-        old = git_show(name) or ""
+        old_raw = git_show(name)
+        # New Thanksgiving Table Set files. Existing checkout links and prices stay locked.
+        if old_raw is None and name.startswith("holiday/table-set/"):
+            continue
+        old = old_raw or ""
         if Counter(STRIPE_RE.findall(old)) != Counter(STRIPE_RE.findall(new)):
             stripe_bad.append(name)
         old_prices = Counter(PRICE_RE.findall(old))

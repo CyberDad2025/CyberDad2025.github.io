@@ -5,7 +5,8 @@ layout: null
 # still appear. Skips /page2/ through /page99/, sitemap: false, and noindex.
 # The #993 /privacy/ redirect stays out (sitemap: false). Static HTML with
 # no front matter is listed from site.static_files, including trivia,
-# host-planner, kids-table, and /journal/2027/ plus their refund pages.
+# host-planner, kids-table, table-set (/holiday/table-set/ and
+# /holiday/table-set/refund/), and /journal/2027/ plus their refund pages.
 # jekyll-sitemap 1.4 does not also write sitemap.xml when this page exists.
 sitemap: false
 ---
