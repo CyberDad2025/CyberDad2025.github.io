@@ -42,6 +42,6 @@ Each printable has its own 7-day refund policy. The bundle purchases use the ref
 
 Email: [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com)
 
-Mailing address: CyberDadKit, PO Box 940061, Maitland, FL 32794, United States of America.
+Mailing address: CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794, United States of America.
 
 [← Back to CyberDadKit](/)
