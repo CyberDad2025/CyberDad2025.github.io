@@ -70,14 +70,14 @@ SAMPLE_PDFS = {
 # Digests are the Trivia v1.0.1 handoff. Pin 03 is the replacement file.
 TRIVIA_FILES = {
     "holiday/trivia/index.html":
-        # Festive restyle added a body class, festive.css link and a cover slot.
-        # Prices, checkout hrefs and policy text are pinned by check_festive_restyle.py.
-        "0c186e52b78dd9dd8066e3cc9ceb7449ad6de82db149e97b78468d57b5511eee",
+        # Footer identity is four lines. Prices and checkout hrefs stay pinned elsewhere.
+        "edad3b618bc8f262c64a2db4e6faae40fe65f2206e0f2c5d15bd74f4414975f8",
     "holiday/trivia/sample/index.html":
-        # Worldwide wording was removed on main after the original trivia pin.
-        "1ff63533813208e365feac58f1ea90b7b8f216679d460b2ce31dccbafe163408",
+        # Footer identity is four lines. The free-sample PDFs keep their own pins.
+        "097137fb53343ef14c986497bfa9f987a4422c9c279e20b70340acb99686f167",
     "holiday/trivia/refund/index.html":
-        "63823a3ebdb67589736fa0756178064ae3fd729504cf74f5789bac4af4a93159",
+        # Footer identity is four lines.
+        "3a47a8c35451f2528045ac92ae744ab19f1de5e04d949cfd4bacc8d6ad9cfb04",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
         "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
@@ -484,15 +484,23 @@ def main() -> int:
     check(manifest["refund_wording"] == EXACT_REFUND, "manifest refund wording is exact")
     check(manifest["launch_pass"] is False, "no launch pass")
     check(manifest["policy_routes"]["deployed"] is False, "policy route not marked deployed")
-    check(manifest["florida_document_number"] == "L25000463998", "Florida document number")
-    check(manifest["mailing_address"] == "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794", "footer address form")
+    check("florida_document_number" not in manifest, "manifest omits the retired filing identifier")
+    check(manifest["mailing_address"] == "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794", "manifest keeps the mailing address")
     refund_path = HOLIDAY / "refund" / "index.html"
     refund_html = body(refund_path)
     refund = parse(refund_path)
     for label, html in (("storefront", store_html), ("refund", refund_html)):
         check(element_text(html, "gather-play-refund-wording") == EXACT_REFUND, f"{label} shows the exact refund wording")
-        check("CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794" in html, f"{label} footer uses CyberDad Kit LLC")
-        check("L25000463998" in html, f"{label} shows the Florida document number")
+        footer_match = re.search(r"<footer\b.*?</footer>", html, re.S)
+        footer_html = footer_match.group(0) if footer_match else ""
+        for line in (
+            "<p>CyberDadKit © 2026</p>",
+            "<p>CyberDad Kit LLC</p>",
+            "<p>PO Box 940061, Maitland, FL 32794</p>",
+            '<p><a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>',
+        ):
+            check(footer_html.count(line) == 1, f"{label} footer has one identity line: {line}")
+        check(footer_html.count("CyberDad Kit LLC") == 1, f"{label} footer names the LLC once")
         check("does not promise automatic processing" in html or label == "refund", f"{label} avoids a processing-time promise")
     check("does not promise automatic processing" in refund_html, "refund page states there is no processing-time promise")
     check("personal, noncommercial gatherings" in refund_html, "printing license is personal and noncommercial")
@@ -518,7 +526,6 @@ def main() -> int:
     sites_refund = (ROOT / "sites" / "refund" / "index.html").read_text(encoding="utf-8")
     for label, html in (("refund policy", site_refund), ("faq", faq_page), ("support", support_page)):
         check("DECISION" not in html and "OPERATOR" not in html, f"{label} has no operator notes")
-        check("L25000463998" not in html, f"{label} omits the Florida document number")
         check("buy.stripe.com" not in html, f"{label} has no Stripe payment link")
         check(not re.search(r"shield", html, re.I), f"{label} does not name Shield")
         check("Ruel Miller" not in html, f"{label} does not name Ruel Miller")
