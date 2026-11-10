@@ -156,6 +156,8 @@ a:hover { color: var(--burgundy); }
   align-items: center;
 }
 
+.hday-hero > * { min-width: 0; max-width: 100%; }
+
 .hday-kicker {
   margin: 0 0 0.75rem;
   color: var(--gold-text);
@@ -227,12 +229,15 @@ h1 {
   align-items: center;
   justify-content: center;
   min-height: 48px;
+  max-width: 100%;
   padding: 0.8rem 1.25rem;
   border-radius: 999px;
   background: var(--burgundy);
   color: #fffaf3;
   font-weight: 600;
+  text-align: center;
   text-decoration: none;
+  white-space: normal;
 }
 
 .hday-pay:hover, .hday-download:hover { background: var(--burgundy-deep); color: #fffaf3; }
@@ -341,6 +346,45 @@ h1 {
 code, .hday-main a, .hday-footer a { overflow-wrap: anywhere; }
 
 .hday-section { margin-top: 2.75rem; }
+
+.sample-updates {
+  margin-top: 2.75rem;
+  padding: 1.05rem 1.1rem 1.15rem;
+  border: 4px solid var(--festive-card-border, #c2410c);
+  border-radius: 28px;
+  background: var(--festive-paper, #fffdf8);
+  box-shadow: 0 8px 0 var(--festive-shadow, #e0b03a);
+  max-width: 100%;
+}
+
+.sample-updates h2 { margin: 0 0 0.35rem; }
+
+.sample-updates-note { margin: 0 0 0.85rem; }
+
+.sample-updates .ml-embedded {
+  min-height: 28rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sample-updates a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  max-width: 100%;
+}
+
+.sample-updates .ml-embedded input:not([type="hidden"]),
+.sample-updates .ml-embedded button {
+  min-height: 44px;
+  max-width: 100%;
+}
+
+.sample-updates a:focus-visible,
+.sample-updates .ml-embedded :focus-visible {
+  outline: 3px solid #6e4e16;
+  outline-offset: 3px;
+}
 
 .hday-section h2 {
   margin: 0 0 0.75rem;

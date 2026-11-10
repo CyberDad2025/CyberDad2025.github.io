@@ -447,7 +447,10 @@ def main() -> int:
             if href == BUNDLE_PAYMENT_URL:
                 check(page_name == "storefront", "bundle payment link is the live bundle URL")
                 continue
-            path = href.split("#", 1)[0]
+            if href == HOSTED_OPTIN:
+                check("noopener" in (anchor.get("rel") or ""), "hosted signup link uses rel=noopener")
+                continue
+            path = href.split("#", 1)[0].split("?", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{page_name} link {href}")
 
     check(store.images[0]["src"] == "/assets/img/festive/gather-and-play-cover.jpg", "hero image is the Gather and Play cover")
