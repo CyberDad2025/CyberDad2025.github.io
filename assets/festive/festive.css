@@ -399,6 +399,16 @@ body.festive-shop #gather-and-play {
 
 body.festive-shop #gather-and-play h2 { color: #7f1d1d; }
 
+body.festive-shop #host-kit {
+  --festive-card-border: #c4a35a;
+  --festive-shadow: #7f1d1d;
+  --festive-price: #7f1d1d;
+  --festive-heading: #7f1d1d;
+  background: linear-gradient(180deg, #fff6e8 0%, #f7fbf4 100%);
+}
+
+body.festive-shop #host-kit h2 { color: #7f1d1d; }
+
 body.festive-shop #christmas-trivia,
 body.festive-shop #trivia-bundle {
   --festive-card-border: #166534;
@@ -424,6 +434,17 @@ body.festive-shop #bible-journal-2027 {
   --festive-price: #5c3d0a;
   --festive-heading: #5c3d0a;
   background: #fff8e7;
+}
+
+body.festive-holiday #host-kit {
+  --festive-card-border: #c4a35a;
+  --festive-shadow: #7f1d1d;
+  --festive-heading: #7f1d1d;
+  background: linear-gradient(180deg, #fff6e8 0%, #f7fbf4 100%);
+  border: 4px solid #c4a35a;
+  border-radius: 28px;
+  box-shadow: 0 8px 0 #7f1d1d;
+  padding: 1rem 1.1rem 1.15rem;
 }
 
 body.festive-holiday #thanksgiving-packs,
