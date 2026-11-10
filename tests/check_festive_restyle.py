@@ -193,6 +193,18 @@ def main() -> int:
         current = (ROOT / rel).read_text(encoding="utf-8")
         previous = main_text(rel)
         label = rel
+        # The Thanksgiving Table Set card is new catalog content. Compare the
+        # rest of /shop/ with origin/main, including its other prices and links.
+        if rel == "shop/index.html":
+            stripped, added = re.subn(
+                r'\n    <li class="shop-card" id="table-set">.*?</li>',
+                "",
+                current,
+                count=1,
+                flags=re.S,
+            )
+            check(added == 1, "shop page includes one Thanksgiving Table Set card")
+            current = stripped
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")
@@ -242,7 +254,8 @@ def main() -> int:
         text = path.read_text(encoding="utf-8", errors="ignore")
         if 'href="/assets/festive/festive.css"' in text:
             linked.append(path.relative_to(ROOT).as_posix())
-    check(sorted(linked) == sorted(PAGES), "festive.css is linked only from the six pages")
+    festive_pages = list(PAGES) + ["holiday/table-set/index.html"]
+    check(sorted(linked) == sorted(festive_pages), "festive.css is linked only from the festive storefront pages")
 
     shield = subprocess.check_output(["git", "diff", "--name-only", BASE, "--", "shield-kit"], cwd=ROOT)
     check(shield.strip() == b"", "shield-kit is unchanged")
@@ -272,7 +285,11 @@ def main() -> int:
     shop_imgs = re.findall(r"<img\b[^>]*>", shop)
     check(shop_imgs and "loading=\"lazy\"" not in shop_imgs[0], "first shop cover is eager")
     check(all("loading=\"lazy\"" in tag for tag in shop_imgs[1:]), "later shop covers are lazy")
-    check(all('width="720"' in tag and 'height="1022"' in tag for tag in shop_imgs), "shop covers set 720 by 1022")
+    for tag in shop_imgs:
+        if "table-set" in tag:
+            check('width="1200"' in tag and 'height="1600"' in tag, "table set shop cover uses its image size")
+        else:
+            check('width="720"' in tag and 'height="1022"' in tag, "shop covers set 720 by 1022")
     for rel in PAGES:
         html = (ROOT / rel).read_text(encoding="utf-8")
         check("<picture" in html and 'type="image/webp"' in html, f"{rel}: picture prefers webp")
