@@ -306,7 +306,12 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             if old_prices - new_prices != allowed_removed or new_prices - old_prices != allowed_added:
                 price_bad.append(name)
         if Counter(FORM_RE.findall(old)) != Counter(FORM_RE.findall(new)):
-            form_bad.append(name)
+            added = Counter(FORM_RE.findall(new)) - Counter(FORM_RE.findall(old))
+            removed = Counter(FORM_RE.findall(old)) - Counter(FORM_RE.findall(new))
+            # The holiday sample page adds one embedded form. Tests may quote that slug and URL.
+            allowed = {'data-form="eMwTaD"', "forms/1632878"}
+            if removed or any(token not in allowed for token in added):
+                form_bad.append(name)
     return stripe_bad, price_bad, form_bad
 
 

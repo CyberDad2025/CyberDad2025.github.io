@@ -249,25 +249,18 @@ def main() -> int:
         # is already on main, so it stays in the comparison.
         if rel == "shop/index.html":
             check('id="table-set"' in current, "shop page includes the Thanksgiving Table Set card")
-            stripped, added = re.subn(
-                r'\n    <li class="shop-card" id="host-kit">.*?</li>',
-                "",
-                current,
-                count=1,
-                flags=re.S,
-            )
+            card = r'\n    <li class="shop-card" id="host-kit">.*?</li>'
+            stripped, added = re.subn(card, "", current, count=1, flags=re.S)
             check(added == 1, "shop page includes one Holiday Host Kit card")
             current = stripped
+            # Host Kit is on main, so drop the same card there before the lock.
+            previous, _ = re.subn(card, "", previous, count=1, flags=re.S)
         if rel == "holiday/index.html":
-            stripped, added = re.subn(
-                r'\n  <section class="hday-section" id="host-kit"[^>]*>.*?</section>',
-                "",
-                current,
-                count=1,
-                flags=re.S,
-            )
+            section = r'\n  <section class="hday-section" id="host-kit"[^>]*>.*?</section>'
+            stripped, added = re.subn(section, "", current, count=1, flags=re.S)
             check(added == 1, "holiday page includes one Holiday Host Kit section")
             current = stripped
+            previous, _ = re.subn(section, "", previous, count=1, flags=re.S)
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")
@@ -330,6 +323,7 @@ def main() -> int:
             linked.append(path.relative_to(ROOT).as_posix())
     festive_pages = list(PAGES) + [
         "holiday/table-set/index.html",
+        "holiday/sample/index.html",
         "holiday/host-kit/index.html",
         "holiday/host-kit/refund/index.html",
         *POLICY_PAGES,
