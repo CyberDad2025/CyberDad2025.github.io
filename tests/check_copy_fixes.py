@@ -121,7 +121,8 @@ def main() -> int:
     check("$47" not in holiday_section, "holiday terms section does not repeat the Shield Kit price")
     check("the bundle" in holiday_section, "holiday terms section names the bundle")
     check("/holiday/refund/" in holiday_section and "/holiday/trivia/refund/" in holiday_section, "terms mention both holiday refund URLs")
-    check(holiday_section.count("You may request a full refund for any reason within 7 days of your purchase date.") == 4, "each printable repeats the 7-day refund substance")
+    check(holiday_section.count("You may request a full refund for any reason within 7 days of your purchase date.") == 5, "each printable repeats the 7-day refund substance")
+    check("/holiday/table-set/refund/" in holiday_section, "terms link the Thanksgiving Table Set refund page")
 
     sitemap_src = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     check(sitemap_src.startswith("---\n") and "{% for post in site.posts %}" in sitemap_src and "{% for page in site.pages %}" in sitemap_src, "sitemap.xml is a Liquid template over site.posts and site.pages")

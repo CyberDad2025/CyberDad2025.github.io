@@ -38,6 +38,8 @@ Each printable has its own 7-day refund policy. The bundle purchases use the ref
 
 [Kids' Table Activity Pack refunds](/holiday/kids-table/refund/): Kids' Table Activity Pack is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy does not limit your statutory rights. If you bought the $11.99 bundle of Kids' Table Activity Pack and Gather & Play, this 7-day policy covers the whole bundle purchase.
 
+[Thanksgiving Table Set refunds](/holiday/table-set/refund/): Thanksgiving Table Set is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Thanksgiving Table Set and does not limit your statutory rights.
+
 ## Contact
 
 Email: [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com)

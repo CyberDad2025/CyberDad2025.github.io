@@ -547,6 +547,7 @@ def main() -> int:
     check("Christmas Trivia Night + Gather & Play bundle" in shield_terms and "$12.99" in shield_terms, "terms name the trivia bundle at $12.99")
     check("Kids' Table + Gather & Play bundle" in shield_terms and "$11.99" in shield_terms, "terms name the kids-table bundle at $11.99")
     check("/holiday/host-planner/refund/" in shield_terms and "/holiday/kids-table/refund/" in shield_terms, "terms link the Host Planner and Kids' Table refund pages")
+    check("/holiday/table-set/refund/" in shield_terms and "Thanksgiving Table Set" in shield_terms, "terms link the Thanksgiving Table Set refund page")
     check("Gather & Play" not in sites_refund, "Sites refund page does not absorb Gather & Play")
     promise = re.compile(r"instant refund|refunds are automatic|within 24 hours|reply within", re.I)
     check(not promise.search(store_html + refund_html), "no automated or timed refund promise")
