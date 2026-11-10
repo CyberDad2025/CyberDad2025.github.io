@@ -49,9 +49,10 @@ HOLIDAY_DESC = (
 )
 SAMPLE_TITLE = "Free Thanksgiving Table Talk Trails Printable Sample"
 SAMPLE_DESC = (
-    "Print the free Table Talk Trails sample in US Letter or A4. No email. "
+    "Print the free Table Talk Trails sample in US Letter or A4. "
     "The 12-game bundle is $7.99 USD, one-time, for customers located in the United States."
 )
+HOSTED_OPTIN = "https://preview.mailerlite.io/forms/1632878/203754930937268147/share"
 PRODUCT_IMAGE = "https://getcyberdadkit.com/holiday/pins/pin-gathering-games.png"
 SAMPLE_IMAGE = "https://getcyberdadkit.com/holiday/pins/pin-free-sample.png"
 SERVED_ADSENSE_FILES = {
@@ -73,7 +74,8 @@ TRIVIA_FILES = {
         # Prices, checkout hrefs and policy text are pinned by check_festive_restyle.py.
         "0c186e52b78dd9dd8066e3cc9ceb7449ad6de82db149e97b78468d57b5511eee",
     "holiday/trivia/sample/index.html":
-        "60ff984fe51e7dfb611ab687f99c9a8f2f62d22f21df8dfcf77c5bb282514c0c",
+        # Worldwide wording was removed on main after the original trivia pin.
+        "1ff63533813208e365feac58f1ea90b7b8f216679d460b2ce31dccbafe163408",
     "holiday/trivia/refund/index.html":
         "63823a3ebdb67589736fa0756178064ae3fd729504cf74f5789bac4af4a93159",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
@@ -130,6 +132,7 @@ ROUTES = {
     "/terms-of-sale/": ROOT / "terms-of-sale.md",
     "/about/": ROOT / "about.md",
     "/cyberdadkit-privacy-policy.html": ROOT / "cyberdadkit-privacy-policy.html",
+    "/privacy/": ROOT / "privacy" / "index.html",
     "/cookie-policy.html": ROOT / "cookie-policy.html",
     "/sites/": ROOT / "sites" / "index.html",
     "/sites/refund/": ROOT / "sites" / "refund" / "index.html",
@@ -559,7 +562,9 @@ def main() -> int:
     sample_html = body(sample_path)
     sample = parse(sample_path)
     check("noindex" not in sample_html.lower(), "sample page is indexable")
-    check("<form" not in sample_html.lower(), "sample has no email form")
+    check(sample_html.count('data-form="eMwTaD"') == 1, "sample has one MailerLite embed for eMwTaD")
+    check(sample_html.count("data-form=") == 1, "sample has one data-form attribute")
+    check("<form" not in sample_html.lower(), "sample source leaves form markup to the MailerLite embed")
     check(element_text(sample_html, "gather-play-refund-wording") == EXACT_REFUND, "sample shows the exact refund wording")
     sample_pay = [a for a in sample.anchors if a.get("id") == "holiday-checkout"]
     check(len(sample_pay) == 1 and sample_pay[0].get("href") == PAYMENT_URL, "sample paid CTA is the live payment anchor")
@@ -579,6 +584,8 @@ def main() -> int:
             check(href[1:] in sample.ids, f"sample anchor {href}")
         elif href == PAYMENT_URL:
             check(True, "sample paid link is the live payment URL")
+        elif href == HOSTED_OPTIN:
+            check("noopener" in (anchor.get("rel") or ""), "hosted signup link uses rel=noopener")
         else:
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"sample link {href}")
