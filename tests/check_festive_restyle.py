@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Lock the festive restyle to presentation.
 
-Compares the six restyled pages with origin/main. Visible text, anchor hrefs,
-checkout hrefs, prices, and footer markup must match. The holiday policy pages
-may also link festive.css. They are not part of that origin/main text lock.
+Compares the six restyled pages with origin/main. Visible body text, anchor hrefs,
+checkout hrefs, prices, and footer nav must match. The footer identity is the
+four-line block. The holiday policy pages may also link festive.css. They are
+not part of that origin/main text lock.
 The check reads source files only. It does not request buy.stripe.com.
 
 Run: python3 tests/check_festive_restyle.py
@@ -211,8 +212,25 @@ def price_strings(html: str) -> list[str]:
     return re.findall(r"\$\d+\.\d{2}", html)
 
 
+FOOTER_LINES = (
+    "<p>CyberDadKit © 2026</p>",
+    "<p>CyberDad Kit LLC</p>",
+    "<p>PO Box 940061, Maitland, FL 32794</p>",
+    '<p><a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>',
+)
+
+
 def footer_html(html: str) -> str:
     match = re.search(r"<footer\b.*?</footer>", html, re.S)
+    return match.group(0) if match else ""
+
+
+def without_footer(html: str) -> str:
+    return re.sub(r"<footer\b.*?</footer>", "", html, count=1, flags=re.S)
+
+
+def footer_nav(footer: str) -> str:
+    match = re.search(r'<nav aria-label="Footer">.*?</nav>', footer, re.S)
     return match.group(0) if match else ""
 
 
@@ -264,11 +282,15 @@ def main() -> int:
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")
-        check(footer_html(current) == footer_html(previous), f"{label}: footer markup matches main")
+        current_footer = footer_html(current)
+        for line in FOOTER_LINES:
+            check(current_footer.count(line) == 1, f"{label}: footer has one identity line: {line}")
+        check(current_footer.count("CyberDad Kit LLC") == 1, f"{label}: footer names the LLC once")
+        check(footer_nav(current_footer) == footer_nav(footer_html(previous)), f"{label}: footer nav matches main")
         check(script_srcs(current) == script_srcs(previous), f"{label}: script sources match main")
 
-        current_doc = parse_visible(current)
-        previous_doc = parse_visible(previous)
+        current_doc = parse_visible(without_footer(current))
+        previous_doc = parse_visible(without_footer(previous))
         current_text = normalized(current_doc.parts)
         previous_text = normalized(previous_doc.parts)
         check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")

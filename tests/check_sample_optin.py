@@ -3,8 +3,8 @@
 
 The download links stay direct. The MailerLite embed is one container,
 data-form eMwTaD, with a noscript fallback. Public copy does not claim
-"No email" and does not use the CDK abbreviation. The Florida document
-number stays in the unchanged footer and is not repeated in the signup.
+"No email" and does not use the CDK abbreviation. The footer is the
+four-line identity, and the rest of the page matches the previous body.
 """
 
 from __future__ import annotations
@@ -32,9 +32,21 @@ UNTOUCHED = (
 )
 
 
+FOOTER_LINES = (
+    "<p>CyberDadKit © 2026</p>",
+    "<p>CyberDad Kit LLC</p>",
+    "<p>PO Box 940061, Maitland, FL 32794</p>",
+    '<p><a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>',
+)
+
+
 def footer(html: str) -> str:
     match = re.search(r"<footer\b.*?</footer>", html, re.S)
     return match.group(0) if match else ""
+
+
+def outside_footer(html: str) -> str:
+    return re.sub(r"<footer\b.*?</footer>", "", html, count=1, flags=re.S)
 
 
 def visible_text(html: str) -> str:
@@ -84,10 +96,11 @@ def main() -> int:
     check('id="updates-title">Want the next free printable?</h2>' in html, "accessible heading is outside the embed")
     check("Optional. Your download above doesn't need this." in html, "short optional intro is visible")
     check(embed is not None and "Want the next free printable?" not in embed.group(0), "embed container does not repeat the heading")
-    check(footer(html) == footer(previous), "footer markup is unchanged")
-    check(footer(html).count("L25000463998") == 1, "Florida document number remains only the footer legal line")
-    check("L25000463998" not in html.replace(footer(html), "", 1), "no L25000463998 outside the footer")
-    check("L25000463998" not in html[updates_at:how_at], "signup block does not repeat L25000463998")
+    sample_footer = footer(html)
+    for line in FOOTER_LINES:
+        check(sample_footer.count(line) == 1, f"sample footer has one identity line: {line}")
+    check(sample_footer.count("CyberDad Kit LLC") == 1, "sample footer names the LLC once")
+    check(outside_footer(html) == outside_footer(previous), "sample page outside the footer matches main")
     check(not re.search(r"\bCDK\b", visible_text(html)), "no CDK in public copy")
     check("CyberDad Kit" in visible_text(html), "public copy can say CyberDad Kit")
     check(0 < letter_at < a4_at < note_at < ga_at < updates_at < ml_at < how_at, "signup sits after the download note and before how-title")
@@ -103,11 +116,12 @@ def main() -> int:
     for rel in UNTOUCHED:
         text = (ROOT / rel).read_text(encoding="utf-8")
         check("eMwTaD" not in text and 'id="updates-title"' not in text, f"{rel} has no sample signup")
-        diff = subprocess.run(
-            ["git", "diff", "--quiet", MAIN, "--", rel],
+        previous_rel = subprocess.check_output(
+            ["git", "show", f"{MAIN}:{rel}"],
             cwd=ROOT,
+            text=True,
         )
-        check(diff.returncode == 0, f"{rel} is unchanged versus main")
+        check(outside_footer(text) == outside_footer(previous_rel), f"{rel} outside the footer is unchanged versus main")
 
     print()
     if failed:

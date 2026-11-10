@@ -91,8 +91,6 @@ ALLOWED_PRICE_REMOVALS = {
 # Holiday printable prices are already on main, so terms-of-sale.md is not listed.
 ALLOWED_PRICE_ADDITIONS = {
     "shop/index.html": None,
-    # Holiday Host Kit card on /holiday/. Existing prices on that page stay locked.
-    "holiday/index.html": Counter({"$17.99": 1, "$24.96": 1}),
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
@@ -164,9 +162,14 @@ def main() -> int:
     )
     check("- _archive" in config, "_archive is excluded from the Jekyll build")
     trivia_changed = diff_names("holiday/trivia")
+    allowed_trivia = {
+        "holiday/trivia/index.html",
+        "holiday/trivia/refund/index.html",
+        "holiday/trivia/sample/index.html",
+    }
     check(
-        trivia_changed in ([], ["holiday/trivia/index.html"]),
-        "holiday/trivia changes are only the storefront page" + ("" if not trivia_changed else f" {trivia_changed}"),
+        set(trivia_changed) <= allowed_trivia,
+        "holiday/trivia changes are only footer identity pages" + ("" if not trivia_changed else f" {trivia_changed}"),
     )
     scripts_posts = diff_names("scripts/_posts")
     check(
@@ -251,12 +254,29 @@ def diff_names(pathspec: str) -> list[str]:
     return [line for line in out.splitlines() if line.strip()]
 
 
+def footer_identity_replaced(old: str, new: str) -> bool:
+    """The approved edit removes the one-line mailing footer and uses four lines."""
+    old_hits = [line.strip() for line in old.splitlines() if LLC_LINE in line]
+    new_hits = [line.strip() for line in new.splitlines() if LLC_LINE in line]
+    identity = (
+        "<p>CyberDadKit © 2026</p>",
+        "<p>CyberDad Kit LLC</p>",
+        "<p>PO Box 940061, Maitland, FL 32794</p>",
+        '<p><a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>',
+    )
+    return (
+        not new_hits
+        and old_hits == ["<p>CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794</p>"]
+        and all(line in new for line in identity)
+    )
+
+
 def changed_llc_lines() -> list[str]:
     """Lines that already used the approved LLC mailing form must be byte-identical."""
     names = subprocess.check_output(["git", "diff", "--name-only", MAIN], cwd=ROOT, text=True).splitlines()
     bad = []
     for name in names:
-        if name.startswith("shield-kit/"):
+        if name.startswith("shield-kit/") or name.startswith("tests/"):
             continue
         old = git_show(name)
         if old is None or LLC_LINE not in old:
@@ -265,7 +285,7 @@ def changed_llc_lines() -> list[str]:
         new = new_path.read_text(encoding="utf-8") if new_path.is_file() else ""
         old_lines = [line for line in old.splitlines() if LLC_LINE in line]
         new_lines = [line for line in new.splitlines() if LLC_LINE in line]
-        if old_lines != new_lines:
+        if old_lines != new_lines and not footer_identity_replaced(old, new):
             bad.append(name)
     return bad
 
