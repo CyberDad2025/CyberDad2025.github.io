@@ -328,6 +328,7 @@ def main() -> int:
     festive_pages = list(PAGES) + [
         "holiday/table-set/index.html",
         "holiday/host-kit/index.html",
+        "holiday/host-kit/refund/index.html",
         *POLICY_PAGES,
     ]
     check(sorted(linked) == sorted(festive_pages), "festive.css is linked only from the festive storefront and holiday policy pages")
