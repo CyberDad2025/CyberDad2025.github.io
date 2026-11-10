@@ -257,6 +257,7 @@ HERO_SAMPLE_NOTE = (
     '<p class="hday-buy-note"><a href="/holiday/sample/">Print the free Table Talk Trails sample</a> '
     "in US Letter or A4. No email is required.</p>"
 )
+FAQ_SAMPLE_COUNTRY = ", and that sample is not limited by country"
 
 
 def strip_funnel_inserts(html: str) -> str:
@@ -332,8 +333,9 @@ def main() -> int:
             check(current.count("https://assets.mailerlite.com/js/universal.js") == 1, "holiday signup loads MailerLite universal.js once")
             check(HERO_SAMPLE_NOTE not in current, "hero sample line moved into the sample round")
             text_current = strip_checkout(strip_funnel_inserts(current))
-            text_previous = strip_checkout(previous.replace(HERO_SAMPLE_NOTE, "", 1))
+            text_previous = strip_checkout(previous.replace(HERO_SAMPLE_NOTE, "", 1)).replace(FAQ_SAMPLE_COUNTRY, "", 1)
             check(HERO_SAMPLE_NOTE not in text_previous, "comparison drops the hero sample line from main")
+            check(FAQ_SAMPLE_COUNTRY not in text_current, "FAQ no longer says the sample is not limited by country")
             check('id="sample-round"' not in text_current and 'id="updates"' not in text_current, "comparison ignores the inserted sample and signup")
         check(script_srcs(text_current) == script_srcs(text_previous), f"{label}: script sources match main")
 

@@ -77,7 +77,7 @@ TRIVIA_FILES = {
         "097137fb53343ef14c986497bfa9f987a4422c9c279e20b70340acb99686f167",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
-        "3a47a8c35451f2528045ac92ae744ab19f1de5e04d949cfd4bacc8d6ad9cfb04",
+        "30956ef22a7b0cd81d263ffe4ea555c8350f4ef4571811b881b4de11855cc83d",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
         "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
@@ -581,7 +581,7 @@ def main() -> int:
     check("disabled" not in sample_pay[0], "sample paid CTA is not a disabled button")
     check("$7.99" in element_text(sample_html, "holiday-checkout") and "USD" in element_text(sample_html, "holiday-checkout"), "sample button names $7.99 USD")
     check(US_ELIGIBILITY in sample_html and US_ELIGIBILITY in refund_html, "sample and refund state US eligibility")
-    check("not limited by country" in sample_html, "free sample is not country-limited")
+    check("not limited by country" not in sample_html, "free sample is not described as unlimited by country")
     check("Stripe checkout displays Ruel Miller." in sample_html, "sample page names the checkout display name")
     check(sample_html.find("Stripe checkout displays Ruel Miller.") < sample_html.find('id="holiday-checkout"'), "merchant notice is before the sample pay link")
     check(sha256(ROOT / PIN_REL) == PIN_SHA, "pin bytes match the attached file")

@@ -118,6 +118,7 @@ def main() -> int:
     check('role="dialog"' not in html and "min-height: 28rem" in html and "44px" in html and ":focus-visible" in html, "reserved height, 44px targets, visible focus, no dialog")
     check(html.count("buy.stripe.com") == previous.count("buy.stripe.com") == 2, "Stripe payment link count is unchanged")
 
+    refund_country = ' The free <a href="/holiday/sample/">Table Talk Trails sample</a> is not limited by country.'
     for rel in UNTOUCHED:
         text = (ROOT / rel).read_text(encoding="utf-8")
         check("eMwTaD" not in text and 'id="updates-title"' not in text, f"{rel} has no sample signup")
@@ -126,7 +127,11 @@ def main() -> int:
             cwd=ROOT,
             text=True,
         )
-        check(outside_footer(text) == outside_footer(previous_rel), f"{rel} outside the footer is unchanged versus main")
+        expected = outside_footer(previous_rel)
+        if rel == "holiday/refund/index.html":
+            expected = expected.replace(refund_country, "", 1)
+            check(refund_country not in text, "refund page drops the sample-is-not-limited-by-country sentence")
+        check(outside_footer(text) == expected, f"{rel} outside the footer is unchanged versus main")
 
     print()
     if failed:

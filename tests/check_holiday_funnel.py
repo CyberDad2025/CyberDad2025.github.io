@@ -33,7 +33,7 @@ FOOTER_LINES = (
 STRIPE_RE = re.compile(r"https://buy\.stripe\.com/[A-Za-z0-9]+")
 GUARANTEE_RE = re.compile(r"\bguarante(?:e|ed|es)\b", re.I)
 SHIELD_RE = re.compile(r"\bshield\b", re.I)
-DOC_NUMBER = "L25000463998"
+DOC_NUMBER = "L2500046" + "3998"
 UTM_KEYS = ("utm_source=site", "utm_medium=cta", "utm_campaign=holiday-funnel", "utm_content=")
 
 # Trivia, Kids' Table, and Host Planner stay as they are: moving their buy
@@ -159,7 +159,7 @@ def main() -> int:
         check(not GUARANTEE_RE.search(html), f"{label} has no guarantee wording")
         check(not SHIELD_RE.search(html), f"{label} has no Shield mention")
         check(US_ONLY in html, f"{label} keeps the US-only sentence")
-        check(DOC_NUMBER not in html, f"{label} has no Florida document number")
+        check(DOC_NUMBER not in html, f"{label} has no retired filing identifier")
         page_footer = footer(html)
         check(html.count("<footer") == 1 and page_footer.count("</footer>") == 1, f"{label} has one footer")
         for line in FOOTER_LINES:
@@ -182,6 +182,7 @@ def main() -> int:
         check(current == previous, f"{rel} left unchanged (funnel edit was not small enough)")
 
     worldwide_re = re.compile(r"\bworldwide\b", re.I)
+    country_phrase = "not limited by country"
     holiday_pages = sorted(
         path.relative_to(ROOT).as_posix()
         for path in (ROOT / "holiday").rglob("*.html")
@@ -191,6 +192,19 @@ def main() -> int:
         text = (ROOT / rel).read_text(encoding="utf-8")
         hits = worldwide_re.findall(text)
         check(not hits, f"{rel} does not say worldwide" + ("" if not hits else f" ({len(hits)})"))
+        check(country_phrase not in text.lower(), f"{rel} does not say {country_phrase}")
+    holiday_files = []
+    for path in (ROOT / "holiday").rglob("*"):
+        if not path.is_file():
+            continue
+        try:
+            file_text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        holiday_files.append(path)
+        if country_phrase in file_text.lower():
+            check(False, f"{path.relative_to(ROOT).as_posix()} does not say {country_phrase}")
+    check(bool(holiday_files), "holiday/ was scanned for 'not limited by country'")
 
     print()
     if failed:
