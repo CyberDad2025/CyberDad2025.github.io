@@ -35,9 +35,32 @@ POLICY_PAGES = (
     "faq/index.html",
     "support/index.html",
 )
+# Holiday storefront text stays locked to origin/main except the archived-kit lines.
+WORLDWIDE_BEFORE = "Round 1 is free to print, worldwide."
+WORLDWIDE_AFTER = "Round 1 is free to print."
+REFUND_LINE = (
+    "Refund policy: Gather & Play, full refund within 7 days of purchase. "
+    "Each product page lists its own refund terms."
+)
 TERMS_SENTENCE = (
-    'The <a href="/refund-policy/">refund policy</a> still covers only the CyberDad Shield Kit. '
-    '<a href="/terms-of-sale/">Terms of sale</a> cover the Shield Kit and holiday digital printables.'
+    '<a href="/holiday/refund/">Refund policy: Gather &amp; Play, full refund within 7 days of purchase. '
+    "Each product page lists its own refund terms.</a> "
+    '<a href="/terms-of-sale/">Terms of sale: holiday digital printables.</a>'
+)
+SHIELD_VISIBLE_REPLACEMENTS = (
+    (
+        "The refund policy still covers only the CyberDad Shield Kit. "
+        "Terms of sale cover the Shield Kit and holiday digital printables.",
+        REFUND_LINE + " Terms of sale: holiday digital printables.",
+    ),
+    (
+        "Shield Kit refund policy — CyberDad Shield Kit only",
+        REFUND_LINE,
+    ),
+    (
+        "Terms of sale — Shield Kit and holiday digital printables",
+        "Terms of sale: holiday digital printables.",
+    ),
 )
 LEGAL_ID = re.compile(r"refund|eligibility|seller-note|checkout-note", re.I)
 LEGAL_TEXT = re.compile(r"refund|terms|United States", re.I)
@@ -148,6 +171,35 @@ def normalized(parts: list[str]) -> str:
     return " ".join("".join(parts).split())
 
 
+def allowed_text(rel: str, current: str, previous: str) -> str:
+    """Return the origin/main text after the whitelisted holiday edits."""
+    if rel != "holiday/index.html":
+        return previous
+    text = previous.replace(WORLDWIDE_BEFORE, WORLDWIDE_AFTER, 1)
+    for old, new in SHIELD_VISIBLE_REPLACEMENTS:
+        text = text.replace(old, new, 1)
+    return text
+
+
+def expected_legal_parts(label: str, parts: list[str]) -> list[str]:
+    """Holiday legal text stays as on main, except the archived-kit lines."""
+    if label != "holiday/index.html":
+        return parts
+    refund_line = REFUND_LINE
+    terms_line = "Terms of sale: holiday digital printables."
+    terms_left = 2
+    rewritten = []
+    for part in parts:
+        if part in {"refund policy", "Shield Kit refund policy"}:
+            rewritten.append(refund_line)
+        elif part == "Terms of sale" and terms_left:
+            terms_left -= 1
+            rewritten.append(terms_line)
+        else:
+            rewritten.append(part)
+    return rewritten
+
+
 def stripe_hrefs(html: str) -> list[str]:
     return re.findall(r"https://buy\.stripe\.com/[A-Za-z0-9]+", html)
 
@@ -201,13 +253,25 @@ def main() -> int:
         previous_doc = parse_visible(previous)
         current_text = normalized(current_doc.parts)
         previous_text = normalized(previous_doc.parts)
-        check(current_text == previous_text, f"{label}: visible text matches origin/main")
+        check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")
         check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
-        check(current_doc.hrefs == previous_doc.hrefs, f"{label}: every anchor href matches origin/main")
+        expected_hrefs = previous_doc.hrefs
+        if label == "holiday/index.html":
+            # The two former kit-policy links now point at the live Gather & Play refund page.
+            expected_hrefs = []
+            replaced = 0
+            for href in previous_doc.hrefs:
+                if href == "/refund-policy/" and replaced < 2:
+                    expected_hrefs.append("/holiday/refund/")
+                    replaced += 1
+                else:
+                    expected_hrefs.append(href)
+            check(replaced == 2, "holiday page retargets exactly two /refund-policy/ links")
+        check(current_doc.hrefs == expected_hrefs, f"{label}: every anchor href matches origin/main")
 
         current_legal = [part for part in current_doc.parts if LEGAL_TEXT.search(part)]
         previous_legal = [part for part in previous_doc.parts if LEGAL_TEXT.search(part)]
-        check(current_legal == previous_legal, f"{label}: refund, terms and US-only text nodes match origin/main")
+        check(current_legal == expected_legal_parts(label, previous_legal), f"{label}: refund, terms and US-only text nodes match origin/main")
         check(legal_blocks(current) == legal_blocks(previous), f"{label}: refund and eligibility markup matches origin/main")
         check(
             current.count("Available only to customers located in the United States.")
@@ -219,8 +283,13 @@ def main() -> int:
     footer = footer_html(holiday)
     header = holiday.split("<main", 1)[0]
     check('href="/shield-kit/"' not in header and 'href="/shield-kit/"' not in footer, "holiday nav and footer have no /shield-kit/ link")
-    check(TERMS_SENTENCE in holiday, "holiday FAQ has main's #995 terms sentence")
-    check("<span>— Shield Kit and holiday digital printables</span>" in holiday, "holiday terms link note matches #995")
+    check(TERMS_SENTENCE in holiday, "holiday FAQ points the 7-day refund line at Gather & Play")
+    check(
+        '<li><a href="/holiday/refund/">Refund policy: Gather &amp; Play, full refund within 7 days of purchase. Each product page lists its own refund terms.</a></li>' in holiday
+        and '<li><a href="/terms-of-sale/">Terms of sale: holiday digital printables.</a></li>' in holiday,
+        "holiday support list points the 7-day refund line at Gather & Play",
+    )
+    check('href="/refund-policy/"' not in holiday, "holiday page does not send the 7-day line to /refund-policy/")
     journal = (ROOT / "journal" / "2027" / "index.html").read_text(encoding="utf-8")
     check(
         'alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible."' in journal,
@@ -243,8 +312,11 @@ def main() -> int:
         check("hday-header" in policy_html and "hday-footer" in policy_html and 'class="hday-main"' in policy_html, f"{rel} uses the holiday header, main, and footer")
         check("buy.stripe.com" not in policy_html, f"{rel} has no buy.stripe.com link")
 
-    shield = subprocess.check_output(["git", "diff", "--name-only", BASE, "--", "shield-kit"], cwd=ROOT)
-    check(shield.strip() == b"", "shield-kit is unchanged")
+    archive = ROOT / "_archive" / "shield-kit" / "index.html"
+    archived_main = subprocess.check_output(["git", "show", f"{BASE}:shield-kit/index.html"], cwd=ROOT)
+    check(archive.is_file() and archive.read_bytes() == archived_main, "archived kit page matches origin/main")
+    public_kit = (ROOT / "shield-kit" / "index.html").read_text(encoding="utf-8")
+    check("checkout.mailerlite.com" not in public_kit and "Shield Kit" not in public_kit, "public /shield-kit/ has no sales copy")
 
     added = 0
     for rel in BUDGET_FILES:

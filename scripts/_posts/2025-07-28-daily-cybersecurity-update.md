@@ -41,8 +41,6 @@ In conclusion, I encourage all families to prioritize cybersecurity and take ste
 
 ## Stay Protected
 
-Want a step-by-step plan for the whole family? [See the CyberDad Shield Kit ($47)](/#kit).
-
 **🔒 Remember: Your family's digital safety is worth the extra effort.**
 
 ---

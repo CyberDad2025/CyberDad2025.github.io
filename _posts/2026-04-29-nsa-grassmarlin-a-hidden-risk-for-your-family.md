@@ -33,7 +33,3 @@ CISA, the U.S. Cybersecurity and Infrastructure Security Agency, published an ad
 ---
 
 **Written by Ruel Miller** — U.S. Marine Corps veteran, CompTIA Security+, past hands-on SOC experience · Founder, CyberDadKit. Ruel Miller is a U.S. Marine Corps veteran and CompTIA Security+ certified dad with past hands-on Security Operations Center experience, who built CyberDadKit to help families protect themselves online. Reach Ruel directly at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com). Last reviewed: 2026-10-23.
-
----
-
-**Want a step-by-step plan for the whole family?** [See the CyberDad Shield Kit ($47)](/#kit).
