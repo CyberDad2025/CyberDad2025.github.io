@@ -124,7 +124,9 @@ GAMES = [
 ROUTES = {
     "/": ROOT / "index.html",
     "/contact/": ROOT / "contact.md",
-    "/refund-policy/": ROOT / "refund-policy.md",
+    "/refund-policy/": ROOT / "refund-policy" / "index.html",
+    "/faq/": ROOT / "faq" / "index.html",
+    "/support/": ROOT / "support" / "index.html",
     "/terms-of-sale/": ROOT / "terms-of-sale.md",
     "/about/": ROOT / "about.md",
     "/cyberdadkit-privacy-policy.html": ROOT / "cyberdadkit-privacy-policy.html",
@@ -500,11 +502,38 @@ def main() -> int:
         else:
             path = href.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"refund link {href}")
-    shield_refund = (ROOT / "refund-policy.md").read_text(encoding="utf-8")
+    site_refund = (ROOT / "refund-policy" / "index.html").read_text(encoding="utf-8")
+    faq_page = (ROOT / "faq" / "index.html").read_text(encoding="utf-8")
+    support_page = (ROOT / "support" / "index.html").read_text(encoding="utf-8")
+    contact_page = (ROOT / "contact.md").read_text(encoding="utf-8")
     shield_terms = (ROOT / "terms-of-sale.md").read_text(encoding="utf-8")
     sites_refund = (ROOT / "sites" / "refund" / "index.html").read_text(encoding="utf-8")
-    check("Gather & Play" not in shield_refund, "Shield Kit refund policy unchanged in scope")
-    check("30-day" in shield_refund or "30 days" in shield_refund, "Shield Kit refund period still present")
+    for label, html in (("refund policy", site_refund), ("faq", faq_page), ("support", support_page)):
+        check("DECISION" not in html and "OPERATOR" not in html, f"{label} has no operator notes")
+        check("L25000463998" not in html, f"{label} omits the Florida document number")
+        check("buy.stripe.com" not in html, f"{label} has no Stripe payment link")
+        check(not re.search(r"shield", html, re.I), f"{label} does not name Shield")
+        check("Ruel Miller" not in html, f"{label} does not name Ruel Miller")
+        check("ruel@getcyberdadkit.com" in html, f"{label} keeps the support email")
+        check(html.lower().count("<h1") == 1, f"{label} has one h1")
+        check('name="viewport"' in html and "<title>" in html and 'name="description"' in html, f"{label} has title, description, and viewport")
+    check("within 7 days of your purchase date" in site_refund, "holiday printables keep the 7-day refund")
+    check("case by case" in site_refund, "late refund requests stay case by case")
+    check("30-day" in site_refund, "earlier purchases keep the 30-day refund")
+    check("Earlier purchases of our digital security guide keep their original 30-day full refund policy." in site_refund, "earlier purchases keep the generic 30-day sentence")
+    check("Gather &amp; Play" in site_refund, "refund policy covers the holiday printables")
+    check("Thanksgiving Table Set" in site_refund and "Holiday Host Kit" in site_refund, "refund policy lists the Table Set and Holiday Host Kit")
+    check("Thanksgiving Table Set" in faq_page and "Holiday Host Kit" in faq_page, "FAQ lists the Table Set and Holiday Host Kit")
+    check("Thanksgiving Table Set" in support_page and "Holiday Host Kit" in support_page, "support lists the Table Set and Holiday Host Kit")
+    check('href="/refund-policy/"' in faq_page and 'href="/support/"' in faq_page, "FAQ links the refund policy and support")
+    check('href="/refund-policy/"' in support_page and 'href="/faq/"' in support_page, "support links the refund policy and FAQ")
+    check("aim to reply within one business day" in faq_page and "a target, not a promise" in faq_page, "FAQ reply time is a target, not a promise")
+    check("aim to reply within one business day" in support_page and "a target, not a promise" in support_page, "support reply time is a target, not a promise")
+    check(not re.search(r"shield", contact_page, re.I), "contact page does not name Shield")
+    check("Email us at" in contact_page and "Ruel Miller" not in contact_page, "contact says Email us at")
+    check("](/privacy/)" in contact_page, "contact privacy link is /privacy/")
+    check("/support/" in contact_page and "/faq/" in contact_page and "/refund-policy/" in contact_page, "contact links support, FAQ, and the refund policy")
+    check("ruel@getcyberdadkit.com" in contact_page and "PO Box 940061, Maitland, FL 32794" in contact_page, "contact keeps the email and mailing address")
     check("Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99." in shield_terms, "terms name each holiday printable, its price, US availability, and both bundles")
     check("CyberDadKit terms of sale: Shield Kit ($47, 30-day refund) and holiday digital printables (7-day refunds; US customers)." in shield_terms, "terms meta description")
     check("Gather & Play" in shield_terms, "terms of sale include Gather & Play holiday downloads")

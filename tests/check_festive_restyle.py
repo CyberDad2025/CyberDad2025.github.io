@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Lock the festive restyle to presentation.
 
-Compares the six restyled pages with origin/main. Visible text and every
-anchor href must match, except one whitelisted edit on /holiday/: the free
-sample line no longer says "worldwide". Checkout hrefs, prices, and footer
-markup stay identical too. The check reads source files only. It does not
-request buy.stripe.com.
+Compares the six restyled pages with origin/main. Visible text, anchor hrefs,
+checkout hrefs, prices, and footer markup must match. The holiday policy pages
+may also link festive.css. They are not part of that origin/main text lock.
+The check reads source files only. It does not request buy.stripe.com.
 
 Run: python3 tests/check_festive_restyle.py
 """
@@ -29,9 +28,13 @@ PAGES = (
     "journal/2027/index.html",
 )
 BASE = "origin/main"
-# The only allowed visible-text change versus origin/main.
-WORLDWIDE_BEFORE = "Round 1 is free to print, worldwide."
-WORLDWIDE_AFTER = "Round 1 is free to print."
+# New holiday policy pages use the same stylesheet. They are not in PAGES,
+# so this file still locks storefront text, prices, and checkout links to main.
+POLICY_PAGES = (
+    "refund-policy/index.html",
+    "faq/index.html",
+    "support/index.html",
+)
 TERMS_SENTENCE = (
     'The <a href="/refund-policy/">refund policy</a> still covers only the CyberDad Shield Kit. '
     '<a href="/terms-of-sale/">Terms of sale</a> cover the Shield Kit and holiday digital printables.'
@@ -145,13 +148,6 @@ def normalized(parts: list[str]) -> str:
     return " ".join("".join(parts).split())
 
 
-def allowed_text(rel: str, current: str, previous: str) -> str:
-    """Return the origin/main text after the one whitelisted holiday edit."""
-    if rel != "holiday/index.html":
-        return previous
-    return previous.replace(WORLDWIDE_BEFORE, WORLDWIDE_AFTER, 1)
-
-
 def stripe_hrefs(html: str) -> list[str]:
     return re.findall(r"https://buy\.stripe\.com/[A-Za-z0-9]+", html)
 
@@ -193,18 +189,8 @@ def main() -> int:
         current = (ROOT / rel).read_text(encoding="utf-8")
         previous = main_text(rel)
         label = rel
-        # The Thanksgiving Table Set card is new catalog content. Compare the
-        # rest of /shop/ with origin/main, including its other prices and links.
         if rel == "shop/index.html":
-            stripped, added = re.subn(
-                r'\n    <li class="shop-card" id="table-set">.*?</li>',
-                "",
-                current,
-                count=1,
-                flags=re.S,
-            )
-            check(added == 1, "shop page includes one Thanksgiving Table Set card")
-            current = stripped
+            check('id="table-set"' in current, "shop page includes the Thanksgiving Table Set card")
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")
@@ -215,13 +201,7 @@ def main() -> int:
         previous_doc = parse_visible(previous)
         current_text = normalized(current_doc.parts)
         previous_text = normalized(previous_doc.parts)
-        expected_text = allowed_text(label, current_text, previous_text)
-        if label == "holiday/index.html":
-            check(WORLDWIDE_BEFORE in previous_text, "origin/main holiday page still has the worldwide phrase")
-            check(current_text == expected_text, "holiday visible text matches origin/main except the worldwide removal")
-            check(previous_text.replace(WORLDWIDE_BEFORE, WORLDWIDE_AFTER, 1) != previous_text, "whitelist replaces exactly one worldwide phrase")
-        else:
-            check(current_text == previous_text, f"{label}: visible text matches origin/main")
+        check(current_text == previous_text, f"{label}: visible text matches origin/main")
         check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
         check(current_doc.hrefs == previous_doc.hrefs, f"{label}: every anchor href matches origin/main")
 
@@ -254,8 +234,14 @@ def main() -> int:
         text = path.read_text(encoding="utf-8", errors="ignore")
         if 'href="/assets/festive/festive.css"' in text:
             linked.append(path.relative_to(ROOT).as_posix())
-    festive_pages = list(PAGES) + ["holiday/table-set/index.html"]
-    check(sorted(linked) == sorted(festive_pages), "festive.css is linked only from the festive storefront pages")
+    festive_pages = list(PAGES) + ["holiday/table-set/index.html", *POLICY_PAGES]
+    check(sorted(linked) == sorted(festive_pages), "festive.css is linked only from the festive storefront and holiday policy pages")
+    for rel in POLICY_PAGES:
+        policy_html = (ROOT / rel).read_text(encoding="utf-8")
+        check('href="/assets/festive/festive.css"' in policy_html, f"{rel} links festive.css")
+        check('class="festive festive-thanksgiving"' in policy_html, f"{rel} uses the Table Set festive theme")
+        check("hday-header" in policy_html and "hday-footer" in policy_html and 'class="hday-main"' in policy_html, f"{rel} uses the holiday header, main, and footer")
+        check("buy.stripe.com" not in policy_html, f"{rel} has no buy.stripe.com link")
 
     shield = subprocess.check_output(["git", "diff", "--name-only", BASE, "--", "shield-kit"], cwd=ROOT)
     check(shield.strip() == b"", "shield-kit is unchanged")

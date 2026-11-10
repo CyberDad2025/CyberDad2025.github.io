@@ -1,5 +1,6 @@
 /* Festive storefront styles. Loaded only by /shop/, /holiday/, /holiday/trivia/,
-   /holiday/host-planner/, /holiday/kids-table/ and /journal/2027/.
+   /holiday/host-planner/, /holiday/kids-table/, /journal/2027/, /refund-policy/,
+   /faq/ and /support/.
    Every rule is scoped to body.festive so other pages stay as they are.
    Body copy stays on the storefront sans stack. Fredoka is for headings,
    prices and buy buttons. Nav metrics are left alone so the mobile header

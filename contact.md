@@ -8,7 +8,9 @@ permalink: /contact/
 
 # Contact
 
-Questions about the CyberDad Shield Kit, an order, a refund or anything on this site? Email me, Ruel Miller, at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com).
+Questions about an order, a refund, or anything on this site? Email us at [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com).
+
+For holiday printables, see [Support](/support/), the [FAQ](/faq/), and the [Refund policy](/refund-policy/).
 
 ## Mailing address
 
@@ -16,6 +18,8 @@ CyberDadKit, PO Box 940061, Maitland, FL 32794
 
 ## Helpful pages
 
+- [Support](/support/)
+- [FAQ](/faq/)
 - [Refund policy](/refund-policy/)
 - [Terms of sale](/terms-of-sale/)
-- [Privacy policy](/cyberdadkit-privacy-policy.html)
+- [Privacy policy](/privacy/)
