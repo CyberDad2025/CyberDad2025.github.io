@@ -55,7 +55,7 @@ layout: null
 <body class="festive festive-thanksgiving">
 <a class="hday-skip" href="#main">Skip to content</a>
 <div class="hday-banner">
-  <p><strong>Free sample.</strong> One game, US Letter and A4. Free worldwide. No account. The download doesn't ask for an address.</p>
+  <p><strong>Free sample.</strong> One game, US Letter and A4. Free download for customers in the United States. No account. The download doesn't ask for an address.</p>
 </div>
 <header class="hday-header">
   <div class="hday-bar">
@@ -84,50 +84,6 @@ layout: null
         <span class="hday-price-amount">Free</span>
         <span class="hday-price-meta">this game only · the bundle is $7.99 USD, one-time</span>
       </p>
-      <div class="hero-actions" style="display:flex; flex-wrap:wrap; gap:0.75rem;">
-        <a class="hday-download" href="/holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf">US Letter PDF</a>
-        <a class="hday-download" href="/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf">A4 PDF</a>
-      </div>
-      <p class="hday-buy-note">Each file is a single page. Save it, then print portrait at actual size. These two files are not the 12-game bundle.</p>
-      {% include ga4.html %}
-      <section class="sample-updates" id="updates" aria-labelledby="updates-title">
-        <h2 id="updates-title">Want the next free printable?</h2>
-        <p class="sample-updates-note">Optional. Your download above doesn't need this.</p>
-        <script>if(!window.ml){(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');ml('enablePopups',false);ml('account','1632878');}</script>
-        <div class="ml-embedded" data-form="eMwTaD"></div>
-        <noscript>Sign up on our updates page: <a href="https://preview.mailerlite.io/forms/1632878/203754930937268147/share" rel="noopener">hosted signup form</a>.</noscript>
-        <p class="sample-updates-privacy"><a href="/privacy/">Privacy policy</a></p>
-        <script>
-        (function () {
-          var box = document.getElementById("updates");
-          if (!box || !("IntersectionObserver" in window)) return;
-          var seen = false;
-          function clearAutofocus() {
-            var nodes = box.querySelectorAll("[autofocus]");
-            for (var j = 0; j < nodes.length; j++) nodes[j].removeAttribute("autofocus");
-          }
-          clearAutofocus();
-          if ("MutationObserver" in window) {
-            new MutationObserver(clearAutofocus).observe(box, { childList: true, subtree: true, attributes: true, attributeFilter: ["autofocus"] });
-          }
-          var watcher = new IntersectionObserver(function (entries) {
-            if (seen) return;
-            for (var i = 0; i < entries.length; i++) {
-              if (!entries[i].isIntersecting) continue;
-              seen = true;
-              watcher.disconnect();
-              if (typeof window.gtag !== "function") return;
-              window.gtag("event", "optin_view", {
-                form_id: "holiday_sample_optin",
-                page_path: window.location.pathname
-              });
-              return;
-            }
-          }, { threshold: 0.25 });
-          watcher.observe(box);
-        })();
-        </script>
-      </section>
     </div>
     <figure class="hday-shot">
       <figcaption>
@@ -139,7 +95,13 @@ layout: null
   </section>
 
   <section class="hday-section" id="sample" aria-labelledby="how-title">
-    <h2 id="how-title">How the sample works</h2>
+    <h2 id="how-title">Free sample round</h2>
+    <p>Print this one game, then leave your email if you want the next free printable. The paid bundle is further down this page.</p>
+    <div class="hero-actions" style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+      <a class="hday-download" id="sample-round-cta" href="/holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf">US Letter PDF</a>
+      <a class="hday-download" href="/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf">A4 PDF</a>
+    </div>
+    <p class="hday-buy-note">Each file is a single page. Save it, then print portrait at actual size. These two files are not the 12-game bundle.</p>
     <ul class="hday-facts">
       <li>
         <h3>One game</h3>
@@ -150,10 +112,50 @@ layout: null
         <p>US Letter and A4, taken from the color editions. The words are the same game.</p>
       </li>
       <li>
-        <h3>Free worldwide</h3>
-        <p>The links above start the download in your browser. The download doesn't ask for an address. The signup above is optional.</p>
+        <h3>Free download (United States)</h3>
+        <p>The links above start the download in your browser. The download doesn't ask for an address. The signup below is optional.</p>
       </li>
     </ul>
+  </section>
+
+  {% include ga4.html %}
+  <section class="sample-updates" id="updates" aria-labelledby="updates-title">
+    <h2 id="updates-title">Want the next free printable?</h2>
+    <p class="sample-updates-note">Optional. Your download above doesn't need this.</p>
+    <script>if(!window.ml){(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');ml('enablePopups',false);ml('account','1632878');}</script>
+    <div class="ml-embedded" data-form="eMwTaD"></div>
+    <noscript>Sign up on our updates page: <a href="https://preview.mailerlite.io/forms/1632878/203754930937268147/share" rel="noopener">hosted signup form</a>.</noscript>
+    <p class="sample-updates-privacy"><a href="/privacy/">Privacy policy</a></p>
+    <script>
+    (function () {
+      var box = document.getElementById("updates");
+      if (!box || !("IntersectionObserver" in window)) return;
+      var seen = false;
+      function clearAutofocus() {
+        var nodes = box.querySelectorAll("[autofocus]");
+        for (var j = 0; j < nodes.length; j++) nodes[j].removeAttribute("autofocus");
+      }
+      clearAutofocus();
+      if ("MutationObserver" in window) {
+        new MutationObserver(clearAutofocus).observe(box, { childList: true, subtree: true, attributes: true, attributeFilter: ["autofocus"] });
+      }
+      var watcher = new IntersectionObserver(function (entries) {
+        if (seen) return;
+        for (var i = 0; i < entries.length; i++) {
+          if (!entries[i].isIntersecting) continue;
+          seen = true;
+          watcher.disconnect();
+          if (typeof window.gtag !== "function") return;
+          window.gtag("event", "optin_view", {
+            form_id: "holiday_sample_optin",
+            page_path: window.location.pathname
+          });
+          return;
+        }
+      }, { threshold: 0.25 });
+      watcher.observe(box);
+    })();
+    </script>
   </section>
 
   <section class="hday-section" id="bundle" aria-labelledby="bundle-title">
@@ -188,7 +190,7 @@ layout: null
       <p class="hday-eligibility" id="us-eligibility">Available only to customers located in the United States.</p>
       <p class="hday-buy-note" id="seller-note">Stripe checkout displays Ruel Miller. The seller is CyberDad Kit LLC, CyberDadKit. <a href="/holiday/refund/">7-day refund policy</a> · <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
       <a class="hday-pay" id="holiday-checkout" href="https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405">Buy Gather &amp; Play for $7.99 USD</a>
-      <p class="hday-buy-note" id="sample-checkout-note">The free sample above is not limited by country. The paid bundle is $7.99 USD, one-time. Checkout asks you to state that you are located in the United States and to enter a billing address. Other billing countries can still be selected. This website does not block a country. After a successful payment, Stripe's confirmation screen shows the download link. For a re-send, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your checkout email address. <a href="/holiday/">Bundle details</a> · <a href="/holiday/refund/">Refund policy</a>.</p>
+      <p class="hday-buy-note" id="sample-checkout-note">The paid bundle is $7.99 USD, one-time. Checkout asks you to state that you are located in the United States and to enter a billing address. Other billing countries can still be selected. This website does not block a country. After a successful payment, Stripe's confirmation screen shows the download link. For a re-send, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your checkout email address. <a href="/holiday/">Bundle details</a> · <a href="/holiday/refund/">Refund policy</a>.</p>
     </div>
   </section>
 

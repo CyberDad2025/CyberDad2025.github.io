@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Optional email signup on /holiday/sample/ only.
+"""Email signup on /holiday/sample/, after the free sample round.
 
 The download links stay direct. The MailerLite embed is one container,
 data-form eMwTaD, with a noscript fallback. Public copy does not claim
 "No email" and does not use the CDK abbreviation. The footer is the
-four-line identity, and the rest of the page matches the previous body.
+four-line identity. The page order is the product, the free sample
+round, this signup, then the buy offer.
 """
 
 from __future__ import annotations
@@ -21,11 +22,9 @@ LETTER = "/holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf"
 A4 = "/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf"
 HOSTED = "https://preview.mailerlite.io/forms/1632878/203754930937268147/share"
 UNTOUCHED = (
-    "holiday/index.html",
     "holiday/refund/index.html",
     "holiday/trivia/index.html",
     "holiday/trivia/sample/index.html",
-    "holiday/table-set/index.html",
     "shop/index.html",
     "shield-kit/index.html",
     "assets/festive/festive.css",
@@ -92,7 +91,8 @@ def main() -> int:
     check("does not ask for an address" not in html.lower(), "old address sentence is gone")
     check("The download doesn't ask for an address." in html, "download copy stays accurate")
     check("Below, you can optionally sign up for updates." in html, "optional signup is offered below the download copy")
-    check("Free worldwide" in html, "free sample stays worldwide")
+    check("Free download (United States)" in html, "free sample download is for customers in the United States")
+    check("worldwide" not in html.lower(), "sample page does not say worldwide")
     check('id="updates-title">Want the next free printable?</h2>' in html, "accessible heading is outside the embed")
     check("Optional. Your download above doesn't need this." in html, "short optional intro is visible")
     check(embed is not None and "Want the next free printable?" not in embed.group(0), "embed container does not repeat the heading")
@@ -100,10 +100,15 @@ def main() -> int:
     for line in FOOTER_LINES:
         check(sample_footer.count(line) == 1, f"sample footer has one identity line: {line}")
     check(sample_footer.count("CyberDad Kit LLC") == 1, "sample footer names the LLC once")
-    check(outside_footer(html) == outside_footer(previous), "sample page outside the footer matches main")
+    check(footer(html) == footer(previous), "sample footer matches main")
     check(not re.search(r"\bCDK\b", visible_text(html)), "no CDK in public copy")
     check("CyberDad Kit" in visible_text(html), "public copy can say CyberDad Kit")
-    check(0 < letter_at < a4_at < note_at < ga_at < updates_at < ml_at < how_at, "signup sits after the download note and before how-title")
+    product_at = html.find('id="sample-title"')
+    buy_at = html.find('id="holiday-checkout"')
+    check(
+        0 < product_at < how_at < letter_at < a4_at < note_at < ga_at < updates_at < ml_at < buy_at,
+        "order is product, free sample round, signup, then buy",
+    )
     check("<script" not in head.lower() and "mailerlite" not in head.lower(), "no third-party script before the download links")
     check("optin_view" in html and "IntersectionObserver" in html, "optin_view fires once via IntersectionObserver")
     check('form_id: "holiday_sample_optin"' in html and "page_path: window.location.pathname" in html, "optin_view sends form_id and page_path")
@@ -113,6 +118,7 @@ def main() -> int:
     check('role="dialog"' not in html and "min-height: 28rem" in html and "44px" in html and ":focus-visible" in html, "reserved height, 44px targets, visible focus, no dialog")
     check(html.count("buy.stripe.com") == previous.count("buy.stripe.com") == 2, "Stripe payment link count is unchanged")
 
+    refund_country = ' The free <a href="/holiday/sample/">Table Talk Trails sample</a> is not limited by country.'
     for rel in UNTOUCHED:
         text = (ROOT / rel).read_text(encoding="utf-8")
         check("eMwTaD" not in text and 'id="updates-title"' not in text, f"{rel} has no sample signup")
@@ -121,7 +127,11 @@ def main() -> int:
             cwd=ROOT,
             text=True,
         )
-        check(outside_footer(text) == outside_footer(previous_rel), f"{rel} outside the footer is unchanged versus main")
+        expected = outside_footer(previous_rel)
+        if rel == "holiday/refund/index.html":
+            expected = expected.replace(refund_country, "", 1)
+            check(refund_country not in text, "refund page drops the sample-is-not-limited-by-country sentence")
+        check(outside_footer(text) == expected, f"{rel} outside the footer is unchanged versus main")
 
     print()
     if failed:

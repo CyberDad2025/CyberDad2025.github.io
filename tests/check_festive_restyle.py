@@ -250,6 +250,38 @@ def script_srcs(html: str) -> list[str]:
     return re.findall(r"<script\b[^>]*\bsrc=\"([^\"]+)\"", html)
 
 
+# The landing funnel inserts a sample round and a signup, and moves the
+# existing checkout block out of the hero. Those inserts are excluded here
+# so the rest of the visible text, hrefs, and script srcs stay locked.
+HERO_SAMPLE_NOTE = (
+    '<p class="hday-buy-note"><a href="/holiday/sample/">Print the free Table Talk Trails sample</a> '
+    "in US Letter or A4. No email is required.</p>"
+)
+FAQ_SAMPLE_COUNTRY = ", and that sample is not limited by country"
+
+
+def strip_funnel_inserts(html: str) -> str:
+    html = re.sub(
+        r'\n  <section class="hday-section" id="sample-round".*?</section>',
+        "",
+        html,
+        count=1,
+        flags=re.S,
+    )
+    html = re.sub(
+        r'\n  <section class="sample-updates" id="updates".*?</section>',
+        "",
+        html,
+        count=1,
+        flags=re.S,
+    )
+    return html
+
+
+def strip_checkout(html: str) -> str:
+    return re.sub(r'\n[ \t]*<div id="checkout".*?</div>', "", html, count=1, flags=re.S)
+
+
 def main() -> int:
     failed: list[str] = []
 
@@ -287,10 +319,28 @@ def main() -> int:
             check(current_footer.count(line) == 1, f"{label}: footer has one identity line: {line}")
         check(current_footer.count("CyberDad Kit LLC") == 1, f"{label}: footer names the LLC once")
         check(footer_nav(current_footer) == footer_nav(footer_html(previous)), f"{label}: footer nav matches main")
-        check(script_srcs(current) == script_srcs(previous), f"{label}: script sources match main")
+        text_current = current
+        text_previous = previous
+        if rel == "holiday/index.html":
+            check(
+                current.find('id="product-title"')
+                < current.find('id="sample-round"')
+                < current.find('id="updates"')
+                < current.find('id="holiday-checkout"')
+                < current.find('class="hday-facts"'),
+                "holiday funnel is product, sample, signup, buy, then the facts",
+            )
+            check(current.count("https://assets.mailerlite.com/js/universal.js") == 1, "holiday signup loads MailerLite universal.js once")
+            check(HERO_SAMPLE_NOTE not in current, "hero sample line moved into the sample round")
+            text_current = strip_checkout(strip_funnel_inserts(current))
+            text_previous = strip_checkout(previous.replace(HERO_SAMPLE_NOTE, "", 1)).replace(FAQ_SAMPLE_COUNTRY, "", 1)
+            check(HERO_SAMPLE_NOTE not in text_previous, "comparison drops the hero sample line from main")
+            check(FAQ_SAMPLE_COUNTRY not in text_current, "FAQ no longer says the sample is not limited by country")
+            check('id="sample-round"' not in text_current and 'id="updates"' not in text_current, "comparison ignores the inserted sample and signup")
+        check(script_srcs(text_current) == script_srcs(text_previous), f"{label}: script sources match main")
 
-        current_doc = parse_visible(without_footer(current))
-        previous_doc = parse_visible(without_footer(previous))
+        current_doc = parse_visible(without_footer(text_current))
+        previous_doc = parse_visible(without_footer(text_previous))
         current_text = normalized(current_doc.parts)
         previous_text = normalized(previous_doc.parts)
         check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")

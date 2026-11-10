@@ -56,12 +56,6 @@
         <span class="hday-price-meta">one-time, US customers only.</span>
       </p>
       <p class="hday-lede">Dress your Thanksgiving table with a coordinated printable set. Three festive placemat designs, each with a designated plate area: Give Thanks has a space to write what each guest is thankful for, My Thanksgiving Place adds a name line and a menu line, and Table Talk adds a name line and conversation questions. Tent place cards, mini drink tents, glass wraps and name tapes have a write-in line for what is in each glass (orange juice, cranberry juice, sparkling water, cola or anything you are pouring). Print as many as your table needs.</p>
-      <div id="checkout" data-checkout-enabled="true">
-        <p class="hday-eligibility" id="us-eligibility">Available only to customers located in the United States.</p>
-        <p class="hday-buy-note" id="seller-note">Stripe checkout displays Ruel Miller. The seller is CyberDad Kit LLC, CyberDadKit. <a href="/holiday/table-set/refund/">7-day refund policy</a> · <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
-        <a class="hday-pay" id="table-set-checkout" href="https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e">Buy Thanksgiving Table Set for $4.99 USD</a>
-        <p class="hday-buy-note" id="checkout-note">This is a one-time payment of $4.99 USD. Checkout asks you to state that you are located in the United States and to enter a billing address. Other billing countries can still be selected, and this website does not block any country. After a successful payment, Stripe's confirmation screen shows the download link. Save the file right away. For a re-send, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your checkout email address.</p>
-      </div>
     </div>
     <figure class="hday-shot">
       <figcaption>
@@ -72,6 +66,60 @@
         <img src="/holiday/table-set/img/CyberDadKit-Thanksgiving-Table-Set-cover.png" width="1200" height="1600" alt="Thanksgiving Table Set printable cover" decoding="async">
       </picture>
     </figure>
+  </section>
+
+  <section class="hday-section" id="sample-round" aria-labelledby="sample-round-title">
+    <h2 id="sample-round-title">Free sample round</h2>
+    <p>Print Table Talk Trails, a free one-page conversation game from Gather &amp; Play, in US Letter or A4. It is a separate printable, not these placemats or place cards. The download doesn't ask for an address.</p>
+    <p><a class="hday-download" id="sample-round-cta" href="/holiday/sample/?utm_source=site&amp;utm_medium=cta&amp;utm_campaign=holiday-funnel&amp;utm_content=table-set-sample">Print the free Table Talk Trails sample</a></p>
+  </section>
+
+  <section class="sample-updates" id="updates" aria-labelledby="updates-title">
+    <h2 id="updates-title">Want the next free printable?</h2>
+    <p class="sample-updates-note">Optional. Printing the free sample doesn't need this.</p>
+    <script>if(!window.ml){(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');ml('enablePopups',false);ml('account','1632878');}</script>
+    <div class="ml-embedded" data-form="eMwTaD"></div>
+    <noscript>Sign up on our updates page: <a href="https://preview.mailerlite.io/forms/1632878/203754930937268147/share" rel="noopener">hosted signup form</a>.</noscript>
+    <p class="sample-updates-privacy"><a href="/privacy/">Privacy policy</a></p>
+    <script>
+    (function () {
+      var box = document.getElementById("updates");
+      if (!box || !("IntersectionObserver" in window)) return;
+      var seen = false;
+      function clearAutofocus() {
+        var nodes = box.querySelectorAll("[autofocus]");
+        for (var j = 0; j < nodes.length; j++) nodes[j].removeAttribute("autofocus");
+      }
+      clearAutofocus();
+      if ("MutationObserver" in window) {
+        new MutationObserver(clearAutofocus).observe(box, { childList: true, subtree: true, attributes: true, attributeFilter: ["autofocus"] });
+      }
+      var watcher = new IntersectionObserver(function (entries) {
+        if (seen) return;
+        for (var i = 0; i < entries.length; i++) {
+          if (!entries[i].isIntersecting) continue;
+          seen = true;
+          watcher.disconnect();
+          if (typeof window.gtag !== "function") return;
+          window.gtag("event", "optin_view", {
+            form_id: "holiday_sample_optin",
+            page_path: window.location.pathname
+          });
+          return;
+        }
+      }, { threshold: 0.25 });
+      watcher.observe(box);
+    })();
+    </script>
+  </section>
+
+  <section class="hday-section" id="buy-offer" aria-label="Buy Thanksgiving Table Set">
+    <div id="checkout" data-checkout-enabled="true">
+      <p class="hday-eligibility" id="us-eligibility">Available only to customers located in the United States.</p>
+      <p class="hday-buy-note" id="seller-note">Stripe checkout displays Ruel Miller. The seller is CyberDad Kit LLC, CyberDadKit. <a href="/holiday/table-set/refund/">7-day refund policy</a> · <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>.</p>
+      <a class="hday-pay" id="table-set-checkout" href="https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e">Buy Thanksgiving Table Set for $4.99 USD</a>
+      <p class="hday-buy-note" id="checkout-note">This is a one-time payment of $4.99 USD. Checkout asks you to state that you are located in the United States and to enter a billing address. Other billing countries can still be selected, and this website does not block any country. After a successful payment, Stripe's confirmation screen shows the download link. Save the file right away. For a re-send, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your checkout email address.</p>
+    </div>
   </section>
 
   <ul class="hday-facts">
