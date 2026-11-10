@@ -35,20 +35,27 @@ POLICY_PAGES = (
     "faq/index.html",
     "support/index.html",
 )
+# Holiday storefront text stays locked to origin/main except the archived-kit lines.
+WORLDWIDE_BEFORE = "Round 1 is free to print, worldwide."
+WORLDWIDE_AFTER = "Round 1 is free to print."
+REFUND_LINE = (
+    "Refund policy: Gather & Play, full refund within 7 days of purchase. "
+    "Each product page lists its own refund terms."
+)
 TERMS_SENTENCE = (
-    '<a href="/refund-policy/">Refund policy: holiday printables, full refund within 7 days of purchase.</a> '
+    '<a href="/holiday/refund/">Refund policy: Gather &amp; Play, full refund within 7 days of purchase. '
+    "Each product page lists its own refund terms.</a> "
     '<a href="/terms-of-sale/">Terms of sale: holiday digital printables.</a>'
 )
 SHIELD_VISIBLE_REPLACEMENTS = (
     (
         "The refund policy still covers only the CyberDad Shield Kit. "
         "Terms of sale cover the Shield Kit and holiday digital printables.",
-        "Refund policy: holiday printables, full refund within 7 days of purchase. "
-        "Terms of sale: holiday digital printables.",
+        REFUND_LINE + " Terms of sale: holiday digital printables.",
     ),
     (
         "Shield Kit refund policy — CyberDad Shield Kit only",
-        "Refund policy: holiday printables, full refund within 7 days of purchase.",
+        REFUND_LINE,
     ),
     (
         "Terms of sale — Shield Kit and holiday digital printables",
@@ -178,7 +185,7 @@ def expected_legal_parts(label: str, parts: list[str]) -> list[str]:
     """Holiday legal text stays as on main, except the archived-kit lines."""
     if label != "holiday/index.html":
         return parts
-    refund_line = "Refund policy: holiday printables, full refund within 7 days of purchase."
+    refund_line = REFUND_LINE
     terms_line = "Terms of sale: holiday digital printables."
     terms_left = 2
     rewritten = []
@@ -246,9 +253,21 @@ def main() -> int:
         previous_doc = parse_visible(previous)
         current_text = normalized(current_doc.parts)
         previous_text = normalized(previous_doc.parts)
-        check(current_text == previous_text, f"{label}: visible text matches origin/main")
+        check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")
         check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
-        check(current_doc.hrefs == previous_doc.hrefs, f"{label}: every anchor href matches origin/main")
+        expected_hrefs = previous_doc.hrefs
+        if label == "holiday/index.html":
+            # The two former kit-policy links now point at the live Gather & Play refund page.
+            expected_hrefs = []
+            replaced = 0
+            for href in previous_doc.hrefs:
+                if href == "/refund-policy/" and replaced < 2:
+                    expected_hrefs.append("/holiday/refund/")
+                    replaced += 1
+                else:
+                    expected_hrefs.append(href)
+            check(replaced == 2, "holiday page retargets exactly two /refund-policy/ links")
+        check(current_doc.hrefs == expected_hrefs, f"{label}: every anchor href matches origin/main")
 
         current_legal = [part for part in current_doc.parts if LEGAL_TEXT.search(part)]
         previous_legal = [part for part in previous_doc.parts if LEGAL_TEXT.search(part)]
@@ -264,12 +283,13 @@ def main() -> int:
     footer = footer_html(holiday)
     header = holiday.split("<main", 1)[0]
     check('href="/shield-kit/"' not in header and 'href="/shield-kit/"' not in footer, "holiday nav and footer have no /shield-kit/ link")
-    check(TERMS_SENTENCE in holiday, "holiday FAQ names holiday printables, not the Shield Kit")
+    check(TERMS_SENTENCE in holiday, "holiday FAQ points the 7-day refund line at Gather & Play")
     check(
-        '<li><a href="/refund-policy/">Refund policy: holiday printables, full refund within 7 days of purchase.</a></li>' in holiday
+        '<li><a href="/holiday/refund/">Refund policy: Gather &amp; Play, full refund within 7 days of purchase. Each product page lists its own refund terms.</a></li>' in holiday
         and '<li><a href="/terms-of-sale/">Terms of sale: holiday digital printables.</a></li>' in holiday,
-        "holiday support list names holiday printables, not the Shield Kit",
+        "holiday support list points the 7-day refund line at Gather & Play",
     )
+    check('href="/refund-policy/"' not in holiday, "holiday page does not send the 7-day line to /refund-policy/")
     journal = (ROOT / "journal" / "2027" / "index.html").read_text(encoding="utf-8")
     check(
         'alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible."' in journal,
