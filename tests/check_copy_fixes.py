@@ -356,6 +356,9 @@ def check_built_site(check) -> None:
         "https://getcyberdadkit.com/journal/2027/",
         "https://getcyberdadkit.com/journal/2027/refund/",
         "https://getcyberdadkit.com/journal/2027/sample/",
+        "https://getcyberdadkit.com/refund-policy/",
+        "https://getcyberdadkit.com/faq/",
+        "https://getcyberdadkit.com/support/",
     ]
     missing_new = [url for url in required_new if not any(loc.rstrip("/") == url.rstrip("/") for loc in locs)]
     check(not missing_new, "sitemap lists host planner, kids table, journal, and their refund pages" + ("" if not missing_new else f" missing {missing_new}"))
