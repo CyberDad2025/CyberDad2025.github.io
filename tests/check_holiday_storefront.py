@@ -138,6 +138,7 @@ ROUTES = {
     "/sites/refund/": ROOT / "sites" / "refund" / "index.html",
     "/shield-kit/": ROOT / "shield-kit" / "index.html",
     "/shop/": ROOT / "shop" / "index.html",
+    "/journal/2027/": ROOT / "journal" / "2027" / "index.html",
     "/holiday/": STORE,
     "/holiday/refund/": HOLIDAY / "refund" / "index.html",
     "/holiday/sample/": HOLIDAY / "sample" / "index.html",
@@ -182,7 +183,7 @@ for _festive_name in (
         _rel = f"assets/img/festive/{_festive_name}.{_ext}"
         ROUTES["/" + _rel] = ROOT / _rel
 
-# Thanksgiving Host Dinner Planner and Kids' Table Activity Pack.
+# Thanksgiving Host Planner and Kids' Table Activity Pack.
 # Preview digests match previews/ in each product's final release folder.
 # Buy buttons hold these placeholders until the Chief of Staff supplies the live
 # Stripe links. Run with --require-live-links before merging: it fails while any
@@ -200,10 +201,10 @@ THANKSGIVING_FILES = {
         "6b6b50c8c3cd1d3f4616ab4e507089fdac89c587f7d6854e9cea28715298b417",
 }
 HOST_REFUND = (
-    "Thanksgiving Host Dinner Planner is a digital product. You may request a full refund for any reason "
+    "Thanksgiving Host Planner is a digital product. You may request a full refund for any reason "
     "within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for "
     "purchase and your order reference. Never send card details. Refunds are returned to the original "
-    "payment method. No physical return is required. This policy applies only to Thanksgiving Host Dinner "
+    "payment method. No physical return is required. This policy applies only to Thanksgiving Host "
     "Planner and does not limit your statutory rights."
 )
 KIDS_REFUND = (
@@ -552,13 +553,13 @@ def main() -> int:
     check("](/privacy/)" in contact_page, "contact privacy link is /privacy/")
     check("/support/" in contact_page and "/faq/" in contact_page and "/refund-policy/" in contact_page, "contact links support, FAQ, and the refund policy")
     check("ruel@getcyberdadkit.com" in contact_page and "PO Box 940061, Maitland, FL 32794" in contact_page, "contact keeps the email and mailing address")
-    check("Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99." in shield_terms, "terms name each holiday printable, its price, US availability, and both bundles")
+    check("Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99." in shield_terms, "terms name each holiday printable, its price, US availability, and both bundles")
     check("CyberDadKit terms of sale for our digital products, including holiday digital printables (7-day refunds; US customers)." in shield_terms, "terms meta description")
     check("Gather & Play" in shield_terms, "terms of sale include Gather & Play holiday downloads")
     check("Christmas Trivia Night" in shield_terms, "terms of sale name Christmas Trivia Night")
     check("/holiday/refund/" in shield_terms, "terms of sale use the holiday refund page")
     check("$47" not in shield_terms and "Shield Kit" not in shield_terms and "CyberDad Shield" not in shield_terms, "terms of sale no longer name or price the archived kit")
-    check("Thanksgiving Host Dinner Planner" in shield_terms and "$4.99" in shield_terms, "terms name the Host Planner at $4.99")
+    check("Thanksgiving Host Planner" in shield_terms and "$4.99" in shield_terms, "terms name the Host Planner at $4.99")
     check("Kids' Table Activity Pack" in shield_terms and "$5.99" in shield_terms, "terms name the Kids' Table pack at $5.99")
     check("Christmas Trivia Night + Gather & Play bundle" in shield_terms and "$12.99" in shield_terms, "terms name the trivia bundle at $12.99")
     check("Kids' Table + Gather & Play bundle" in shield_terms and "$11.99" in shield_terms, "terms name the kids-table bundle at $11.99")
@@ -859,7 +860,7 @@ def main() -> int:
     else:
         print("note  _site not present; skipped built sitemap and homepage head checks")
 
-    # Thanksgiving Host Dinner Planner and Kids' Table Activity Pack
+    # Thanksgiving Host Planner and Kids' Table Activity Pack
     require_live = "--require-live-links" in sys.argv[1:]
     for rel, digest in THANKSGIVING_FILES.items():
         path = ROOT / rel

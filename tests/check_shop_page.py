@@ -60,7 +60,7 @@ CARDS = [
     },
     {
         "id": "host-planner",
-        "name": "Thanksgiving Host Dinner Planner",
+        "name": "Thanksgiving Host Planner",
         "href": "/holiday/host-planner/",
         "price": "$4.99",
         "page": "holiday/host-planner/index.html",

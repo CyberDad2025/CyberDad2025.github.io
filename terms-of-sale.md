@@ -24,7 +24,7 @@ Our digital products are for personal or household use unless a product page say
 
 ## Holiday digital printables
 
-Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99.
+Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99.
 
 You may print copies for your own personal, noncommercial gatherings, including internal office use. This license does not include resale of the files, rehosting the files, or a commercial event service.
 
@@ -34,7 +34,7 @@ Each printable has its own 7-day refund policy. The bundle purchases use the ref
 
 [Christmas Trivia Night refunds](/holiday/trivia/refund/): Christmas Trivia Night is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Christmas Trivia Night and the Christmas Trivia Night + Gather & Play bundle and does not limit your statutory rights.
 
-[Thanksgiving Host Dinner Planner refunds](/holiday/host-planner/refund/): Thanksgiving Host Dinner Planner is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Thanksgiving Host Dinner Planner and does not limit your statutory rights.
+[Thanksgiving Host Planner refunds](/holiday/host-planner/refund/): Thanksgiving Host Planner is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Thanksgiving Host Planner and does not limit your statutory rights.
 
 [Kids' Table Activity Pack refunds](/holiday/kids-table/refund/): Kids' Table Activity Pack is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email [ruel@getcyberdadkit.com](mailto:ruel@getcyberdadkit.com) with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy does not limit your statutory rights. If you bought the $11.99 bundle of Kids' Table Activity Pack and Gather & Play, this 7-day policy covers the whole bundle purchase.
 
