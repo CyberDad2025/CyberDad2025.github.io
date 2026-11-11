@@ -48,7 +48,7 @@ NEW_PRESENT = [
     (ROOT / "about.md", "[CyberDadKit Sites](/sites/)"),
     (ROOT / "terms-of-sale.md", "## Holiday digital printables"),
     (ROOT / "terms-of-sale.md", "Christmas Trivia Night"),
-    (ROOT / "terms-of-sale.md", "Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Dinner Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States."),
+    (ROOT / "terms-of-sale.md", "Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States."),
     (ROOT / "terms-of-sale.md", 'description: "CyberDadKit terms of sale for our digital products, including holiday digital printables (7-day refunds; US customers)."'),
     (ROOT / "terms-of-sale.md", "](/holiday/refund/)"),
     (ROOT / "terms-of-sale.md", "](/holiday/trivia/refund/)"),
