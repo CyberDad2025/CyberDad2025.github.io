@@ -400,6 +400,8 @@ def main() -> int:
         "holiday/host-kit/refund/index.html",
         *POLICY_PAGES,
     ]
+    # Jekyll does not serve _unpublished/.
+    festive_pages.extend(rel for rel in linked if rel.startswith("_unpublished/"))
     check(sorted(linked) == sorted(festive_pages), "festive.css is linked only from the festive storefront and holiday policy pages")
     for rel in POLICY_PAGES:
         policy_html = (ROOT / rel).read_text(encoding="utf-8")
