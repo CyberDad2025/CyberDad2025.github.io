@@ -47,10 +47,20 @@
   }
   var LABELS = { business_name: "Business name", contact_name: "Your name", email: "Email", current_url: "Current website",
     package: "Package", site_care: "Add Site Care", what_you_want: "What I want", goals: "Main goals", pages: "Pages I want", deadline: "Deadline", page_count: "Pages on current site", budget: "Budget range", consent: "OK to email me about this request" };
+  // Ads tracking (ADS-GOOGLE-PLAN s.6): remember utm_source=google for this tab so #anchor moves keep it. No other UTM or PII is stored.
+  var AD_KEY = "cdk_sites_via_google";
+  function fromGoogleAd() {
+    try { if (new URLSearchParams(window.location.search).get("utm_source") === "google") { sessionStorage.setItem(AD_KEY, "1"); return true; }
+      return sessionStorage.getItem(AD_KEY) === "1"; } catch (e) { return false; }
+  }
+  fromGoogleAd();
+  // GA4 events: only the event name and the package chosen. Never blocks or delays the form if GA is missing or blocked.
+  function track(name, params) { try { if (typeof window.gtag === "function") window.gtag("event", name, params || {}); } catch (e) {} }
   var CARE = { no: "No", yes: "Yes - Site Care $89/mo", plus: "Yes - Site Care Plus $149/mo" };
   function answersText(d) {
     var lines = ["Website rebuild order request", ""];
     Object.keys(LABELS).forEach(function (k) { if (d[k] !== "" && d[k] != null) lines.push(LABELS[k] + ": " + (k === "site_care" ? (CARE[d[k]] || d[k]) : d[k])); });
+    if (fromGoogleAd()) lines.push("Found us via: Google ad");
     return lines.join("\n");
   }
 
@@ -145,6 +155,7 @@
       status.textContent = "";
       var d = values(form); window.__lastOrder = d;
       var text = answersText(d);
+      if (!(form.elements.website_hp && form.elements.website_hp.value)) track("sites_intake_submit", { package: d.package });
       if (form.elements.website_hp && form.elements.website_hp.value) { show(form, "order-done", d); return; } // spam trap: pretend success, send nothing
       if (!live) {
         wireFallback(text);
@@ -181,6 +192,7 @@
     var chosen = false;
     Array.prototype.forEach.call(form.querySelectorAll('input[name="package"]'), function (r) { r.addEventListener("click", function () { chosen = true; }); });
     document.addEventListener("click", function (e) {
+      var s = e.target.closest && e.target.closest('a[href="#start"]'); if (s) track("start_click");
       var a = e.target.closest && e.target.closest("a[data-package], a[data-care]"); if (!a) return;
       if (a.hasAttribute("data-package") && pick(form, a.getAttribute("data-package"))) chosen = true;
       if (a.hasAttribute("data-care")) { var cr = form.querySelector('input[name="site_care"][value="' + (a.getAttribute("data-care") === "plus" ? "plus" : "yes") + '"]'); if (cr) cr.checked = true; }

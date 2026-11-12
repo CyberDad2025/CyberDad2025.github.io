@@ -1,6 +1,8 @@
 ---
 # Plain HTML page (no layout). Indexable and listed in sitemap.xml (P59 commit C).
 layout: null
+# jekyll-sitemap emits <lastmod> from this (Growth free-channels item 3). Bump when /sites/ content changes.
+last_modified_at: 2026-11-04
 ---
 <!doctype html>
 <html lang="en">
@@ -10,7 +12,43 @@ layout: null
 <!-- Section of the existing site at https://getcyberdadkit.com/sites/ (custom domain, apex). BRAND "CyberDad Kit Sites" (P59 rename) is one variable: build/brand.conf + assets/config.js; rename with build/swap-brand.sh "New Name". -->
 <title>CyberDad Kit Sites, website rebuilds for small businesses — a service of CyberDad Kit LLC</title>
 <meta name="description" content="We rebuild outdated business websites so they work on phones. From $499, one-time. Get a free homepage mockup first; you pay only when you approve it. Everything happens by email.">
-<meta property="og:site_name" content="CyberDad Kit Sites"><meta property="og:title" content="CyberDad Kit Sites, website rebuilds for small businesses">
+<meta property="og:site_name" content="CyberDad Kit Sites">
+<meta property="og:title" content="CyberDad Kit Sites, website rebuilds for small businesses">
+<meta property="og:description" content="We rebuild outdated business websites so they work on phones. From $499, one-time. Get a free homepage mockup first; you pay only when you approve it. Everything happens by email.">
+<meta property="og:url" content="https://getcyberdadkit.com/sites/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://getcyberdadkit.com/sites/assets/examples/demo-sampletown-roofing.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://getcyberdadkit.com/sites/#org",
+      "name": "CyberDad Kit Sites",
+      "url": "https://getcyberdadkit.com/sites/",
+      "parentOrganization": {"@type": "Organization", "name": "CyberDad Kit LLC"},
+      "address": {"@type": "PostalAddress", "postOfficeBoxNumber": "940061", "addressLocality": "Maitland", "addressRegion": "FL", "postalCode": "32794", "addressCountry": "US"}
+    },
+    {
+      "@type": "Service",
+      "name": "Website rebuilds for small businesses",
+      "serviceType": "Website rebuild",
+      "provider": {"@id": "https://getcyberdadkit.com/sites/#org"},
+      "url": "https://getcyberdadkit.com/sites/",
+      "areaServed": "US",
+      "offers": [
+        {"@type": "Offer", "name": "Refresh", "price": "499", "priceCurrency": "USD"},
+        {"@type": "Offer", "name": "Refresh Plus", "price": "799", "priceCurrency": "USD"},
+        {"@type": "Offer", "name": "Custom", "priceCurrency": "USD", "priceSpecification": {"@type": "PriceSpecification", "minPrice": "1499", "priceCurrency": "USD"}},
+        {"@type": "Offer", "name": "Site Care", "priceCurrency": "USD", "priceSpecification": {"@type": "UnitPriceSpecification", "price": "89", "priceCurrency": "USD", "unitText": "MONTH"}},
+        {"@type": "Offer", "name": "Site Care Plus", "priceCurrency": "USD", "priceSpecification": {"@type": "UnitPriceSpecification", "price": "149", "priceCurrency": "USD", "unitText": "MONTH"}}
+      ]
+    }
+  ]
+}
+</script>
 <link rel="canonical" href="https://getcyberdadkit.com/sites/">
 <link rel="stylesheet" href="assets/site.css">
 {% include ga4.html %}
