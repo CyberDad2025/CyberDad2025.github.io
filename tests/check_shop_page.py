@@ -27,14 +27,6 @@ SITEMAP_LOC = "https://getcyberdadkit.com/shop/"
 # Christmas Trivia Night's single price is $5.99 on holiday/trivia/index.html.
 CARDS = [
     {
-        "id": "host-kit",
-        "name": "Holiday Host Kit",
-        "href": "/holiday/host-kit/",
-        "price": "$17.99",
-        "page": "holiday/host-kit/index.html",
-        "image": "/holiday/host-kit/img/CyberDadKit-Holiday-Host-Kit-cover.png",
-    },
-    {
         "id": "gather-and-play",
         "name": "Gather & Play",
         "href": "/holiday/",
@@ -97,6 +89,15 @@ CARDS = [
         "price": "From $7.99",
         "page": "journal/2027/index.html",
         "image": "/assets/img/festive/bible-verse-journal-2027-cover.jpg",
+    },
+    {
+        "id": "host-kit",
+        "name": "Holiday Host Kit",
+        "href": "/holiday/host-kit/",
+        "price": None,
+        "status": "Back soon",
+        "page": "holiday/host-kit/index.html",
+        "image": "/holiday/host-kit/img/CyberDadKit-Holiday-Host-Kit-cover.png",
     },
 ]
 
@@ -252,8 +253,13 @@ def main() -> int:
         image = expected["image"]
         check(card["id"] == expected["id"], f"{label}: id")
         check(expected["name"] in text, f"{label}: name {expected['name']}")
-        check(expected["price"] in text, f"{label}: price {expected['price']}")
-        check(expected["price"] in product, f"{label}: product page states {expected['price']}")
+        if expected.get("status"):
+            check(expected["status"] in text, f"{label}: {expected['status']}")
+            check("$17.99" not in text, f"{label}: card does not show the price as a CTA")
+            check("$17.99" in product, f"{label}: product page still states $17.99")
+        else:
+            check(expected["price"] in text, f"{label}: price {expected['price']}")
+            check(expected["price"] in product, f"{label}: product page states {expected['price']}")
         check(len(card["anchors"]) == 1 and card["anchors"][0].get("href") == expected["href"], f"{label}: button href {expected['href']}")
         check(len(card["imgs"]) == 1 and card["imgs"][0].get("src") == image, f"{label}: preview image")
         alt = card["imgs"][0].get("alt", "").strip() if card["imgs"] else ""
