@@ -203,6 +203,8 @@ ROUTES = {
     "/assets/share/holiday-kids-table.png": ROOT / "assets" / "share" / "holiday-kids-table.png",
     "/assets/share/holiday-table-set.png": ROOT / "assets" / "share" / "holiday-table-set.png",
     "/assets/share/holiday-table-talk-trails-sample.png": ROOT / "assets" / "share" / "holiday-table-talk-trails-sample.png",
+    "/assets/share/holiday-travel-adventure.png": ROOT / "assets" / "share" / "holiday-travel-adventure.png",
+    "/holiday/travel-adventure/": HOLIDAY / "travel-adventure" / "index.html",
 }
 for _festive_name in (
     "gather-and-play-cover",
@@ -956,6 +958,7 @@ def main() -> int:
             "https://getcyberdadkit.com/holiday/",
             "https://getcyberdadkit.com/holiday/sample/",
             "https://getcyberdadkit.com/holiday/refund/",
+            "https://getcyberdadkit.com/holiday/travel-adventure/",
         ):
             check(f"<loc>{loc}</loc>" in sitemap, f"sitemap includes {loc}")
         removed_delivery = "/holiday/" + "delivery"
@@ -1103,6 +1106,47 @@ def main() -> int:
         print("PENDING Stripe link placeholders: " + ", ".join(pending))
     if require_live:
         check(pending == [], "--require-live-links: every Thanksgiving buy button has a live Stripe link")
+
+    # Travel Adventure product page and share card (lightweight /holiday/travel-adventure/).
+    travel_page = HOLIDAY / "travel-adventure" / "index.html"
+    travel_card = ROOT / "assets" / "share" / "holiday-travel-adventure.png"
+    check(travel_page.is_file(), "Travel Adventure product page exists")
+    check(travel_card.is_file(), "Travel Adventure share card exists")
+    if travel_card.is_file():
+        width, height = struct.unpack(">II", travel_card.read_bytes()[16:24])
+        check((width, height) == (1200, 630), "Travel Adventure share card is 1200x630")
+    if travel_page.is_file():
+        travel_html = travel_page.read_text(encoding="utf-8")
+        travel_doc = parse(travel_page)
+        check(meta_content(travel_html, "property", "og:title") == "Travel Adventure · CyberDadKit", "Travel Adventure og:title")
+        check(meta_content(travel_html, "property", "og:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure og:image is the landscape share card")
+        check(meta_content(travel_html, "property", "og:image:width") == "1200", "Travel Adventure og:image:width is 1200")
+        check(meta_content(travel_html, "property", "og:image:height") == "630", "Travel Adventure og:image:height is 630")
+        check(meta_content(travel_html, "name", "twitter:card") == "summary_large_image", "Travel Adventure twitter:card is summary_large_image")
+        check(meta_content(travel_html, "name", "twitter:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure twitter:image is the landscape share card")
+        check(meta_content(travel_html, "name", "twitter:title") == "Travel Adventure · CyberDadKit", "Travel Adventure twitter:title")
+        check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in travel_html, "Travel Adventure canonical is exact")
+        pay = [a for a in travel_doc.anchors if a.get("id") == "travel-adventure-checkout"]
+        check(len(pay) == 1 and pay[0].get("href") == TRAVEL_PAYMENT_URL, "Travel Adventure buy href is the same URL as /holiday/")
+        check(travel_html.count('href="' + TRAVEL_PAYMENT_URL + '"') == 1, "Travel Adventure page has one Travel Adventure Stripe href")
+        check(travel_html.count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href")
+        check("/holiday/travel-adventure/files/" not in travel_html and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in travel_html, "Travel Adventure page does not link the unlisted ZIP")
+        check("The Great Thanksgiving Travel Adventure" in travel_html, "Travel Adventure page uses the product name")
+        check("USD $4.99 one-time, US customers only." in travel_html, "Travel Adventure page uses the exact price phrase")
+        check("word search, Travel Bingo, a maze and a Thankful Travel Challenge" in travel_html, "Travel Adventure page keeps the existing activity list")
+        check("Print at home and bring it along with a pencil or crayons. Ages 7+." in travel_html, "Travel Adventure page keeps the existing print-and-go wording")
+        check('href="/holiday/#travel-adventure"' in travel_html, "Travel Adventure page links back to /holiday/")
+        check(US_ELIGIBILITY in travel_html, "Travel Adventure page states US eligibility")
+        check("PO Box 940061, Maitland, FL 32794" in travel_html, "Travel Adventure page uses the PO Box")
+        check("CyberDadKit" in travel_html, "Travel Adventure page uses CyberDadKit")
+        check("G-5B1LNCPB56" in travel_html, "Travel Adventure page includes the site GA4 id")
+        check("{%" not in travel_html and "layout:" not in travel_html and "sitemap: false" not in travel_html, "Travel Adventure page is static HTML that jekyll-sitemap lists")
+        check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', travel_html, re.I) and "download=" not in travel_html, "Travel Adventure page links no PDF or ZIP")
+        visible = re.sub(r"<!--.*?-->", "", travel_html, flags=re.S)
+        check(not copy_banned.search(visible), "Travel Adventure copy has no banned terms")
+        check("Tonight" not in travel_html and not re.search(r"\bNow\b", travel_html), "Travel Adventure page has no Tonight or Now urgency wording")
+        check("\u2014" not in travel_html and "\u2013" not in travel_html, "Travel Adventure page has no em dashes")
+        check("worldwide" not in travel_html.lower() and "guarantee" not in travel_html.lower(), "Travel Adventure page has no worldwide or guarantee")
 
     print()
     if failed:
