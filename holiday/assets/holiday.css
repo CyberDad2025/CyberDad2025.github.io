@@ -519,6 +519,18 @@ code, .hday-main a, .hday-footer a { overflow-wrap: anywhere; }
 
 .hday-links span { color: var(--ink-soft); font-weight: 400; }
 
+.hday-card-cover {
+  display: block;
+  width: 7.5rem;
+  margin: 0.35rem 0;
+}
+
+.hday-card-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .hday-footer {
   background: var(--forest-deep);
   color: var(--gold-soft);
