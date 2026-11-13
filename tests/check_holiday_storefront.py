@@ -14,6 +14,7 @@ import re
 import struct
 import subprocess
 import sys
+from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -37,6 +38,22 @@ KIDS_BUNDLE_PAYMENT_URL = "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d"
 HOST_KIT_PAYMENT_URL = "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"
 TABLE_SET_PAYMENT_URL = "https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e"
 TRAVEL_PAYMENT_URL = "https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g"
+# Plain product-name link. Not a buy button.
+TA_PRODUCT_LINK = '<a href="/holiday/travel-adventure/">The Great Thanksgiving Travel Adventure</a>'
+BUY_HREF_RE = re.compile(r'href="(https://buy\.stripe\.com/[^"]+)"')
+# buy.stripe.com href counts on /holiday/ and /holiday/sample/ at e8d9b220.
+UNCHANGED_BUY_HREFS = Counter({
+    "https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g": 1,
+    "https://buy.stripe.com/14A5kC7qmdqEfT78Efds407": 1,
+    "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f": 1,
+    "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d": 1,
+    "https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c": 1,
+    "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405": 1,
+    "https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b": 1,
+    "https://buy.stripe.com/bJecN4aCyfyM4apbQrds406": 1,
+    "https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e": 1,
+})
+BUY_HREF_BASE = "e8d9b220ddd4f2755ab8d15a7111e6e8399b70ab"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 HOST_KIT_ZIP_SHA = "46e5bde02d4a17cb8b22033ab3d363b3d36563466bc3bf5f9092002fed713055"
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
@@ -764,12 +781,26 @@ def main() -> int:
     }
     for button_id, url in holiday_extra.items():
         check(f'id="{button_id}" href="{url}"' in store_html, f"/holiday/ has buy button {button_id}")
-    for page_name, html in (("/holiday/", store_html), ("/holiday/sample/", sample_html)):
+    for page_name, html, rel in (
+        ("/holiday/", store_html, "holiday/index.html"),
+        ("/holiday/sample/", sample_html, "holiday/sample/index.html"),
+    ):
         check("The Great Thanksgiving Travel Adventure" in html, f"{page_name} names The Great Thanksgiving Travel Adventure")
         check("USD $4.99 one-time, US customers only." in html, f"{page_name} uses the exact Travel Adventure price phrase")
-        check('href="/holiday/travel-adventure/"' not in html, f"{page_name} does not link a Travel Adventure product page")
+        check(html.count(TA_PRODUCT_LINK) == 1, f"{page_name} has one plain text link to the Travel Adventure page")
         check("data-placeholder" not in html, f"{page_name} has no checkout placeholder attribute")
         check(TRAVEL_COVER in html, f"{page_name} includes the Travel Adventure cover image")
+        buy_counts = Counter(BUY_HREF_RE.findall(html))
+        base_html = subprocess.check_output(
+            ["git", "show", f"{BUY_HREF_BASE}:{rel}"],
+            cwd=ROOT,
+            text=True,
+        )
+        base_counts = Counter(BUY_HREF_RE.findall(base_html))
+        check(
+            buy_counts == base_counts == UNCHANGED_BUY_HREFS,
+            f"{page_name} buy.stripe.com href counts are unchanged",
+        )
     check('href="/holiday/trivia/">Christmas Trivia</a>' in store_html, "holiday nav links to Christmas Trivia")
     check(not (HOLIDAY / "BUNDLE-CALLOUT-SNIPPET.html").exists(), "bundle snippet file is not a page")
     config = (ROOT / "_config.yml").read_text(encoding="utf-8")
