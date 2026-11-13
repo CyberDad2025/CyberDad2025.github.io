@@ -1193,9 +1193,14 @@ def main() -> int:
         pay = [a for a in travel_doc.anchors if a.get("id") == "travel-adventure-checkout"]
         check(len(pay) == 1 and pay[0].get("href") == TRAVEL_PAYMENT_URL, "Travel Adventure buy href is the same URL as /holiday/")
         check(travel_html.count('href="' + TRAVEL_PAYMENT_URL + '"') == 1, "Travel Adventure page has one Travel Adventure Stripe href")
-        hero_html = travel_html[travel_html.find('class="hday-hero"'):travel_html.find("</section>", travel_html.find('class="hday-hero"'))]
+        hero_html = travel_html[travel_html.find('<section class="hday-hero'):travel_html.find("</section>", travel_html.find('<section class="hday-hero'))]
         check('id="travel-adventure-checkout" href="' + TRAVEL_PAYMENT_URL + '"' in hero_html, "Travel Adventure buy button sits in the hero, beside the price")
         check(travel_html.count('id="checkout"') == 1, "Travel Adventure page keeps one #checkout anchor for the nav Buy link")
+        check('class="hday-hero hday-hero-buy-first"' in travel_html, "Travel Adventure hero puts the buy button before the cover on phones")
+        festive_css = (ROOT / "assets" / "festive" / "festive.css").read_text(encoding="utf-8")
+        check("body.festive .hday-hero.hday-hero-buy-first > .hday-shot { order: 5; }" in festive_css, "buy-first cover order rule is present and scoped to hday-hero-buy-first")
+        buy_first_pages = [q.relative_to(ROOT).as_posix() for q in ROOT.rglob("*.html") if "_site" not in q.parts and "hday-hero-buy-first" in q.read_text(encoding="utf-8", errors="replace")]
+        check(buy_first_pages == ["holiday/travel-adventure/index.html"], "only the Travel Adventure page uses hday-hero-buy-first")
         for page_no in ("03", "04"):
             preview_rel = f"/holiday/assets/previews/CyberDadKit-travel-adventure-page-{page_no}.png"
             check(f'src="{preview_rel}"' in travel_html, f"Travel Adventure page shows inside page {page_no}")
