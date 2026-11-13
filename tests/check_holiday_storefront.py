@@ -76,8 +76,10 @@ SAMPLE_DESC = (
     "The 12-game bundle is $7.99 USD, one-time, for customers located in the United States."
 )
 HOSTED_OPTIN = "https://preview.mailerlite.io/forms/1632878/203754930937268147/share"
-PRODUCT_IMAGE = "https://getcyberdadkit.com/holiday/pins/pin-gathering-games.png"
-SAMPLE_IMAGE = "https://getcyberdadkit.com/holiday/pins/pin-free-sample.png"
+PRODUCT_IMAGE = "https://getcyberdadkit.com/assets/share/holiday-gather-and-play.png"
+SAMPLE_IMAGE = "https://getcyberdadkit.com/assets/share/holiday-table-talk-trails-sample.png"
+HOLIDAY_OG_TITLE = "Gather & Play · CyberDadKit"
+SAMPLE_OG_TITLE = "Table Talk Trails Free Sample · CyberDadKit"
 SERVED_ADSENSE_FILES = {
     "_layouts/default.html",
     "_layouts/post.html",
@@ -94,13 +96,13 @@ SAMPLE_PDFS = {
 TRIVIA_FILES = {
     "holiday/trivia/index.html":
         # Footer identity is four lines. Prices and checkout hrefs stay pinned elsewhere.
-        "edad3b618bc8f262c64a2db4e6faae40fe65f2206e0f2c5d15bd74f4414975f8",
+        "41d13f3c42d0b9106679a7284431138239d1a7e087c7a4fce6753433a8a9280d",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
-        "097137fb53343ef14c986497bfa9f987a4422c9c279e20b70340acb99686f167",
+        "4e278998bde3506f5decd8c980b2c68db4a2ddf15fac70b92dc88f47df882ec1",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
-        "30956ef22a7b0cd81d263ffe4ea555c8350f4ef4571811b881b4de11855cc83d",
+        "abba1e5cb0bd4762bcc983a92ad9a5ecbac0a7b7cb005d8ba0be8216fdd48f3f",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
         "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
@@ -193,6 +195,14 @@ ROUTES = {
     "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png": HOLIDAY / "assets" / "host-planner" / "previews" / "CyberDadKit-Host-Planner-preview-page-03.png",
     "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-01.png",
     "/holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-06.png": HOLIDAY / "assets" / "kids-table" / "previews" / "CyberDadKit-Kids-Table-preview-page-06.png",
+    "/assets/share/holiday-christmas-trivia-sample.png": ROOT / "assets" / "share" / "holiday-christmas-trivia-sample.png",
+    "/assets/share/holiday-christmas-trivia.png": ROOT / "assets" / "share" / "holiday-christmas-trivia.png",
+    "/assets/share/holiday-gather-and-play.png": ROOT / "assets" / "share" / "holiday-gather-and-play.png",
+    "/assets/share/holiday-host-kit.png": ROOT / "assets" / "share" / "holiday-host-kit.png",
+    "/assets/share/holiday-host-planner.png": ROOT / "assets" / "share" / "holiday-host-planner.png",
+    "/assets/share/holiday-kids-table.png": ROOT / "assets" / "share" / "holiday-kids-table.png",
+    "/assets/share/holiday-table-set.png": ROOT / "assets" / "share" / "holiday-table-set.png",
+    "/assets/share/holiday-table-talk-trails-sample.png": ROOT / "assets" / "share" / "holiday-table-talk-trails-sample.png",
 }
 for _festive_name in (
     "gather-and-play-cover",
@@ -858,15 +868,15 @@ def main() -> int:
     check(sample_html.count(PAYMENT_URL) == 2, "sample payment URL still appears twice, unchanged")
     check(title_text(store_html) == HOLIDAY_TITLE, "holiday title")
     check(meta_content(store_html, "name", "description") == HOLIDAY_DESC, "holiday description")
-    check(meta_content(store_html, "property", "og:title") == HOLIDAY_TITLE, "holiday og:title matches title")
+    check(meta_content(store_html, "property", "og:title") == HOLIDAY_OG_TITLE, "holiday og:title")
     check(meta_content(store_html, "property", "og:description") == HOLIDAY_DESC, "holiday og:description matches description")
-    check(meta_content(store_html, "property", "og:image") == PRODUCT_IMAGE, "holiday og:image is the gathering-games pin")
+    check(meta_content(store_html, "property", "og:image") == PRODUCT_IMAGE, "holiday og:image is the landscape share card")
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/"' in store_html, "holiday canonical")
     check(title_text(sample_html) == SAMPLE_TITLE, "sample title")
     check(meta_content(sample_html, "name", "description") == SAMPLE_DESC, "sample description")
-    check(meta_content(sample_html, "property", "og:title") == SAMPLE_TITLE, "sample og:title matches title")
+    check(meta_content(sample_html, "property", "og:title") == SAMPLE_OG_TITLE, "sample og:title")
     check(meta_content(sample_html, "property", "og:description") == SAMPLE_DESC, "sample og:description matches description")
-    check(meta_content(sample_html, "property", "og:image") == SAMPLE_IMAGE, "sample og:image is the free-sample pin")
+    check(meta_content(sample_html, "property", "og:image") == SAMPLE_IMAGE, "sample og:image is the landscape share card")
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/sample/"' in sample_html, "sample canonical")
     for label, text in (("holiday title", HOLIDAY_TITLE), ("holiday description", HOLIDAY_DESC), ("sample title", SAMPLE_TITLE), ("sample description", SAMPLE_DESC)):
         check(50 <= len(text) <= 60 if "title" in label else 140 <= len(text) <= 160, f"{label} length {len(text)}")
@@ -880,7 +890,7 @@ def main() -> int:
     check(product.get("@context") == "https://schema.org" and product.get("@type") == "Product", "JSON-LD is a schema.org Product")
     check(product.get("name") == manifest["public_name"], "JSON-LD name matches product.json")
     check(product.get("description") == HOLIDAY_DESC, "JSON-LD description matches the meta description")
-    check(product.get("image") == PRODUCT_IMAGE, "JSON-LD image is an absolute pin URL")
+    check(product.get("image") == PRODUCT_IMAGE, "JSON-LD image is the landscape share card")
     check(brand_name == "CyberDadKit", "JSON-LD brand is CyberDadKit")
     check(product.get("sku") == "gather_and_play_v1", "JSON-LD sku")
     check(offer.get("@type") == "Offer", "JSON-LD offer type")
