@@ -410,6 +410,7 @@ def travel_rich_pin_checks(html: str, label: str) -> list[tuple[bool, str]]:
     def add(ok: bool, message: str) -> None:
         results.append((ok, message))
 
+    add(meta_content(html, "property", "og:type") == "product", f"{label} og:type is product")
     add(meta_content(html, "property", "og:site_name") == "CyberDadKit", f"{label} og:site_name is CyberDadKit")
     add(meta_content(html, "property", "og:price:amount") == "4.99", f"{label} og:price:amount is 4.99")
     add(meta_content(html, "property", "og:price:currency") == "USD", f"{label} og:price:currency is USD")
@@ -1362,11 +1363,15 @@ def main() -> int:
     else:
         print("note  _site Travel Adventure page not present; skipped built rich-pin checks")
     if built_holiday.is_file():
-        check("og:price:amount" not in built_holiday.read_text(encoding="utf-8"), "/holiday/ _site HTML has no og:price:amount")
+        holiday_built_html = built_holiday.read_text(encoding="utf-8")
+        check("og:price:amount" not in holiday_built_html, "/holiday/ _site HTML has no og:price:amount")
+        check(meta_content(holiday_built_html, "property", "og:type") != "product", "/holiday/ _site HTML has no og:type product")
     else:
         print("note  _site /holiday/ not present; skipped built holiday og:price check")
     if built_home.is_file():
-        check("og:price:amount" not in built_home.read_text(encoding="utf-8"), "homepage _site HTML has no og:price:amount")
+        home_built_html = built_home.read_text(encoding="utf-8")
+        check("og:price:amount" not in home_built_html, "homepage _site HTML has no og:price:amount")
+        check(meta_content(home_built_html, "property", "og:type") != "product", "homepage _site HTML has no og:type product")
     else:
         print("note  _site homepage not present; skipped built homepage og:price check")
 
