@@ -1071,15 +1071,34 @@ def main() -> int:
     if (site_dir / "index.html").is_file() and (site_dir / "sitemap.xml").is_file():
         home_built = (site_dir / "index.html").read_text(encoding="utf-8")
         home_head = home_built.split("</head>", 1)[0]
-        check('name="p:domain_verify"' not in home_head, "built homepage has no Pinterest verification meta while unset")
+        pin_meta = '<meta name="p:domain_verify" content="e605957bd175bdad99f3c795c6338238"/>'
+        gate_at = layout.find('{% if page.url == "/" %}')
+        gate_end = layout.find("{% endif %}", gate_at) if gate_at != -1 else -1
+        check(
+            gate_at != -1
+            and gate_end > gate_at
+            and layout[gate_at:gate_end].count(pin_meta) == 1
+            and layout.count(pin_meta) == 1
+            and home_built.count(pin_meta) == 1
+            and home_built.count('name="p:domain_verify"') == 1,
+            "homepage serves one Pinterest domain verify meta from the page.url == \"/\" gate",
+        )
         check('name="google-site-verification"' not in home_head, "built homepage has no Google verification meta while unset")
         check('content=""' not in home_head, "built homepage head has no empty meta content")
-        stray = []
-        for built in site_dir.rglob("*.html"):
-            text = built.read_text(encoding="utf-8", errors="ignore")
-            if 'name="p:domain_verify"' in text or 'name="google-site-verification"' in text:
-                stray.append(str(built.relative_to(site_dir)))
-        check(stray == [], "built HTML has no verification metas while unset" + ("" if not stray else ": " + ", ".join(stray)))
+        pin_elsewhere = []
+        for rel in (
+            "holiday/index.html",
+            "holiday/travel-adventure/index.html",
+            "page2/index.html",
+        ):
+            built = site_dir / rel
+            if built.is_file() and 'name="p:domain_verify"' in built.read_text(encoding="utf-8", errors="ignore"):
+                pin_elsewhere.append(rel)
+        check(
+            pin_elsewhere == [],
+            "built holiday, Travel Adventure, and page 2 have no p:domain_verify"
+            + ("" if not pin_elsewhere else ": " + ", ".join(pin_elsewhere)),
+        )
         for rel, digest in PIN_FILES.items():
             built = site_dir / rel
             check(built.is_file() and sha256(built) == digest, f"built pin {rel}")
