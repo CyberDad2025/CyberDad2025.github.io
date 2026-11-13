@@ -84,11 +84,14 @@ PIN_FILES = {
 }
 # Travel Adventure inside-page previews under holiday/pins/. Existence only:
 # PR #1028 did not pin sha256 for the t017d pins in this folder.
+# Word search and maze stay off the site so those paid pages cannot be solved on screen.
 TA_PREVIEW_PINS = [
-    "holiday/pins/t017-preview-word-search.png",
     "holiday/pins/t017-preview-bingo.png",
-    "holiday/pins/t017-preview-maze.png",
     "holiday/pins/t017-preview-challenge.png",
+]
+TA_DROPPED_PREVIEW_PINS = [
+    "holiday/pins/t017-preview-word-search.png",
+    "holiday/pins/t017-preview-maze.png",
 ]
 HOLIDAY_TITLE = "Gather & Play: Printable Thanksgiving and Christmas Games"
 HOLIDAY_DESC = (
@@ -937,6 +940,8 @@ def main() -> int:
         check(path.is_file(), f"Travel Adventure preview pin exists: {rel}")
         width, height = png_ihdr_size(path)
         check(width <= 600, f"Travel Adventure preview pin {rel} is at most 600px wide (got {width}x{height})")
+    for rel in TA_DROPPED_PREVIEW_PINS:
+        check(not (ROOT / rel).exists(), f"Travel Adventure preview pin is not hosted: {rel}")
     config_text = (ROOT / "_config.yml").read_text(encoding="utf-8")
     exclude_block = config_text.split("exclude:", 1)[-1].split("\n# Include", 1)[0]
     check("holiday/pins" not in exclude_block and not re.search(r"(?m)^  - holiday/?\s*$", exclude_block), "pin directory is not excluded from the Jekyll build")
@@ -1037,6 +1042,8 @@ def main() -> int:
             check(built.is_file(), f"built Travel Adventure preview pin exists: {rel}")
             width, height = png_ihdr_size(built)
             check(width <= 600, f"built Travel Adventure preview pin {rel} is at most 600px wide (got {width}x{height})")
+        for rel in TA_DROPPED_PREVIEW_PINS:
+            check(not (site_dir / rel).exists(), f"built Travel Adventure preview pin is not hosted: {rel}")
         sitemap = (site_dir / "sitemap.xml").read_text(encoding="utf-8")
         for loc in (
             "https://getcyberdadkit.com/holiday/",
