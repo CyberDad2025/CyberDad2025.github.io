@@ -1175,6 +1175,9 @@ def main() -> int:
         pay = [a for a in travel_doc.anchors if a.get("id") == "travel-adventure-checkout"]
         check(len(pay) == 1 and pay[0].get("href") == TRAVEL_PAYMENT_URL, "Travel Adventure buy href is the same URL as /holiday/")
         check(travel_html.count('href="' + TRAVEL_PAYMENT_URL + '"') == 1, "Travel Adventure page has one Travel Adventure Stripe href")
+        hero_html = travel_html[travel_html.find('class="hday-hero"'):travel_html.find("</section>", travel_html.find('class="hday-hero"'))]
+        check('id="travel-adventure-checkout" href="' + TRAVEL_PAYMENT_URL + '"' in hero_html, "Travel Adventure buy button sits in the hero, beside the price")
+        check(travel_html.count('id="checkout"') == 1, "Travel Adventure page keeps one #checkout anchor for the nav Buy link")
         check(travel_html.count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href")
         check("/holiday/travel-adventure/files/" not in travel_html and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in travel_html, "Travel Adventure page does not link the unlisted ZIP")
         check("The Great Thanksgiving Travel Adventure" in travel_html, "Travel Adventure page uses the product name")
