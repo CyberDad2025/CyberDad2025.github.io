@@ -82,6 +82,14 @@ PIN_FILES = {
     "holiday/pins/pin-gathering-games.png": "cb4a6a67b31d5e6bd4a59f2c06a867aac3e06c0947ed55e2b51ee421f8e93597",
     "holiday/pins/pin-low-ink.png": "6cbae8be1f50c88bb1e8c34f8aacb2db36981ad9d88fdd12ac883dd15bf681a8",
 }
+# Travel Adventure inside-page previews under holiday/pins/. Existence only:
+# PR #1028 did not pin sha256 for the t017d pins in this folder.
+TA_PREVIEW_PINS = [
+    "holiday/pins/t017-preview-word-search.png",
+    "holiday/pins/t017-preview-bingo.png",
+    "holiday/pins/t017-preview-maze.png",
+    "holiday/pins/t017-preview-challenge.png",
+]
 HOLIDAY_TITLE = "Gather & Play: Printable Thanksgiving and Christmas Games"
 HOLIDAY_DESC = (
     "Printable Thanksgiving and Christmas family gathering games. "
@@ -917,6 +925,8 @@ def main() -> int:
     for rel, digest in PIN_FILES.items():
         path = ROOT / rel
         check(path.is_file() and sha256(path) == digest, f"pin hash {rel}")
+    for rel in TA_PREVIEW_PINS:
+        check((ROOT / rel).is_file(), f"Travel Adventure preview pin exists: {rel}")
     config_text = (ROOT / "_config.yml").read_text(encoding="utf-8")
     exclude_block = config_text.split("exclude:", 1)[-1].split("\n# Include", 1)[0]
     check("holiday/pins" not in exclude_block and not re.search(r"(?m)^  - holiday/?\s*$", exclude_block), "pin directory is not excluded from the Jekyll build")
@@ -1012,6 +1022,8 @@ def main() -> int:
         for rel, digest in PIN_FILES.items():
             built = site_dir / rel
             check(built.is_file() and sha256(built) == digest, f"built pin {rel}")
+        for rel in TA_PREVIEW_PINS:
+            check((site_dir / rel).is_file(), f"built Travel Adventure preview pin exists: {rel}")
         sitemap = (site_dir / "sitemap.xml").read_text(encoding="utf-8")
         for loc in (
             "https://getcyberdadkit.com/holiday/",
