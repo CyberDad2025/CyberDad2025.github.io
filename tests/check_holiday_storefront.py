@@ -113,7 +113,8 @@ SAMPLE_PDFS = {
 TRIVIA_FILES = {
     "holiday/trivia/index.html":
         # Footer identity is four lines. Prices and checkout hrefs stay pinned elsewhere.
-        "41d13f3c42d0b9106679a7284431138239d1a7e087c7a4fce6753433a8a9280d",
+        # Sprint 1113: re-pinned after the buy_click listener script was added (was 41d13f3c).
+        "c6a68908271e75b22c3e4d46a58d333cdfea6e9318c6388a043e45ee1dd5742a",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
         "4e278998bde3506f5decd8c980b2c68db4a2ddf15fac70b92dc88f47df882ec1",
@@ -773,6 +774,10 @@ def main() -> int:
         for rel in ("holiday/index.html", "holiday/sample/index.html", "index.html"):
             built = (built_site / rel).read_text(encoding="utf-8")
             check(built.count(buy_click_marker) == 1, f"built _site/{rel} has the buy_click listener once")
+        for built_page in sorted(built_site.rglob("*.html")):
+            built = built_page.read_text(encoding="utf-8", errors="replace")
+            if 'href="https://buy.stripe.com/' in built:
+                check(built.count(buy_click_marker) == 1, f"built {built_page.relative_to(built_site)} has a buy link and the buy_click listener once")
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
 
@@ -1191,7 +1196,7 @@ def main() -> int:
         hero_html = travel_html[travel_html.find('class="hday-hero"'):travel_html.find("</section>", travel_html.find('class="hday-hero"'))]
         check('id="travel-adventure-checkout" href="' + TRAVEL_PAYMENT_URL + '"' in hero_html, "Travel Adventure buy button sits in the hero, beside the price")
         check(travel_html.count('id="checkout"') == 1, "Travel Adventure page keeps one #checkout anchor for the nav Buy link")
-        check(travel_html.count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href")
+        check(travel_html.replace("a[href^=\"https://buy.stripe.com/\"]", "").count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href (buy_click selector excluded)")
         check("/holiday/travel-adventure/files/" not in travel_html and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in travel_html, "Travel Adventure page does not link the unlisted ZIP")
         check("The Great Thanksgiving Travel Adventure" in travel_html, "Travel Adventure page uses the product name")
         check("USD $4.99 one-time, US customers only." in travel_html, "Travel Adventure page uses the exact price phrase")

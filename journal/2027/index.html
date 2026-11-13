@@ -29,6 +29,18 @@
       gtag('js', new Date());
       gtag('config', 'G-5B1LNCPB56');
     </script>
+    <script>
+      (function () {
+        if (window.__buyClickBound) return;
+        window.__buyClickBound = true;
+        document.addEventListener('click', function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com/"]') : null;
+          if (!a || typeof window.gtag !== 'function') return;
+          var name = a.getAttribute('data-product') || (a.textContent || '').replace(/\s+/g, ' ').trim().replace(/^Buy /, '').replace(/ for \$\d+\.\d{2} USD$/, '');
+          try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
+        }, true);
+      })();
+    </script>
 </head>
 <body class="festive festive-journal">
 <a class="hday-skip" href="#main">Skip to content</a>
