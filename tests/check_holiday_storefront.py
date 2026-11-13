@@ -35,6 +35,7 @@ PLANNER_PAYMENT_URL = "https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b"
 KIDS_PAYMENT_URL = "https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c"
 KIDS_BUNDLE_PAYMENT_URL = "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d"
 HOST_KIT_PAYMENT_URL = "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"
+TABLE_SET_PAYMENT_URL = "https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 HOST_KIT_ZIP_SHA = "46e5bde02d4a17cb8b22033ab3d363b3d36563466bc3bf5f9092002fed713055"
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
@@ -45,6 +46,7 @@ EXTRA_HOLIDAY_PAYMENT_URLS = {
     KIDS_PAYMENT_URL,
     KIDS_BUNDLE_PAYMENT_URL,
     HOST_KIT_PAYMENT_URL,
+    TABLE_SET_PAYMENT_URL,
 }
 US_ELIGIBILITY = "Available only to customers located in the United States."
 PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
@@ -174,6 +176,7 @@ ROUTES = {
     "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-05.png",
     "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-12.png": HOLIDAY / "assets" / "trivia" / "previews" / "CyberDadKit-Christmas-Trivia-preview-page-12.png",
     "/holiday/host-planner/": HOLIDAY / "host-planner" / "index.html",
+    "/holiday/table-set/": HOLIDAY / "table-set" / "index.html",
     "/holiday/host-planner/refund/": HOLIDAY / "host-planner" / "refund" / "index.html",
     "/holiday/kids-table/": HOLIDAY / "kids-table" / "index.html",
     "/holiday/kids-table/refund/": HOLIDAY / "kids-table" / "refund" / "index.html",
@@ -603,6 +606,7 @@ def main() -> int:
         "trivia-checkout-sample": TRIVIA_PAYMENT_URL,
         "bundle-checkout-sample": BUNDLE_PAYMENT_URL,
         "host-planner-checkout-sample": PLANNER_PAYMENT_URL,
+        "table-set-checkout-sample": TABLE_SET_PAYMENT_URL,
         "kids-checkout-sample": KIDS_PAYMENT_URL,
         "kids-bundle-checkout-sample": KIDS_BUNDLE_PAYMENT_URL,
         "host-kit-checkout-sample": HOST_KIT_PAYMENT_URL,
@@ -716,6 +720,7 @@ def main() -> int:
     holiday_extra = {
         "trivia-checkout-holiday": TRIVIA_PAYMENT_URL,
         "host-planner-checkout-holiday": PLANNER_PAYMENT_URL,
+        "table-set-checkout-holiday": TABLE_SET_PAYMENT_URL,
         "kids-checkout-holiday": KIDS_PAYMENT_URL,
         "kids-bundle-checkout-holiday": KIDS_BUNDLE_PAYMENT_URL,
         "host-kit-checkout-holiday": HOST_KIT_PAYMENT_URL,
