@@ -781,13 +781,20 @@ def main() -> int:
     }
     for button_id, url in holiday_extra.items():
         check(f'id="{button_id}" href="{url}"' in store_html, f"/holiday/ has buy button {button_id}")
+    # Sprint 1113: Travel Adventure is reachable near the top of /holiday/ on mobile (nav item plus one text line
+    # before the free sample round), with no extra Stripe href.
+    check('<li><a href="/holiday/travel-adventure/">Travel Adventure</a></li>' in store_html, "/holiday/ nav links the Travel Adventure page")
+    ta_top_at = store_html.find('id="travel-adventure-top"')
+    check(0 < ta_top_at < store_html.find('id="sample-round"'), "/holiday/ Travel Adventure text line sits before the free sample round")
+    check("buy.stripe.com" not in element_text(store_html, "travel-adventure-top") and 'href="https://buy.stripe.com' not in store_html[ta_top_at:store_html.find('id="sample-round"')], "/holiday/ Travel Adventure top line has no Stripe href")
     for page_name, html, rel in (
         ("/holiday/", store_html, "holiday/index.html"),
         ("/holiday/sample/", sample_html, "holiday/sample/index.html"),
     ):
         check("The Great Thanksgiving Travel Adventure" in html, f"{page_name} names The Great Thanksgiving Travel Adventure")
         check("USD $4.99 one-time, US customers only." in html, f"{page_name} uses the exact Travel Adventure price phrase")
-        check(html.count(TA_PRODUCT_LINK) == 1, f"{page_name} has one plain text link to the Travel Adventure page")
+        expected_ta_links = 2 if page_name == "/holiday/" else 1
+        check(html.count(TA_PRODUCT_LINK) == expected_ta_links, f"{page_name} has {expected_ta_links} plain text link(s) to the Travel Adventure page")
         check("data-placeholder" not in html, f"{page_name} has no checkout placeholder attribute")
         check(TRAVEL_COVER in html, f"{page_name} includes the Travel Adventure cover image")
         buy_counts = Counter(BUY_HREF_RE.findall(html))
