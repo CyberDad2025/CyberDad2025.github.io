@@ -335,6 +335,13 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def png_ihdr_size(path: Path) -> tuple[int, int]:
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        raise ValueError(f"{path} is not a PNG with a leading IHDR")
+    return struct.unpack(">II", data[16:24])
+
+
 EXACT_REFUND = (
     "Gather & Play is a digital product. You may request a full refund for any reason "
     "within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email "
@@ -926,7 +933,10 @@ def main() -> int:
         path = ROOT / rel
         check(path.is_file() and sha256(path) == digest, f"pin hash {rel}")
     for rel in TA_PREVIEW_PINS:
-        check((ROOT / rel).is_file(), f"Travel Adventure preview pin exists: {rel}")
+        path = ROOT / rel
+        check(path.is_file(), f"Travel Adventure preview pin exists: {rel}")
+        width, height = png_ihdr_size(path)
+        check(width <= 600, f"Travel Adventure preview pin {rel} is at most 600px wide (got {width}x{height})")
     config_text = (ROOT / "_config.yml").read_text(encoding="utf-8")
     exclude_block = config_text.split("exclude:", 1)[-1].split("\n# Include", 1)[0]
     check("holiday/pins" not in exclude_block and not re.search(r"(?m)^  - holiday/?\s*$", exclude_block), "pin directory is not excluded from the Jekyll build")
@@ -1023,7 +1033,10 @@ def main() -> int:
             built = site_dir / rel
             check(built.is_file() and sha256(built) == digest, f"built pin {rel}")
         for rel in TA_PREVIEW_PINS:
-            check((site_dir / rel).is_file(), f"built Travel Adventure preview pin exists: {rel}")
+            built = site_dir / rel
+            check(built.is_file(), f"built Travel Adventure preview pin exists: {rel}")
+            width, height = png_ihdr_size(built)
+            check(width <= 600, f"built Travel Adventure preview pin {rel} is at most 600px wide (got {width}x{height})")
         sitemap = (site_dir / "sitemap.xml").read_text(encoding="utf-8")
         for loc in (
             "https://getcyberdadkit.com/holiday/",
