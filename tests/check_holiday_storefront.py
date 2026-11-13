@@ -395,6 +395,52 @@ def json_ld_blocks(html: str) -> list:
     return blocks
 
 
+TA_PAGE_URL = "https://getcyberdadkit.com/holiday/travel-adventure/"
+TA_OG_DESCRIPTION = (
+    "A 6-page US Letter color printable with 4 travel activities "
+    "(word search, Travel Bingo, a maze and a Thankful Travel Challenge), "
+    "plus an answer key. USD $4.99 one-time, US customers only."
+)
+
+
+def travel_rich_pin_checks(html: str, label: str) -> list[tuple[bool, str]]:
+    """Product rich-pin tags for the Travel Adventure page only."""
+    results: list[tuple[bool, str]] = []
+
+    def add(ok: bool, message: str) -> None:
+        results.append((ok, message))
+
+    add(meta_content(html, "property", "og:site_name") == "CyberDadKit", f"{label} og:site_name is CyberDadKit")
+    add(meta_content(html, "property", "og:price:amount") == "4.99", f"{label} og:price:amount is 4.99")
+    add(meta_content(html, "property", "og:price:currency") == "USD", f"{label} og:price:currency is USD")
+    add(meta_content(html, "property", "og:description") == TA_OG_DESCRIPTION, f"{label} og:description is unchanged")
+    raw_blocks = re.findall(r'<script type="application/ld\+json">\s*(.*?)\s*</script>', html, re.S)
+    add(len(raw_blocks) == 1, f"{label} has exactly one JSON-LD block")
+    product = None
+    if len(raw_blocks) == 1:
+        try:
+            product = json.loads(raw_blocks[0])
+            add(isinstance(product, dict), f"{label} JSON-LD parses as JSON")
+        except json.JSONDecodeError:
+            add(False, f"{label} JSON-LD parses as JSON")
+    else:
+        add(False, f"{label} JSON-LD parses as JSON")
+    offer = product.get("offers") if isinstance(product, dict) and isinstance(product.get("offers"), dict) else {}
+    add(isinstance(product, dict) and product.get("@type") == "Product", f"{label} JSON-LD @type is Product")
+    add(offer.get("price") == "4.99", f"{label} JSON-LD offers.price is 4.99")
+    add(offer.get("priceCurrency") == "USD", f"{label} JSON-LD priceCurrency is USD")
+    add(offer.get("availability") == "https://schema.org/InStock", f"{label} JSON-LD availability is InStock")
+    offer_url = offer.get("url") or ""
+    add(offer_url == TA_PAGE_URL, f"{label} JSON-LD offers.url is the Travel Adventure page")
+    add("stripe" not in offer_url, f"{label} JSON-LD offers.url does not contain stripe")
+    description = product.get("description") if isinstance(product, dict) else None
+    add(
+        description == meta_content(html, "property", "og:description") == TA_OG_DESCRIPTION,
+        f"{label} JSON-LD description matches og:description",
+    )
+    return results
+
+
 def has_key(obj, key: str) -> bool:
     if isinstance(obj, dict):
         return key in obj or any(has_key(value, key) for value in obj.values())
@@ -1025,15 +1071,34 @@ def main() -> int:
     if (site_dir / "index.html").is_file() and (site_dir / "sitemap.xml").is_file():
         home_built = (site_dir / "index.html").read_text(encoding="utf-8")
         home_head = home_built.split("</head>", 1)[0]
-        check('name="p:domain_verify"' not in home_head, "built homepage has no Pinterest verification meta while unset")
+        pin_meta = '<meta name="p:domain_verify" content="e605957bd175bdad99f3c795c6338238"/>'
+        gate_at = layout.find('{% if page.url == "/" %}')
+        gate_end = layout.find("{% endif %}", gate_at) if gate_at != -1 else -1
+        check(
+            gate_at != -1
+            and gate_end > gate_at
+            and layout[gate_at:gate_end].count(pin_meta) == 1
+            and layout.count(pin_meta) == 1
+            and home_built.count(pin_meta) == 1
+            and home_built.count('name="p:domain_verify"') == 1,
+            "homepage serves one Pinterest domain verify meta from the page.url == \"/\" gate",
+        )
         check('name="google-site-verification"' not in home_head, "built homepage has no Google verification meta while unset")
         check('content=""' not in home_head, "built homepage head has no empty meta content")
-        stray = []
-        for built in site_dir.rglob("*.html"):
-            text = built.read_text(encoding="utf-8", errors="ignore")
-            if 'name="p:domain_verify"' in text or 'name="google-site-verification"' in text:
-                stray.append(str(built.relative_to(site_dir)))
-        check(stray == [], "built HTML has no verification metas while unset" + ("" if not stray else ": " + ", ".join(stray)))
+        pin_elsewhere = []
+        for rel in (
+            "holiday/index.html",
+            "holiday/travel-adventure/index.html",
+            "page2/index.html",
+        ):
+            built = site_dir / rel
+            if built.is_file() and 'name="p:domain_verify"' in built.read_text(encoding="utf-8", errors="ignore"):
+                pin_elsewhere.append(rel)
+        check(
+            pin_elsewhere == [],
+            "built holiday, Travel Adventure, and page 2 have no p:domain_verify"
+            + ("" if not pin_elsewhere else ": " + ", ".join(pin_elsewhere)),
+        )
         for rel, digest in PIN_FILES.items():
             built = site_dir / rel
             check(built.is_file() and sha256(built) == digest, f"built pin {rel}")
@@ -1263,6 +1328,47 @@ def main() -> int:
             'That wording is also on <a href="/holiday/travel-adventure/refund/">The Great Thanksgiving Travel Adventure refund page</a>.' in travel_html,
             "Travel Adventure page uses the table-set refund sentence",
         )
+        for ok, message in travel_rich_pin_checks(travel_html, "Travel Adventure source"):
+            check(ok, message)
+        buy_hrefs = BUY_HREF_RE.findall(travel_html)
+        check(buy_hrefs == [TRAVEL_PAYMENT_URL], "Travel Adventure source has exactly one buy.stripe.com href")
+
+    price_hits = []
+    for path in ROOT.rglob("*.html"):
+        if {".git", "_site", "vendor", ".jekyll-cache"}.intersection(path.parts):
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        if "og:price:amount" in text:
+            price_hits.append(path.relative_to(ROOT).as_posix())
+    price_hits.sort()
+    check(
+        price_hits == ["holiday/travel-adventure/index.html"],
+        "og:price:amount appears only on the Travel Adventure page"
+        + ("" if price_hits == ["holiday/travel-adventure/index.html"] else ": " + ", ".join(price_hits)),
+    )
+    check("og:price:amount" not in STORE.read_text(encoding="utf-8"), "/holiday/ source has no og:price:amount")
+    built_travel = ROOT / "_site" / "holiday" / "travel-adventure" / "index.html"
+    built_holiday = ROOT / "_site" / "holiday" / "index.html"
+    built_home = ROOT / "_site" / "index.html"
+    if built_travel.is_file():
+        built_travel_html = built_travel.read_text(encoding="utf-8")
+        for ok, message in travel_rich_pin_checks(built_travel_html, "Travel Adventure _site"):
+            check(ok, message)
+        built_buy_hrefs = BUY_HREF_RE.findall(built_travel_html)
+        check(built_buy_hrefs == [TRAVEL_PAYMENT_URL], "built Travel Adventure page has exactly one buy.stripe.com href")
+    else:
+        print("note  _site Travel Adventure page not present; skipped built rich-pin checks")
+    if built_holiday.is_file():
+        check("og:price:amount" not in built_holiday.read_text(encoding="utf-8"), "/holiday/ _site HTML has no og:price:amount")
+    else:
+        print("note  _site /holiday/ not present; skipped built holiday og:price check")
+    if built_home.is_file():
+        check("og:price:amount" not in built_home.read_text(encoding="utf-8"), "homepage _site HTML has no og:price:amount")
+    else:
+        print("note  _site homepage not present; skipped built homepage og:price check")
 
     travel_refund_page = HOLIDAY / "travel-adventure" / "refund" / "index.html"
     check(travel_refund_page.is_file(), "Travel Adventure refund page exists")
