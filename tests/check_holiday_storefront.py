@@ -205,6 +205,7 @@ ROUTES = {
     "/assets/share/holiday-table-talk-trails-sample.png": ROOT / "assets" / "share" / "holiday-table-talk-trails-sample.png",
     "/assets/share/holiday-travel-adventure.png": ROOT / "assets" / "share" / "holiday-travel-adventure.png",
     "/holiday/travel-adventure/": HOLIDAY / "travel-adventure" / "index.html",
+    "/holiday/travel-adventure/refund/": HOLIDAY / "travel-adventure" / "refund" / "index.html",
 }
 for _festive_name in (
     "gather-and-play-cover",
@@ -590,6 +591,7 @@ def main() -> int:
     check("Earlier purchases of our digital security guide keep their original 30-day full refund policy." in site_refund, "earlier purchases keep the generic 30-day sentence")
     check("Gather &amp; Play" in site_refund, "refund policy covers the holiday printables")
     check("Thanksgiving Table Set" in site_refund and "Holiday Host Kit" in site_refund, "refund policy lists the Table Set and Holiday Host Kit")
+    check("<li>The Great Thanksgiving Travel Adventure</li>" in site_refund, "refund policy lists The Great Thanksgiving Travel Adventure")
     check("Thanksgiving Table Set" in faq_page and "Holiday Host Kit" in faq_page, "FAQ lists the Table Set and Holiday Host Kit")
     check("Thanksgiving Table Set" in support_page and "Holiday Host Kit" in support_page, "support lists the Table Set and Holiday Host Kit")
     check('href="/refund-policy/"' in faq_page and 'href="/support/"' in faq_page, "FAQ links the refund policy and support")
@@ -613,6 +615,7 @@ def main() -> int:
     check("Kids' Table + Gather & Play bundle" in shield_terms and "$11.99" in shield_terms, "terms name the kids-table bundle at $11.99")
     check("/holiday/host-planner/refund/" in shield_terms and "/holiday/kids-table/refund/" in shield_terms, "terms link the Host Planner and Kids' Table refund pages")
     check("/holiday/table-set/refund/" in shield_terms and "Thanksgiving Table Set" in shield_terms, "terms link the Thanksgiving Table Set refund page")
+    check("/holiday/travel-adventure/refund/" in shield_terms and "The Great Thanksgiving Travel Adventure" in shield_terms, "terms link the Travel Adventure refund page")
     check("Gather & Play" not in sites_refund, "Sites refund page does not absorb Gather & Play")
     promise = re.compile(r"instant refund|refunds are automatic|within 24 hours|reply within", re.I)
     check(not promise.search(store_html + refund_html), "no automated or timed refund promise")
@@ -961,6 +964,10 @@ def main() -> int:
             "https://getcyberdadkit.com/holiday/travel-adventure/",
         ):
             check(f"<loc>{loc}</loc>" in sitemap, f"sitemap includes {loc}")
+        table_set_refund_loc = "https://getcyberdadkit.com/holiday/table-set/refund/"
+        travel_refund_loc = "https://getcyberdadkit.com/holiday/travel-adventure/refund/"
+        if f"<loc>{table_set_refund_loc}</loc>" in sitemap:
+            check(f"<loc>{travel_refund_loc}</loc>" in sitemap, "sitemap includes the Travel Adventure refund page")
         removed_delivery = "/holiday/" + "delivery"
         check(removed_delivery not in sitemap, "sitemap has no removed delivery URL")
         check("https://getcyberdadkit.com/privacy/" not in sitemap and "/privacy/index.html" not in sitemap, "sitemap omits /privacy/")
@@ -1118,13 +1125,14 @@ def main() -> int:
     if travel_page.is_file():
         travel_html = travel_page.read_text(encoding="utf-8")
         travel_doc = parse(travel_page)
-        check(meta_content(travel_html, "property", "og:title") == "Travel Adventure · CyberDadKit", "Travel Adventure og:title")
+        check("<title>The Great Thanksgiving Travel Adventure · CyberDadKit</title>" in travel_html, "Travel Adventure title")
+        check(meta_content(travel_html, "property", "og:title") == "The Great Thanksgiving Travel Adventure · CyberDadKit", "Travel Adventure og:title")
         check(meta_content(travel_html, "property", "og:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure og:image is the landscape share card")
         check(meta_content(travel_html, "property", "og:image:width") == "1200", "Travel Adventure og:image:width is 1200")
         check(meta_content(travel_html, "property", "og:image:height") == "630", "Travel Adventure og:image:height is 630")
         check(meta_content(travel_html, "name", "twitter:card") == "summary_large_image", "Travel Adventure twitter:card is summary_large_image")
         check(meta_content(travel_html, "name", "twitter:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure twitter:image is the landscape share card")
-        check(meta_content(travel_html, "name", "twitter:title") == "Travel Adventure · CyberDadKit", "Travel Adventure twitter:title")
+        check(meta_content(travel_html, "name", "twitter:title") == "The Great Thanksgiving Travel Adventure · CyberDadKit", "Travel Adventure twitter:title")
         check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in travel_html, "Travel Adventure canonical is exact")
         pay = [a for a in travel_doc.anchors if a.get("id") == "travel-adventure-checkout"]
         check(len(pay) == 1 and pay[0].get("href") == TRAVEL_PAYMENT_URL, "Travel Adventure buy href is the same URL as /holiday/")
@@ -1147,6 +1155,90 @@ def main() -> int:
         check("Tonight" not in travel_html and not re.search(r"\bNow\b", travel_html), "Travel Adventure page has no Tonight or Now urgency wording")
         check("\u2014" not in travel_html and "\u2013" not in travel_html, "Travel Adventure page has no em dashes")
         check("worldwide" not in travel_html.lower() and "guarantee" not in travel_html.lower(), "Travel Adventure page has no worldwide or guarantee")
+        refund_href = 'href="/holiday/travel-adventure/refund/"'
+        check(travel_html.count(refund_href) == 4, "Travel Adventure page links its refund page from the header, seller note, refund sentence, and footer")
+        check('href="#support"' not in travel_html, "Travel Adventure refund links no longer point at #support")
+        check(
+            'That wording is also on the <a href="/holiday/travel-adventure/refund/">The Great Thanksgiving Travel Adventure refund page</a>.' in travel_html,
+            "Travel Adventure page uses the table-set refund sentence",
+        )
+
+    travel_refund_page = HOLIDAY / "travel-adventure" / "refund" / "index.html"
+    check(travel_refund_page.is_file(), "Travel Adventure refund page exists")
+    if travel_refund_page.is_file():
+        travel_refund_html = travel_refund_page.read_text(encoding="utf-8")
+        if travel_page.is_file():
+            check(
+                " ".join(element_text(travel_html, "travel-adventure-refund-wording").split())
+                == " ".join(element_text(travel_refund_html, "travel-adventure-refund-wording").split()),
+                "Travel Adventure refund page uses the product page 7-day wording",
+            )
+        check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/refund/"' in travel_refund_html, "Travel Adventure refund canonical is exact")
+        check(meta_content(travel_refund_html, "property", "og:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure refund og:image is the share card")
+        check(meta_content(travel_refund_html, "property", "og:image:width") == "1200", "Travel Adventure refund og:image:width is 1200")
+        check(meta_content(travel_refund_html, "property", "og:image:height") == "630", "Travel Adventure refund og:image:height is 630")
+        check(meta_content(travel_refund_html, "name", "twitter:card") == "summary_large_image", "Travel Adventure refund twitter:card is summary_large_image")
+        check(meta_content(travel_refund_html, "name", "twitter:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure refund twitter:image is the share card")
+        table_set_refund_html = (HOLIDAY / "table-set" / "refund" / "index.html").read_text(encoding="utf-8")
+        if "buy.stripe.com" not in table_set_refund_html:
+            check("buy.stripe.com" not in travel_refund_html, "Travel Adventure refund page has no buy.stripe.com href")
+        else:
+            check(travel_refund_html.count('href="' + TRAVEL_PAYMENT_URL + '"') == 1, "Travel Adventure refund page uses the Travel Adventure Stripe href")
+        check('href="/holiday/travel-adventure/"' in travel_refund_html, "Travel Adventure refund page links back to the product")
+        check("The Great Thanksgiving Travel Adventure" in travel_refund_html, "Travel Adventure refund page uses the product name")
+        check("{%" not in travel_refund_html and "layout:" not in travel_refund_html and "sitemap: false" not in travel_refund_html, "Travel Adventure refund page is static HTML that the sitemap lists")
+        check("\u2014" not in travel_refund_html and "\u2013" not in travel_refund_html, "Travel Adventure refund page has no em dashes")
+        check("worldwide" not in travel_refund_html.lower() and "guarantee" not in travel_refund_html.lower() and "CDK" not in travel_refund_html, "Travel Adventure refund page has no worldwide, guarantee, or CDK")
+        check(not re.search(r"\bA4\b", travel_refund_html), "Travel Adventure refund page has no A4")
+        refund_doc = parse(travel_refund_page)
+        urls = re.findall(r'(?:href|src)="([^"]*)"', travel_refund_html)
+        urls += re.findall(r'content="(https://[^"]+)"', travel_refund_html)
+        for url in urls:
+            if url.startswith("mailto:"):
+                check(url.startswith("mailto:ruel@getcyberdadkit.com"), f"Travel Adventure refund mailto {url}")
+                continue
+            if url.startswith("#"):
+                check(url[1:] in refund_doc.ids, f"Travel Adventure refund anchor {url}")
+                continue
+            if url in STRIPE_PLACEHOLDERS or LIVE_LINK.match(url) or url == "https://www.googletagmanager.com/gtag/js?id=G-5B1LNCPB56":
+                continue
+            if url.startswith("https://getcyberdadkit.com"):
+                path = url[len("https://getcyberdadkit.com"):] or "/"
+            elif url.startswith("/"):
+                path = url
+            else:
+                check(False, f"Travel Adventure refund unrecognized reference {url}")
+                continue
+            path = path.split("#", 1)[0]
+            check(path in ROUTES and ROUTES[path].is_file(), f"Travel Adventure refund link {url}")
+        built_refund = ROOT / "_site" / "holiday" / "travel-adventure" / "refund" / "index.html"
+        if (ROOT / "_site" / "sitemap.xml").is_file():
+            check(built_refund.is_file(), "built Travel Adventure refund page exists")
+            if built_refund.is_file():
+                import http.server
+                import socketserver
+                import threading
+                import urllib.request
+
+                class _QuietHandler(http.server.SimpleHTTPRequestHandler):
+                    def __init__(self, *args, **kwargs):
+                        super().__init__(*args, directory=str(ROOT / "_site"), **kwargs)
+
+                    def log_message(self, fmt, *args):
+                        return
+
+                with socketserver.TCPServer(("127.0.0.1", 0), _QuietHandler) as httpd:
+                    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+                    thread.start()
+                    try:
+                        with urllib.request.urlopen(
+                            f"http://127.0.0.1:{httpd.server_address[1]}/holiday/travel-adventure/refund/",
+                            timeout=5,
+                        ) as resp:
+                            status = resp.status
+                    finally:
+                        httpd.shutdown()
+                check(status == 200, "built Travel Adventure refund page returns 200")
 
     print()
     if failed:
