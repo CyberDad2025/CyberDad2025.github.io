@@ -265,6 +265,9 @@ body.festive .hday-hero { align-items: start; }
     order: 3;
     margin: 0.4rem 0 0.6rem;
   }
+
+  /* Travel Adventure only: on phones, price and buy button come before the cover. */
+  body.festive .hday-hero.hday-hero-buy-first > .hday-shot { order: 5; }
 }
 
 body.festive .hday-facts { gap: 1.15rem; }
