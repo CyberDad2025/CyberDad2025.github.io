@@ -36,9 +36,14 @@ KIDS_PAYMENT_URL = "https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c"
 KIDS_BUNDLE_PAYMENT_URL = "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d"
 HOST_KIT_PAYMENT_URL = "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"
 TABLE_SET_PAYMENT_URL = "https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e"
+TRAVEL_PAYMENT_URL = "https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 HOST_KIT_ZIP_SHA = "46e5bde02d4a17cb8b22033ab3d363b3d36563466bc3bf5f9092002fed713055"
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
+TRAVEL_ZIP_REL = "holiday/travel-adventure/files/CyberDadKit-Thanksgiving-Travel-Adventure.zip"
+TRAVEL_ZIP_SHA = "3715c03c7f7c86cc2f8d4f81e0aa42f1d8e2107323e2acc7f9ccf67757eb80f1"
+TRAVEL_ZIP_URL = "https://getcyberdadkit.com/holiday/travel-adventure/files/CyberDadKit-Thanksgiving-Travel-Adventure.zip"
+TRAVEL_COVER = "/assets/img/festive/thanksgiving-travel-adventure-cover.jpg"
 EXTRA_HOLIDAY_PAYMENT_URLS = {
     TRIVIA_PAYMENT_URL,
     BUNDLE_PAYMENT_URL,
@@ -47,6 +52,7 @@ EXTRA_HOLIDAY_PAYMENT_URLS = {
     KIDS_BUNDLE_PAYMENT_URL,
     HOST_KIT_PAYMENT_URL,
     TABLE_SET_PAYMENT_URL,
+    TRAVEL_PAYMENT_URL,
 }
 US_ELIGIBILITY = "Available only to customers located in the United States."
 PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
@@ -200,6 +206,8 @@ for _festive_name in (
     for _ext in ("webp", "jpg"):
         _rel = f"assets/img/festive/{_festive_name}.{_ext}"
         ROUTES["/" + _rel] = ROOT / _rel
+
+ROUTES[TRAVEL_COVER] = ROOT / TRAVEL_COVER.lstrip("/")
 
 # Thanksgiving Host Planner and Kids' Table Activity Pack.
 # Preview digests match previews/ in each product's final release folder.
@@ -450,7 +458,10 @@ def main() -> int:
         check(not re.search(r'href=["\']#["\']', html), f"{page_name} has no empty hash href")
         for img in doc.images:
             src = img.get("src", "")
-            allowed = {p["src"] for p in manifest["previews"]} | {"/assets/img/festive/gather-and-play-cover.jpg"}
+            allowed = {p["src"] for p in manifest["previews"]} | {
+                "/assets/img/festive/gather-and-play-cover.jpg",
+                TRAVEL_COVER,
+            }
             check(src in allowed, f"{page_name} image is a preview or the festive cover: {src}")
         for anchor in doc.anchors:
             href = anchor.get("href", "")
@@ -494,6 +505,8 @@ def main() -> int:
     check(("Disallow: /holiday/" + "delivery/") not in robots, "robots.txt does not disallow the removed delivery path")
     check("Disallow: /holiday/host-kit/" + "files/" in robots, "robots.txt disallows the unlisted Host Kit ZIP path")
     check("Disallow: /holiday/host-kit/\n" not in robots and "Disallow: /holiday/host-kit/ " not in robots, "robots.txt does not block the Host Kit product page")
+    check("Disallow: /holiday/travel-adventure/" + "files/" in robots, "robots.txt disallows the unlisted Travel Adventure ZIP path")
+    check("Disallow: /holiday/travel-adventure/\n" not in robots and "Disallow: /holiday/travel-adventure/ " not in robots, "robots.txt does not block a Travel Adventure product page path")
 
     banned = re.compile(r"best seller|bestseller|testimonial|limited time|customers love|selling fast", re.I)
     check(not banned.search(store_html), "no demand or testimonial claims")
@@ -607,6 +620,7 @@ def main() -> int:
         "bundle-checkout-sample": BUNDLE_PAYMENT_URL,
         "host-planner-checkout-sample": PLANNER_PAYMENT_URL,
         "table-set-checkout-sample": TABLE_SET_PAYMENT_URL,
+        "travel-adventure-checkout-sample": TRAVEL_PAYMENT_URL,
         "kids-checkout-sample": KIDS_PAYMENT_URL,
         "kids-bundle-checkout-sample": KIDS_BUNDLE_PAYMENT_URL,
         "host-kit-checkout-sample": HOST_KIT_PAYMENT_URL,
@@ -660,9 +674,10 @@ def main() -> int:
             check("A4" in info, f"{rel} is A4")
 
     published_zips = [p for p in HOLIDAY.rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]
-    allowed_zip = ROOT / HOST_KIT_ZIP_REL
-    check(published_zips == [allowed_zip], "only the unlisted Host Kit ZIP is under holiday/")
-    check(allowed_zip.is_file() and sha256(allowed_zip) == HOST_KIT_ZIP_SHA, "Host Kit ZIP sha256 is the cleared AP-004 file")
+    allowed_zips = sorted([ROOT / HOST_KIT_ZIP_REL, ROOT / TRAVEL_ZIP_REL])
+    check(sorted(published_zips) == allowed_zips, "only the unlisted Host Kit and Travel Adventure ZIPs are under holiday/")
+    check((ROOT / HOST_KIT_ZIP_REL).is_file() and sha256(ROOT / HOST_KIT_ZIP_REL) == HOST_KIT_ZIP_SHA, "Host Kit ZIP sha256 is the cleared AP-004 file")
+    check((ROOT / TRAVEL_ZIP_REL).is_file() and sha256(ROOT / TRAVEL_ZIP_REL) == TRAVEL_ZIP_SHA, "Travel Adventure ZIP sha256 is the cleared v2.1 file")
     check(not (HOLIDAY / "delivery").exists(), "delivery directory removed")
     stripe_confirmation = "After a successful payment, Stripe's confirmation screen shows the download link."
     resend = "with your checkout email address"
@@ -699,14 +714,20 @@ def main() -> int:
             continue
         if 'href="' in file_text and ("/holiday/host-kit/" + "files/" in file_text or "CyberDadKit-Holiday-Host-Kit.zip" in file_text):
             zip_href_hits.append(path.relative_to(ROOT).as_posix())
-    check(zip_href_hits == [], "no public page links the unlisted Host Kit ZIP path" + ("" if not zip_href_hits else ": " + ", ".join(zip_href_hits)))
+        if 'href="' in file_text and ("/holiday/travel-adventure/" + "files/" in file_text or "CyberDadKit-Thanksgiving-Travel-Adventure.zip" in file_text):
+            zip_href_hits.append(path.relative_to(ROOT).as_posix())
+    check(zip_href_hits == [], "no public page links an unlisted holiday ZIP path" + ("" if not zip_href_hits else ": " + ", ".join(zip_href_hits)))
     built_sitemap = ROOT / "_site" / "sitemap.xml"
     if built_sitemap.is_file():
         sitemap_text = built_sitemap.read_text(encoding="utf-8")
         check("/holiday/host-kit/files/" not in sitemap_text and "CyberDadKit-Holiday-Host-Kit.zip" not in sitemap_text, "built sitemap omits the Host Kit ZIP")
+        check("/holiday/travel-adventure/files/" not in sitemap_text and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in sitemap_text, "built sitemap omits the Travel Adventure ZIP")
     built_zip = ROOT / "_site" / "holiday" / "host-kit" / "files" / "CyberDadKit-Holiday-Host-Kit.zip"
     if built_zip.is_file():
         check(sha256(built_zip) == HOST_KIT_ZIP_SHA, "built _site Host Kit ZIP sha256 matches")
+    built_travel_zip = ROOT / "_site" / "holiday" / "travel-adventure" / "files" / "CyberDadKit-Thanksgiving-Travel-Adventure.zip"
+    if built_travel_zip.is_file():
+        check(sha256(built_travel_zip) == TRAVEL_ZIP_SHA, "built _site Travel Adventure ZIP sha256 matches")
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
 
@@ -721,12 +742,19 @@ def main() -> int:
         "trivia-checkout-holiday": TRIVIA_PAYMENT_URL,
         "host-planner-checkout-holiday": PLANNER_PAYMENT_URL,
         "table-set-checkout-holiday": TABLE_SET_PAYMENT_URL,
+        "travel-adventure-checkout-holiday": TRAVEL_PAYMENT_URL,
         "kids-checkout-holiday": KIDS_PAYMENT_URL,
         "kids-bundle-checkout-holiday": KIDS_BUNDLE_PAYMENT_URL,
         "host-kit-checkout-holiday": HOST_KIT_PAYMENT_URL,
     }
     for button_id, url in holiday_extra.items():
         check(f'id="{button_id}" href="{url}"' in store_html, f"/holiday/ has buy button {button_id}")
+    for page_name, html in (("/holiday/", store_html), ("/holiday/sample/", sample_html)):
+        check("The Great Thanksgiving Travel Adventure" in html, f"{page_name} names The Great Thanksgiving Travel Adventure")
+        check("USD $4.99 one-time, US customers only." in html, f"{page_name} uses the exact Travel Adventure price phrase")
+        check('href="/holiday/travel-adventure/"' not in html, f"{page_name} does not link a Travel Adventure product page")
+        check("data-placeholder" not in html, f"{page_name} has no checkout placeholder attribute")
+        check(TRAVEL_COVER in html, f"{page_name} includes the Travel Adventure cover image")
     check('href="/holiday/trivia/">Christmas Trivia</a>' in store_html, "holiday nav links to Christmas Trivia")
     check(not (HOLIDAY / "BUNDLE-CALLOUT-SNIPPET.html").exists(), "bundle snippet file is not a page")
     config = (ROOT / "_config.yml").read_text(encoding="utf-8")
