@@ -31,6 +31,30 @@ FOOTER_LINES = (
     '<p><a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a></p>',
 )
 STRIPE_RE = re.compile(r"https://buy\.stripe\.com/[A-Za-z0-9]+")
+HOST_KIT_PAYMENT_URL = "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"
+TRIVIA_PAYMENT_URL = "https://buy.stripe.com/bJecN4aCyfyM4apbQrds406"
+BUNDLE_PAYMENT_URL = "https://buy.stripe.com/14A5kC7qmdqEfT78Efds407"
+PLANNER_PAYMENT_URL = "https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b"
+KIDS_PAYMENT_URL = "https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c"
+KIDS_BUNDLE_PAYMENT_URL = "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d"
+ALLOWED_STRIPE_ADDITIONS = {
+    "holiday/host-kit/index.html": [HOST_KIT_PAYMENT_URL],
+    "holiday/index.html": [
+        TRIVIA_PAYMENT_URL,
+        PLANNER_PAYMENT_URL,
+        KIDS_PAYMENT_URL,
+        KIDS_BUNDLE_PAYMENT_URL,
+        HOST_KIT_PAYMENT_URL,
+    ],
+    "holiday/sample/index.html": [
+        TRIVIA_PAYMENT_URL,
+        BUNDLE_PAYMENT_URL,
+        PLANNER_PAYMENT_URL,
+        KIDS_PAYMENT_URL,
+        KIDS_BUNDLE_PAYMENT_URL,
+        HOST_KIT_PAYMENT_URL,
+    ],
+}
 GUARANTEE_RE = re.compile(r"\bguarante(?:e|ed|es)\b", re.I)
 SHIELD_RE = re.compile(r"\bshield\b", re.I)
 DOC_NUMBER = "L2500046" + "3998"
@@ -164,7 +188,8 @@ def main() -> int:
         check(html.count("<footer") == 1 and page_footer.count("</footer>") == 1, f"{label} has one footer")
         for line in FOOTER_LINES:
             check(page_footer.count(line) == 1, f"{label} footer line once: {line}")
-        check(stripe_now == stripe_old, f"{label} Stripe hrefs match main")
+        expected = stripe_old + ALLOWED_STRIPE_ADDITIONS.get(rel, [])
+        check(Counter(stripe_now) == Counter(expected), f"{label} Stripe hrefs match main plus the approved holiday buy links")
         for href in added_holiday_ctas(html, previous):
             decoded = href.replace("&amp;", "&")
             missing = [key for key in UTM_KEYS if key not in decoded]

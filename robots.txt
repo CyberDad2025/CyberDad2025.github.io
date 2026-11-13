@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Unlisted Holiday Host Kit customer ZIP. A static URL, not a paywall.
+Disallow: /holiday/host-kit/files/
 
 Sitemap: https://getcyberdadkit.com/sitemap.xml

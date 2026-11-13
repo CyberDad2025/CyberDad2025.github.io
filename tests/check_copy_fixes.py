@@ -91,6 +91,9 @@ ALLOWED_PRICE_REMOVALS = {
 # Holiday printable prices are already on main, so terms-of-sale.md is not listed.
 ALLOWED_PRICE_ADDITIONS = {
     "shop/index.html": None,
+    "holiday/index.html": None,
+    "holiday/sample/index.html": None,
+    "holiday/host-kit/index.html": None,
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
@@ -179,8 +182,12 @@ def main() -> int:
     )
     delivery_dir = ROOT / "holiday" / "delivery"
     holiday_zips = [p for p in (ROOT / "holiday").rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]
+    allowed_zip = ROOT / "holiday" / "host-kit" / "files" / "CyberDadKit-Holiday-Host-Kit.zip"
     check(not delivery_dir.exists(), "holiday delivery directory is absent")
-    check(not holiday_zips, "no zip files under holiday/" + ("" if not holiday_zips else f" {holiday_zips}"))
+    check(holiday_zips == [allowed_zip], "only the unlisted Host Kit ZIP is under holiday/" + ("" if holiday_zips == [allowed_zip] else f" {holiday_zips}"))
+    if allowed_zip.is_file():
+        digest = __import__("hashlib").sha256(allowed_zip.read_bytes()).hexdigest()
+        check(digest == "46e5bde02d4a17cb8b22033ab3d363b3d36563466bc3bf5f9092002fed713055", "Host Kit ZIP sha256 is the cleared AP-004 file")
 
     llc_bad = changed_llc_lines()
     check(not llc_bad, "approved CyberDad Kit LLC, PO Box lines unchanged" + ("" if not llc_bad else f" {llc_bad[:5]}"))
@@ -313,7 +320,15 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         ):
             continue
         old = old_raw or ""
-        if Counter(STRIPE_RE.findall(old)) != Counter(STRIPE_RE.findall(new)):
+        if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
+            continue
+        if name.startswith("tests/") or name in {
+            "holiday/host-kit/index.html",
+            "holiday/index.html",
+            "holiday/sample/index.html",
+        }:
+            pass
+        elif Counter(STRIPE_RE.findall(old)) != Counter(STRIPE_RE.findall(new)):
             stripe_bad.append(name)
         old_prices = Counter(PRICE_RE.findall(old))
         new_prices = Counter(PRICE_RE.findall(new))
