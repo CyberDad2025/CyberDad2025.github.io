@@ -760,6 +760,19 @@ def main() -> int:
     built_travel_zip = ROOT / "_site" / "holiday" / "travel-adventure" / "files" / "CyberDadKit-Thanksgiving-Travel-Adventure.zip"
     if built_travel_zip.is_file():
         check(sha256(built_travel_zip) == TRAVEL_ZIP_SHA, "built _site Travel Adventure ZIP sha256 matches")
+
+    # Sprint 1113: GA4 buy_click listener. One delegated click handler, shipped in _includes/ga4.html.
+    buy_click_marker = "gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' })"
+    ga_include = (ROOT / "_includes" / "ga4.html").read_text(encoding="utf-8")
+    check(ga_include.count(buy_click_marker) == 1, "_includes/ga4.html has the buy_click listener once")
+    check("preventDefault" not in ga_include, "buy_click listener never calls preventDefault")
+    check("G-5B1LNCPB56" in ga_include and ga_include.count("googletagmanager.com/gtag/js") == 1, "GA include keeps the one existing property and loader")
+    check(not ga_include.endswith("\n"), "_includes/ga4.html keeps no trailing newline")
+    built_site = ROOT / "_site"
+    if (built_site / "holiday" / "index.html").is_file():
+        for rel in ("holiday/index.html", "holiday/sample/index.html", "index.html"):
+            built = (built_site / rel).read_text(encoding="utf-8")
+            check(built.count(buy_click_marker) == 1, f"built _site/{rel} has the buy_click listener once")
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
 
