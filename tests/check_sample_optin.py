@@ -116,7 +116,8 @@ def main() -> int:
     check("optin_submit" not in html and "optin_success" not in html and "optin_error" not in html, "submit, success, and error events are omitted because MailerLite exposes no stable ml callback")
     check("autofocus" not in re.sub(r"<script\b.*?</script>", " ", html, flags=re.S | re.I).lower(), "no autofocus attribute")
     check('role="dialog"' not in html and "min-height: 28rem" in html and "44px" in html and ":focus-visible" in html, "reserved height, 44px targets, visible focus, no dialog")
-    check(html.count("buy.stripe.com") == previous.count("buy.stripe.com") == 2, "Stripe payment link count is unchanged")
+    check(previous.count("buy.stripe.com") == 2, "origin/main sample page has the original two Gather & Play payment mentions")
+    check(html.count("buy.stripe.com") == 8, "sample page keeps Gather & Play and adds the other live holiday buy links")
 
     refund_country = ' The free <a href="/holiday/sample/">Table Talk Trails sample</a> is not limited by country.'
     for rel in UNTOUCHED:
@@ -128,10 +129,16 @@ def main() -> int:
             text=True,
         )
         expected = outside_footer(previous_rel)
+        current_cmp = outside_footer(text)
         if rel == "holiday/refund/index.html":
             expected = expected.replace(refund_country, "", 1)
             check(refund_country not in text, "refund page drops the sample-is-not-limited-by-country sentence")
-        check(outside_footer(text) == expected, f"{rel} outside the footer is unchanged versus main")
+        if rel == "shop/index.html":
+            card = r'\n    <li class="shop-card" id="host-kit">.*?</li>'
+            current_cmp, n_now = re.subn(card, "", current_cmp, count=1, flags=re.S)
+            expected, n_old = re.subn(card, "", expected, count=1, flags=re.S)
+            check(n_now == 1 and n_old == 1, "shop page includes one Holiday Host Kit card on both sides")
+        check(current_cmp == expected, f"{rel} outside the footer is unchanged versus main")
 
     print()
     if failed:

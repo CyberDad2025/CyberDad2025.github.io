@@ -311,6 +311,27 @@ def main() -> int:
             check(added == 1, "holiday page includes one Holiday Host Kit section")
             current = stripped
             previous, _ = re.subn(section, "", previous, count=1, flags=re.S)
+            trivia_btn = (
+                '<a class="hday-pay" id="trivia-checkout-holiday" '
+                'href="https://buy.stripe.com/bJecN4aCyfyM4apbQrds406">'
+                "Buy Christmas Trivia Night for $5.99 USD</a> "
+            )
+            check(trivia_btn in current, "holiday page includes the Christmas Trivia Night buy button")
+            current = current.replace(trivia_btn, "", 1)
+            packs_btns = (
+                "    <p>"
+                '<a class="hday-pay" id="host-planner-checkout-holiday" '
+                'href="https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b">'
+                "Buy Thanksgiving Host Planner for $4.99 USD</a> "
+                '<a class="hday-pay" id="kids-checkout-holiday" '
+                'href="https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c">'
+                "Buy Kids' Table Activity Pack for $5.99 USD</a> "
+                '<a class="hday-pay" id="kids-bundle-checkout-holiday" '
+                'href="https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d">'
+                "Buy the Kids' Table + Gather &amp; Play bundle for $11.99 USD</a></p>\n"
+            )
+            check(packs_btns in current, "holiday page includes the Thanksgiving pack buy buttons")
+            current = current.replace(packs_btns, "", 1)
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")

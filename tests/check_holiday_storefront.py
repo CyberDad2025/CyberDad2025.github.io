@@ -31,6 +31,21 @@ PREVIEW_HASHES = {
 PAYMENT_URL = "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"
 TRIVIA_PAYMENT_URL = "https://buy.stripe.com/bJecN4aCyfyM4apbQrds406"
 BUNDLE_PAYMENT_URL = "https://buy.stripe.com/14A5kC7qmdqEfT78Efds407"
+PLANNER_PAYMENT_URL = "https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b"
+KIDS_PAYMENT_URL = "https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c"
+KIDS_BUNDLE_PAYMENT_URL = "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d"
+HOST_KIT_PAYMENT_URL = "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"
+HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
+HOST_KIT_ZIP_SHA = "46e5bde02d4a17cb8b22033ab3d363b3d36563466bc3bf5f9092002fed713055"
+HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
+EXTRA_HOLIDAY_PAYMENT_URLS = {
+    TRIVIA_PAYMENT_URL,
+    BUNDLE_PAYMENT_URL,
+    PLANNER_PAYMENT_URL,
+    KIDS_PAYMENT_URL,
+    KIDS_BUNDLE_PAYMENT_URL,
+    HOST_KIT_PAYMENT_URL,
+}
 US_ELIGIBILITY = "Available only to customers located in the United States."
 PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
@@ -448,6 +463,9 @@ def main() -> int:
             if href == BUNDLE_PAYMENT_URL:
                 check(page_name == "storefront", "bundle payment link is the live bundle URL")
                 continue
+            if href in EXTRA_HOLIDAY_PAYMENT_URLS:
+                check(page_name == "storefront", f"extra holiday payment link stays on the product page: {href}")
+                continue
             if href == HOSTED_OPTIN:
                 check("noopener" in (anchor.get("rel") or ""), "hosted signup link uses rel=noopener")
                 continue
@@ -470,7 +488,9 @@ def main() -> int:
     robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
     check("User-agent: *" in robots and "Allow: /" in robots, "robots.txt still allows the site")
     check("Sitemap: https://getcyberdadkit.com/sitemap.xml" in robots, "robots.txt sitemap line unchanged")
-    check("Disallow:" not in robots, "robots.txt has no delivery disallow")
+    check(("Disallow: /holiday/" + "delivery/") not in robots, "robots.txt does not disallow the removed delivery path")
+    check("Disallow: /holiday/host-kit/" + "files/" in robots, "robots.txt disallows the unlisted Host Kit ZIP path")
+    check("Disallow: /holiday/host-kit/\n" not in robots and "Disallow: /holiday/host-kit/ " not in robots, "robots.txt does not block the Host Kit product page")
 
     banned = re.compile(r"best seller|bestseller|testimonial|limited time|customers love|selling fast", re.I)
     check(not banned.search(store_html), "no demand or testimonial claims")
@@ -579,6 +599,17 @@ def main() -> int:
     check(element_text(sample_html, "gather-play-refund-wording") == EXACT_REFUND, "sample shows the exact refund wording")
     sample_pay = [a for a in sample.anchors if a.get("id") == "holiday-checkout"]
     check(len(sample_pay) == 1 and sample_pay[0].get("href") == PAYMENT_URL, "sample paid CTA is the live payment anchor")
+    sample_extra = {
+        "trivia-checkout-sample": TRIVIA_PAYMENT_URL,
+        "bundle-checkout-sample": BUNDLE_PAYMENT_URL,
+        "host-planner-checkout-sample": PLANNER_PAYMENT_URL,
+        "kids-checkout-sample": KIDS_PAYMENT_URL,
+        "kids-bundle-checkout-sample": KIDS_BUNDLE_PAYMENT_URL,
+        "host-kit-checkout-sample": HOST_KIT_PAYMENT_URL,
+    }
+    for button_id, url in sample_extra.items():
+        found = [a for a in sample.anchors if a.get("id") == button_id]
+        check(len(found) == 1 and found[0].get("href") == url, f"sample has buy button {button_id}")
     check("disabled" not in sample_pay[0], "sample paid CTA is not a disabled button")
     check("$7.99" in element_text(sample_html, "holiday-checkout") and "USD" in element_text(sample_html, "holiday-checkout"), "sample button names $7.99 USD")
     check(US_ELIGIBILITY in sample_html and US_ELIGIBILITY in refund_html, "sample and refund state US eligibility")
@@ -595,6 +626,8 @@ def main() -> int:
             check(href[1:] in sample.ids, f"sample anchor {href}")
         elif href == PAYMENT_URL:
             check(True, "sample paid link is the live payment URL")
+        elif href in EXTRA_HOLIDAY_PAYMENT_URLS:
+            check(True, f"sample extra holiday payment link is a live URL: {href}")
         elif href == HOSTED_OPTIN:
             check("noopener" in (anchor.get("rel") or ""), "hosted signup link uses rel=noopener")
         else:
@@ -623,7 +656,9 @@ def main() -> int:
             check("A4" in info, f"{rel} is A4")
 
     published_zips = [p for p in HOLIDAY.rglob("*") if p.is_file() and p.suffix.lower() == ".zip"]
-    check(published_zips == [], "no ZIP under holiday/")
+    allowed_zip = ROOT / HOST_KIT_ZIP_REL
+    check(published_zips == [allowed_zip], "only the unlisted Host Kit ZIP is under holiday/")
+    check(allowed_zip.is_file() and sha256(allowed_zip) == HOST_KIT_ZIP_SHA, "Host Kit ZIP sha256 is the cleared AP-004 file")
     check(not (HOLIDAY / "delivery").exists(), "delivery directory removed")
     stripe_confirmation = "After a successful payment, Stripe's confirmation screen shows the download link."
     resend = "with your checkout email address"
@@ -646,6 +681,28 @@ def main() -> int:
             if needle in text:
                 hits.append(f"{path.relative_to(ROOT)} contains {needle}")
     check(hits == [], "no remaining delivery path or customer ZIP filename" + ("" if not hits else ": " + "; ".join(hits)))
+    zip_href_hits = []
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or skip_parts.intersection(path.parts) or path.suffix.lower() in skip_suffixes:
+            continue
+        if path.parent.name == "tests":
+            continue
+        try:
+            file_text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        if path.name == "robots.txt":
+            continue
+        if 'href="' in file_text and ("/holiday/host-kit/" + "files/" in file_text or "CyberDadKit-Holiday-Host-Kit.zip" in file_text):
+            zip_href_hits.append(path.relative_to(ROOT).as_posix())
+    check(zip_href_hits == [], "no public page links the unlisted Host Kit ZIP path" + ("" if not zip_href_hits else ": " + ", ".join(zip_href_hits)))
+    built_sitemap = ROOT / "_site" / "sitemap.xml"
+    if built_sitemap.is_file():
+        sitemap_text = built_sitemap.read_text(encoding="utf-8")
+        check("/holiday/host-kit/files/" not in sitemap_text and "CyberDadKit-Holiday-Host-Kit.zip" not in sitemap_text, "built sitemap omits the Host Kit ZIP")
+    built_zip = ROOT / "_site" / "holiday" / "host-kit" / "files" / "CyberDadKit-Holiday-Host-Kit.zip"
+    if built_zip.is_file():
+        check(sha256(built_zip) == HOST_KIT_ZIP_SHA, "built _site Host Kit ZIP sha256 matches")
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
 
@@ -656,6 +713,15 @@ def main() -> int:
     check(store_html.find('id="holiday-checkout"') < store_html.find('id="bundle-checkout-holiday"'), "bundle callout is below the Gather & Play buy button")
     check(store_html.find('class="hday-facts"') < store_html.find('id="trivia-bundle"') < store_html.find('id="listing-title"'), "bundle callout sits after the facts list and before the product listing")
     check(store_html.count('href="' + BUNDLE_PAYMENT_URL + '"') == 1, "/holiday/ has one bundle href")
+    holiday_extra = {
+        "trivia-checkout-holiday": TRIVIA_PAYMENT_URL,
+        "host-planner-checkout-holiday": PLANNER_PAYMENT_URL,
+        "kids-checkout-holiday": KIDS_PAYMENT_URL,
+        "kids-bundle-checkout-holiday": KIDS_BUNDLE_PAYMENT_URL,
+        "host-kit-checkout-holiday": HOST_KIT_PAYMENT_URL,
+    }
+    for button_id, url in holiday_extra.items():
+        check(f'id="{button_id}" href="{url}"' in store_html, f"/holiday/ has buy button {button_id}")
     check('href="/holiday/trivia/">Christmas Trivia</a>' in store_html, "holiday nav links to Christmas Trivia")
     check(not (HOLIDAY / "BUNDLE-CALLOUT-SNIPPET.html").exists(), "bundle snippet file is not a page")
     config = (ROOT / "_config.yml").read_text(encoding="utf-8")
@@ -739,9 +805,11 @@ def main() -> int:
     ], "Gather & Play payment URL is unchanged everywhere it appears" + ("" if not gp_files else ": " + ", ".join(sorted(gp_files))))
     check(sorted(bundle_files) == [
         "holiday/index.html",
+        "holiday/sample/index.html",
         "holiday/trivia/index.html",
+        "tests/check_holiday_funnel.py",
         "tests/check_holiday_storefront.py",
-    ], "bundle payment URL is only on /holiday/ and the trivia page" + ("" if not bundle_files else ": " + ", ".join(sorted(bundle_files))))
+    ], "bundle payment URL is only on the approved holiday pages and tests" + ("" if not bundle_files else ": " + ", ".join(sorted(bundle_files))))
     for rel, digest in PIN_FILES.items():
         path = ROOT / rel
         check(path.is_file() and sha256(path) == digest, f"pin hash {rel}")
