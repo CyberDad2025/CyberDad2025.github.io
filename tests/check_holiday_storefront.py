@@ -1196,6 +1196,11 @@ def main() -> int:
         hero_html = travel_html[travel_html.find('class="hday-hero"'):travel_html.find("</section>", travel_html.find('class="hday-hero"'))]
         check('id="travel-adventure-checkout" href="' + TRAVEL_PAYMENT_URL + '"' in hero_html, "Travel Adventure buy button sits in the hero, beside the price")
         check(travel_html.count('id="checkout"') == 1, "Travel Adventure page keeps one #checkout anchor for the nav Buy link")
+        for page_no in ("03", "04"):
+            preview_rel = f"/holiday/assets/previews/CyberDadKit-travel-adventure-page-{page_no}.png"
+            check(f'src="{preview_rel}"' in travel_html, f"Travel Adventure page shows inside page {page_no}")
+            check((ROOT / preview_rel.lstrip("/")).is_file(), f"Travel Adventure inside page {page_no} preview file exists")
+        check("page 6 and is not shown here" in travel_html, "Travel Adventure previews do not show the answer key")
         check(travel_html.replace("a[href^=\"https://buy.stripe.com/\"]", "").count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href (buy_click selector excluded)")
         check("/holiday/travel-adventure/files/" not in travel_html and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in travel_html, "Travel Adventure page does not link the unlisted ZIP")
         check("The Great Thanksgiving Travel Adventure" in travel_html, "Travel Adventure page uses the product name")
