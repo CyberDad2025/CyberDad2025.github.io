@@ -1159,7 +1159,7 @@ def main() -> int:
         check(travel_html.count(refund_href) == 4, "Travel Adventure page links its refund page from the header, seller note, refund sentence, and footer")
         check('href="#support"' not in travel_html, "Travel Adventure refund links no longer point at #support")
         check(
-            'That wording is also on the <a href="/holiday/travel-adventure/refund/">The Great Thanksgiving Travel Adventure refund page</a>.' in travel_html,
+            'That wording is also on <a href="/holiday/travel-adventure/refund/">The Great Thanksgiving Travel Adventure refund page</a>.' in travel_html,
             "Travel Adventure page uses the table-set refund sentence",
         )
 
