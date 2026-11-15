@@ -85,7 +85,14 @@ ALLOWED_PRICE_REMOVALS = {
     "_posts/2025 couple-loses-106k-email-scam.md": Counter({"$47": 1}),
     "cyber_2025-07-15_1752580178.html": Counter({"$47": 1}),
     "scripts/_posts/2025-07-28-daily-cybersecurity-update.md": Counter({"$47": 1}),
+    # Journal 2027 is US-only: the A4 $9.99 mentions are deleted. Letter $9.99
+    # and half-letter $7.99 stay. The holiday catalog drops that same A4 price.
+    "journal/2027/index.html": Counter({"$9.99": 5}),
+    "holiday/index.html": Counter({"$9.99": 1}),
+    "tests/check_journal_storefront.py": Counter({"$9.99": 2}),
 }
+# The only buy.stripe.com change vs main is deleting the journal A4 payment link.
+JOURNAL_A4_LINK = "https://buy.stripe.com/14AfZg9yudqEfT74nZds409"
 # shop/index.html prices belong to PR #1000. None means any price tokens are
 # allowed, so this check passes whether that page lands on main first or here.
 # Holiday printable prices are already on main, so terms-of-sale.md is not listed.
@@ -322,13 +329,20 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         old = old_raw or ""
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
             continue
-        if name.startswith("tests/") or name in {
+        old_links = Counter(STRIPE_RE.findall(old))
+        new_links = Counter(STRIPE_RE.findall(new))
+        if name == "journal/2027/index.html":
+            removed = old_links - new_links
+            added = new_links - old_links
+            if removed != Counter({JOURNAL_A4_LINK: 1}) or added:
+                stripe_bad.append(name)
+        elif name.startswith("tests/") or name in {
             "holiday/host-kit/index.html",
             "holiday/index.html",
             "holiday/sample/index.html",
         }:
             pass
-        elif Counter(STRIPE_RE.findall(old)) != Counter(STRIPE_RE.findall(new)):
+        elif old_links != new_links:
             stripe_bad.append(name)
         old_prices = Counter(PRICE_RE.findall(old))
         new_prices = Counter(PRICE_RE.findall(new))
