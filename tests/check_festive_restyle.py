@@ -230,7 +230,7 @@ def without_journal_a4(html: str) -> str:
         ("Letter, A4 or half-letter", "Letter or half-letter"),
         (f"Letter {nine}, A4 {nine} or half-letter {seven}", f"Letter {nine} or half-letter {seven}"),
         (f"US Letter {nine}, A4 {nine}, half-letter {seven}", f"US Letter {nine} or half-letter {seven}"),
-        ("(all three sizes)", "(two sizes)"),
+        ("(all three sizes)", "(both sizes)"),
     )
     for old, new in replacements:
         html = html.replace(old, new, 1)
