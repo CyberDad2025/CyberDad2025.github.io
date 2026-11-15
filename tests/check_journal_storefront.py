@@ -120,6 +120,8 @@ def main() -> int:
                 continue
             built_html = built.read_text(encoding="utf-8")
             check("A4" not in built_html, f"built {label} contains no A4 text")
+            if label == "/journal/2027/sample/":
+                check("worldwide" not in built_html.lower(), f"built {label} has no worldwide")
             if label == "/journal/2027/":
                 built_links = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', built_html)
                 check(len(built_links) == 2 and built_links == KEPT_BUY_LINKS, f"built {label} has exactly 2 buy.stripe.com links")
