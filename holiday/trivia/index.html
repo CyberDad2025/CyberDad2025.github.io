@@ -33,8 +33,14 @@
         document.addEventListener('click', function (e) {
           var a = e.target && e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com/"]') : null;
           if (!a || typeof window.gtag !== 'function') return;
-          var name = a.getAttribute('data-product') || (a.textContent || '').replace(/\s+/g, ' ').trim().replace(/^Buy /, '').replace(/ for \$\d+\.\d{2} USD$/, '');
+          var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+          var name = a.getAttribute('data-product') || label.replace(/^Buy (the )?/, '').replace(/ for \$\d+\.\d{2} USD$/, '');
           try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
+          var m = label.match(/\$(\d+\.\d{2}) USD$/);
+          var value = parseFloat(a.getAttribute('data-price') || (m ? m[1] : '')) || 0;
+          var slug = location.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
+          var item = { item_id: a.href.split('/').pop(), item_name: name, item_list_id: slug, price: value, quantity: 1 };
+          try { window.gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }); } catch (err) {}
         }, true);
       })();
     </script>
@@ -150,7 +156,7 @@
       <img src="/assets/img/festive/trivia-gp-bundle-cover.jpg" width="720" height="1022" alt="Christmas Trivia Night and Gather and Play bundle printable cover" loading="lazy" decoding="async">
     </picture>
     <p>Get this pack plus <a href="/holiday/">Gather &amp; Play</a> (12 Thanksgiving and Christmas gathering games, normally $7.99 USD) for $12.99 USD, one-time. Bought separately, the two cost $13.98. The Stripe confirmation page shows both download links. The bundle is available only to customers located in the United States.</p>
-    <a class="hday-pay" id="bundle-checkout" href="https://buy.stripe.com/14A5kC7qmdqEfT78Efds407">Buy the bundle for $12.99 USD</a>
+    <a class="hday-pay" id="bundle-checkout" data-product="Christmas Trivia Night + Gather &amp; Play" href="https://buy.stripe.com/14A5kC7qmdqEfT78Efds407">Buy the bundle for $12.99 USD</a>
   </section>
 
   <section class="hday-section" id="support" aria-labelledby="support-title">

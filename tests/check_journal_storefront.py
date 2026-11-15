@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Checks for the 2027 Bible Verse Journal storefront (/journal/2027/).
 
-Confirms the size selector lists all three sizes with Ruel's final prices
-(Letter $9.99, A4 $9.99, half-letter $7.99), each size has its own buy button
+Confirms the size selector lists the two US sizes with Ruel's final prices
+(Letter $9.99, half-letter $7.99), each size has its own buy button
 pointing at its own Stripe payment link, the free sample is the 12-page file
 only (no full journal PDF is published), the refund page mirrors the 7-day
 holiday wording, and the copy rules hold.
@@ -29,9 +29,9 @@ SAMPLE_PDF = J / "sample" / "CyberDadKit-2027-Bible-Verse-Journal-FREE-SAMPLE-US
 SIZES = {
     # button id: (price, live Stripe payment link URL)
     "buy-letter": ("$9.99", "https://buy.stripe.com/fZu00i9yu0DS22h1bNds408"),
-    "buy-a4": ("$9.99", "https://buy.stripe.com/14AfZg9yudqEfT74nZds409"),
     "buy-half": ("$7.99", "https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a"),
 }
+KEPT_BUY_LINKS = [url for _, url in SIZES.values()]
 REFUND_CORE = ("You may request a full refund for any reason within 7 days of your purchase date. "
                "Email <a href=\"mailto:ruel@getcyberdadkit.com\">ruel@getcyberdadkit.com</a> with the email address "
                "used for purchase and your order reference. Never send card details. Refunds are returned to the "
@@ -96,7 +96,36 @@ def main() -> int:
         m = re.search(rf'id="{bid}"[^>]*>([^<]*)<', store)
         check(bool(m) and price in m.group(1) and "USD" in m.group(1), f"{bid}: button text names {price} USD")
     urls = [u for _, u in SIZES.values()]
-    check(len(set(urls)) == 3, "three distinct payment links")
+    check(len(set(urls)) == 2, "two distinct payment links")
+    check("A4" not in store, "store page contains no A4 text")
+    for k in ("sample", "refund"):
+        check("A4" not in html.get(k, ""), f"{k} page contains no A4 text")
+    store_links = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', store)
+    check(store_links == KEPT_BUY_LINKS, "store page has exactly 2 buy.stripe.com links, US Letter then half-letter")
+    built_roots = [
+        root for root in (ROOT / "_site", Path("/tmp/cdk-copy-site"))
+        if (root / "journal" / "2027" / "index.html").is_file()
+    ]
+    check(bool(built_roots), "built /journal/2027/ page is present")
+    built_routes = (
+        ("/journal/2027/", "journal/2027/index.html"),
+        ("/journal/2027/refund/", "journal/2027/refund/index.html"),
+        ("/journal/2027/sample/", "journal/2027/sample/index.html"),
+    )
+    for root in built_roots:
+        for label, rel in built_routes:
+            built = root / rel
+            check(built.is_file(), f"built {label} page is present under {root}")
+            if not built.is_file():
+                continue
+            built_html = built.read_text(encoding="utf-8")
+            check("A4" not in built_html, f"built {label} contains no A4 text")
+            if label in ("/journal/2027/sample/", "/journal/2027/refund/"):
+                check("worldwide" not in built_html.lower(), f"built {label} has no worldwide")
+                check("not limited by country" not in built_html.lower(), f"built {label} has no 'not limited by country'")
+            if label == "/journal/2027/":
+                built_links = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', built_html)
+                check(len(built_links) == 2 and built_links == KEPT_BUY_LINKS, f"built {label} has exactly 2 buy.stripe.com links")
     check("STRIPE_LINK_" not in store, "no Stripe placeholders left")
     check(store.find("Stripe checkout displays Ruel Miller.") < store.find('id="buy-letter"'), "merchant notice is before the pay buttons")
     check(US in store, "store states US eligibility")

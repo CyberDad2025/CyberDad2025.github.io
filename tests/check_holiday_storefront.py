@@ -125,7 +125,8 @@ TRIVIA_FILES = {
     "holiday/trivia/index.html":
         # Footer identity is four lines. Prices and checkout hrefs stay pinned elsewhere.
         # Sprint 1113: re-pinned after the buy_click listener script was added (was 41d13f3c).
-        "c6a68908271e75b22c3e4d46a58d333cdfea6e9318c6388a043e45ee1dd5742a",
+        # Nov 15: re-pinned after begin_checkout was added to the listener and data-product to the bundle button (was c6a68908).
+        "571ac15289b68265116b2a45c1439efcea68ad1a56048808533ffbf1f7ff9577",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
         "4e278998bde3506f5decd8c980b2c68db4a2ddf15fac70b92dc88f47df882ec1",
@@ -831,6 +832,9 @@ def main() -> int:
     buy_click_marker = "gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' })"
     ga_include = (ROOT / "_includes" / "ga4.html").read_text(encoding="utf-8")
     check(ga_include.count(buy_click_marker) == 1, "_includes/ga4.html has the buy_click listener once")
+    begin_checkout_marker = "gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' })"
+    check(ga_include.count(begin_checkout_marker) == 1, "_includes/ga4.html sends begin_checkout once per buy click")
+    check("utm_" not in ga_include, "GA include adds no internal UTM parameters")
     check("preventDefault" not in ga_include, "buy_click listener never calls preventDefault")
     check("G-5B1LNCPB56" in ga_include and ga_include.count("googletagmanager.com/gtag/js") == 1, "GA include keeps the one existing property and loader")
     check(not ga_include.endswith("\n"), "_includes/ga4.html keeps no trailing newline")
@@ -843,6 +847,7 @@ def main() -> int:
             built = built_page.read_text(encoding="utf-8", errors="replace")
             if 'href="https://buy.stripe.com/' in built:
                 check(built.count(buy_click_marker) == 1, f"built {built_page.relative_to(built_site)} has a buy link and the buy_click listener once")
+                check(built.count(begin_checkout_marker) == 1, f"built {built_page.relative_to(built_site)} has a buy link and the begin_checkout event once")
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
 

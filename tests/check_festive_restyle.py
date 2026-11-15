@@ -212,6 +212,31 @@ def price_strings(html: str) -> list[str]:
     return re.findall(r"\$\d+\.\d{2}", html)
 
 
+def without_journal_a4(html: str) -> str:
+    """Apply the US-only journal edit to a copy of the main journal page."""
+    html, removed = re.subn(
+        r'\n        <div class="jrnl-size" id="size-a4">.*?\n        </div>',
+        "",
+        html,
+        count=1,
+        flags=re.S,
+    )
+    if removed != 1:
+        return html
+    nine = "$" + "9.99"
+    seven = "$" + "7.99"
+    replacements = (
+        (f"Letter {nine}, A4 {nine}, half-letter {seven}", f"Letter {nine} or half-letter {seven}"),
+        ("Letter, A4 or half-letter", "Letter or half-letter"),
+        (f"Letter {nine}, A4 {nine} or half-letter {seven}", f"Letter {nine} or half-letter {seven}"),
+        (f"US Letter {nine}, A4 {nine}, half-letter {seven}", f"US Letter {nine} or half-letter {seven}"),
+        ("(all three sizes)", "(both sizes)"),
+    )
+    for old, new in replacements:
+        html = html.replace(old, new, 1)
+    return html
+
+
 FOOTER_LINES = (
     "<p>CyberDadKit © 2026</p>",
     "<p>CyberDad Kit LLC</p>",
@@ -306,6 +331,13 @@ def main() -> int:
             # Host Kit is on main, so drop the same card there before the lock.
             previous, _ = re.subn(card, "", previous, count=1, flags=re.S)
         if rel == "holiday/index.html":
+            nine = "$" + "9.99"
+            seven = "$" + "7.99"
+            old_blurb = f"Letter {nine}, A4 {nine} or half-letter {seven}"
+            new_blurb = f"Letter {nine} or half-letter {seven}"
+            check(previous.count(old_blurb) == 1, "main holiday list names the journal A4 price once")
+            check(old_blurb not in current and current.count(new_blurb) == 1, "holiday journal list drops the A4 price")
+            previous = previous.replace(old_blurb, new_blurb, 1)
             section = r'\n  <section class="hday-section" id="host-kit"[^>]*>.*?</section>'
             stripped, added = re.subn(section, "", current, count=1, flags=re.S)
             check(added == 1, "holiday page includes one Holiday Host Kit section")
@@ -332,6 +364,13 @@ def main() -> int:
             )
             check(packs_btns in current, "holiday page includes the Thanksgiving pack buy buttons")
             current = current.replace(packs_btns, "", 1)
+
+        if rel == "journal/2027/index.html":
+            check("A4" not in current, "journal/2027/index.html contains no A4 text")
+            journal_links = re.findall(r'href="https://buy\.stripe\.com/', current)
+            check(len(journal_links) == 2, "journal/2027/index.html has exactly 2 buy.stripe.com links")
+            previous = without_journal_a4(previous)
+            check("A4" not in previous, "journal A4 phrases are removed from the main comparison copy")
 
         check(stripe_hrefs(current) == stripe_hrefs(previous), f"{label}: buy.stripe.com hrefs match main")
         check(price_strings(current) == price_strings(previous), f"{label}: $ price strings match main")

@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>2027 Bible Verse Journal · CyberDad Kit</title>
-<meta name="description" content="A 365-day printable and tablet-friendly 2027 Bible verse journal: one World English Bible verse per day, a Today I will… box, a prayer note, 4 quarterly planning pages and a clickable index. Letter $9.99, A4 $9.99, half-letter $7.99 USD, one-time, for customers located in the United States. Free 12-page sample.">
+<meta name="description" content="A 365-day printable and tablet-friendly 2027 Bible verse journal: one World English Bible verse per day, a Today I will… box, a prayer note, 4 quarterly planning pages and a clickable index. Letter $9.99 or half-letter $7.99 USD, one-time, for customers located in the United States. Free 12-page sample.">
 <link rel="canonical" href="https://getcyberdadkit.com/journal/2027/">
 <meta property="og:title" content="2027 Bible Verse Journal · CyberDad Kit">
-<meta property="og:description" content="365 daily verses (World English Bible), daily intentions, prayer notes and quarterly planning. Letter, A4 or half-letter PDF. Free 12-page sample.">
+<meta property="og:description" content="365 daily verses (World English Bible), daily intentions, prayer notes and quarterly planning. Letter or half-letter PDF. Free 12-page sample.">
 <meta property="og:image" content="https://getcyberdadkit.com/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://getcyberdadkit.com/journal/2027/">
@@ -36,8 +36,14 @@
         document.addEventListener('click', function (e) {
           var a = e.target && e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com/"]') : null;
           if (!a || typeof window.gtag !== 'function') return;
-          var name = a.getAttribute('data-product') || (a.textContent || '').replace(/\s+/g, ' ').trim().replace(/^Buy /, '').replace(/ for \$\d+\.\d{2} USD$/, '');
+          var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+          var name = a.getAttribute('data-product') || label.replace(/^Buy (the )?/, '').replace(/ for \$\d+\.\d{2} USD$/, '');
           try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
+          var m = label.match(/\$(\d+\.\d{2}) USD$/);
+          var value = parseFloat(a.getAttribute('data-price') || (m ? m[1] : '')) || 0;
+          var slug = location.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
+          var item = { item_id: a.href.split('/').pop(), item_name: name, item_list_id: slug, price: value, quantity: 1 };
+          try { window.gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }); } catch (err) {}
         }, true);
       })();
     </script>
@@ -45,7 +51,7 @@
 <body class="festive festive-journal">
 <a class="hday-skip" href="#main">Skip to content</a>
 <div class="hday-banner">
-  <p><strong>Available only to customers located in the United States.</strong> Choose one size: Letter $9.99, A4 $9.99 or half-letter $7.99 USD, one-time. A 12-page sample is free.</p>
+  <p><strong>Available only to customers located in the United States.</strong> Choose one size: Letter $9.99 or half-letter $7.99 USD, one-time. A 12-page sample is free.</p>
 </div>
 <header class="hday-header">
   <div class="hday-bar">
@@ -100,17 +106,12 @@
         <div class="jrnl-size" id="size-letter">
           <div><h3>US Letter</h3><p>8.5 × 11 in. The usual US home-printer paper, and a good fit for most tablet apps.</p></div>
           <span class="hday-price-amount">$9.99</span>
-          <a class="hday-pay" id="buy-letter" data-size="letter" href="https://buy.stripe.com/fZu00i9yu0DS22h1bNds408">Buy US Letter for $9.99 USD</a>
-        </div>
-        <div class="jrnl-size" id="size-a4">
-          <div><h3>A4</h3><p>210 × 297 mm. For A4 printers and paper.</p></div>
-          <span class="hday-price-amount">$9.99</span>
-          <a class="hday-pay" id="buy-a4" data-size="a4" href="https://buy.stripe.com/14AfZg9yudqEfT74nZds409">Buy A4 for $9.99 USD</a>
+          <a class="hday-pay" id="buy-letter" data-product="2027 Bible Verse Journal (US Letter)" data-size="letter" href="https://buy.stripe.com/fZu00i9yu0DS22h1bNds408">Buy US Letter for $9.99 USD</a>
         </div>
         <div class="jrnl-size" id="size-half">
           <div><h3>Half-letter</h3><p>5.5 × 8.5 in. Fits half-letter planner binders and discbound covers.</p></div>
           <span class="hday-price-amount">$7.99</span>
-          <a class="hday-pay" id="buy-half" data-size="half" href="https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a">Buy half-letter for $7.99 USD</a>
+          <a class="hday-pay" id="buy-half" data-product="2027 Bible Verse Journal (half-letter)" data-size="half" href="https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a">Buy half-letter for $7.99 USD</a>
         </div>
       </fieldset>
       <p class="hday-buy-note" id="checkout-note">Each button is a one-time payment in USD for that one size. Checkout asks you to state that you are located in the United States and to enter a billing address. Other billing countries can still be selected, and this website does not block any country. After a successful payment, Stripe's confirmation screen shows the download link for the size you bought. Save the file right away. If you need the link again, email ruel@getcyberdadkit.com with the email address you used at checkout.</p>
@@ -130,7 +131,7 @@
     <dl class="hday-spec">
       <div><dt>Name</dt><dd>2027 Bible Verse Journal (the cover reads "2027 Verse of the Day Journal")</dd></div>
       <div><dt>Brand</dt><dd>CyberDad Kit</dd></div>
-      <div><dt>Prices</dt><dd>US Letter $9.99, A4 $9.99, half-letter $7.99. USD, one-time. Not a subscription.</dd></div>
+      <div><dt>Prices</dt><dd>US Letter $9.99 or half-letter $7.99. USD, one-time. Not a subscription.</dd></div>
       <div><dt>Who can buy</dt><dd>Available only to customers located in the United States. Checkout asks for that statement and a billing address. It does not block other billing countries.</dd></div>
       <div><dt>Pages</dt><dd>373 per PDF: cover, how to use, Scripture and credits, Year at a Glance index, 4 quarterly planning pages and 365 daily pages.</dd></div>
       <div><dt>Each day</dt><dd>The verse and its reference, a "Today I will…" box and a "Prayer note" box, each with writing lines.</dd></div>
@@ -158,7 +159,7 @@
   <section class="hday-section" id="support" aria-labelledby="support-title">
     <h2 id="support-title">Support, use and refunds</h2>
     <p>You may print and use the journal for your own personal use. Please do not resell, rehost or share the files.</p>
-    <p id="journal-refund-wording">The 2027 Bible Verse Journal is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to the 2027 Bible Verse Journal (all three sizes) and does not limit your statutory rights.</p>
+    <p id="journal-refund-wording">The 2027 Bible Verse Journal is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to the 2027 Bible Verse Journal (both sizes) and does not limit your statutory rights.</p>
     <p>That wording is also on the <a href="/journal/2027/refund/">journal refund page</a>. It does not promise automatic processing or a reply by a set time.</p>
   </section>
 </main>
