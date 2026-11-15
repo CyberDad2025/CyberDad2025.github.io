@@ -1473,10 +1473,7 @@ def main() -> int:
     return 0
 
 
-TA_CROSSLINK_PREFIX = (
-    "/holiday/travel-adventure/?utm_source=site&utm_medium=internal"
-    "&utm_campaign=travel_adventure_sprint"
-)
+TA_CROSSLINK_HREF = "/holiday/travel-adventure/"
 TA_CROSSLINK_PAGES = (
     ("holiday/trivia/sample/index.html", "trivia-sample"),
     ("index.html", "home"),
@@ -1523,19 +1520,23 @@ def check_ta_crosslinks(check) -> None:
         + ("" if banned is None else f": {banned.group(0)}"),
     )
     check("buy.stripe.com" not in include, "Travel Adventure cross-link include has no Stripe href")
+    check("utm_" not in include, "Travel Adventure cross-link include has no utm_ parameter")
     for rel, slug in TA_CROSSLINK_PAGES:
         built_path = ROOT / "_site" / rel
         check(built_path.is_file(), f"built {rel} exists for the Travel Adventure cross-link check")
         if not built_path.is_file():
             continue
         built = built_path.read_text(encoding="utf-8")
-        blocks = re.findall(r'<aside class="ta-crosslink">.*?</aside>', built, re.S)
+        blocks = re.findall(r'<aside class="ta-crosslink"[^>]*>.*?</aside>', built, re.S)
         check(len(blocks) == 1, f"built {rel} has exactly 1 Travel Adventure cross-link block")
         hrefs = [href.replace("&amp;", "&") for href in re.findall(r'href="([^"]*)"', blocks[0])] if blocks else []
-        expected = f"{TA_CROSSLINK_PREFIX}&utm_content={slug}"
         check(
-            hrefs == [expected] and expected.startswith(TA_CROSSLINK_PREFIX),
-            f"built {rel} cross-link href starts with the Travel Adventure sprint URL and utm_content={slug}",
+            hrefs == [TA_CROSSLINK_HREF],
+            f"built {rel} cross-link href is exactly /holiday/travel-adventure/",
+        )
+        check(
+            f'data-crosslink="{slug}"' in (blocks[0] if blocks else ""),
+            f"built {rel} cross-link is marked data-crosslink={slug}",
         )
         block = blocks[0] if blocks else ""
         check("buy.stripe.com" not in block, f"built {rel} cross-link block has no Stripe href")

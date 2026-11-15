@@ -65,6 +65,7 @@
 .ta-crosslink p.ta-crosslink-benefit { margin: 0 0 0.75rem; }
 .ta-crosslink p.ta-crosslink-price {
   display: inline-block;
+  max-width: 100%;
   margin: 0 0 0.85rem;
   padding: 0.12em 0.5em 0.18em;
   border: 3px solid #e0b03a;
@@ -75,6 +76,7 @@
   font-weight: 700;
   font-size: 1.15rem;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 .ta-crosslink a.ta-crosslink-btn,
 .ta-crosslink a.ta-crosslink-btn:visited,
@@ -111,14 +113,14 @@
   body.festive .hday-hero > div > .ta-crosslink { order: 3; }
 }
 </style>
-<aside class="ta-crosslink">
+<aside class="ta-crosslink" data-crosslink="{{ include.slug }}">
   <div class="ta-crosslink-marks" aria-hidden="true">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#5C3D0A" d="M30 6h4c1 6 1 9 0 12h-4c-1-3-1-6 0-12z"/><ellipse cx="32" cy="40" rx="13" ry="16" fill="#C2410C"/><ellipse cx="22" cy="40" rx="8" ry="14" fill="#9A3412"/><ellipse cx="42" cy="40" rx="8" ry="14" fill="#E07030"/></svg>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#E0B03A" d="M12 28c2-10 14-16 20-16s18 6 20 16z"/><path fill="#9A3412" d="M16 28h32c-2 16-10 28-16 28S18 44 16 28z"/><path fill="#5C3D0A" d="M32 8c2 4 2 6 0 8-2-2-2-4 0-8z"/></svg>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#C2410C" d="M8 40C18 16 40 8 56 10 52 28 42 42 26 50 18 54 10 52 8 40z"/><path d="M16 46c10-10 20-18 34-24" fill="none" stroke="#6B4A12" stroke-width="3" stroke-linecap="round"/></svg>
   </div>
   <h2 class="ta-crosslink-title">The Great Thanksgiving Travel Adventure</h2>
-  <p class="ta-crosslink-benefit">Print-and-go car and travel games to keep the whole family playing all the way to Grandma's.</p>
-  <p class="ta-crosslink-price">Instant download, $4.99</p>
-  <a class="ta-crosslink-btn" href="/holiday/travel-adventure/?utm_source=site&amp;utm_medium=internal&amp;utm_campaign=travel_adventure_sprint&amp;utm_content={{ include.slug }}">See the Travel Adventure</a>
+  <p class="ta-crosslink-benefit">A US Letter printable with a word search, Travel Bingo, a maze and a Thankful Travel Challenge, plus an answer key.</p>
+  <p class="ta-crosslink-price">USD $4.99 one-time, US customers only. Instant download.</p>
+  <a class="ta-crosslink-btn" href="/holiday/travel-adventure/">See the Travel Adventure</a>
 </aside>
