@@ -36,8 +36,14 @@
         document.addEventListener('click', function (e) {
           var a = e.target && e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com/"]') : null;
           if (!a || typeof window.gtag !== 'function') return;
-          var name = a.getAttribute('data-product') || (a.textContent || '').replace(/\s+/g, ' ').trim().replace(/^Buy /, '').replace(/ for \$\d+\.\d{2} USD$/, '');
+          var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+          var name = a.getAttribute('data-product') || label.replace(/^Buy (the )?/, '').replace(/ for \$\d+\.\d{2} USD$/, '');
           try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
+          var m = label.match(/\$(\d+\.\d{2}) USD$/);
+          var value = parseFloat(a.getAttribute('data-price') || (m ? m[1] : '')) || 0;
+          var slug = location.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
+          var item = { item_id: a.href.split('/').pop(), item_name: name, item_list_id: slug, price: value, quantity: 1 };
+          try { window.gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }); } catch (err) {}
         }, true);
       })();
     </script>
@@ -100,17 +106,17 @@
         <div class="jrnl-size" id="size-letter">
           <div><h3>US Letter</h3><p>8.5 × 11 in. The usual US home-printer paper, and a good fit for most tablet apps.</p></div>
           <span class="hday-price-amount">$9.99</span>
-          <a class="hday-pay" id="buy-letter" data-size="letter" href="https://buy.stripe.com/fZu00i9yu0DS22h1bNds408">Buy US Letter for $9.99 USD</a>
+          <a class="hday-pay" id="buy-letter" data-product="2027 Bible Verse Journal (US Letter)" data-size="letter" href="https://buy.stripe.com/fZu00i9yu0DS22h1bNds408">Buy US Letter for $9.99 USD</a>
         </div>
         <div class="jrnl-size" id="size-a4">
           <div><h3>A4</h3><p>210 × 297 mm. For A4 printers and paper.</p></div>
           <span class="hday-price-amount">$9.99</span>
-          <a class="hday-pay" id="buy-a4" data-size="a4" href="https://buy.stripe.com/14AfZg9yudqEfT74nZds409">Buy A4 for $9.99 USD</a>
+          <a class="hday-pay" id="buy-a4" data-product="2027 Bible Verse Journal (A4)" data-size="a4" href="https://buy.stripe.com/14AfZg9yudqEfT74nZds409">Buy A4 for $9.99 USD</a>
         </div>
         <div class="jrnl-size" id="size-half">
           <div><h3>Half-letter</h3><p>5.5 × 8.5 in. Fits half-letter planner binders and discbound covers.</p></div>
           <span class="hday-price-amount">$7.99</span>
-          <a class="hday-pay" id="buy-half" data-size="half" href="https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a">Buy half-letter for $7.99 USD</a>
+          <a class="hday-pay" id="buy-half" data-product="2027 Bible Verse Journal (half-letter)" data-size="half" href="https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a">Buy half-letter for $7.99 USD</a>
         </div>
       </fieldset>
       <p class="hday-buy-note" id="checkout-note">Each button is a one-time payment in USD for that one size. Checkout asks you to state that you are located in the United States and to enter a billing address. Other billing countries can still be selected, and this website does not block any country. After a successful payment, Stripe's confirmation screen shows the download link for the size you bought. Save the file right away. If you need the link again, email ruel@getcyberdadkit.com with the email address you used at checkout.</p>

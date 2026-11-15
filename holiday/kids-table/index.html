@@ -33,8 +33,14 @@
         document.addEventListener('click', function (e) {
           var a = e.target && e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com/"]') : null;
           if (!a || typeof window.gtag !== 'function') return;
-          var name = a.getAttribute('data-product') || (a.textContent || '').replace(/\s+/g, ' ').trim().replace(/^Buy /, '').replace(/ for \$\d+\.\d{2} USD$/, '');
+          var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+          var name = a.getAttribute('data-product') || label.replace(/^Buy (the )?/, '').replace(/ for \$\d+\.\d{2} USD$/, '');
           try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
+          var m = label.match(/\$(\d+\.\d{2}) USD$/);
+          var value = parseFloat(a.getAttribute('data-price') || (m ? m[1] : '')) || 0;
+          var slug = location.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
+          var item = { item_id: a.href.split('/').pop(), item_name: name, item_list_id: slug, price: value, quantity: 1 };
+          try { window.gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }); } catch (err) {}
         }, true);
       })();
     </script>
@@ -150,7 +156,7 @@
       <img src="/assets/img/festive/kids-table-bundle-cover.jpg" width="720" height="1022" alt="Kids' Table and Gather and Play bundle printable cover" loading="lazy" decoding="async">
     </picture>
     <p>Get this pack plus <a href="/holiday/">Gather &amp; Play</a> (12 original gathering games for the whole table, six for Thanksgiving and six for Christmas and winter) for $11.99 USD, one-time. The two packs do not repeat each other's activities or puzzle words. That is eight PDFs in total. The Stripe confirmation page shows both download links. The bundle is available only to customers located in the United States.</p>
-    <a class="hday-pay" id="kids-bundle-checkout" href="https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d">Buy the bundle for $11.99 USD</a>
+    <a class="hday-pay" id="kids-bundle-checkout" data-product="Kids' Table + Gather &amp; Play bundle" href="https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d">Buy the bundle for $11.99 USD</a>
   </section>
 
   <section class="hday-section" id="print" aria-labelledby="print-title">
