@@ -138,6 +138,11 @@ def main() -> int:
             current_cmp, n_now = re.subn(card, "", current_cmp, count=1, flags=re.S)
             expected, n_old = re.subn(card, "", expected, count=1, flags=re.S)
             check(n_now == 1 and n_old == 1, "shop page includes one Holiday Host Kit card on both sides")
+        if rel == "holiday/trivia/sample/index.html":
+            include = '      {% include ta-crosslink.html slug="trivia-sample" %}\n'
+            check(current_cmp.count(include) == 1, "trivia sample adds the Travel Adventure cross-link include once")
+            current_cmp = re.sub(r"^---\nlayout: null\n---\n", "", current_cmp, count=1)
+            current_cmp = current_cmp.replace(include, "", 1)
         check(current_cmp == expected, f"{rel} outside the footer is unchanged versus main")
 
     print()

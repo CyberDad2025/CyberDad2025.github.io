@@ -128,7 +128,8 @@ TRIVIA_FILES = {
         "c6a68908271e75b22c3e4d46a58d333cdfea6e9318c6388a043e45ee1dd5742a",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
-        "4e278998bde3506f5decd8c980b2c68db4a2ddf15fac70b92dc88f47df882ec1",
+        # layout: null plus the Travel Adventure cross-link include, so Jekyll expands it.
+        "526fd37c1fca096c7bd4050a8188e784fbabc646a1ada678356faca645010579",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
         "abba1e5cb0bd4762bcc983a92ad9a5ecbac0a7b7cb005d8ba0be8216fdd48f3f",
@@ -917,7 +918,17 @@ def main() -> int:
         label = page.relative_to(ROOT).as_posix()
         check(delivery_path not in html, f"{label} has no delivery path")
         check("G-5B1LNCPB56" in html, f"{label} includes the site GA4 id")
-        check("{%" not in html and "layout:" not in html, f"{label} is static HTML, copied as-is by Jekyll")
+        if label == "holiday/trivia/sample/index.html":
+            include = '{% include ta-crosslink.html slug="trivia-sample" %}'
+            check(
+                html.count("{%") == 1
+                and html.count(include) == 1
+                and html.count("layout: null") == 1
+                and "sitemap: false" not in html,
+                f"{label} is layout null and adds only the Travel Adventure cross-link include",
+            )
+        else:
+            check("{%" not in html and "layout:" not in html, f"{label} is static HTML, copied as-is by Jekyll")
         doc = parse(page)
         urls = re.findall(r'(?:href|src)="([^"]*)"', html)
         urls += re.findall(r'content="(https://[^"]+)"', html)
@@ -1452,12 +1463,96 @@ def main() -> int:
                         httpd.shutdown()
                 check(status == 200, "built Travel Adventure refund page returns 200")
 
+    check_ta_crosslinks(check)
+
     print()
     if failed:
         print(f"{len(failed)} check(s) failed")
         return 1
     print(f"all checks passed ({len(GAMES)} games, 3 preview hashes)")
     return 0
+
+
+TA_CROSSLINK_PREFIX = (
+    "/holiday/travel-adventure/?utm_source=site&utm_medium=internal"
+    "&utm_campaign=travel_adventure_sprint"
+)
+TA_CROSSLINK_PAGES = (
+    ("holiday/trivia/sample/index.html", "trivia-sample"),
+    ("index.html", "home"),
+    ("holiday/sample/index.html", "holiday-sample"),
+)
+# Homepage Open Graph tags from the main build. jekyll-seo-tag prints og:description
+# on the same tag as twitter:description, so meta_content's property-then-content
+# pattern does not see it. These three values are that build.
+HOME_OG = {
+    "og:title": "Website rebuilds for small businesses",
+    "og:description": (
+        "We rebuild outdated business websites into fast, mobile-friendly sites. "
+        "Everything happens by email, with a written scope and price before you pay."
+    ),
+    "og:image": "https://getcyberdadkit.com/sites/assets/examples/demo-sampletown-roofing.jpg",
+}
+TA_BANNED_RE = re.compile(
+    r"\b(?:CDK|guarantee|worldwide|A4|hurry|limited|last chance|now only)\b",
+    re.I,
+)
+
+
+def og_content(html: str, key: str) -> str:
+    head = html.split("</head>", 1)[0]
+    for tag in re.findall(r"<meta\b[^>]*>", head, re.I):
+        if f'property="{key}"' not in tag and f"property='{key}'" not in tag:
+            continue
+        match = re.search(r'content="([^"]*)"', tag)
+        if match:
+            return html_lib.unescape(match.group(1))
+    return ""
+
+
+def check_ta_crosslinks(check) -> None:
+    include = (ROOT / "_includes" / "ta-crosslink.html").read_text(encoding="utf-8")
+    check(
+        "\u2014" not in include and "&mdash;" not in include and "&#8212;" not in include,
+        "Travel Adventure cross-link include has no em dash",
+    )
+    banned = TA_BANNED_RE.search(include)
+    check(
+        banned is None,
+        "Travel Adventure cross-link include has no banned word"
+        + ("" if banned is None else f": {banned.group(0)}"),
+    )
+    check("buy.stripe.com" not in include, "Travel Adventure cross-link include has no Stripe href")
+    for rel, slug in TA_CROSSLINK_PAGES:
+        built_path = ROOT / "_site" / rel
+        check(built_path.is_file(), f"built {rel} exists for the Travel Adventure cross-link check")
+        if not built_path.is_file():
+            continue
+        built = built_path.read_text(encoding="utf-8")
+        blocks = re.findall(r'<aside class="ta-crosslink">.*?</aside>', built, re.S)
+        check(len(blocks) == 1, f"built {rel} has exactly 1 Travel Adventure cross-link block")
+        hrefs = [href.replace("&amp;", "&") for href in re.findall(r'href="([^"]*)"', blocks[0])] if blocks else []
+        expected = f"{TA_CROSSLINK_PREFIX}&utm_content={slug}"
+        check(
+            hrefs == [expected] and expected.startswith(TA_CROSSLINK_PREFIX),
+            f"built {rel} cross-link href starts with the Travel Adventure sprint URL and utm_content={slug}",
+        )
+        block = blocks[0] if blocks else ""
+        check("buy.stripe.com" not in block, f"built {rel} cross-link block has no Stripe href")
+        main_html = subprocess.check_output(["git", "show", f"origin/main:{rel}"], cwd=ROOT, text=True)
+        check(
+            Counter(BUY_HREF_RE.findall(built)) == Counter(BUY_HREF_RE.findall(main_html)),
+            f"built {rel} buy.stripe.com href count is unchanged from main",
+        )
+        if rel == "index.html":
+            expected_og = HOME_OG
+            front_now = (ROOT / rel).read_text(encoding="utf-8").split("---", 2)[1]
+            front_main = main_html.split("---", 2)[1]
+            check(front_now == front_main, "homepage front matter is unchanged, including title, description, and image")
+        else:
+            expected_og = {key: meta_content(main_html, "property", key) for key in ("og:title", "og:description", "og:image")}
+        for key, value in expected_og.items():
+            check(og_content(built, key) == value and value != "", f"built {rel} {key} is unchanged")
 
 
 if __name__ == "__main__":
