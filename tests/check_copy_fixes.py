@@ -101,6 +101,8 @@ ALLOWED_PRICE_ADDITIONS = {
     "holiday/index.html": None,
     "holiday/sample/index.html": None,
     "holiday/host-kit/index.html": None,
+    # The Travel Adventure cross-link states the existing $4.99 price. It adds no checkout URL.
+    "_includes/ta-crosslink.html": Counter({"$4.99": 1}),
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
