@@ -98,21 +98,31 @@ def main() -> int:
     urls = [u for _, u in SIZES.values()]
     check(len(set(urls)) == 2, "two distinct payment links")
     check("A4" not in store, "store page contains no A4 text")
+    for k in ("sample", "refund"):
+        check("A4" not in html.get(k, ""), f"{k} page contains no A4 text")
     store_links = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', store)
     check(store_links == KEPT_BUY_LINKS, "store page has exactly 2 buy.stripe.com links, US Letter then half-letter")
-    built_pages = [
-        p for p in (
-            ROOT / "_site" / "journal" / "2027" / "index.html",
-            Path("/tmp/cdk-copy-site") / "journal" / "2027" / "index.html",
-        )
-        if p.is_file()
+    built_roots = [
+        root for root in (ROOT / "_site", Path("/tmp/cdk-copy-site"))
+        if (root / "journal" / "2027" / "index.html").is_file()
     ]
-    check(bool(built_pages), "built /journal/2027/ page is present")
-    for built in built_pages:
-        built_html = built.read_text(encoding="utf-8")
-        built_links = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', built_html)
-        check("A4" not in built_html, f"{built} contains no A4 text")
-        check(len(built_links) == 2 and built_links == KEPT_BUY_LINKS, f"{built} has exactly 2 buy.stripe.com links")
+    check(bool(built_roots), "built /journal/2027/ page is present")
+    built_routes = (
+        ("/journal/2027/", "journal/2027/index.html"),
+        ("/journal/2027/refund/", "journal/2027/refund/index.html"),
+        ("/journal/2027/sample/", "journal/2027/sample/index.html"),
+    )
+    for root in built_roots:
+        for label, rel in built_routes:
+            built = root / rel
+            check(built.is_file(), f"built {label} page is present under {root}")
+            if not built.is_file():
+                continue
+            built_html = built.read_text(encoding="utf-8")
+            check("A4" not in built_html, f"built {label} contains no A4 text")
+            if label == "/journal/2027/":
+                built_links = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', built_html)
+                check(len(built_links) == 2 and built_links == KEPT_BUY_LINKS, f"built {label} has exactly 2 buy.stripe.com links")
     check("STRIPE_LINK_" not in store, "no Stripe placeholders left")
     check(store.find("Stripe checkout displays Ruel Miller.") < store.find('id="buy-letter"'), "merchant notice is before the pay buttons")
     check(US in store, "store states US eligibility")
