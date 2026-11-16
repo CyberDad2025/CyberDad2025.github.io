@@ -88,7 +88,6 @@ ALLOWED_PRICE_REMOVALS = {
     # Journal 2027 is US-only: the A4 $9.99 mentions are deleted. Letter $9.99
     # and half-letter $7.99 stay. The holiday catalog drops that same A4 price.
     "journal/2027/index.html": Counter({"$9.99": 5}),
-    "holiday/index.html": Counter({"$9.99": 1}),
     "tests/check_journal_storefront.py": Counter({"$9.99": 2}),
 }
 # The only buy.stripe.com change vs main is deleting the journal A4 payment link.
@@ -105,6 +104,8 @@ ALLOWED_PRICE_ADDITIONS = {
     "_includes/ta-crosslink.html": Counter({"$4.99": 1}),
     # T-018 edit 2 restates the existing $4.99 price on the mid-page CTA. It adds no checkout URL.
     "holiday/travel-adventure/index.html": Counter({"$4.99": 1}),
+    # Sample-to-Travel in-site line restates the existing $4.99 price. No checkout URL added.
+    "holiday/table-set/index.html": Counter({"$4.99": 1}),
 }
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
@@ -332,6 +333,11 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             continue
         old = old_raw or ""
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
+            continue
+        # Redirect stubs drop product copy, prices, and the sample signup form on purpose.
+        if name in {"holiday/sample/index.html", "holiday/trivia/sample/index.html"}:
+            if STRIPE_RE.findall(new):
+                stripe_bad.append(name)
             continue
         old_links = Counter(STRIPE_RE.findall(old))
         new_links = Counter(STRIPE_RE.findall(new))

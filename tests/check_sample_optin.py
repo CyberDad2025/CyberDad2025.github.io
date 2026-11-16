@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Email signup on /holiday/sample/, after the free sample round.
+"""Redirect stubs at /holiday/sample/ and /holiday/trivia/sample/.
 
-The download links stay direct. The MailerLite embed is one container,
-data-form eMwTaD, with a noscript fallback. Public copy does not claim
-"No email" and does not use the CDK abbreviation. The footer is the
-four-line identity. The page order is the product, the free sample
-round, this signup, then the buy offer.
+Both pages send visitors to /holiday/travel-adventure/. Incoming utm_source
+is carried (utm_medium kept, campaign set to ap006_travel, unique
+utm_content). Visits with no utm_source get no UTM params. gclid, fbclid
+and epik pass through. The no-JS fallback is a plain Travel Adventure URL.
 """
 
 from __future__ import annotations
@@ -16,20 +15,14 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SAMPLE = ROOT / "holiday" / "sample" / "index.html"
 MAIN = "origin/main"
-LETTER = "/holiday/sample/Free-Sample-Table-Talk-Trails-US-Letter.pdf"
-A4 = "/holiday/sample/Free-Sample-Table-Talk-Trails-A4.pdf"
-HOSTED = "https://preview.mailerlite.io/forms/1632878/203754930937268147/share"
-UNTOUCHED = (
-    "holiday/refund/index.html",
-    "holiday/trivia/index.html",
-    "holiday/trivia/sample/index.html",
-    "shop/index.html",
-    "shield-kit/index.html",
-    "assets/festive/festive.css",
-)
+TA = "/holiday/travel-adventure/"
+TA_ABS = "https://getcyberdadkit.com/holiday/travel-adventure/"
 
+STUBS = (
+    ("holiday/sample/index.html", "sample-redirect-table-talk-trails"),
+    ("holiday/trivia/sample/index.html", "sample-redirect-trivia"),
+)
 
 FOOTER_LINES = (
     "<p>CyberDadKit © 2026</p>",
@@ -42,10 +35,6 @@ FOOTER_LINES = (
 def footer(html: str) -> str:
     match = re.search(r"<footer\b.*?</footer>", html, re.S)
     return match.group(0) if match else ""
-
-
-def outside_footer(html: str) -> str:
-    return re.sub(r"<footer\b.*?</footer>", "", html, count=1, flags=re.S)
 
 
 def visible_text(html: str) -> str:
@@ -63,93 +52,41 @@ def main() -> int:
         if not ok:
             failed.append(message)
 
-    html = SAMPLE.read_text(encoding="utf-8")
-    previous = subprocess.check_output(
-        ["git", "show", f"{MAIN}:holiday/sample/index.html"],
-        cwd=ROOT,
-        text=True,
-    )
-    head, body = html.split("<body", 1)
-    letter_at = html.find(f'href="{LETTER}"')
-    a4_at = html.find(f'href="{A4}"')
-    note_at = html.find("Each file is a single page.")
-    updates_at = html.find('id="updates"')
-    how_at = html.find('id="how-title"')
-    ml_at = html.find("https://assets.mailerlite.com/js/universal.js")
-    ga_at = html.find("{% include ga4.html %}")
-    embed = re.search(r'<div class="ml-embedded" data-form="eMwTaD"></div>', html)
+    for rel, content in STUBS:
+        html = (ROOT / rel).read_text(encoding="utf-8")
+        label = "/" + rel[: -len("index.html")]
+        check("layout: null" in html and "sitemap: false" in html, f"{label} is layout null and sitemap: false")
+        check('name="robots" content="noindex, follow"' in html, f"{label} is noindex, follow")
+        check(f'rel="canonical" href="{TA_ABS}"' in html, f"{label} canonical points at the Travel Adventure page")
+        check("{% include ga4.html %}" in html, f"{label} includes the site GA4 tag")
+        check("window.location.replace(url)" in html, f"{label} uses location.replace")
+        check('src = "pinterest"' not in html and "utm_source=pinterest" not in html and "utm_medium=paid" not in html, f"{label} has no pinterest/paid default")
+        check('if (src)' in html and 'params.set("utm_source", src)' in html, f"{label} keeps incoming utm_source")
+        check('params.set("utm_campaign", "ap006_travel")' in html, f"{label} sets utm_campaign=ap006_travel when source is present")
+        check(f'params.set("utm_content", "{content}")' in html, f"{label} sets utm_content={content} when source is present")
+        check('["gclid", "fbclid", "epik"]' in html, f"{label} passes through gclid, fbclid and epik")
+        check(f'content="0; url={TA_ABS}"' in html, f"{label} meta refresh is the plain Travel Adventure URL")
+        check(f'<a href="{TA}">Go to The Great Thanksgiving Travel Adventure</a>' in html, f"{label} has a visible no-JS fallback link with no UTM params")
+        check("buy.stripe.com" not in html, f"{label} has no Stripe href")
+        check("utm_source=site" not in html, f"{label} in-page links have no internal UTMs")
+        sample_footer = footer(html)
+        for line in FOOTER_LINES:
+            check(sample_footer.count(line) == 1, f"{label} footer has one identity line: {line}")
+        check(not re.search(r"\bCDK\b", visible_text(html)), f"{label} has no CDK in public copy")
+        check("CyberDadKit" in visible_text(html), f"{label} uses CyberDadKit")
+        check("\u2013" not in html and "\u2014" not in html, f"{label} has no en or em dashes")
+        check(not re.search(r"\b(guarantee|worldwide|hurry|limited|last chance|now only)\b", html, re.I), f"{label} has no banned wording")
 
-    check(letter_at != -1 and a4_at != -1, "sample page still has both PDF links")
-    check(html.count(f'href="{LETTER}"') == 1 and html.count(f'href="{A4}"') == 1, "each sample PDF href appears once")
-    check(html.count('class="ml-embedded"') == 1 and embed is not None, "one form container with data-form eMwTaD")
-    check(html.count("data-form=") == 1, "data-form is the slug, not a second numeric id")
-    check('data-form="203754930937268147"' not in html, "data-form is not the numeric form id")
-    check("ml('enablePopups',false)" in html, "MailerLite popups stay disabled")
-    check(f"<noscript>Sign up on our updates page: <a href=\"{HOSTED}\" rel=\"noopener\">hosted signup form</a>.</noscript>" in html, "noscript fallback links to the hosted signup form")
-    check('href="/privacy/">Privacy policy</a>' in html, "privacy policy link is visible near the form")
-    check("no email" not in html.lower(), "no 'No email' contradiction")
-    check("does not ask for an address" not in html.lower(), "old address sentence is gone")
-    check("The download doesn't ask for an address." in html, "download copy stays accurate")
-    check("Below, you can optionally sign up for updates." in html, "optional signup is offered below the download copy")
-    check("Free download (United States)" in html, "free sample download is for customers in the United States")
-    check("worldwide" not in html.lower(), "sample page does not say worldwide")
-    check('id="updates-title">Want the next free printable?</h2>' in html, "accessible heading is outside the embed")
-    check("Optional. Your download above doesn't need this." in html, "short optional intro is visible")
-    check(embed is not None and "Want the next free printable?" not in embed.group(0), "embed container does not repeat the heading")
-    sample_footer = footer(html)
-    for line in FOOTER_LINES:
-        check(sample_footer.count(line) == 1, f"sample footer has one identity line: {line}")
-    check(sample_footer.count("CyberDad Kit LLC") == 1, "sample footer names the LLC once")
-    check(footer(html) == footer(previous), "sample footer matches main")
-    check(not re.search(r"\bCDK\b", visible_text(html)), "no CDK in public copy")
-    check("CyberDad Kit" in visible_text(html), "public copy can say CyberDad Kit")
-    product_at = html.find('id="sample-title"')
-    buy_at = html.find('id="holiday-checkout"')
-    check(
-        0 < product_at < how_at < letter_at < a4_at < note_at < ga_at < updates_at < ml_at < buy_at,
-        "order is product, free sample round, signup, then buy",
-    )
-    check("<script" not in head.lower() and "mailerlite" not in head.lower(), "no third-party script before the download links")
-    check("optin_view" in html and "IntersectionObserver" in html, "optin_view fires once via IntersectionObserver")
-    check('form_id: "holiday_sample_optin"' in html and "page_path: window.location.pathname" in html, "optin_view sends form_id and page_path")
-    check('typeof window.gtag !== "function"' in html, "gtag is guarded and not loaded a second time")
-    check("optin_submit" not in html and "optin_success" not in html and "optin_error" not in html, "submit, success, and error events are omitted because MailerLite exposes no stable ml callback")
-    check("autofocus" not in re.sub(r"<script\b.*?</script>", " ", html, flags=re.S | re.I).lower(), "no autofocus attribute")
-    check('role="dialog"' not in html and "min-height: 28rem" in html and "44px" in html and ":focus-visible" in html, "reserved height, 44px targets, visible focus, no dialog")
-    check(previous.count("buy.stripe.com") == 2, "origin/main sample page has the original two Gather & Play payment mentions")
-    check(html.count("buy.stripe.com") == 8, "sample page keeps Gather & Play and adds the other live holiday buy links")
-
-    refund_country = ' The free <a href="/holiday/sample/">Table Talk Trails sample</a> is not limited by country.'
-    for rel in UNTOUCHED:
-        text = (ROOT / rel).read_text(encoding="utf-8")
-        check("eMwTaD" not in text and 'id="updates-title"' not in text, f"{rel} has no sample signup")
-        previous_rel = subprocess.check_output(
-            ["git", "show", f"{MAIN}:{rel}"],
-            cwd=ROOT,
-            text=True,
-        )
-        expected = outside_footer(previous_rel)
-        current_cmp = outside_footer(text)
-        if rel == "holiday/refund/index.html":
-            expected = expected.replace(refund_country, "", 1)
-            check(refund_country not in text, "refund page drops the sample-is-not-limited-by-country sentence")
-        if rel == "shop/index.html":
-            card = r'\n    <li class="shop-card" id="host-kit">.*?</li>'
-            current_cmp, n_now = re.subn(card, "", current_cmp, count=1, flags=re.S)
-            expected, n_old = re.subn(card, "", expected, count=1, flags=re.S)
-            check(n_now == 1 and n_old == 1, "shop page includes one Holiday Host Kit card on both sides")
-        if rel == "holiday/trivia/sample/index.html":
-            include = '      {% include ta-crosslink.html slug="trivia-sample" %}\n'
-            check(current_cmp.count(include) == 1, "trivia sample adds the Travel Adventure cross-link include once")
-            current_cmp = re.sub(r"^---\nlayout: null\n---\n", "", current_cmp, count=1)
-            current_cmp = current_cmp.replace(include, "", 1)
-        check(current_cmp == expected, f"{rel} outside the footer is unchanged versus main")
+    journal = "journal/2027/sample/index.html"
+    current = (ROOT / journal).read_text(encoding="utf-8")
+    previous = subprocess.check_output(["git", "show", f"{MAIN}:{journal}"], cwd=ROOT, text=True)
+    check(current == previous, "journal/2027/sample/ is unchanged versus main")
 
     print()
     if failed:
         print(f"FAILED {len(failed)} check(s)")
         return 1
-    print("ALL SAMPLE OPT-IN CHECKS PASSED")
+    print("ALL SAMPLE REDIRECT CHECKS PASSED")
     return 0
 
 

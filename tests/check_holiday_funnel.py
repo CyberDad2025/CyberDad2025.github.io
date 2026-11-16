@@ -64,7 +64,6 @@ UTM_KEYS = ("utm_source=site", "utm_medium=cta", "utm_campaign=holiday-funnel", 
 # blocks would rewrite pages whose visible text is locked, which is not a
 # small edit. This list proves those files were left alone.
 UNCHANGED = (
-    "holiday/trivia/index.html",
     "holiday/kids-table/index.html",
     "holiday/host-planner/index.html",
 )
@@ -87,12 +86,6 @@ PAGES = (
         "product": 'id="product-title"',
         "sample": 'id="sample-round"',
         "buy": 'id="host-kit-checkout"',
-    },
-    {
-        "rel": "holiday/sample/index.html",
-        "product": 'id="sample-title"',
-        "sample": 'id="sample"',
-        "buy": 'id="holiday-checkout"',
     },
 )
 
@@ -171,7 +164,12 @@ def main() -> int:
         stripe_old = STRIPE_RE.findall(previous)
         print(f"  {rel}: {stripe_now}")
 
-        check(0 < product_at < sample_at < signup_at < buy_at, f"{label} order is product, sample, signup, buy")
+        if rel == "holiday/index.html":
+            check(0 < product_at < signup_at < buy_at, f"{label} order is product, signup, buy")
+            check('id="sample-round"' not in html, f"{label} no longer has a sample-round section")
+            check('id="travel-adventure-top"' in html and 0 < html.find('id="travel-adventure-top"') < signup_at, f"{label} Travel Adventure line sits before signup")
+        else:
+            check(0 < product_at < sample_at < signup_at < buy_at, f"{label} order is product, sample, signup, buy")
         check(page["buy"] not in page_hero and "ml-embedded" not in page_hero, f"{label} hero is the product, without the form or the buy button")
         check(html.count('class="ml-embedded"') == 1, f"{label} has one ml-embedded container")
         check(html.count('data-form="eMwTaD"') == 1, f"{label} has one eMwTaD embed")
@@ -192,19 +190,34 @@ def main() -> int:
         check(Counter(stripe_now) == Counter(expected), f"{label} Stripe hrefs match main plus the approved holiday buy links")
         for href in added_holiday_ctas(html, previous):
             decoded = href.replace("&amp;", "&")
-            missing = [key for key in UTM_KEYS if key not in decoded]
-            check(not missing, f"{label} added CTA {href} has UTM {UTM_KEYS}" + ("" if not missing else f" missing {missing}"))
-        if rel != "holiday/sample/index.html":
+            path = decoded.split("?", 1)[0]
+            check(path == "/holiday/travel-adventure/", f"{label} added CTA {href} is a plain Travel Adventure link")
+            check("utm_" not in decoded, f"{label} added CTA {href} has no UTM params")
+        if rel != "holiday/index.html":
             check('id="sample-round-cta"' in html, f"{label} sample CTA is marked")
             cta = re.search(r'id="sample-round-cta" href="([^"]+)"', html)
             target = cta.group(1).replace("&amp;", "&") if cta else ""
-            check(target.startswith("/holiday/sample/?"), f"{label} sample CTA points at the sample page")
-            check(all(key in target for key in UTM_KEYS), f"{label} sample CTA carries holiday-funnel UTM params")
+            check(target == "/holiday/travel-adventure/", f"{label} sample CTA points at /holiday/travel-adventure/ with no UTM params")
+            check("utm_" not in target, f"{label} sample CTA has no UTM params")
+            check('data-cta="' in html[html.find('id="sample-round-cta"'):html.find('id="sample-round-cta"')+200], f"{label} sample CTA has a data-cta slug")
 
     for rel in UNCHANGED:
         current = (ROOT / rel).read_text(encoding="utf-8")
         previous = git_show(rel)
         check(current == previous, f"{rel} left unchanged (funnel edit was not small enough)")
+
+    for rel, content in (
+        ("holiday/sample/index.html", "sample-redirect-table-talk-trails"),
+        ("holiday/trivia/sample/index.html", "sample-redirect-trivia"),
+    ):
+        html = (ROOT / rel).read_text(encoding="utf-8")
+        label = "/" + rel[: -len("index.html")]
+        check("window.location.replace" in html, f"{label} redirect uses location.replace")
+        check('name="robots" content="noindex, follow"' in html, f"{label} is noindex")
+        check("{% include ga4.html %}" in html, f"{label} includes GA4")
+        check("buy.stripe.com" not in html, f"{label} has no Stripe href")
+        check(f'params.set("utm_content", "{content}")' in html, f"{label} uses utm_content={content}")
+        check("utm_source=pinterest" not in html, f"{label} has no pinterest/paid default")
 
     worldwide_re = re.compile(r"\bworldwide\b", re.I)
     country_phrase = "not limited by country"
