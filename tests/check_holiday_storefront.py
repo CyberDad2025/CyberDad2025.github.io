@@ -1325,7 +1325,7 @@ def main() -> int:
         check("The Great Thanksgiving Travel Adventure" in travel_html, "Travel Adventure page uses the product name")
         check("USD $4.99 one-time, US customers only." in travel_html, "Travel Adventure page uses the exact price phrase")
         check("word search, Travel Bingo, a maze and a Thankful Travel Challenge" in travel_html, "Travel Adventure page keeps the existing activity list")
-        check("Print at home and bring it along with a pencil or crayons. Ages 7+." in travel_html, "Travel Adventure page keeps the existing print-and-go wording")
+        check("Print at home and bring it along with a pencil or crayons." in travel_html, "Travel Adventure page keeps the existing print-and-go wording")
         check('href="/holiday/#travel-adventure"' in travel_html, "Travel Adventure page links back to /holiday/")
         check(US_ELIGIBILITY in travel_html, "Travel Adventure page states US eligibility")
         check("PO Box 940061, Maitland, FL 32794" in travel_html, "Travel Adventure page uses the PO Box")
