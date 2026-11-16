@@ -9,27 +9,37 @@ sitemap: false
 <title>The Great Thanksgiving Travel Adventure</title>
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/">
+{% include ga4.html %}
 <script>
   (function () {
     var base = "https://getcyberdadkit.com/holiday/travel-adventure/";
-    var src = "pinterest";
-    var med = "paid";
+    var url = base;
     try {
       var q = new URLSearchParams(window.location.search);
-      if (q.get("utm_source")) src = q.get("utm_source");
-      if (q.get("utm_medium")) med = q.get("utm_medium");
+      var params = new URLSearchParams();
+      var src = q.get("utm_source");
+      if (src) {
+        params.set("utm_source", src);
+        var med = q.get("utm_medium");
+        if (med) params.set("utm_medium", med);
+        params.set("utm_campaign", "ap006_travel");
+        params.set("utm_content", "sample-redirect-trivia");
+      }
+      ["gclid", "fbclid", "epik"].forEach(function (key) {
+        var val = q.get(key);
+        if (val) params.set(key, val);
+      });
+      var qs = params.toString();
+      if (qs) url = base + "?" + qs;
     } catch (e) {}
-    var url = base + "?utm_source=" + encodeURIComponent(src) +
-      "&utm_medium=" + encodeURIComponent(med) +
-      "&utm_campaign=ap006_travel&utm_content=sample-redirect-trivia";
     window.location.replace(url);
   })();
 </script>
-<meta http-equiv="refresh" content="0; url=https://getcyberdadkit.com/holiday/travel-adventure/?utm_source=pinterest&amp;utm_medium=paid&amp;utm_campaign=ap006_travel&amp;utm_content=sample-redirect-trivia">
+<meta http-equiv="refresh" content="0; url=https://getcyberdadkit.com/holiday/travel-adventure/">
 </head>
 <body>
-<!-- Christmas Trivia Night free sample moved: this page now sends visitors to the Travel Adventure page (growth/sample-redirect-1116). Revert the merge commit to restore it. -->
-<p><a href="https://getcyberdadkit.com/holiday/travel-adventure/?utm_source=pinterest&amp;utm_medium=paid&amp;utm_campaign=ap006_travel&amp;utm_content=sample-redirect-trivia">Go to The Great Thanksgiving Travel Adventure</a></p>
+<!-- Christmas Trivia Night free sample moved: this page now sends visitors to the Travel Adventure page (growth/sample-redirect-1116, Platform UTM fix). Revert the merge commit to restore it. -->
+<p><a href="/holiday/travel-adventure/">Go to The Great Thanksgiving Travel Adventure</a></p>
 <footer class="hday-footer">
   <div class="hday-footer-inner">
     <p>CyberDadKit © 2026</p>

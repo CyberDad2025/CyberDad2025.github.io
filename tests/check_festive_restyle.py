@@ -174,6 +174,20 @@ def normalized(parts: list[str]) -> str:
 
 def allowed_text(rel: str, current: str, previous: str) -> str:
     """Return the origin/main text after the whitelisted holiday edits."""
+    if rel == "holiday/trivia/index.html":
+        text = previous
+        for old, new in (
+            (" Round 1 is free to print.", ""),
+            ("Free sample", "Travel Adventure"),
+            (
+                "Print Round 1 free in US Letter or A4. No email is required.",
+                "Traveling for Thanksgiving? See The Great Thanksgiving Travel Adventure.",
+            ),
+            (" Round 1 is free on the sample page.", ""),
+            (" (free sample)", ""),
+        ):
+            text = text.replace(old, new, 1)
+        return text
     if rel != "holiday/index.html":
         return previous
     text = previous.replace(WORLDWIDE_BEFORE, WORLDWIDE_AFTER, 1)
@@ -186,6 +200,11 @@ def expected_legal_parts(label: str, parts: list[str]) -> list[str]:
     """Holiday legal text stays as on main, except the archived-kit lines."""
     if label != "holiday/index.html":
         return parts
+    # The trivia cross-sell no longer ends with "Round 1 is free to print."
+    trivia_tail = (
+        "Paid purchases are available only to customers located in the United States. "
+    )
+    parts = [part.rstrip() if part == trivia_tail or part.endswith(trivia_tail) else part for part in parts]
     # #1012 already replaced those lines on main. Do not rewrite them again.
     if not any(part in {"refund policy", "Shield Kit refund policy"} for part in parts):
         return parts
@@ -378,20 +397,33 @@ def main() -> int:
         for line in FOOTER_LINES:
             check(current_footer.count(line) == 1, f"{label}: footer has one identity line: {line}")
         check(current_footer.count("CyberDad Kit LLC") == 1, f"{label}: footer names the LLC once")
-        check(footer_nav(current_footer) == footer_nav(footer_html(previous)), f"{label}: footer nav matches main")
+        expected_footer_nav = footer_nav(footer_html(previous))
+        if label == "holiday/index.html":
+            expected_footer_nav = expected_footer_nav.replace(
+                '<a href="/holiday/sample/">Free sample</a>',
+                '<a href="/holiday/travel-adventure/" data-cta="sample-link-gp-footer">Travel Adventure</a>',
+                1,
+            )
+        if label == "holiday/trivia/index.html":
+            expected_footer_nav = expected_footer_nav.replace(
+                '<a href="/holiday/trivia/sample/">Free sample</a>',
+                '<a href="/holiday/travel-adventure/" data-cta="sample-link-trivia-footer">Travel Adventure</a>',
+                1,
+            )
+        check(footer_nav(current_footer) == expected_footer_nav, f"{label}: footer nav matches main")
         text_current = current
         text_previous = previous
         if rel == "holiday/index.html":
             check(
                 current.find('id="product-title"')
-                < current.find('id="sample-round"')
                 < current.find('id="updates"')
                 < current.find('id="holiday-checkout"')
                 < current.find('class="hday-facts"'),
-                "holiday funnel is product, sample, signup, buy, then the facts",
+                "holiday funnel is product, signup, buy, then the facts",
             )
+            check('id="sample-round"' not in current, "holiday page has no sample-round section")
             check(current.count("https://assets.mailerlite.com/js/universal.js") == 1, "holiday signup loads MailerLite universal.js once")
-            check(HERO_SAMPLE_NOTE not in current, "hero sample line moved into the sample round")
+            check(HERO_SAMPLE_NOTE not in current, "hero has no free-sample line")
             text_current = strip_checkout(strip_funnel_inserts(current))
             text_previous = strip_checkout(previous.replace(HERO_SAMPLE_NOTE, "", 1)).replace(FAQ_SAMPLE_COUNTRY, "", 1)
             check(HERO_SAMPLE_NOTE not in text_previous, "comparison drops the hero sample line from main")
@@ -406,6 +438,18 @@ def main() -> int:
         check(current_text == allowed_text(label, current_text, previous_text), f"{label}: visible text matches origin/main")
         check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
         expected_hrefs = previous_doc.hrefs
+        if label == "holiday/trivia/index.html":
+            expected_hrefs = []
+            sample_seen = 0
+            for href in previous_doc.hrefs:
+                if href == "/holiday/trivia/sample/":
+                    sample_seen += 1
+                    if sample_seen <= 2:
+                        expected_hrefs.append("/holiday/travel-adventure/")
+                    # The third sample href was in the dropped preview sentence.
+                    continue
+                expected_hrefs.append(href)
+            check(sample_seen == 3, "trivia page retargets two sample links and drops the preview sample link")
         if label == "holiday/index.html" and previous_doc.hrefs.count("/refund-policy/") >= 2:
             # The two former kit-policy links now point at the live Gather & Play refund page.
             expected_hrefs = []
@@ -455,7 +499,6 @@ def main() -> int:
             linked.append(path.relative_to(ROOT).as_posix())
     festive_pages = list(PAGES) + [
         "holiday/table-set/index.html",
-        "holiday/sample/index.html",
         "holiday/host-kit/index.html",
         "holiday/host-kit/refund/index.html",
         *POLICY_PAGES,

@@ -126,14 +126,16 @@ TRIVIA_FILES = {
         # Footer identity is four lines. Prices and checkout hrefs stay pinned elsewhere.
         # Sprint 1113: re-pinned after the buy_click listener script was added (was 41d13f3c).
         # Nov 15: re-pinned after begin_checkout was added to the listener and data-product to the bundle button (was c6a68908).
-        "571ac15289b68265116b2a45c1439efcea68ad1a56048808533ffbf1f7ff9577",
+        # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was 571ac152).
+        "847f4963d96436ddc961e3d0954ffee62eb8242e087b55206c3ad6811ab60c7c",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
-        # layout: null plus the Travel Adventure cross-link include, so Jekyll expands it.
-        "526fd37c1fca096c7bd4050a8188e784fbabc646a1ada678356faca645010579",
+        # Nov 16: re-pinned as the noindex Travel Adventure redirect stub with GA4 (was 526fd37c).
+        "a5036f5013070a2c00bc3387fc2f84630e81a786e4cffcab43e023cd8cfc7d86",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
-        "abba1e5cb0bd4762bcc983a92ad9a5ecbac0a7b7cb005d8ba0be8216fdd48f3f",
+        # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was abba1e5c).
+        "74dbc3054cd0595f6cc467098569f328ea835f40482f8df662b047fb69c59c78",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
         "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
@@ -708,48 +710,28 @@ def main() -> int:
     sample_path = HOLIDAY / "sample" / "index.html"
     sample_html = body(sample_path)
     sample = parse(sample_path)
-    check("noindex" not in sample_html.lower(), "sample page is indexable")
-    check(sample_html.count('data-form="eMwTaD"') == 1, "sample has one MailerLite embed for eMwTaD")
-    check(sample_html.count("data-form=") == 1, "sample has one data-form attribute")
-    check("<form" not in sample_html.lower(), "sample source leaves form markup to the MailerLite embed")
-    check(element_text(sample_html, "gather-play-refund-wording") == EXACT_REFUND, "sample shows the exact refund wording")
-    sample_pay = [a for a in sample.anchors if a.get("id") == "holiday-checkout"]
-    check(len(sample_pay) == 1 and sample_pay[0].get("href") == PAYMENT_URL, "sample paid CTA is the live payment anchor")
-    sample_extra = {
-        "trivia-checkout-sample": TRIVIA_PAYMENT_URL,
-        "bundle-checkout-sample": BUNDLE_PAYMENT_URL,
-        "host-planner-checkout-sample": PLANNER_PAYMENT_URL,
-        "table-set-checkout-sample": TABLE_SET_PAYMENT_URL,
-        "travel-adventure-checkout-sample": TRAVEL_PAYMENT_URL,
-        "kids-checkout-sample": KIDS_PAYMENT_URL,
-        "kids-bundle-checkout-sample": KIDS_BUNDLE_PAYMENT_URL,
-        "host-kit-checkout-sample": HOST_KIT_PAYMENT_URL,
-    }
-    for button_id, url in sample_extra.items():
-        found = [a for a in sample.anchors if a.get("id") == button_id]
-        check(len(found) == 1 and found[0].get("href") == url, f"sample has buy button {button_id}")
-    check("disabled" not in sample_pay[0], "sample paid CTA is not a disabled button")
-    check("$7.99" in element_text(sample_html, "holiday-checkout") and "USD" in element_text(sample_html, "holiday-checkout"), "sample button names $7.99 USD")
-    check(US_ELIGIBILITY in sample_html and US_ELIGIBILITY in refund_html, "sample and refund state US eligibility")
+    check('name="robots" content="noindex, follow"' in sample_html, "sample redirect is noindex, follow")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in sample_html, "sample redirect canonical is the Travel Adventure page")
+    check("{% include ga4.html %}" in sample_html, "sample redirect includes the site GA4 tag")
+    check("window.location.replace" in sample_html, "sample redirect uses location.replace")
+    check('content="0; url=https://getcyberdadkit.com/holiday/travel-adventure/"' in sample_html, "sample meta refresh is the plain Travel Adventure URL")
+    check('<a href="/holiday/travel-adventure/">Go to The Great Thanksgiving Travel Adventure</a>' in sample_html, "sample redirect has a visible no-JS fallback")
+    check("buy.stripe.com" not in sample_html, "sample redirect has no Stripe href")
+    check("data-form=" not in sample_html and "ml-embedded" not in sample_html, "sample redirect has no MailerLite embed")
+    check("utm_source=pinterest" not in sample_html, "sample redirect has no pinterest/paid default")
+    check(US_ELIGIBILITY in refund_html, "refund states US eligibility")
     check("not limited by country" not in sample_html, "free sample is not described as unlimited by country")
-    check("Stripe checkout displays Ruel Miller." in sample_html, "sample page names the checkout display name")
-    check(sample_html.find("Stripe checkout displays Ruel Miller.") < sample_html.find('id="holiday-checkout"'), "merchant notice is before the sample pay link")
     check(sha256(ROOT / PIN_REL) == PIN_SHA, "pin bytes match the attached file")
-    check("Table Talk Trails" in sample_html and "$7.99 USD" in sample_html, "sample names the free game and the bundle price")
     for anchor in sample.anchors:
         href = anchor.get("href", "")
         if href.startswith("mailto:"):
             check(href.startswith("mailto:ruel@getcyberdadkit.com"), f"sample mailto {href}")
         elif href.startswith("#"):
             check(href[1:] in sample.ids, f"sample anchor {href}")
-        elif href == PAYMENT_URL:
-            check(True, "sample paid link is the live payment URL")
-        elif href in EXTRA_HOLIDAY_PAYMENT_URLS:
-            check(True, f"sample extra holiday payment link is a live URL: {href}")
-        elif href == HOSTED_OPTIN:
-            check("noopener" in (anchor.get("rel") or ""), "hosted signup link uses rel=noopener")
         else:
-            path = href.split("#", 1)[0]
+            path = href.split("?", 1)[0].split("#", 1)[0]
+            if path.startswith("https://getcyberdadkit.com"):
+                path = path[len("https://getcyberdadkit.com"):] or "/"
             check(path in ROUTES and ROUTES[path].is_file(), f"sample link {href}")
     public_html = store_html + refund_html + sample_html
     internal = re.compile(r"\bdraft\b|launch pass|not deployed|\bproposed\b|\bOps\b", re.I)
@@ -781,10 +763,11 @@ def main() -> int:
     check(not (HOLIDAY / "delivery").exists(), "delivery directory removed")
     stripe_confirmation = "After a successful payment, Stripe's confirmation screen shows the download link."
     resend = "with your checkout email address"
-    for label, html in (("storefront", store_html), ("sample", sample_html), ("refund", refund_html)):
+    for label, html in (("storefront", store_html), ("refund", refund_html)):
         check(stripe_confirmation in html, f"{label} says Stripe's confirmation screen shows the download link")
         check(resend in html, f"{label} keeps the checkout-email re-send instruction")
         check("file page" not in html.lower(), f"{label} does not describe a site file page")
+    check("file page" not in sample_html.lower(), "sample redirect does not describe a site file page")
     removed = ("/holiday/" + "delivery", "CyberDadKit-Gather-and-Play" + ".zip")
     hits = []
     skip_parts = {".git", "vendor", "_site", ".jekyll-cache"}
@@ -854,7 +837,7 @@ def main() -> int:
 
     delivery_path = removed[0]
     check(store_html.count(PAYMENT_URL) == 2, "Gather & Play payment URL still appears twice on /holiday/")
-    check(sample_html.count(PAYMENT_URL) == 2, "Gather & Play payment URL is unchanged on the sample page")
+    check("buy.stripe.com" not in sample_html, "sample redirect stub has no Stripe href")
     check(">Buy Gather &amp; Play for $7.99 USD</a>" in store_html, "Gather & Play buy button text is unchanged")
     check(store_html.find('id="holiday-checkout"') < store_html.find('id="bundle-checkout-holiday"'), "bundle callout is below the Gather & Play buy button")
     check(store_html.find('class="hday-facts"') < store_html.find('id="trivia-bundle"') < store_html.find('id="listing-title"'), "bundle callout sits after the facts list and before the product listing")
@@ -874,29 +857,25 @@ def main() -> int:
     # before the free sample round), with no extra Stripe href.
     check('<li><a href="/holiday/travel-adventure/">Travel Adventure</a></li>' in store_html, "/holiday/ nav links the Travel Adventure page")
     ta_top_at = store_html.find('id="travel-adventure-top"')
-    check(0 < ta_top_at < store_html.find('id="sample-round"'), "/holiday/ Travel Adventure text line sits before the free sample round")
-    check("buy.stripe.com" not in element_text(store_html, "travel-adventure-top") and 'href="https://buy.stripe.com' not in store_html[ta_top_at:store_html.find('id="sample-round"')], "/holiday/ Travel Adventure top line has no Stripe href")
-    for page_name, html, rel in (
-        ("/holiday/", store_html, "holiday/index.html"),
-        ("/holiday/sample/", sample_html, "holiday/sample/index.html"),
-    ):
-        check("The Great Thanksgiving Travel Adventure" in html, f"{page_name} names The Great Thanksgiving Travel Adventure")
-        check("USD $4.99 one-time, US customers only." in html, f"{page_name} uses the exact Travel Adventure price phrase")
-        expected_ta_links = 2 if page_name == "/holiday/" else 1
-        check(html.count(TA_PRODUCT_LINK) == expected_ta_links, f"{page_name} has {expected_ta_links} plain text link(s) to the Travel Adventure page")
-        check("data-placeholder" not in html, f"{page_name} has no checkout placeholder attribute")
-        check(TRAVEL_COVER in html, f"{page_name} includes the Travel Adventure cover image")
-        buy_counts = Counter(BUY_HREF_RE.findall(html))
-        base_html = subprocess.check_output(
-            ["git", "show", f"{BUY_HREF_BASE}:{rel}"],
-            cwd=ROOT,
-            text=True,
-        )
-        base_counts = Counter(BUY_HREF_RE.findall(base_html))
-        check(
-            buy_counts == base_counts == UNCHANGED_BUY_HREFS,
-            f"{page_name} buy.stripe.com href counts are unchanged",
-        )
+    check(0 < ta_top_at < store_html.find('id="updates"'), "/holiday/ Travel Adventure text line sits before the signup block")
+    check("buy.stripe.com" not in element_text(store_html, "travel-adventure-top") and 'href="https://buy.stripe.com' not in store_html[ta_top_at:store_html.find('id="updates"')], "/holiday/ Travel Adventure top line has no Stripe href")
+    check("The Great Thanksgiving Travel Adventure" in store_html, "/holiday/ names The Great Thanksgiving Travel Adventure")
+    check("USD $4.99 one-time, US customers only." in store_html, "/holiday/ uses the exact Travel Adventure price phrase")
+    check(store_html.count(TA_PRODUCT_LINK) >= 2, "/holiday/ has plain text links to the Travel Adventure page")
+    check("utm_campaign=ap006_travel" not in store_html and "utm_medium=internal" not in store_html, "/holiday/ in-site Travel Adventure links have no UTMs")
+    check("data-placeholder" not in store_html, "/holiday/ has no checkout placeholder attribute")
+    check(TRAVEL_COVER in store_html, "/holiday/ includes the Travel Adventure cover image")
+    buy_counts = Counter(BUY_HREF_RE.findall(store_html))
+    base_html = subprocess.check_output(
+        ["git", "show", f"{BUY_HREF_BASE}:holiday/index.html"],
+        cwd=ROOT,
+        text=True,
+    )
+    base_counts = Counter(BUY_HREF_RE.findall(base_html))
+    check(
+        buy_counts == base_counts == UNCHANGED_BUY_HREFS,
+        "/holiday/ buy.stripe.com href counts are unchanged",
+    )
     check('href="/holiday/trivia/">Christmas Trivia</a>' in store_html, "holiday nav links to Christmas Trivia")
     check(not (HOLIDAY / "BUNDLE-CALLOUT-SNIPPET.html").exists(), "bundle snippet file is not a page")
     config = (ROOT / "_config.yml").read_text(encoding="utf-8")
@@ -922,16 +901,16 @@ def main() -> int:
         html = page.read_text(encoding="utf-8")
         label = page.relative_to(ROOT).as_posix()
         check(delivery_path not in html, f"{label} has no delivery path")
-        check("G-5B1LNCPB56" in html, f"{label} includes the site GA4 id")
+        check("G-5B1LNCPB56" in html or "{% include ga4.html %}" in html, f"{label} includes the site GA4 id")
         if label == "holiday/trivia/sample/index.html":
-            include = '{% include ta-crosslink.html slug="trivia-sample" %}'
             check(
-                html.count("{%") == 1
-                and html.count(include) == 1
-                and html.count("layout: null") == 1
-                and "sitemap: false" not in html,
-                f"{label} is layout null and adds only the Travel Adventure cross-link include",
+                html.count("layout: null") == 1
+                and "sitemap: false" in html
+                and "{% include ga4.html %}" in html
+                and "window.location.replace" in html,
+                f"{label} is a layout-null noindex redirect stub that includes GA4",
             )
+            check("G-5B1LNCPB56" in html or "{% include ga4.html %}" in html, f"{label} includes the site GA4 id")
         else:
             check("{%" not in html and "layout:" not in html, f"{label} is static HTML, copied as-is by Jekyll")
         doc = parse(page)
@@ -956,7 +935,7 @@ def main() -> int:
             path = path.split("#", 1)[0]
             check(path in ROUTES and ROUTES[path].is_file(), f"{label} link {url}")
     check('href="/holiday/trivia/refund/"' in trivia_html, "trivia page links to the refund route")
-    check('href="/holiday/trivia/refund/"' in TRIVIA_PAGES[1].read_text(encoding="utf-8"), "sample page links to the refund route")
+    check('href="/holiday/travel-adventure/"' in TRIVIA_PAGES[1].read_text(encoding="utf-8"), "trivia sample redirect points at the Travel Adventure page")
     check("buy.stripe.com" not in TRIVIA_PAGES[1].read_text(encoding="utf-8"), "sample page does not sell")
     check("buy.stripe.com" not in TRIVIA_PAGES[2].read_text(encoding="utf-8"), "refund page does not sell")
 
@@ -985,12 +964,10 @@ def main() -> int:
     check(sorted(gp_files) == [
         "holiday/index.html",
         "holiday/product.json",
-        "holiday/sample/index.html",
         "tests/check_holiday_storefront.py",
     ], "Gather & Play payment URL is unchanged everywhere it appears" + ("" if not gp_files else ": " + ", ".join(sorted(gp_files))))
     check(sorted(bundle_files) == [
         "holiday/index.html",
-        "holiday/sample/index.html",
         "holiday/trivia/index.html",
         "tests/check_holiday_funnel.py",
         "tests/check_holiday_storefront.py",
@@ -1008,26 +985,32 @@ def main() -> int:
     config_text = (ROOT / "_config.yml").read_text(encoding="utf-8")
     exclude_block = config_text.split("exclude:", 1)[-1].split("\n# Include", 1)[0]
     check("holiday/pins" not in exclude_block and not re.search(r"(?m)^  - holiday/?\s*$", exclude_block), "pin directory is not excluded from the Jekyll build")
-    for rel in ("holiday/index.html", "holiday/sample/index.html", "holiday/refund/index.html"):
+    for rel in ("holiday/index.html", "holiday/refund/index.html"):
         front = (ROOT / rel).read_text(encoding="utf-8").split("---", 2)[1]
         check("sitemap: false" not in front, f"{rel} does not set sitemap: false")
         check("layout: null" in front, f"{rel} keeps layout null")
+    sample_front = (ROOT / "holiday" / "sample" / "index.html").read_text(encoding="utf-8").split("---", 2)[1]
+    check("sitemap: false" in sample_front and "layout: null" in sample_front, "holiday/sample/index.html is layout null and sitemap: false")
+    trivia_sample_front = (ROOT / "holiday" / "trivia" / "sample" / "index.html").read_text(encoding="utf-8").split("---", 2)[1]
+    check("sitemap: false" in trivia_sample_front and "layout: null" in trivia_sample_front, "holiday/trivia/sample/index.html is layout null and sitemap: false")
 
     check(store_html.count(PAYMENT_URL) == 2, "storefront payment URL still appears twice, unchanged")
-    check(sample_html.count(PAYMENT_URL) == 2, "sample payment URL still appears twice, unchanged")
+    check("buy.stripe.com" not in sample_html, "sample redirect stub has no Stripe href (storefront block)")
     check(title_text(store_html) == HOLIDAY_TITLE, "holiday title")
     check(meta_content(store_html, "name", "description") == HOLIDAY_DESC, "holiday description")
     check(meta_content(store_html, "property", "og:title") == HOLIDAY_OG_TITLE, "holiday og:title")
     check(meta_content(store_html, "property", "og:description") == HOLIDAY_DESC, "holiday og:description matches description")
     check(meta_content(store_html, "property", "og:image") == PRODUCT_IMAGE, "holiday og:image is the landscape share card")
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/"' in store_html, "holiday canonical")
-    check(title_text(sample_html) == SAMPLE_TITLE, "sample title")
-    check(meta_content(sample_html, "name", "description") == SAMPLE_DESC, "sample description")
-    check(meta_content(sample_html, "property", "og:title") == SAMPLE_OG_TITLE, "sample og:title")
-    check(meta_content(sample_html, "property", "og:description") == SAMPLE_DESC, "sample og:description matches description")
-    check(meta_content(sample_html, "property", "og:image") == SAMPLE_IMAGE, "sample og:image is the landscape share card")
-    check('rel="canonical" href="https://getcyberdadkit.com/holiday/sample/"' in sample_html, "sample canonical")
-    for label, text in (("holiday title", HOLIDAY_TITLE), ("holiday description", HOLIDAY_DESC), ("sample title", SAMPLE_TITLE), ("sample description", SAMPLE_DESC)):
+    check("The Great Thanksgiving Travel Adventure" in title_text(sample_html), "sample redirect title names the Travel Adventure")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in sample_html, "sample canonical points at the Travel Adventure page")
+    check('name="robots" content="noindex, follow"' in sample_html, "sample redirect is noindex, follow")
+    check("sitemap: false" in sample_path.read_text(encoding="utf-8") and "layout: null" in sample_path.read_text(encoding="utf-8"), "sample redirect stays out of the sitemap")
+    check("{% include ga4.html %}" in sample_html, "sample redirect includes the site GA4 tag")
+    check("window.location.replace" in sample_html, "sample redirect uses location.replace")
+    check('content="0; url=https://getcyberdadkit.com/holiday/travel-adventure/"' in sample_html, "sample meta refresh is the plain Travel Adventure URL")
+    check('<a href="/holiday/travel-adventure/">Go to The Great Thanksgiving Travel Adventure</a>' in sample_html, "sample has a visible no-JS fallback link")
+    for label, text in (("holiday title", HOLIDAY_TITLE), ("holiday description", HOLIDAY_DESC)):
         check(50 <= len(text) <= 60 if "title" in label else 140 <= len(text) <= 160, f"{label} length {len(text)}")
         check(not re.search(r"\bCDK\b", text), f"{label} has no CDK")
     blocks = json_ld_blocks(store_html)
@@ -1129,11 +1112,12 @@ def main() -> int:
         sitemap = (site_dir / "sitemap.xml").read_text(encoding="utf-8")
         for loc in (
             "https://getcyberdadkit.com/holiday/",
-            "https://getcyberdadkit.com/holiday/sample/",
             "https://getcyberdadkit.com/holiday/refund/",
             "https://getcyberdadkit.com/holiday/travel-adventure/",
         ):
             check(f"<loc>{loc}</loc>" in sitemap, f"sitemap includes {loc}")
+        check("https://getcyberdadkit.com/holiday/sample/" not in sitemap, "sitemap omits the noindex sample redirect")
+        check("https://getcyberdadkit.com/holiday/trivia/sample/" not in sitemap, "sitemap omits the noindex trivia sample redirect")
         table_set_refund_loc = "https://getcyberdadkit.com/holiday/table-set/refund/"
         travel_refund_loc = "https://getcyberdadkit.com/holiday/travel-adventure/refund/"
         if f"<loc>{table_set_refund_loc}</loc>" in sitemap:
@@ -1144,9 +1128,11 @@ def main() -> int:
         built_privacy = (site_dir / "privacy" / "index.html").read_text(encoding="utf-8")
         check('content="0; url=/cyberdadkit-privacy-policy.html"' in built_privacy, "built /privacy/ keeps the redirect target")
         check('href="https://getcyberdadkit.com/cyberdadkit-privacy-policy.html"' in built_privacy, "built /privacy/ keeps the canonical")
-        for rel in ("holiday/index.html", "holiday/sample/index.html"):
-            built_html = (site_dir / rel).read_text(encoding="utf-8")
-            check("<title>" in built_html and 'name="description"' in built_html, f"built {rel} has a title and description")
+        built_holiday = (site_dir / "holiday" / "index.html").read_text(encoding="utf-8")
+        check("<title>" in built_holiday and 'name="description"' in built_holiday, "built holiday/index.html has a title and description")
+        built_sample = (site_dir / "holiday" / "sample" / "index.html").read_text(encoding="utf-8")
+        check("<title>" in built_sample and 'rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in built_sample, "built holiday/sample/index.html is the Travel Adventure redirect")
+        check("G-5B1LNCPB56" in built_sample, "built holiday/sample/index.html includes the GA4 property")
         print("note  built _site sitemap and homepage head checked")
     else:
         print("note  _site not present; skipped built sitemap and homepage head checks")
@@ -1483,9 +1469,7 @@ def main() -> int:
 
 TA_CROSSLINK_HREF = "/holiday/travel-adventure/"
 TA_CROSSLINK_PAGES = (
-    ("holiday/trivia/sample/index.html", "trivia-sample"),
     ("index.html", "home"),
-    ("holiday/sample/index.html", "holiday-sample"),
 )
 # Homepage Open Graph tags from the main build. jekyll-seo-tag prints og:description
 # on the same tag as twitter:description, so meta_content's property-then-content
