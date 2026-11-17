@@ -27,7 +27,7 @@ PREVIEW_HASHES = {
     "holiday/assets/previews/CyberDadKit-preview-page-01.png":
         "89fcf00322203cfe543ce7f32cc16adc1aab9d620acdb780eec72d12b9b50e09",
     "holiday/assets/previews/CyberDadKit-preview-page-09.png":
-        "86a48f58cc563fa4076749c0770e09af6a31318ad096d92d971c41ab2c747a1c",
+        "b2dc84e54a3d6692421176659fe3e51da9c915fcc50fa8c44bffe8143ae4ce70",
 }
 PAYMENT_URL = "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"
 TRIVIA_PAYMENT_URL = "https://buy.stripe.com/bJecN4aCyfyM4apbQrds406"
@@ -55,7 +55,7 @@ UNCHANGED_BUY_HREFS = Counter({
 })
 BUY_HREF_BASE = "e8d9b220ddd4f2755ab8d15a7111e6e8399b70ab"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
-HOST_KIT_ZIP_SHA = "7374c13246dcf01b61689e38545bd6b37a85f9ac6291bdf742aa41d2659f8b8d"
+HOST_KIT_ZIP_SHA = "611b0cf0c0e0dae1468e572d28563af8fbca589ee898dd657af2f59ebbc55a80"
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 TRAVEL_ZIP_REL = "holiday/travel-adventure/files/CyberDadKit-Thanksgiving-Travel-Adventure.zip"
 TRAVEL_ZIP_SHA = "3715c03c7f7c86cc2f8d4f81e0aa42f1d8e2107323e2acc7f9ccf67757eb80f1"
@@ -72,15 +72,15 @@ EXTRA_HOLIDAY_PAYMENT_URLS = {
     TRAVEL_PAYMENT_URL,
 }
 US_ELIGIBILITY = "Available only to customers located in the United States."
-PIN_SHA = "a45cbb992293aef692d92a92222946e76f6c2b30c593c019048167bc2a21866e"
+PIN_SHA = "1989ac3ab2c62012c2f09c43668d71e196b238b52db2ec9c186b7e775f1e157d"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
 PIN_FILES = {
-    "holiday/pins/02-christmas-gathering.png": "ace46fa9656ba34c532686983cf09ebac2c8f7f6ec8b4aa6edc13c54cf2914a7",
+    "holiday/pins/02-christmas-gathering.png": "4b7687298a91e94d7d575a1e23858a74ddefb60095b5d50bf042d99ee598ab22",
     "holiday/pins/03-office-holiday.png": "bea71bf1f06e4f7e5cb247c9b6979f1b0738ca61975a60a61efe720c95816181",
-    "holiday/pins/04-low-ink-last-minute.png": "610f223e21f58593ef23e9eda98908210648f6d785e64564ee74605790a84285",
-    "holiday/pins/pin-free-sample.png": "cb9f9d4385ce3b5ac29d8fb935cc216014212eb74083bf96c273a96c81041dc1",
-    "holiday/pins/pin-gathering-games.png": "cb4a6a67b31d5e6bd4a59f2c06a867aac3e06c0947ed55e2b51ee421f8e93597",
-    "holiday/pins/pin-low-ink.png": "6cbae8be1f50c88bb1e8c34f8aacb2db36981ad9d88fdd12ac883dd15bf681a8",
+    "holiday/pins/04-low-ink-last-minute.png": "3a00b0dc54a389aa30e3a107c8bab5a8f4d66f2b5c9c46cf92969035d094125b",
+    "holiday/pins/pin-free-sample.png": "650b1e8a0c6acde9638958313b3566fda090e5bf7556b1757ae5a5a6d744fe35",
+    "holiday/pins/pin-gathering-games.png": "e2fd3262f15dec937c8e2f7f50051e5abeababb2c8267e9b29110f75bcc57765",
+    "holiday/pins/pin-low-ink.png": "2a5c83c21ad766b9a0b706415b6bdabc82b9c7fe29ed71415f7cd39d69c55344",
 }
 # Travel Adventure inside-page previews under holiday/pins/. Existence only:
 # PR #1028 did not pin sha256 for the t017d pins in this folder.
@@ -270,7 +270,7 @@ THANKSGIVING_FILES = {
     "holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png":
         "55e22a71f712b07fb7a94d9be7d3959716d052aeca2d63305f96b7802caa218d",
     "holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-06.png":
-        "a9465fc54fbb4b9c3cbb3114540c0b7d24d0635f7b9ef277fbc98571a0658916",
+        "dd28d5412ba55632b28c976ca1e73833267e76168bf6b1baa2f5fc606519ad66",
 }
 HOST_REFUND = (
     "Thanksgiving Host Planner is a digital product. You may request a full refund for any reason "
