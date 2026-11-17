@@ -29,10 +29,10 @@ const CyberDadOptimizer = {
         },
         
         conversion_psychology: {
-            trust_signals: ['tested by families', 'expert recommended', 'easy setup', 'money back guarantee'],
-            urgency_triggers: ['limited time', 'exclusive deal', 'price increase soon'],
-            social_proof: ['thousands of families protected', 'parent testimonials', 'security expert endorsed'],
-            fear_mitigation: ['free trial', '30-day guarantee', 'no commitment', 'cancel anytime']
+            trust_signals: ['easy setup'],
+            urgency_triggers: [],
+            social_proof: [],
+            fear_mitigation: []
         },
         
         audit_tracking: {
@@ -560,8 +560,7 @@ const CyberDadOptimizer = {
                     target_audience: ['parents_with_young_kids', 'tech_beginners'],
                     objection_handlers: {
                         price: 'Free 30-day trial, cancel anytime',
-                        complexity: 'Setup in under 5 minutes',
-                        trust: 'Used by millions of families worldwide'
+                        complexity: 'Setup in under 5 minutes'
                     }
                 },
                 onepassword_families: {
@@ -584,8 +583,7 @@ const CyberDadOptimizer = {
                     target_audience: ['privacy_conscious', 'travelers', 'streamers'],
                     objection_handlers: {
                         price: 'Up to 70% off 2-year plans',
-                        complexity: 'One-click protection',
-                        trust: '30-day money-back guarantee'
+                        complexity: 'One-click protection'
                     }
                 }
             };
@@ -859,3 +857,4 @@ Ready to dominate search and convert visitors! 🚀
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = CyberDadOptimizer;
+}

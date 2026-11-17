@@ -75,15 +75,15 @@ EXTRA_HOLIDAY_PAYMENT_URLS = {
     TRAVEL_PAYMENT_URL,
 }
 US_ELIGIBILITY = "Available only to customers located in the United States."
-PIN_SHA = "22485a663d732a7107208bae5cb5d6aaf53d41f8fd2cf04c6e53406eee176675"
+PIN_SHA = "37b3532e8229d97840f277a9fa9db0e6ccbe12764be40f6c81180f762c17ae46"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
 PIN_FILES = {
-    "holiday/pins/02-christmas-gathering.png": "fc0ce23144d2c4540b05e6af8aab256ad645c55459fc599b93f622de04535b43",
-    "holiday/pins/03-office-holiday.png": "814b110be74311e58c48785f7061954767e4f128ef654779028e8da66ee212a4",
-    "holiday/pins/04-low-ink-last-minute.png": "05f3a3b384e2795d237b34e94bf6b91b4284870e2e0f1b9a161489106dd644d6",
+    "holiday/pins/02-christmas-gathering.png": "030b08c8184a507ea3d2306555c0583d050f8e54c91c3e90edae1df0548a9761",
+    "holiday/pins/03-office-holiday.png": "41c319da9ff35ac5a3197f449fc00d845b09acea8c7d17eb83afe4f1c7f48301",
+    "holiday/pins/04-low-ink-last-minute.png": "a9d2d2daf46b2a4e59f27e05abae653546ed38e0bac4bcde386c0eb92d8ce72c",
     "holiday/pins/pin-free-sample.png": "e08417c56df6305927e939b86417efd660b71dd354a9d8706d192c9841b2de9a",
-    "holiday/pins/pin-gathering-games.png": "95d8bbb5fc22102bf8f46e1dca30ff895efd0406ad635cc301d73cb1ef9c0f7d",
-    "holiday/pins/pin-low-ink.png": "9646a4d8688547b614c9d05060c9a91d3bc32ef390b11d3145e70482ce62c8cd",
+    "holiday/pins/pin-gathering-games.png": "e9242464864383a55d8dadaef7d227c6cb1c09d8b04ba76c60d7847437fc8c5c",
+    "holiday/pins/pin-low-ink.png": "f511846e350e7b6c33dc2d91da55fbd1678ad25f836c6f5e54a4f7ad5c74aa69",
 }
 # Travel Adventure inside-page previews under holiday/pins/. Existence only:
 # PR #1028 did not pin sha256 for the t017d pins in this folder.
@@ -147,11 +147,11 @@ TRIVIA_FILES = {
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
         "bfb39dcb827ebd53bb5bf0d57f8818c40f9bd093da5b8b27a7f2434b0ccc1551",
     "holiday/assets/trivia/pins/01-christmas-trivia-family.png":
-        "9a33e61a6d610d955cbd02c93a245c951ea24bde2416b379210fa0626a6d085c",
+        "449f64977e319fc7872e7f84b4a4aa63c9041407a71a64844c19b3282c099f0b",
     "holiday/assets/trivia/pins/02-christmas-trivia-80-questions.png":
-        "071bb3a4b58c7716853dfda632d23dff569bc679e79893ba6f553806d74bb524",
+        "cafdd684ae845ca85caec18025136d70880d504aab4d2306254c186e296833c8",
     "holiday/assets/trivia/pins/03-trivia-gather-play-bundle.png":
-        "e73b055eb108170e363d2c5a62fa9ee89d2029056072a400e9a2119664818e4b",
+        "ea3147c2f8a08131f6aa2270e5e1ae327577b004b159f9063aa2372ede0b289c",
     "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-01.png":
         "6426e93479ed34804b67001f20f9bda35541ab56e1a11e7795233ee3878c67ab",
     "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png":
