@@ -149,74 +149,57 @@ def main() -> int:
         if not ok:
             failed.append(message)
 
-    print("Stripe hrefs (current == origin/main):")
+    # One-page shop (feat/holiday-one-page-1117). /holiday/ is now the single shop
+    # page with no signup embed (the eMwTaD form is inactive, so it was removed), and
+    # /holiday/table-set/, /holiday/host-kit/, /holiday/kids-table/,
+    # /holiday/host-planner/ and the two sample URLs are redirect stubs that pass the
+    # visitor's own query string through. Retired: the product, sample, signup, buy
+    # order; the MailerLite embed checks; the sample-round CTA checks; the
+    # "left unchanged" locks; the fixed utm_content on the sample redirects.
+    # Kept and rewritten: Stripe hrefs, US-only, guarantee, Shield, filing id, footer.
+    main_links: set[str] = set()
+    for rel in ("holiday/index.html", "holiday/table-set/index.html", "holiday/host-kit/index.html",
+                "holiday/kids-table/index.html", "holiday/host-planner/index.html", "holiday/trivia/index.html",
+                "holiday/travel-adventure/index.html", "shop/index.html"):
+        main_links.update(STRIPE_RE.findall(git_show(rel)))
+    print("Stripe hrefs (current, each must be live on main):")
     for page in PAGES:
         rel = page["rel"]
         html = (ROOT / rel).read_text(encoding="utf-8")
-        previous = git_show(rel)
         label = "/" + rel[: -len("index.html")]
-        product_at = html.find(page["product"])
-        sample_at = html.find(page["sample"])
-        signup_at = html.find('id="updates"')
-        buy_at = html.find(page["buy"])
-        page_hero = hero(html)
         stripe_now = STRIPE_RE.findall(html)
-        stripe_old = STRIPE_RE.findall(previous)
         print(f"  {rel}: {stripe_now}")
-
-        if rel == "holiday/index.html":
-            check(0 < product_at < signup_at < buy_at, f"{label} order is product, signup, buy")
-            check('id="sample-round"' not in html, f"{label} no longer has a sample-round section")
-            check('id="travel-adventure-top"' in html and 0 < html.find('id="travel-adventure-top"') < signup_at, f"{label} Travel Adventure line sits before signup")
-        else:
-            check(0 < product_at < sample_at < signup_at < buy_at, f"{label} order is product, sample, signup, buy")
-        check(page["buy"] not in page_hero and "ml-embedded" not in page_hero, f"{label} hero is the product, without the form or the buy button")
-        check(html.count('class="ml-embedded"') == 1, f"{label} has one ml-embedded container")
-        check(html.count('data-form="eMwTaD"') == 1, f"{label} has one eMwTaD embed")
-        check(html.count("data-form=") == 1, f"{label} has no second data-form")
-        check(html.count("https://assets.mailerlite.com/js/universal.js") == 1, f"{label} loads universal.js once")
-        check("ml('account','1632878')" in html, f"{label} uses MailerLite account 1632878")
-        check(html.count(NOSCRIPT) == 1, f"{label} has one noscript hosted-form fallback")
-        check("optin_view" in html and "IntersectionObserver" in html, f"{label} keeps the optin_view event")
         check(not GUARANTEE_RE.search(html), f"{label} has no guarantee wording")
         check(not SHIELD_RE.search(html), f"{label} has no Shield mention")
-        check(US_ONLY in html, f"{label} keeps the US-only sentence")
         check(DOC_NUMBER not in html, f"{label} has no retired filing identifier")
         page_footer = footer(html)
         check(html.count("<footer") == 1 and page_footer.count("</footer>") == 1, f"{label} has one footer")
         for line in FOOTER_LINES:
             check(page_footer.count(line) == 1, f"{label} footer line once: {line}")
-        expected = stripe_old + ALLOWED_STRIPE_ADDITIONS.get(rel, [])
-        check(Counter(stripe_now) == Counter(expected), f"{label} Stripe hrefs match main plus the approved holiday buy links")
-        for href in added_holiday_ctas(html, previous):
-            decoded = href.replace("&amp;", "&")
-            path = decoded.split("?", 1)[0]
-            check(path == "/holiday/travel-adventure/", f"{label} added CTA {href} is a plain Travel Adventure link")
-            check("utm_" not in decoded, f"{label} added CTA {href} has no UTM params")
-        if rel != "holiday/index.html":
-            check('id="sample-round-cta"' in html, f"{label} sample CTA is marked")
-            cta = re.search(r'id="sample-round-cta" href="([^"]+)"', html)
-            target = cta.group(1).replace("&amp;", "&") if cta else ""
-            check(target == "/holiday/travel-adventure/", f"{label} sample CTA points at /holiday/travel-adventure/ with no UTM params")
-            check("utm_" not in target, f"{label} sample CTA has no UTM params")
-            check('data-cta="' in html[html.find('id="sample-round-cta"'):html.find('id="sample-round-cta"')+200], f"{label} sample CTA has a data-cta slug")
+        if rel == "holiday/index.html":
+            hero_buy = html.find('id="host-kit-checkout-holiday"')
+            first_card = html.find('id="gather-and-play"')
+            check(0 < html.find('id="hk-title"') < hero_buy < first_card, f"{label} order is the Host Kit hero, its buy button, then the cards")
+            check(page["buy"] not in hero(html), f"{label} hero has no Gather & Play buy button")
+            check("ml-embedded" not in html and "data-form=" not in html and "universal.js" not in html, f"{label} has no MailerLite embed (inactive form removed)")
+            check(US_ONLY in html, f"{label} keeps the US-only sentence")
+            check(HOST_KIT_PAYMENT_URL in stripe_now and TRIVIA_PAYMENT_URL in stripe_now and PLANNER_PAYMENT_URL in stripe_now and KIDS_PAYMENT_URL in stripe_now, f"{label} carries the Host Kit, Trivia, Host Planner and Kids' Table buy links")
+            check(bool(stripe_now) and set(stripe_now) <= main_links, f"{label} Stripe hrefs are all live on main")
+            for href in hrefs(html):
+                path = holiday_page_path(href)
+                check(path is None or path in {"/holiday/"} or path.endswith("/refund/"), f"{label} link {href} does not hop through a redirect stub")
+        else:
+            check(not stripe_now, f"{label} redirect stub has no Stripe href")
+            check('location.replace("/holiday/" + window.location.search' in html, f"{label} redirect stub keeps the query string")
 
-    for rel in UNCHANGED:
-        current = (ROOT / rel).read_text(encoding="utf-8")
-        previous = git_show(rel)
-        check(current == previous, f"{rel} left unchanged (funnel edit was not small enough)")
-
-    for rel, content in (
-        ("holiday/sample/index.html", "sample-redirect-table-talk-trails"),
-        ("holiday/trivia/sample/index.html", "sample-redirect-trivia"),
-    ):
+    for rel in UNCHANGED + ("holiday/sample/index.html", "holiday/trivia/sample/index.html"):
         html = (ROOT / rel).read_text(encoding="utf-8")
         label = "/" + rel[: -len("index.html")]
         check("window.location.replace" in html, f"{label} redirect uses location.replace")
         check('name="robots" content="noindex, follow"' in html, f"{label} is noindex")
         check("{% include ga4.html %}" in html, f"{label} includes GA4")
         check("buy.stripe.com" not in html, f"{label} has no Stripe href")
-        check(f'params.set("utm_content", "{content}")' in html, f"{label} uses utm_content={content}")
+        check("window.location.search" in html, f"{label} passes the visitor's query string through")
         check("utm_source=pinterest" not in html, f"{label} has no pinterest/paid default")
 
     worldwide_re = re.compile(r"\bworldwide\b", re.I)

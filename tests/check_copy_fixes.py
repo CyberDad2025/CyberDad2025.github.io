@@ -100,13 +100,35 @@ ALLOWED_PRICE_ADDITIONS = {
     "holiday/index.html": None,
     "holiday/sample/index.html": None,
     "holiday/host-kit/index.html": None,
-    # The Travel Adventure cross-link states the existing $4.99 price. It adds no checkout URL.
-    "_includes/ta-crosslink.html": Counter({"$4.99": 1}),
-    # T-018 edit 2 restates the existing $4.99 price on the mid-page CTA. It adds no checkout URL.
-    "holiday/travel-adventure/index.html": Counter({"$4.99": 1}),
-    # Sample-to-Travel in-site line restates the existing $4.99 price. No checkout URL added.
-    "holiday/table-set/index.html": Counter({"$4.99": 1}),
+    # One-page shop: the ta-crosslink $4.99, travel-adventure and table-set entries
+    # are on main now (the product pages became redirect stubs), so they were dropped.
 }
+ONE_PAGE_STUBS = {
+    "shop/index.html",
+    "holiday/host-kit/index.html",
+    "holiday/host-planner/index.html",
+    "holiday/kids-table/index.html",
+    "holiday/table-set/index.html",
+    "holiday/travel-adventure/index.html",
+    "holiday/trivia/index.html",
+}
+ONE_PAGE_FORM_REMOVALS = {"holiday/index.html"} | ONE_PAGE_STUBS
+
+
+def main_holiday_stripe_links() -> set[str]:
+    """Every buy.stripe.com URL on main's holiday product pages and /shop/."""
+    links: set[str] = set()
+    for name in ONE_PAGE_STUBS | {"holiday/index.html"}:
+        links.update(STRIPE_RE.findall(git_show(name) or ""))
+    return links
+
+
+def main_holiday_prices() -> set[str]:
+    """Price tokens on main's holiday product pages, plus the verified Host Kit parts sum."""
+    prices = {"$24.96"}
+    for name in ONE_PAGE_STUBS | {"holiday/index.html"}:
+        prices.update(PRICE_RE.findall(git_show(name) or ""))
+    return prices
 LLC_LINE = "CyberDad Kit LLC, PO Box 940061"
 
 
@@ -335,7 +357,12 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
             continue
         # Redirect stubs drop product copy, prices, and the sample signup form on purpose.
-        if name in {"holiday/sample/index.html", "holiday/trivia/sample/index.html"}:
+        # One-page shop: the old product pages and /shop/ are redirect stubs too. They
+        # must carry no checkout URL and no form; their links and prices now live on
+        # /holiday/ (checked below and in tests/check_holiday_one_page.py).
+        if name in {"holiday/sample/index.html", "holiday/trivia/sample/index.html"} | ONE_PAGE_STUBS:
+            if name in ONE_PAGE_STUBS and FORM_RE.findall(new):
+                form_bad.append(name)
             if STRIPE_RE.findall(new):
                 stripe_bad.append(name)
             continue
@@ -345,6 +372,10 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             removed = old_links - new_links
             added = new_links - old_links
             if removed != Counter({JOURNAL_A4_LINK: 1}) or added:
+                stripe_bad.append(name)
+        elif name == "holiday/index.html":
+            # One-page shop: every checkout URL on /holiday/ must already be live on main.
+            if set(new_links) - main_holiday_stripe_links():
                 stripe_bad.append(name)
         elif name.startswith("tests/") or name in {
             "holiday/host-kit/index.html",
@@ -357,7 +388,12 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         old_prices = Counter(PRICE_RE.findall(old))
         new_prices = Counter(PRICE_RE.findall(new))
         allowed_removed = ALLOWED_PRICE_REMOVALS.get(name, Counter())
-        if name in ALLOWED_PRICE_ADDITIONS and ALLOWED_PRICE_ADDITIONS[name] is None:
+        if name == "holiday/index.html":
+            # One-page shop: retired cards drop their prices. Every price left must be a
+            # price main already shows on a holiday page, or the verified $24.96 sum.
+            if set(new_prices) - main_holiday_prices():
+                price_bad.append(name)
+        elif name in ALLOWED_PRICE_ADDITIONS and ALLOWED_PRICE_ADDITIONS[name] is None:
             if old_prices - new_prices != allowed_removed:
                 price_bad.append(name)
         else:
@@ -369,7 +405,12 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             removed = Counter(FORM_RE.findall(old)) - Counter(FORM_RE.findall(new))
             # The holiday sample page adds one embedded form. Tests may quote that slug and URL.
             allowed = {'data-form="eMwTaD"', "forms/1632878"}
-            if removed or any(token not in allowed for token in added):
+            # One-page shop removes the inactive eMwTaD signup embed from /holiday/,
+            # so removals are allowed there. Nothing may be added.
+            if name in ONE_PAGE_FORM_REMOVALS:
+                if added:
+                    form_bad.append(name)
+            elif removed or any(token not in allowed for token in added):
                 form_bad.append(name)
     return stripe_bad, price_bad, form_bad
 
@@ -448,9 +489,10 @@ def check_built_site(check) -> None:
     missing = [url for url in expected if not any(loc.rstrip("/") == url.rstrip("/") for loc in locs)]
     check(not missing, "sitemap still has every existing /holiday/ URL" + ("" if not missing else f" missing {missing}"))
     required_new = [
-        "https://getcyberdadkit.com/holiday/host-planner/",
+        # One-page shop: /holiday/host-planner/ and /holiday/kids-table/ are now noindex redirects to /holiday/#card,
+        # so they leave the sitemap. Their refund pages stay listed.
+        "https://getcyberdadkit.com/holiday/",
         "https://getcyberdadkit.com/holiday/host-planner/refund/",
-        "https://getcyberdadkit.com/holiday/kids-table/",
         "https://getcyberdadkit.com/holiday/kids-table/refund/",
         "https://getcyberdadkit.com/journal/2027/",
         "https://getcyberdadkit.com/journal/2027/refund/",
@@ -460,7 +502,7 @@ def check_built_site(check) -> None:
         "https://getcyberdadkit.com/support/",
     ]
     missing_new = [url for url in required_new if not any(loc.rstrip("/") == url.rstrip("/") for loc in locs)]
-    check(not missing_new, "sitemap lists host planner, kids table, journal, and their refund pages" + ("" if not missing_new else f" missing {missing_new}"))
+    check(not missing_new, "sitemap lists /holiday/, the host planner and kids table refund pages, and the journal pages" + ("" if not missing_new else f" missing {missing_new}"))
     check(not any(("/holiday/" + "delivery") in loc for loc in locs), "sitemap has no removed delivery URL")
     check(not any("/privacy/" in loc or loc.rstrip("/").endswith("/privacy") for loc in locs), "sitemap omits the privacy redirect")
     check(not any("/shield-kit" in loc for loc in locs), "sitemap omits /shield-kit/")

@@ -11,7 +11,10 @@ Run: python3 tests/check_holiday_one_page.py
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
+import struct
 import sys
 from pathlib import Path
 
@@ -34,11 +37,16 @@ REMOVED_LINKS = (
     "https://buy.stripe.com/fZu00i9yu0DS22h1bNds408",  # journal US Letter
     "https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a",  # journal half-letter
 )
-PREVIEWS = (
-    "/holiday/assets/previews/CyberDadKit-preview-page-09.png",
-    "/holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png",
-    "/holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
-)
+# Hero previews: downscaled WebP copies of these existing post-#1045 preview pages.
+PREVIEWS = {
+    "/holiday/assets/shop/gather-and-play-page-09-360.webp": "holiday/assets/previews/CyberDadKit-preview-page-09.png",
+    "/holiday/assets/shop/christmas-trivia-page-05-360.webp": "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png",
+    "/holiday/assets/shop/host-planner-page-03-360.webp": "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
+}
+# Every downscaled image: source file and its sha256 at the time of the copy, and the output size.
+IMAGES = json.loads((ROOT / "tests" / "holiday_one_page_images.json").read_text(encoding="utf-8"))
+REFUND_LINKS = ("/holiday/host-kit/refund/", "/holiday/refund/", "/holiday/trivia/refund/", "/holiday/table-set/refund/",
+                "/holiday/host-planner/refund/", "/holiday/kids-table/refund/", "/holiday/travel-adventure/refund/")
 # old URL (repo file) -> expected JS hash expression, meta refresh target
 REDIRECTS = {
     "holiday/travel-adventure/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
@@ -51,8 +59,9 @@ REDIRECTS = {
     "holiday/trivia/sample/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
     "shop/index.html": ('var h = window.location.hash || "";', "/holiday/"),
 }
-KEEP_UNCHANGED = (
-    "journal/2027/index.html",
+KEEP_UNCHANGED = ("journal/2027/index.html",)
+# Refund pages: only product-link hrefs may change (to /holiday/#card); the text stays the same.
+REFUND_PAGES = (
     "holiday/refund/index.html",
     "holiday/host-kit/refund/index.html",
     "holiday/host-planner/refund/index.html",
@@ -95,8 +104,35 @@ def main() -> int:
     check('class="gp-buy"' in html, "Gather & Play uses the secondary button style")
     check("Digital PDFs, U.S. customers, 7-day refund policy" in html, "hero fine line is present")
     check("$24.96 separately" in html, "hero shows the verified $24.96 separate-price line (7.99 + 5.99 + 4.99 + 5.99)")
-    for p in PREVIEWS:
-        check(html.count(f'src="{p}"') == 1 and (ROOT / p.lstrip("/")).is_file(), f"hero preview {p} exists in the repo")
+    for p, src in PREVIEWS.items():
+        check(html.count(f'src="{p}"') == 1 and (ROOT / p.lstrip("/")).is_file() and (ROOT / src).is_file(), f"hero preview {p} (from {src}) is on the page and exists")
+    used = set(re.findall(r'/holiday/assets/shop/[a-z0-9-]+\.webp', html))
+    check(used == {"/" + k for k in IMAGES}, f"/holiday/ uses exactly the {len(IMAGES)} listed downscaled images")
+    for rel, meta in IMAGES.items():
+        path = ROOT / rel
+        src = ROOT / meta["source"]
+        ok = path.is_file() and src.is_file() and hashlib.sha256(src.read_bytes()).hexdigest() == meta["source_sha256"]
+        if ok:
+            data = path.read_bytes()
+            ok = data[:4] == b"RIFF" and data[8:12] == b"WEBP" and len(data) < 80000
+        check(ok, f"{rel} exists, is WebP under 80 KB, and its source {meta['source']} is unchanged")
+    imgs = re.findall(r"<img [^>]*>", html)
+    check(len(imgs) >= 4 and all('loading="lazy"' not in i for i in imgs[:4]), "hero cover and 3 previews load eagerly")
+    check(all('loading="lazy"' in i for i in imgs[4:]), "every image below the hero is lazy-loaded")
+    check(all("width=" in i and "height=" in i for i in imgs), "every image has width and height")
+    for link in REFUND_LINKS:
+        check(f'href="{link}"' in html, f"/holiday/ links the refund page {link}")
+    for phrase in ("Available only to customers located in the United States.", "Stripe checkout displays Ruel Miller.",
+                   "After a successful payment, Stripe's confirmation screen shows the download link.",
+                   "with your checkout email address", "does not promise automatic processing", "CyberDad Kit LLC"):
+        check(phrase in html, f"/holiday/ keeps the checkout/refund wording: {phrase}")
+    for anchor, (bid, link, price) in CARDS.items():
+        check(f'id="{bid}" data-list-id="holiday-{anchor}"' in html, f"#{anchor} Buy button sends item_list_id holiday-{anchor}")
+    ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+    ldj = json.loads(ld.group(1)) if ld else {}
+    check(ldj.get("offers", {}).get("price") == "17.99" and ldj.get("name") == "Holiday Host Kit", "JSON-LD is the Host Kit at 17.99 USD")
+    ga = (ROOT / "_includes" / "ga4.html").read_text(encoding="utf-8")
+    check("a.getAttribute('data-list-id') || location.pathname" in ga, "ga4.html uses data-list-id for item_list_id, else the page path")
     body = visible(html.split("<body", 1)[1])
     check(body.count("7 days") == 1, "refund window sentence appears once in visible text")
     check(body.count("located in the United States") == 1, "US eligibility sentence appears once in visible text")
@@ -125,6 +161,15 @@ def main() -> int:
     for rel in KEEP_UNCHANGED:
         diff = subprocess.run(["git", "diff", "--quiet", "origin/main", "--", rel], cwd=ROOT).returncode
         check(diff == 0, f"{rel} is unchanged versus origin/main")
+    for rel in REFUND_PAGES:
+        old = subprocess.run(["git", "show", f"origin/main:{rel}"], cwd=ROOT, capture_output=True, text=True).stdout
+        new = (ROOT / rel).read_text(encoding="utf-8")
+        norm = lambda t: re.sub(r'href="/(holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/|holiday/#[a-z-]+|shop/|holiday/)"', 'href="X"', t)
+        check(norm(old) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
+        check(not re.search(r'href="/holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/"', new), f"{rel}: product links go straight to /holiday/#card")
+    for rel in ("_includes/home-header.html", "_includes/ta-crosslink.html"):
+        inc = (ROOT / rel).read_text(encoding="utf-8")
+        check(not re.search(r'href="/(shop/|holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/)"', inc), f"{rel} links straight to /holiday/ cards (no redirect hop)")
     print()
     if failed:
         print(f"FAILED {len(failed)} check(s)")

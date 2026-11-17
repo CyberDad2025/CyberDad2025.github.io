@@ -29,6 +29,15 @@ PAGES = (
     "journal/2027/index.html",
 )
 BASE = "origin/main"
+# One-page shop: these PAGES are now redirect stubs (or, for holiday/index.html,
+# the new one-page shop). Their per-page "matches origin/main" pins are retired.
+ONE_PAGE_REPLACED = {
+    "shop/index.html",
+    "holiday/index.html",
+    "holiday/trivia/index.html",
+    "holiday/host-planner/index.html",
+    "holiday/kids-table/index.html",
+}
 # New holiday policy pages use the same stylesheet. They are not in PAGES,
 # so this file still locks storefront text, prices, and checkout links to main.
 POLICY_PAGES = (
@@ -334,10 +343,34 @@ def main() -> int:
         if not ok:
             failed.append(message)
 
+    # One-page shop: Stripe links and prices across the replaced pages, checked as a set.
+    main_links: set[str] = set()
+    main_prices: set[str] = {"$24.96"}  # verified Host Kit parts sum (PRICE-SUM.md)
+    for rel in ONE_PAGE_REPLACED:
+        main_links.update(stripe_hrefs(main_text(rel)))
+        main_prices.update(price_strings(main_text(rel)))
+
     for rel in PAGES:
         current = (ROOT / rel).read_text(encoding="utf-8")
         previous = main_text(rel)
         label = rel
+        if rel in ONE_PAGE_REPLACED:
+            # Rewritten guards. The per-page "matches origin/main" pins are retired
+            # because these pages are now the one-page shop or its redirect stubs.
+            if rel == "holiday/index.html":
+                links = stripe_hrefs(current)
+                check(bool(links) and set(links) <= main_links, f"{label}: every buy.stripe.com href is already live on main")
+                check(set(price_strings(current)) <= main_prices, f"{label}: every $ price is a main holiday price or the verified $24.96 sum")
+                check(current.count("Available only to customers located in the United States.") == 1, f"{label}: US-only sentence appears once")
+            else:
+                check(not stripe_hrefs(current), f"{label}: redirect stub has no buy.stripe.com href")
+                check("location.replace(\"/holiday/\" + window.location.search" in current, f"{label}: redirect stub keeps the query string")
+            current_footer = footer_html(current)
+            for line in FOOTER_LINES:
+                check(current_footer.count(line) == 1, f"{label}: footer has one identity line: {line}")
+            check(current_footer.count("CyberDad Kit LLC") == 1, f"{label}: footer names the LLC once")
+            check("worldwide" not in current.lower(), f"{label}: worldwide is absent")
+            continue
         # The Holiday Host Kit card is new catalog content. Compare the
         # rest of /shop/ and /holiday/ with origin/main. The Table Set card
         # is already on main, so it stays in the comparison.
@@ -477,12 +510,15 @@ def main() -> int:
     footer = footer_html(holiday)
     header = holiday.split("<main", 1)[0]
     check('href="/shield-kit/"' not in header and 'href="/shield-kit/"' not in footer, "holiday nav and footer have no /shield-kit/ link")
-    check(TERMS_SENTENCE in holiday, "holiday FAQ points the 7-day refund line at Gather & Play")
+    # One-page shop: the Gather & Play FAQ and support list are gone. Rewritten:
+    # the single 7-day refund line on /holiday/ links every product refund page.
+    refund_line = re.search(r"<p>You may request a full refund for any reason within 7 days of the purchase date\..*?</p>", holiday, re.S)
     check(
-        '<li><a href="/holiday/refund/">Refund policy: Gather &amp; Play, full refund within 7 days of purchase. Each product page lists its own refund terms.</a></li>' in holiday
-        and '<li><a href="/terms-of-sale/">Terms of sale: holiday digital printables.</a></li>' in holiday,
-        "holiday support list points the 7-day refund line at Gather & Play",
+        refund_line is not None
+        and all(f'href="/holiday/{slug}refund/"' in refund_line.group(0) for slug in ("", "host-kit/", "trivia/", "table-set/", "host-planner/", "kids-table/", "travel-adventure/")),
+        "holiday 7-day refund line links every product refund page",
     )
+    check('<a href="/terms-of-sale/">' in holiday, "holiday page links the terms of sale")
     check('href="/refund-policy/"' not in holiday, "holiday page does not send the 7-day line to /refund-policy/")
     journal = (ROOT / "journal" / "2027" / "index.html").read_text(encoding="utf-8")
     check(
@@ -540,16 +576,17 @@ def main() -> int:
         check(got == digest, f"{rel} sha256 matches the supplied cover")
         check(path.stat().st_size < 200 * 1024, f"{rel} is under 200 KB") if path.is_file() else None
 
-    shop = (ROOT / "shop" / "index.html").read_text(encoding="utf-8")
+    # One-page shop: /shop/ and the old product pages are redirect stubs with no
+    # images, so the cover checks now target /holiday/ (rewritten, not removed).
+    shop = (ROOT / "holiday" / "index.html").read_text(encoding="utf-8")
     shop_imgs = re.findall(r"<img\b[^>]*>", shop)
-    check(shop_imgs and "loading=\"lazy\"" not in shop_imgs[0], "first shop cover is eager")
-    check(all("loading=\"lazy\"" in tag for tag in shop_imgs[1:]), "later shop covers are lazy")
+    check(bool(shop_imgs) and 'loading="lazy"' not in shop_imgs[0] and "host-kit-cover" in shop_imgs[0], "first /holiday/ cover (Host Kit) is eager")
+    check(all('loading="lazy"' in tag for tag in shop_imgs[4:]), "/holiday/ covers below the hero are lazy")
     for tag in shop_imgs:
-        if "table-set" in tag or "host-kit" in tag:
-            check('width="1200"' in tag and 'height="1600"' in tag, "1200 by 1600 shop cover uses its image size")
-        else:
-            check('width="720"' in tag and 'height="1022"' in tag, "shop covers set 720 by 1022")
-    for rel in PAGES:
+        check(re.search(r'width="\d+"', tag) is not None and re.search(r'height="\d+"', tag) is not None, "/holiday/ cover sets its image size")
+        src = re.search(r'src="([^"]+)"', tag)
+        check(src is not None and src.group(1).endswith(".webp"), f"/holiday/ image prefers webp: {src.group(1) if src else tag[:60]}")
+    for rel in [r for r in PAGES if r not in ONE_PAGE_REPLACED]:
         html = (ROOT / rel).read_text(encoding="utf-8")
         check("<picture" in html and 'type="image/webp"' in html, f"{rel}: picture prefers webp")
         first = re.search(r"<picture\b.*?</picture>", html, re.S)
