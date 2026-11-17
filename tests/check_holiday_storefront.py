@@ -72,15 +72,15 @@ EXTRA_HOLIDAY_PAYMENT_URLS = {
     TRAVEL_PAYMENT_URL,
 }
 US_ELIGIBILITY = "Available only to customers located in the United States."
-PIN_SHA = "1989ac3ab2c62012c2f09c43668d71e196b238b52db2ec9c186b7e775f1e157d"
+PIN_SHA = "22485a663d732a7107208bae5cb5d6aaf53d41f8fd2cf04c6e53406eee176675"
 PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
 PIN_FILES = {
-    "holiday/pins/02-christmas-gathering.png": "4b7687298a91e94d7d575a1e23858a74ddefb60095b5d50bf042d99ee598ab22",
-    "holiday/pins/03-office-holiday.png": "bea71bf1f06e4f7e5cb247c9b6979f1b0738ca61975a60a61efe720c95816181",
-    "holiday/pins/04-low-ink-last-minute.png": "3a00b0dc54a389aa30e3a107c8bab5a8f4d66f2b5c9c46cf92969035d094125b",
-    "holiday/pins/pin-free-sample.png": "650b1e8a0c6acde9638958313b3566fda090e5bf7556b1757ae5a5a6d744fe35",
-    "holiday/pins/pin-gathering-games.png": "e2fd3262f15dec937c8e2f7f50051e5abeababb2c8267e9b29110f75bcc57765",
-    "holiday/pins/pin-low-ink.png": "2a5c83c21ad766b9a0b706415b6bdabc82b9c7fe29ed71415f7cd39d69c55344",
+    "holiday/pins/02-christmas-gathering.png": "fc0ce23144d2c4540b05e6af8aab256ad645c55459fc599b93f622de04535b43",
+    "holiday/pins/03-office-holiday.png": "814b110be74311e58c48785f7061954767e4f128ef654779028e8da66ee212a4",
+    "holiday/pins/04-low-ink-last-minute.png": "05f3a3b384e2795d237b34e94bf6b91b4284870e2e0f1b9a161489106dd644d6",
+    "holiday/pins/pin-free-sample.png": "e08417c56df6305927e939b86417efd660b71dd354a9d8706d192c9841b2de9a",
+    "holiday/pins/pin-gathering-games.png": "95d8bbb5fc22102bf8f46e1dca30ff895efd0406ad635cc301d73cb1ef9c0f7d",
+    "holiday/pins/pin-low-ink.png": "9646a4d8688547b614c9d05060c9a91d3bc32ef390b11d3145e70482ce62c8cd",
 }
 # Travel Adventure inside-page previews under holiday/pins/. Existence only:
 # PR #1028 did not pin sha256 for the t017d pins in this folder.
