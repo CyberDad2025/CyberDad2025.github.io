@@ -55,7 +55,7 @@ UNCHANGED_BUY_HREFS = Counter({
 })
 BUY_HREF_BASE = "e8d9b220ddd4f2755ab8d15a7111e6e8399b70ab"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
-HOST_KIT_ZIP_SHA = "46e5bde02d4a17cb8b22033ab3d363b3d36563466bc3bf5f9092002fed713055"
+HOST_KIT_ZIP_SHA = "7374c13246dcf01b61689e38545bd6b37a85f9ac6291bdf742aa41d2659f8b8d"
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 TRAVEL_ZIP_REL = "holiday/travel-adventure/files/CyberDadKit-Thanksgiving-Travel-Adventure.zip"
 TRAVEL_ZIP_SHA = "3715c03c7f7c86cc2f8d4f81e0aa42f1d8e2107323e2acc7f9ccf67757eb80f1"
@@ -270,7 +270,7 @@ THANKSGIVING_FILES = {
     "holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-01.png":
         "55e22a71f712b07fb7a94d9be7d3959716d052aeca2d63305f96b7802caa218d",
     "holiday/assets/kids-table/previews/CyberDadKit-Kids-Table-preview-page-06.png":
-        "6b6b50c8c3cd1d3f4616ab4e507089fdac89c587f7d6854e9cea28715298b417",
+        "a9465fc54fbb4b9c3cbb3114540c0b7d24d0635f7b9ef277fbc98571a0658916",
 }
 HOST_REFUND = (
     "Thanksgiving Host Planner is a digital product. You may request a full refund for any reason "
