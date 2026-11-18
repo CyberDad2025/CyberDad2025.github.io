@@ -67,6 +67,19 @@ body.festive a.hk-buy:hover { background: #7c2d12; color: #fff8f0; }
 .hk-fine { text-align: center; margin: 0.4rem 0 0; font-size: 0.85rem; color: #3d3832; }
 .hk-merchant { text-align: center; margin: 0.35rem 0 0; font-size: 0.8rem; color: #3d3832; }
 .hk-merchant span { white-space: nowrap; }
+.hk-save { margin: 0.75rem 0 0; padding: 0.6rem 0.7rem; border: 1px dashed #e0b03a; border-radius: 12px; background: #fff8ec; }
+.hk-save label { display: block; font-weight: 700; font-size: 0.95rem; color: #3d3832; margin: 0 0 0.3rem; }
+.hk-save-opt { font-weight: 400; }
+.hk-save-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.hk-save input[type="email"] { flex: 1 1 12rem; min-width: 0; min-height: 44px; font-size: 1rem; padding: 0.45rem 0.6rem; border: 1px solid #8a7f72; border-radius: 8px; background: #fff; color: #1f1b16; }
+.hk-save button { flex: 0 0 auto; min-height: 44px; padding: 0.45rem 0.9rem; font-size: 0.95rem; font-weight: 700; border: 2px solid #9a3412; border-radius: 999px; background: #fff; color: #7c2d12; cursor: pointer; }
+.hk-save button:hover { background: #fff4d6; }
+.hk-save button:disabled { opacity: 0.6; cursor: default; }
+.hk-save input:focus-visible, .hk-save button:focus-visible { outline: 3px solid #e0b03a; outline-offset: 2px; }
+.hk-save-consent { margin: 0.35rem 0 0; font-size: 0.82rem; color: #3d3832; }
+.hk-save-status { margin: 0.3rem 0 0; font-size: 0.9rem; font-weight: 700; color: #17352a; }
+.hk-save-status:empty { display: none; }
+.hk-save-status.is-error { color: #7f1d1d; }
 .hk-prevs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.6rem; }
 .hk-prev { margin: 0; }
 .hk-prev img { border: 1px solid #e7d3a1; border-radius: 6px; aspect-ratio: 1391 / 1800; object-fit: cover; }
@@ -106,6 +119,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
   .hk-buy { display: inline-block; padding: 0.8rem 1.6rem; }
   .hk-fine { text-align: left; }
   .hk-merchant { text-align: left; }
+  .hk-save { max-width: 520px; }
   .hk-prevs { max-width: 520px; }
   .hk-prev figcaption { font-size: 0.85rem; }
   .mp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -113,6 +127,28 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
 }
 @media (min-width: 1100px) { .mp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } #kids-table, #travel-adventure { align-self: start; } }
 </style>
+<script>
+(function () {
+  /* Host Kit email capture, Buy prefill (hostkit-capture-1118 v2). The Buy href in the page never changes, so GA
+     (buy_click, begin_checkout, enhanced-measurement outbound clicks) only ever sees the clean Stripe link. A captured
+     email is held in this closure only. Registered before the GA tag, on window in the capture phase, so it runs before
+     any document listener; it does not stop propagation, so buy_click and begin_checkout fire as before. Only a plain
+     left click or Enter with an email held is redirected to the same link plus ?prefilled_email=. Modifier clicks and
+     new tabs fall through to the clean link. */
+  var held = "";
+  window.__hkPrefill = function (email) { held = String(email || ""); };
+  window.addEventListener("click", function (e) {
+    if (!held || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest("#host-kit-checkout-holiday") : null;
+    if (!a || (a.target && a.target !== "_self")) return;
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf("https://buy.stripe.com/") !== 0) return;
+    e.preventDefault();
+    var dest = href.split("?")[0].split("#")[0] + "?prefilled_email=" + encodeURIComponent(held);
+    setTimeout(function () { window.location.assign(dest); }, 0);
+  }, true);
+})();
+</script>
 {% include ga4.html %}
 </head>
 <body class="festive festive-holiday">
@@ -140,6 +176,17 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
     <a class="hk-buy" id="host-kit-checkout-holiday" data-list-id="holiday-host-kit" href="https://buy.stripe.com/28EbJ07qmaes36l7Abds40f">Buy Holiday Host Kit for $17.99 USD</a>
     <p class="hk-merchant">Secure checkout by Stripe. Merchant: <span style="white-space:nowrap">CyberDad Kit LLC</span>.</p>
     <p class="hk-fine">Digital PDFs, U.S. customers, 7-day refund policy</p>
+    <form class="hk-save" id="hk-save" action="https://assets.mailerlite.com/jsonp/1632878/forms/204511141540399100/subscribe" method="post" novalidate hidden>
+      <label for="hk-save-email">Email me a link to this kit <span class="hk-save-opt">(optional)</span></label>
+      <div class="hk-save-row">
+        <input id="hk-save-email" name="fields[email]" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="hk-save-consent">
+        <button type="submit">Email me a link to this kit</button>
+      </div>
+      <input type="hidden" name="ml-submit" value="1">
+      <input type="hidden" name="anticsrf" value="true">
+      <p class="hk-save-consent" id="hk-save-consent">We'll email you a link to this kit plus one reminder, nothing else. Unsubscribe anytime. <a href="/cyberdadkit-privacy-policy.html">Privacy</a></p>
+      <p class="hk-save-status" id="hk-save-status" role="status" aria-live="polite"></p>
+    </form>
     <div class="hk-prevs" aria-label="Real pages from the kit">
         <figure class="hk-prev"><img src="/holiday/assets/shop/gather-and-play-page-09-360.webp" srcset="/holiday/assets/shop/gather-and-play-page-09-240.webp 240w, /holiday/assets/shop/gather-and-play-page-09-360.webp 360w" sizes="(min-width: 760px) 170px, 30vw" width="240" height="311" alt="Page 9 of Gather and Play, Winter Word Hunt, with a letter grid and ten words to find." fetchpriority="high" decoding="async"><figcaption>Gather &amp; Play, page 9</figcaption></figure>
         <figure class="hk-prev"><img src="/holiday/assets/shop/christmas-trivia-page-05-360.webp" srcset="/holiday/assets/shop/christmas-trivia-page-05-240.webp 240w, /holiday/assets/shop/christmas-trivia-page-05-360.webp 360w" sizes="(min-width: 760px) 170px, 30vw" width="240" height="311" alt="Page 5 of Christmas Trivia Night, Round 2 Winter Science, with ten multiple-choice questions." fetchpriority="high" decoding="async"><figcaption>Trivia Night, page 5</figcaption></figure>
@@ -275,6 +322,41 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
     if (typeof window.gtag === "function") {
       try { window.gtag("event", "video_play", { video_id: id, video_title: "Travel Adventure video", transport_type: "beacon" }); } catch (err) {}
     }
+  });
+})();
+</script>
+<script>
+(function () {
+  /* Host Kit optional "Email me a link to this kit" (feat/hostkit-email-capture-1118). Optional and separate from Buy:
+     Buy stays a plain link and is never blocked. Posts to MailerLite embedded form 204511141540399100 (group
+     "Host Kit checkout started"). On success: GA4 email_capture (no email sent to GA) and the email is handed to the
+     in-memory Buy prefill handler in the head; the Buy href is never changed. Hidden without JavaScript. */
+  var form = document.getElementById("hk-save"), buy = document.getElementById("host-kit-checkout-holiday");
+  if (!form || !buy || !window.fetch || !window.URLSearchParams) return;
+  var input = document.getElementById("hk-save-email"), status = document.getElementById("hk-save-status"), btn = form.querySelector("button");
+  form.hidden = false;
+  function say(msg, err) { status.textContent = msg; status.className = "hk-save-status" + (err ? " is-error" : ""); }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = (input.value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say(email ? "Please check the email address. You can also just use the Buy button." : "Enter an email address, or just use the Buy button.", true); return; }
+    btn.disabled = true; say("Sending...");
+    var body = new URLSearchParams();
+    body.append("fields[email]", email); body.append("ml-submit", "1"); body.append("anticsrf", "true");
+    var ctl = window.AbortController ? new AbortController() : null, timer = ctl && setTimeout(function () { ctl.abort(); }, 15000);
+    fetch(form.action, { method: "POST", mode: "cors", credentials: "omit", body: body, signal: ctl ? ctl.signal : undefined, referrerPolicy: "strict-origin" })
+      .then(function (r) { return r.ok ? r.json().then(function (j) { return !!(j && j.success); }, function () { return false; }) : false; }, function () { return false; })
+      .then(function (ok) {
+        if (timer) clearTimeout(timer);
+        btn.disabled = false;
+        if (!ok) { say("We couldn't save your email just now. The Buy button still works.", true); return; }
+        if (typeof window.__hkPrefill === "function") window.__hkPrefill(email);
+        say("Done. Check your inbox for the link. You can still buy now.");
+        input.value = "";
+        if (typeof window.gtag === "function") {
+          try { window.gtag("event", "email_capture", { product: "host_kit", form_id: "hk-save", method: "embedded_form", transport_type: "beacon" }); } catch (err) {}
+        }
+      });
   });
 })();
 </script>
