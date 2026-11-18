@@ -122,7 +122,7 @@ def main() -> int:
     check(all("width=" in i and "height=" in i for i in imgs), "every image has width and height")
     for link in REFUND_LINKS:
         check(f'href="{link}"' in html, f"/holiday/ links the refund page {link}")
-    for phrase in ("Available only to customers located in the United States.", "Stripe checkout displays Ruel Miller.",
+    for phrase in ("Available only to customers located in the United States.", "Stripe checkout displays CyberDad Kit.",
                    "After a successful payment, Stripe's confirmation screen shows the download link.",
                    "with your checkout email address", "does not promise automatic processing", "CyberDad Kit LLC"):
         check(phrase in html, f"/holiday/ keeps the checkout/refund wording: {phrase}")

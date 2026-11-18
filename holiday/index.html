@@ -60,11 +60,12 @@ body.festive .hk-top a { color: #fff8f0; font-weight: 800; text-decoration: none
 .hk-buybox p { margin: 0 0 0.35rem; }
 .hk-promise { font-size: 0.95rem; line-height: 1.35; }
 .hk-price { font-weight: 800; color: #7f1d1d; font-size: 1.5rem; line-height: 1.1; }
-.hk-price span { font-size: 0.85rem; color: #3d3832; font-weight: 600; }
+.hk-price span { font-size: 0.85rem; color: #3d3832; font-weight: 600; white-space: nowrap; }
 .hk-sep { font-size: 0.9rem; color: #3d3832; }
 body.festive a.hk-buy, .hk-buy { display: block; text-align: center; background: #9a3412; color: #fff8f0; font-weight: 800; text-decoration: none; border-radius: 999px; padding: 0.7rem 0.9rem; min-height: 48px; border-bottom: 3px solid #6b2710; font-size: 1rem; line-height: 1.25; margin-top: 0.6rem; }
 body.festive a.hk-buy:hover { background: #7c2d12; color: #fff8f0; }
 .hk-fine { text-align: center; margin: 0.4rem 0 0; font-size: 0.85rem; color: #3d3832; }
+.hk-merchant { text-align: center; margin: 0.35rem 0 0; font-size: 0.8rem; color: #3d3832; }
 .hk-prevs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.6rem; }
 .hk-prev { margin: 0; }
 .hk-prev img { border: 1px solid #e7d3a1; border-radius: 6px; aspect-ratio: 1391 / 1800; object-fit: cover; }
@@ -94,6 +95,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
   .hk-promise { font-size: 1.1rem; }
   .hk-buy { display: inline-block; padding: 0.8rem 1.6rem; }
   .hk-fine { text-align: left; }
+  .hk-merchant { text-align: left; }
   .hk-prevs { max-width: 520px; }
   .hk-prev figcaption { font-size: 0.85rem; }
   .mp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -126,6 +128,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
       </div>
     </div>
     <a class="hk-buy" id="host-kit-checkout-holiday" data-list-id="holiday-host-kit" href="https://buy.stripe.com/28EbJ07qmaes36l7Abds40f">Buy Holiday Host Kit for $17.99 USD</a>
+    <p class="hk-merchant">Secure checkout by Stripe. Merchant: CyberDad Kit</p>
     <p class="hk-fine">Digital PDFs, U.S. customers, 7-day refund policy</p>
     <div class="hk-prevs" aria-label="Real pages from the kit">
         <figure class="hk-prev"><img src="/holiday/assets/shop/gather-and-play-page-09-360.webp" srcset="/holiday/assets/shop/gather-and-play-page-09-240.webp 240w, /holiday/assets/shop/gather-and-play-page-09-360.webp 360w" sizes="(min-width: 760px) 170px, 30vw" width="240" height="311" alt="Page 9 of Gather and Play, Winter Word Hunt, with a letter grid and ten words to find." fetchpriority="high" decoding="async"><figcaption>Gather &amp; Play, page 9</figcaption></figure>
@@ -153,7 +156,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
         <div class="mp-body">
           <h3 id="trivia-title">Christmas Trivia Night</h3>
           <p class="mp-price"><strong>$5.99</strong> USD · one-time</p>
-          <p>Eight rounds of ten questions, with a host script, team answer sheets and a scoreboard. No phone is needed to play.</p>
+          <p>Eight rounds of ten questions, with a host script, team answer sheets and a scoreboard. No phone is needed to play. Also included in the Host Kit.</p>
           <a class="mp-buy" id="trivia-checkout-holiday" data-list-id="holiday-trivia" href="https://buy.stripe.com/bJecN4aCyfyM4apbQrds406">Buy Christmas Trivia Night for $5.99 USD</a>
         </div>
       </article>
@@ -162,7 +165,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
         <div class="mp-body">
           <h3 id="table-set-title">Thanksgiving Table Set</h3>
           <p class="mp-price"><strong>$4.99</strong> USD · one-time</p>
-          <p>Placemats, tent place cards and drink labels, with a write-in line for what is in each glass.</p>
+          <p>Placemats, tent place cards and drink labels, with a line to write what is in each glass.</p>
           <a class="mp-buy" id="table-set-checkout-holiday" data-list-id="holiday-table-set" href="https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e">Buy Thanksgiving Table Set for $4.99 USD</a>
         </div>
       </article>
@@ -171,7 +174,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
         <div class="mp-body">
           <h3 id="host-planner-title">Thanksgiving Host Planner</h3>
           <p class="mp-price"><strong>$4.99</strong> USD · one-time</p>
-          <p>Plan Thanksgiving from the guest list to the leftovers, on undated write-in pages, plus a tablet edition.</p>
+          <p>Plan Thanksgiving from the guest list to the leftovers, on undated write-in pages, plus a tablet edition. Also included in the Host Kit.</p>
           <a class="mp-buy" id="host-planner-checkout-holiday" data-list-id="holiday-host-planner" href="https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b">Buy Thanksgiving Host Planner for $4.99 USD</a>
         </div>
       </article>
@@ -180,7 +183,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
         <div class="mp-body">
           <h3 id="kids-table-title">Kids' Table Activity Pack</h3>
           <p class="mp-price"><strong>$5.99</strong> USD · one-time</p>
-          <p>Thanksgiving and harvest activities, from simple pages to trickier puzzles, with answer keys.</p>
+          <p>Thanksgiving and harvest activities, from simple pages to trickier puzzles, with answer keys. Also included in the Host Kit.</p>
           <a class="mp-buy" id="kids-checkout-holiday" data-list-id="holiday-kids-table" href="https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c">Buy Kids' Table Activity Pack for $5.99 USD</a>
         </div>
       </article>
@@ -190,7 +193,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
           <h3 id="travel-adventure-title">The Great Thanksgiving Travel Adventure</h3>
           <p class="mp-price"><strong>$4.99</strong> USD · one-time</p>
           <p>A word search, Travel Bingo, a maze and a Thankful Travel Challenge for the trip. One 6-page color PDF with an answer key.</p>
-          <a class="mp-buy" id="travel-adventure-checkout-holiday" data-list-id="holiday-travel-adventure" href="https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g">Buy The Great Thanksgiving Travel Adventure for $4.99 USD</a>
+          <a class="mp-buy" id="travel-adventure-checkout-holiday" data-list-id="holiday-travel-adventure" data-product="The Great Thanksgiving Travel Adventure" href="https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g">Buy Travel Adventure for $4.99 USD</a>
         </div>
       </article>
     </div>
@@ -200,7 +203,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
     <h2 id="info-title">Good to know</h2>
     <p>Every item here is a digital PDF download for printing at home. Nothing is shipped. Each price is a one-time payment in USD, not a subscription.</p>
     <p>Available only to customers located in the United States. Checkout asks you to state that and to enter a billing address. Other billing countries can still be selected, and this website does not block a country.</p>
-    <p>You pay on Stripe. Stripe checkout displays Ruel Miller. The seller is CyberDad Kit LLC, CyberDadKit. After a successful payment, Stripe's confirmation screen shows the download link. Save the file to your device. If you need the link again, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your checkout email address.</p>
+    <p>You pay on Stripe. Stripe checkout displays CyberDad Kit. The seller is CyberDad Kit LLC, CyberDadKit. After a successful payment, Stripe's confirmation screen shows the download link. Save the file to your device. If you need the link again, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your checkout email address.</p>
     <p>You may request a full refund for any reason within 7 days of the purchase date. Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a>. Never send card details. This does not limit your statutory rights. It does not promise automatic processing or a reply by a set time. Refund details for each product: <a href="/holiday/host-kit/refund/">Host Kit</a>, <a href="/holiday/refund/">Gather &amp; Play</a>, <a href="/holiday/trivia/refund/">Trivia Night</a>, <a href="/holiday/table-set/refund/">Table Set</a>, <a href="/holiday/host-planner/refund/">Host Planner</a>, <a href="/holiday/kids-table/refund/">Kids' Table</a>, <a href="/holiday/travel-adventure/refund/">Travel Adventure</a>.</p>
     <p>Printing is for personal, noncommercial gatherings. Print as many copies as your own gatherings need. See the <a href="/terms-of-sale/">terms of sale</a>.</p>
   </section>

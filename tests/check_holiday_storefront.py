@@ -621,10 +621,10 @@ def main() -> int:
     check("disabled" not in pay[0], "product checkout anchor is not disabled")
     check("$7.99" in element_text(store_html, "holiday-checkout") and "USD" in element_text(store_html, "holiday-checkout"), "product button names $7.99 USD")
     check(US_ELIGIBILITY in store_html, "product page states US eligibility")
-    check("Stripe checkout displays Ruel Miller." in store_html, "product page names the checkout display name")
+    check("Stripe checkout displays CyberDad Kit." in store_html, "product page names the checkout display name")
     # One-page shop: legal text appears once, so the merchant notice is checked for
     # presence and count on /holiday/ instead of its position before one pay link.
-    check(store_html.count("Stripe checkout displays Ruel Miller.") == 1, "merchant notice appears once on /holiday/")
+    check(store_html.count("Stripe checkout displays CyberDad Kit.") == 1, "merchant notice appears once on /holiday/")
     check("CyberDad Kit LLC" in store_html and 'href="/holiday/refund/"' in store_html, "seller and refund stay on the product page")
     robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
     check("User-agent: *" in robots and "Allow: /" in robots, "robots.txt still allows the site")
@@ -1193,7 +1193,7 @@ def main() -> int:
             pending.append(placeholder)
             check("TODO: replace " + placeholder in html, f"{slug} placeholder is marked TODO")
         check(price in element_text(html, buy_id) and "USD" in element_text(html, buy_id), f"{slug} button names {price} USD")
-        check(html.find("Stripe checkout displays Ruel Miller.") < html.find(f'id="{buy_id}"'), f"{slug} merchant notice is before the pay link")
+        check(html.find("Stripe checkout displays CyberDad Kit.") < html.find(f'id="{buy_id}"'), f"{slug} merchant notice is before the pay link")
         check(US_ELIGIBILITY in html and US_ELIGIBILITY in refund_html, f"{slug} states US eligibility")
         check("After a successful payment, Stripe's confirmation screen shows the download link." in html, f"{slug} says Stripe's confirmation screen shows the download link")
         check("with your checkout email address" in html, f"{slug} keeps the checkout-email re-send instruction")
