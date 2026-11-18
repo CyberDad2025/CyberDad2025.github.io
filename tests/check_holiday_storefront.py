@@ -308,7 +308,7 @@ KIDS_REFUND = (
     "Pack and does not limit your statutory rights."
 )
 KIDS_BUNDLE_REFUND = (
-    "If you bought Kids' Table Activity Pack together with Gather & Play, "
+    "If you bought the Kids' Table Activity Pack together with Gather & Play, "
     "this 7-day policy covers that whole purchase."
 )
 THANKSGIVING_PRODUCTS = {
@@ -717,7 +717,7 @@ def main() -> int:
     check("](/privacy/)" in contact_page, "contact privacy link is /privacy/")
     check("/support/" in contact_page and "/faq/" in contact_page and "/refund-policy/" in contact_page, "contact links support, FAQ, and the refund policy")
     check("ruel@getcyberdadkit.com" in contact_page and "PO Box 940061, Maitland, FL 32794" in contact_page, "contact keeps the email and mailing address")
-    check("Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States. The Christmas Trivia Night + Gather & Play bundle is $12.99. The Kids' Table + Gather & Play bundle is $11.99." in shield_terms, "terms name each holiday printable, its price, US availability, and both bundles")
+    check("Gather & Play ($7.99), Christmas Trivia Night ($5.99), the Thanksgiving Host Planner ($4.99), and the Kids' Table Activity Pack ($5.99) are instant digital downloads for personal/household use, available only to customers located in the United States." in shield_terms, "terms name each holiday printable, its price, and US availability")
     check("CyberDadKit terms of sale for our digital products, including holiday digital printables (7-day refunds; US customers)." in shield_terms, "terms meta description")
     check("Gather & Play" in shield_terms, "terms of sale include Gather & Play holiday downloads")
     check("Christmas Trivia Night" in shield_terms, "terms of sale name Christmas Trivia Night")
@@ -725,8 +725,9 @@ def main() -> int:
     check("$47" not in shield_terms and "Shield Kit" not in shield_terms and "CyberDad Shield" not in shield_terms, "terms of sale no longer name or price the archived kit")
     check("Thanksgiving Host Planner" in shield_terms and "$4.99" in shield_terms, "terms name the Host Planner at $4.99")
     check("Kids' Table Activity Pack" in shield_terms and "$5.99" in shield_terms, "terms name the Kids' Table pack at $5.99")
-    check("Christmas Trivia Night + Gather & Play bundle" in shield_terms and "$12.99" in shield_terms, "terms name the trivia bundle at $12.99")
-    check("Kids' Table + Gather & Play bundle" in shield_terms and "$11.99" in shield_terms, "terms name the kids-table bundle at $11.99")
+    # Follow-up SMALL 1117: the retired bundles are no longer priced, but past combined purchases stay covered.
+    check("$12.99" not in shield_terms and "$11.99" not in shield_terms and "bundle" not in shield_terms, "terms no longer name or price the retired bundles")
+    check("including a purchase of Christmas Trivia Night together with Gather & Play" in shield_terms and "If you bought the Kids' Table Activity Pack together with Gather & Play" in shield_terms, "terms still cover past combined purchases")
     check("/holiday/host-planner/refund/" in shield_terms and "/holiday/kids-table/refund/" in shield_terms, "terms link the Host Planner and Kids' Table refund pages")
     check("/holiday/table-set/refund/" in shield_terms and "Thanksgiving Table Set" in shield_terms, "terms link the Thanksgiving Table Set refund page")
     check("/holiday/travel-adventure/refund/" in shield_terms and "The Great Thanksgiving Travel Adventure" in shield_terms, "terms link the Travel Adventure refund page")

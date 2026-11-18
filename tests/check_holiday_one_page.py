@@ -167,7 +167,7 @@ def main() -> int:
         new = (ROOT / rel).read_text(encoding="utf-8")
         norm = lambda t: re.sub(r'href="/(holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/|holiday/#[a-z-]+|shop/|holiday/)"', 'href="X"', t)
         if rel == "holiday/kids-table/refund/index.html":
-            check("If you bought Kids' Table Activity Pack together with Gather &amp; Play, this 7-day policy covers that whole purchase." in new, f"{rel}: bundle sentence no longer cites the $11.99 offer")
+            check("If you bought the Kids' Table Activity Pack together with Gather &amp; Play, this 7-day policy covers that whole purchase." in new, f"{rel}: bundle sentence no longer cites the $11.99 offer")
             check("$11.99" not in new, f"{rel}: $11.99 is gone")
             check('id="kids-refund-wording"' in new and "within 7 days of your purchase date" in new, f"{rel}: KT purchase refund wording remains")
         else:
