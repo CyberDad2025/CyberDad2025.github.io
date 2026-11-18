@@ -131,7 +131,7 @@ TRIVIA_FILES = {
         # Nov 15: re-pinned after begin_checkout was added to the listener and data-product to the bundle button (was c6a68908).
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was 571ac152).
         # Nov 17: re-pinned as the one-page shop redirect stub to /holiday/#trivia (was 847f4963).
-        "85f61773c96ec6f740903df8f1b1bbf8e1d7a0dc5d67703be4afab5e5d1906db",
+        "b2cb5124f497af0aba569c6337d27dd896643a270a46f84f396abcd34a25381f",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
         # Nov 16: re-pinned as the noindex Travel Adventure redirect stub with GA4 (was 526fd37c).
