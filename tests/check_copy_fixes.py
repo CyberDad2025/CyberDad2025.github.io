@@ -54,7 +54,7 @@ NEW_PRESENT = [
     (ROOT / "terms-of-sale.md", "](/holiday/trivia/refund/)"),
     (ROOT / "terms-of-sale.md", "within 7 days of your purchase date"),
     (ROOT / "terms-of-sale.md", "This policy applies only to Gather & Play and does not limit your statutory rights."),
-    (ROOT / "terms-of-sale.md", "This policy applies only to Christmas Trivia Night and the Christmas Trivia Night + Gather & Play bundle and does not limit your statutory rights."),
+    (ROOT / "terms-of-sale.md", "This policy applies to Christmas Trivia Night, including a purchase of Christmas Trivia Night together with Gather & Play, and does not limit your statutory rights."),
     (ROOT / "terms-of-sale.md", "](/holiday/host-planner/refund/)"),
     (ROOT / "terms-of-sale.md", "](/holiday/kids-table/refund/)"),
     (ROOT / "holiday/index.html", 'href="/terms-of-sale/"'),
@@ -80,8 +80,8 @@ ALLOWED_PRICE_REMOVALS = {
     # Follow-up SMALL 1117: drop the retired $11.99 Kids' Table + Gather & Play bundle price from the KT refund page.
     "holiday/kids-table/refund/index.html": Counter({"$11.99": 1}),
     "assets/js/ethical-compliance.js": Counter({"$2": 1}),
-    # Retired product price, removed when that page was archived.
-    "terms-of-sale.md": Counter({"$47": 2}),
+    # Follow-up SMALL 1117 drops the retired $11.99 and $12.99 bundle prices from the terms.
+    "terms-of-sale.md": Counter({"$11.99": 2, "$12.99": 1}),
     "_posts/2026-04-28-your-kids-gaming-account-is-a-target-heres-how-to-lock-it-do.md": Counter({"$47": 1}),
     "_posts/2026-04-29-nsa-grassmarlin-a-hidden-risk-for-your-family.md": Counter({"$47": 1}),
     "_posts/2025 couple-loses-106k-email-scam.md": Counter({"$47": 1}),
@@ -155,10 +155,13 @@ def main() -> int:
     check("$47" not in about, "about page does not state the Shield Kit price")
 
     holiday_section = (ROOT / "terms-of-sale.md").read_text(encoding="utf-8").split("## Holiday digital printables", 1)[1].split("## Contact", 1)[0]
-    for price in ("$4.99", "$5.99", "$7.99", "$11.99", "$12.99"):
+    for price in ("$4.99", "$5.99", "$7.99"):
         check(price in holiday_section, f"holiday terms cite the live price {price}")
+    for price in ("$11.99", "$12.99"):
+        check(price not in holiday_section, f"holiday terms no longer cite the retired bundle price {price}")
     check("$47" not in holiday_section, "holiday terms section does not repeat the Shield Kit price")
-    check("the bundle" in holiday_section, "holiday terms section names the bundle")
+    check("bundle" not in holiday_section, "holiday terms section no longer names a bundle")
+    check("together with Gather & Play" in holiday_section, "holiday terms still cover past combined purchases")
     check("/holiday/refund/" in holiday_section and "/holiday/trivia/refund/" in holiday_section, "terms mention both holiday refund URLs")
     check(holiday_section.count("You may request a full refund for any reason within 7 days of your purchase date.") == 5, "each printable repeats the 7-day refund substance")
     check("/holiday/table-set/refund/" in holiday_section, "terms link the Thanksgiving Table Set refund page")
