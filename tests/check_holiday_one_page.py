@@ -44,11 +44,11 @@ PREVIEWS = {
     "/holiday/assets/shop/host-planner-page-03-360.webp": "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
 }
 # fix/trivia-sample-og-badge-1118: the #trivia card links the two free sample PDFs
-# (the /holiday/trivia/sample/ redirect lands on this card). "A4" is allowed only inside that one line.
+# (the /holiday/trivia/sample/ redirect lands on this card). US Letter only; the A4 file stays on disk, unlinked.
 TRIVIA_SAMPLES = {
     "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf": ("sample-link-trivia-card-letter", "US Letter PDF"),
-    "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf": ("sample-link-trivia-card-a4", "A4 PDF"),
 }
+TRIVIA_SAMPLE_A4 = "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf"
 SAMPLE_LINE_RE = re.compile(r'<p class="mp-sample">.*?</p>', re.S)
 # Every downscaled image: source file and its sha256 at the time of the copy, and the output size.
 IMAGES = json.loads((ROOT / "tests" / "holiday_one_page_images.json").read_text(encoding="utf-8"))
@@ -170,10 +170,8 @@ def main() -> int:
     check("2027 Bible Verse Journal" not in html, "journal card removed from /holiday/")
     check("{% include ga4.html %}" in html, "site GA4 include (buy_click + begin_checkout listener) is present")
     text = visible(html)
-    text_no_sample = visible(SAMPLE_LINE_RE.sub(" ", html))
     for pat in BANNED:
-        hay = html if "mailerlite" in pat else (text_no_sample if pat == r"\bA4\b" else text)
-        check(not re.search(pat, hay, re.I), f"no banned string /{pat}/ in /holiday/" + (" (outside the trivia sample line)" if pat == r"\bA4\b" else ""))
+        check(not re.search(pat, html if "mailerlite" in pat else text, re.I), f"no banned string /{pat}/ in /holiday/")
     card = re.search(r'<article class="mp-card" id="trivia".*?</article>', html, re.S)
     card = card.group(0) if card else ""
     samples = SAMPLE_LINE_RE.findall(html)
@@ -183,6 +181,8 @@ def main() -> int:
         check(f'<a href="{href}" data-cta="{cta}">{label}</a>' in card, f"#trivia links {label} with data-cta {cta}")
         check(html.count(href) == 1 and (ROOT / href.lstrip("/")).is_file(), f"{href} appears once and the file exists")
     check(bool(samples) and "buy.stripe.com" not in samples[0], "sample line has no Stripe link (no buy_click / begin_checkout)")
+    check(bool(samples) and visible(samples[0]).strip() == "Free sample, Round 1: US Letter PDF", "sample line reads exactly 'Free sample, Round 1: US Letter PDF'")
+    check(TRIVIA_SAMPLE_A4 not in html and (ROOT / TRIVIA_SAMPLE_A4.lstrip("/")).is_file(), "A4 sample PDF stays on disk and is not linked from /holiday/")
     check(".mp-thumb { position: relative; align-self: start;" in html, ".mp-thumb is align-self: start (badge stays on the cover)")
     tstub = (ROOT / "holiday" / "trivia" / "sample" / "index.html").read_text(encoding="utf-8")
     for tag in ('property="og:title"', 'property="og:description"', 'property="og:image" content="https://getcyberdadkit.com/assets/share/holiday-christmas-trivia.png"',
