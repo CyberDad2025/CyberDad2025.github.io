@@ -272,6 +272,13 @@ ONE_PAGE_DERIVATIVES = {
 }
 for _src in ONE_PAGE_DERIVATIVES:
     ROUTES[_src] = ROOT / _src.lstrip("/")
+# Travel Short on /holiday/ (feat/holiday-travel-short-1117): a local click-to-load poster,
+# allowed only while it keeps this sha256, and one plain noscript link to the Short.
+TRAVEL_SHORT_POSTER = "/assets/shorts/travel-adventure-short-poster-360.webp"
+TRAVEL_SHORT_POSTER_SHA256 = "1fa5f70242b0fc53e8a2c3a27c7cdf68fc02d04deacd063e3c5e2708c05b00df"
+TRAVEL_SHORT_URL = "https://www.youtube.com/shorts/8_M3BpW3kxo"
+if (ROOT / TRAVEL_SHORT_POSTER.lstrip("/")).is_file() and hashlib.sha256((ROOT / TRAVEL_SHORT_POSTER.lstrip("/")).read_bytes()).hexdigest() == TRAVEL_SHORT_POSTER_SHA256:
+    ROUTES[TRAVEL_SHORT_POSTER] = ROOT / TRAVEL_SHORT_POSTER.lstrip("/")
 # The single 7-day refund line on /holiday/ links every product refund page.
 for _slug in ("host-kit", "trivia", "table-set", "host-planner", "kids-table", "travel-adventure"):
     ROUTES.setdefault(f"/holiday/{_slug}/refund/", HOLIDAY / _slug / "refund" / "index.html")
@@ -586,7 +593,7 @@ def main() -> int:
             allowed = {p["src"] for p in manifest["previews"]} | {
                 "/assets/img/festive/gather-and-play-cover.jpg",
                 TRAVEL_COVER,
-            } | ONE_PAGE_DERIVATIVES
+            } | ONE_PAGE_DERIVATIVES | ({TRAVEL_SHORT_POSTER} if TRAVEL_SHORT_POSTER in ROUTES else set())
             check(src in allowed, f"{page_name} image is a preview or the festive cover: {src}")
         for anchor in doc.anchors:
             href = anchor.get("href", "")
@@ -604,6 +611,9 @@ def main() -> int:
                 continue
             if href in EXTRA_HOLIDAY_PAYMENT_URLS:
                 check(page_name == "storefront", f"extra holiday payment link stays on the product page: {href}")
+                continue
+            if href == TRAVEL_SHORT_URL:
+                check(page_name == "storefront" and html.count(href) == 1, "Travel Short noscript link appears once on /holiday/")
                 continue
             if href == HOSTED_OPTIN:
                 check("noopener" in (anchor.get("rel") or ""), "hosted signup link uses rel=noopener")
