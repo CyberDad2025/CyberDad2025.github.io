@@ -159,7 +159,14 @@ def main() -> int:
     body = visible(html.split("<body", 1)[1])
     check(body.count("7 days") == 1, "refund window sentence appears once in visible text")
     check(body.count("located in the United States") == 1, "US eligibility sentence appears once in visible text")
-    check("mailerlite" not in html.lower(), "no MailerLite signup on /holiday/ (form is inactive, share URL is preview-only)")
+    # hostkit-capture-1118: the only MailerLite reference allowed on /holiday/ is the optional Host Kit
+    # "Email me this checkout link" form (embedded form 204511141540399100, group "Host Kit checkout started").
+    hk_action = 'action="https://assets.mailerlite.com/jsonp/1632878/forms/204511141540399100/subscribe"'
+    check(html.count(hk_action) == 1, "Host Kit email capture form posts to MailerLite form 204511141540399100 once")
+    check("mailerlite" not in html.replace(hk_action, "").replace("MailerLite embedded form 204511141540399100", "").lower(), "no other MailerLite signup on /holiday/ (old sample form stays removed)")
+    hk_buy = re.search(r'<a class="hk-buy"[^>]*>', html)
+    check(bool(hk_buy) and 'href="https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"' in hk_buy.group(0), "Host Kit Buy is still a plain Stripe link in the HTML (the capture only adds ?prefilled_email= after a successful submit)")
+    check("We'll email you this link plus one reminder. Unsubscribe anytime." in html and 'aria-live="polite"' in html, "Host Kit capture has the consent text and a polite live region")
     check("2027 Bible Verse Journal" not in html, "journal card removed from /holiday/")
     check("{% include ga4.html %}" in html, "site GA4 include (buy_click + begin_checkout listener) is present")
     text = visible(html)
