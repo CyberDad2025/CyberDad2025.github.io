@@ -137,7 +137,8 @@ TRIVIA_FILES = {
         # Nov 16: re-pinned as the noindex Travel Adventure redirect stub with GA4 (was 526fd37c).
         # Nov 17: re-pinned as the redirect stub to /holiday/#travel-adventure (query string kept) (was a5036f50).
         # Nov 17 (qa-flag-samples-1117): re-pinned as the redirect stub to /holiday/#trivia (query string kept) (was 533cae0c).
-        "4a123c34c1fbcc10d513a4078c0781eef6af0e8c262c2c6a66d521611cc71818",
+        # Nov 18 (fix/trivia-sample-og-badge-1118): re-pinned after description, og and twitter tags were added (was 4a123c34).
+        "275383319b454919bdc46add26a91cd282415f93526b41f01cbb5b5bb7517d43",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was abba1e5c).
@@ -586,7 +587,9 @@ def main() -> int:
         check("64 unique" not in html.lower(), f"{page_name} makes no 64-unique-page claim")
         check("PO Box 940061, Maitland, FL 32794" in html, f"{page_name} uses the PO Box")
         check("ruel@getcyberdadkit.com" in html, f"{page_name} uses the existing contact")
-        check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', html, re.I), "storefront does not link the paid ZIP or a PDF")
+        # fix/trivia-sample-og-badge-1118: the #trivia card links the two free trivia sample PDFs; nothing else.
+        store_links = re.sub(r'href="/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-(?:US-Letter|A4)\.pdf"', "", html)
+        check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', store_links, re.I), "storefront does not link the paid ZIP or a PDF (free trivia sample PDFs excepted)")
         check("download=" not in html, f"{page_name} has no download attribute")
         check(html.count('href="' + PAYMENT_URL + '"') == 1, "storefront has one live payment link")
         check(not re.search(r'href=["\']#["\']', html), f"{page_name} has no empty hash href")

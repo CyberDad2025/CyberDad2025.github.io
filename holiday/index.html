@@ -82,10 +82,12 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
 .mp > h2, .hk-info h2 { font-family: var(--festive-display, var(--sans)); color: #9a3412; font-size: 1.35rem; margin: 0 0 0.6rem; }
 .mp-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
 .mp-card { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 0.75rem; background: #fffdf8; border: 1px solid #e7d3a1; border-radius: 14px; padding: 0.7rem; scroll-margin-top: 0.5rem; }
-.mp-thumb { position: relative; border-radius: 8px; overflow: hidden; background: #fff6e8; }
+.mp-thumb { position: relative; align-self: start; border-radius: 8px; overflow: hidden; background: #fff6e8; }
 .mp-thumb .mp-badge { font-size: 0.65rem; padding: 0.05rem 0.4rem; }
 .mp-body h3 { margin: 0; font-size: 1.05rem; color: #7c2d12; font-family: var(--festive-display, var(--sans)); }
 .mp-body p { margin: 0.2rem 0; font-size: 0.92rem; }
+.mp-body p.mp-sample { margin-top: 0.45rem; font-size: 0.85rem; color: #3d3832; line-height: 1.6; }
+.mp-sample a { color: #7c2d12; font-weight: 700; white-space: nowrap; }
 .hk-info { margin-top: 2rem; background: #fffdf8; border: 1px solid #e7d3a1; border-radius: 14px; padding: 0.9rem 1rem; font-size: 0.95rem; }
 .hk-info p { margin: 0 0 0.6rem; }
 :target { outline: 3px solid #e0b03a; outline-offset: 2px; }
@@ -168,6 +170,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
           <p class="mp-price"><strong>$5.99</strong> USD · one-time</p>
           <p>Eight rounds of ten questions, with a host script, team answer sheets and a scoreboard. No phone is needed to play. Also included in the Host Kit.</p>
           <a class="mp-buy" id="trivia-checkout-holiday" data-list-id="holiday-trivia" href="https://buy.stripe.com/bJecN4aCyfyM4apbQrds406">Buy Christmas Trivia Night for $5.99 USD</a>
+          <p class="mp-sample">Free sample, Round 1: <a href="/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf" data-cta="sample-link-trivia-card-letter">US Letter PDF</a> or <a href="/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf" data-cta="sample-link-trivia-card-a4">A4 PDF</a></p>
         </div>
       </article>
       <article class="mp-card" id="table-set" aria-labelledby="table-set-title">
