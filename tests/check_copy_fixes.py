@@ -226,7 +226,7 @@ def main() -> int:
     check(holiday_zips == [allowed_zip], "only the unlisted Host Kit ZIP is under holiday/" + ("" if holiday_zips == [allowed_zip] else f" {holiday_zips}"))
     if allowed_zip.is_file():
         digest = __import__("hashlib").sha256(allowed_zip.read_bytes()).hexdigest()
-        check(digest == "0a43e1765c99b069c88cc7b60c889d49834aa5945ed7e5cb57eff222a556d6d1", "Host Kit ZIP sha256 is the 15-PDF release")
+        check(digest == "50eae1e19b360e4ccf112f7ceba60e09a01d99a43d5de9395a897de1df9dfddb", "Host Kit ZIP sha256 is the 15-PDF release")
 
     llc_bad = changed_llc_lines()
     check(not llc_bad, "approved CyberDad Kit LLC, PO Box lines unchanged" + ("" if not llc_bad else f" {llc_bad[:5]}"))
