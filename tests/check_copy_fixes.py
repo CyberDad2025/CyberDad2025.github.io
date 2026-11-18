@@ -376,7 +376,9 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         if name == "journal/2027/index.html":
             removed = old_links - new_links
             added = new_links - old_links
-            if removed != Counter({JOURNAL_A4_LINK: 1}) or added:
+            # A4 link may already be gone on main. Allow identical hrefs, or
+            # the historical deletion of that one A4 payment link and nothing else.
+            if added or (removed and removed != Counter({JOURNAL_A4_LINK: 1})):
                 stripe_bad.append(name)
         elif name == "holiday/index.html":
             # One-page shop: every checkout URL on /holiday/ must already be live on main.
@@ -393,7 +395,11 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         old_prices = Counter(PRICE_RE.findall(old))
         new_prices = Counter(PRICE_RE.findall(new))
         allowed_removed = ALLOWED_PRICE_REMOVALS.get(name, Counter())
-        if name == "holiday/index.html":
+        # Journal hero-cover swap (page-1 image only): prices already match main,
+        # so do not require the historical A4 $9.99 deletions that already landed.
+        if name == "journal/2027/index.html" and old_prices == new_prices:
+            pass
+        elif name == "holiday/index.html":
             # One-page shop: retired cards drop their prices. Every price left must be a
             # price main already shows on a holiday page, or the verified $24.96 sum.
             if set(new_prices) - main_holiday_prices():

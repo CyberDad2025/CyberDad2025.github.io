@@ -87,6 +87,11 @@ def main() -> int:
 
     store = html.get("store", "")
     a = parsed.get("store")
+    check("<strong>Cover · page 1 of 373</strong>" in store, "hero caption names the real page-1 cover")
+    check("/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.webp" in store, "hero prefers the page-1 cover webp")
+    check('src="/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.png"' in store, "hero PNG is the page-1 cover")
+    check("bible-verse-journal-2027-cover" not in store, "hero is not the festive marketing graphic")
+    check((J / "assets" / "CyberDadKit-2027-Journal-preview-page-01.webp").is_file(), "page-1 cover webp exists")
     check('id="size-selector"' in store, "store has the size selector")
     for bid, (price, url) in SIZES.items():
         btn = [x for x in a.anchors if x.get("id") == bid]
