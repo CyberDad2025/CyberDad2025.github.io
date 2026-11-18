@@ -275,7 +275,7 @@ for _src in ONE_PAGE_DERIVATIVES:
 # Travel Short on /holiday/ (feat/holiday-travel-short-1117): a local click-to-load poster,
 # allowed only while it keeps this sha256, and one plain noscript link to the Short.
 TRAVEL_SHORT_POSTER = "/assets/shorts/travel-adventure-short-poster-360.webp"
-TRAVEL_SHORT_POSTER_SHA256 = "1fa5f70242b0fc53e8a2c3a27c7cdf68fc02d04deacd063e3c5e2708c05b00df"
+TRAVEL_SHORT_POSTER_SHA256 = "e6642a0a628b6c8f2115440f95d45c4154ba300034d1b2626e208cd2f6181106"
 TRAVEL_SHORT_URL = "https://www.youtube.com/shorts/8_M3BpW3kxo"
 if (ROOT / TRAVEL_SHORT_POSTER.lstrip("/")).is_file() and hashlib.sha256((ROOT / TRAVEL_SHORT_POSTER.lstrip("/")).read_bytes()).hexdigest() == TRAVEL_SHORT_POSTER_SHA256:
     ROUTES[TRAVEL_SHORT_POSTER] = ROOT / TRAVEL_SHORT_POSTER.lstrip("/")

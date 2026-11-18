@@ -59,7 +59,14 @@ REDIRECTS = {
     "holiday/trivia/sample/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
     "shop/index.html": ('var h = window.location.hash || "";', "/holiday/"),
 }
-KEEP_UNCHANGED = ("journal/2027/index.html",)
+# The journal storefront may swap the hero picture to the real page-1 cover.
+# Caption, alt, prices, Stripe hrefs, and all other markup stay locked to main.
+JOURNAL_PAGE = "journal/2027/index.html"
+JOURNAL_HERO_PICTURE_RE = re.compile(r'<picture class="festive-cover">.*?</picture>', re.S)
+
+def journal_without_hero_picture(html: str) -> str:
+    return JOURNAL_HERO_PICTURE_RE.sub('<picture class="festive-cover">HERO</picture>', html)
+
 # Refund pages: only product-link hrefs may change (to /holiday/#card); the text stays the same,
 # except holiday/kids-table/refund/index.html, which drops the old $11.99 bundle offer wording.
 REFUND_PAGES = (
@@ -159,9 +166,20 @@ def main() -> int:
         stub = (ROOT / "holiday" / name / "index.html").read_text(encoding="utf-8")
         check("#bundle" not in stub, f"/holiday/{name}/#bundle lands on #{name}")
     import subprocess
-    for rel in KEEP_UNCHANGED:
-        diff = subprocess.run(["git", "diff", "--quiet", "origin/main", "--", rel], cwd=ROOT).returncode
-        check(diff == 0, f"{rel} is unchanged versus origin/main")
+    journal_old = subprocess.run(["git", "show", f"origin/main:{JOURNAL_PAGE}"], cwd=ROOT, capture_output=True, text=True).stdout
+    journal_new = (ROOT / JOURNAL_PAGE).read_text(encoding="utf-8")
+    check(journal_without_hero_picture(journal_old) == journal_without_hero_picture(journal_new),
+          "journal/2027/index.html only changes the hero picture")
+    check("/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.webp" in journal_new,
+          "journal hero prefers the real page-1 cover webp")
+    check('src="/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.png"' in journal_new,
+          "journal hero PNG is the real page-1 cover")
+    check('alt="Cover of the 2027 Verse of the Day Journal, with Psalm 119:105 from the World English Bible."' in journal_new,
+          "journal hero alt stays accurate")
+    check("<strong>Cover · page 1 of 373</strong>" in journal_new,
+          "journal caption still names page 1 of 373")
+    check("bible-verse-journal-2027-cover" not in journal_new,
+          "journal hero is not the festive marketing graphic")
     for rel in REFUND_PAGES:
         old = subprocess.run(["git", "show", f"origin/main:{rel}"], cwd=ROOT, capture_output=True, text=True).stdout
         new = (ROOT / rel).read_text(encoding="utf-8")
