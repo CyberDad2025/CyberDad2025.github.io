@@ -208,6 +208,9 @@ def main() -> int:
         "holiday/trivia/index.html",
         "holiday/trivia/refund/index.html",
         "holiday/trivia/sample/index.html",
+        # Nov 18 (CoS ruling): sample cover label now reads "Answers checked against public sources".
+        "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf",
+        "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf",
     }
     check(
         set(trivia_changed) <= allowed_trivia,

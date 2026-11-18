@@ -131,13 +131,15 @@ TRIVIA_FILES = {
         # Nov 15: re-pinned after begin_checkout was added to the listener and data-product to the bundle button (was c6a68908).
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was 571ac152).
         # Nov 17: re-pinned as the one-page shop redirect stub to /holiday/#trivia (was 847f4963).
-        "85f61773c96ec6f740903df8f1b1bbf8e1d7a0dc5d67703be4afab5e5d1906db",
+        "b2cb5124f497af0aba569c6337d27dd896643a270a46f84f396abcd34a25381f",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
         # Nov 16: re-pinned as the noindex Travel Adventure redirect stub with GA4 (was 526fd37c).
         # Nov 17: re-pinned as the redirect stub to /holiday/#travel-adventure (query string kept) (was a5036f50).
         # Nov 17 (qa-flag-samples-1117): re-pinned as the redirect stub to /holiday/#trivia (query string kept) (was 533cae0c).
-        "4a123c34c1fbcc10d513a4078c0781eef6af0e8c262c2c6a66d521611cc71818",
+        # Nov 18 (fix/trivia-sample-og-badge-1118): re-pinned after description, og and twitter tags were added (was 4a123c34).
+        # Nov 18 (Watchdog FIX on #1058): re-pinned after og/twitter titles became "Free Christmas Trivia Sample" (was 27538331).
+        "3e1311b736b2340517885afb6713fe313cd8f955b12fee83afcfd564a7d2ae1e",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was abba1e5c).
@@ -145,9 +147,11 @@ TRIVIA_FILES = {
         # Nov 17 (qa-flag-samples-1117): re-pinned after the cdk_qa internal-traffic flag was added to the inline GA4 config (was 146b0a0e).
         "d6b921afbfb5722ca5b4ac71d8183a76755bb52316c8c6c0e2f978af3db8bb23",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
-        "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
+        # Nov 18 (CoS ruling): cover label "Answers checked against public sources" (was 3e5ac375).
+        "4662797fdb8f2e7238d761f2a55216bdd8a852015f976e43b4b7bbdd427664d0",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
-        "bfb39dcb827ebd53bb5bf0d57f8818c40f9bd093da5b8b27a7f2434b0ccc1551",
+        # Nov 18 (CoS ruling): cover label "Answers checked against public sources" (was bfb39dcb).
+        "5e9e47dce98d9c069fd7c19f1d3e3b18a710c60d292a6dfc9580a61f89718931",
     "holiday/assets/trivia/pins/01-christmas-trivia-family.png":
         "449f64977e319fc7872e7f84b4a4aa63c9041407a71a64844c19b3282c099f0b",
     "holiday/assets/trivia/pins/02-christmas-trivia-80-questions.png":
@@ -586,7 +590,9 @@ def main() -> int:
         check("64 unique" not in html.lower(), f"{page_name} makes no 64-unique-page claim")
         check("PO Box 940061, Maitland, FL 32794" in html, f"{page_name} uses the PO Box")
         check("ruel@getcyberdadkit.com" in html, f"{page_name} uses the existing contact")
-        check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', html, re.I), "storefront does not link the paid ZIP or a PDF")
+        # fix/trivia-sample-og-badge-1118: the #trivia card links the free US Letter trivia sample PDF; nothing else.
+        store_links = re.sub(r'href="/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter\.pdf"', "", html)
+        check(not re.search(r'href="[^"]+\.(?:pdf|zip)"', store_links, re.I), "storefront does not link the paid ZIP or a PDF (free US Letter trivia sample excepted)")
         check("download=" not in html, f"{page_name} has no download attribute")
         check(html.count('href="' + PAYMENT_URL + '"') == 1, "storefront has one live payment link")
         check(not re.search(r'href=["\']#["\']', html), f"{page_name} has no empty hash href")

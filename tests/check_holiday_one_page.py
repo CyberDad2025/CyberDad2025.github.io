@@ -43,6 +43,13 @@ PREVIEWS = {
     "/holiday/assets/shop/christmas-trivia-page-05-360.webp": "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png",
     "/holiday/assets/shop/host-planner-page-03-360.webp": "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
 }
+# fix/trivia-sample-og-badge-1118: the #trivia card links the two free sample PDFs
+# (the /holiday/trivia/sample/ redirect lands on this card). US Letter only; the A4 file stays on disk, unlinked.
+TRIVIA_SAMPLES = {
+    "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf": ("sample-link-trivia-card-letter", "US Letter PDF"),
+}
+TRIVIA_SAMPLE_A4 = "/holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf"
+SAMPLE_LINE_RE = re.compile(r'<p class="mp-sample">.*?</p>', re.S)
 # Every downscaled image: source file and its sha256 at the time of the copy, and the output size.
 IMAGES = json.loads((ROOT / "tests" / "holiday_one_page_images.json").read_text(encoding="utf-8"))
 REFUND_LINKS = ("/holiday/host-kit/refund/", "/holiday/refund/", "/holiday/trivia/refund/", "/holiday/table-set/refund/",
@@ -165,6 +172,24 @@ def main() -> int:
     text = visible(html)
     for pat in BANNED:
         check(not re.search(pat, html if "mailerlite" in pat else text, re.I), f"no banned string /{pat}/ in /holiday/")
+    card = re.search(r'<article class="mp-card" id="trivia".*?</article>', html, re.S)
+    card = card.group(0) if card else ""
+    samples = SAMPLE_LINE_RE.findall(html)
+    check(len(samples) == 1 and samples[0] in card, "exactly one sample line on /holiday/, inside the #trivia card")
+    check(card.find('id="trivia-checkout-holiday"') < card.find('class="mp-sample"'), "trivia sample line sits under the Buy button")
+    for href, (cta, label) in TRIVIA_SAMPLES.items():
+        check(f'<a href="{href}" data-cta="{cta}">{label}</a>' in card, f"#trivia links {label} with data-cta {cta}")
+        check(html.count(href) == 1 and (ROOT / href.lstrip("/")).is_file(), f"{href} appears once and the file exists")
+    check(bool(samples) and "buy.stripe.com" not in samples[0], "sample line has no Stripe link (no buy_click / begin_checkout)")
+    check(bool(samples) and visible(samples[0]).strip() == "Free sample, Round 1: US Letter PDF", "sample line reads exactly 'Free sample, Round 1: US Letter PDF'")
+    check(TRIVIA_SAMPLE_A4 not in html and (ROOT / TRIVIA_SAMPLE_A4.lstrip("/")).is_file(), "A4 sample PDF stays on disk and is not linked from /holiday/")
+    check(".mp-thumb { position: relative; align-self: start;" in html, ".mp-thumb is align-self: start (badge stays on the cover)")
+    tstub = (ROOT / "holiday" / "trivia" / "sample" / "index.html").read_text(encoding="utf-8")
+    for tag in ('property="og:title"', 'property="og:description"', 'property="og:image" content="https://getcyberdadkit.com/assets/share/holiday-christmas-trivia.png"',
+                'name="twitter:card" content="summary_large_image"', 'name="twitter:image"', 'property="og:url" content="https://getcyberdadkit.com/holiday/trivia/sample/"'):
+        check(tag in tstub, f"/holiday/trivia/sample/ has {tag.split(' content')[0]}")
+    for pat in (r"\u2014", r"\u2013", r"\bguarantee", r"\bCDK\b"):
+        check(not re.search(pat, tstub, re.I), f"/holiday/trivia/sample/ has no /{pat}/")
     footer = re.search(r"<footer\b.*?</footer>", html, re.S).group(0)
     check("PO Box 940061, Maitland, FL 32794" in footer and len(re.findall(r"\bFL\b", footer)) == 1, "footer has the PO Box address only")
     for rel, (js, dest) in REDIRECTS.items():
@@ -183,7 +208,7 @@ def main() -> int:
     import subprocess
     journal_old = subprocess.run(["git", "show", f"origin/main:{JOURNAL_PAGE}"], cwd=ROOT, capture_output=True, text=True).stdout
     journal_new = without_qa_flag((ROOT / JOURNAL_PAGE).read_text(encoding="utf-8"))
-    check(journal_without_hero_picture(journal_old) == journal_without_hero_picture(journal_new),
+    check(journal_without_hero_picture(without_qa_flag(journal_old)) == journal_without_hero_picture(journal_new),
           "journal/2027/index.html only changes the hero picture")
     check("/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.webp" in journal_new,
           "journal hero prefers the real page-1 cover webp")
@@ -204,7 +229,7 @@ def main() -> int:
             check("$11.99" not in new, f"{rel}: $11.99 is gone")
             check('id="kids-refund-wording"' in new and "within 7 days of your purchase date" in new, f"{rel}: KT purchase refund wording remains")
         else:
-            check(norm(old) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
+            check(norm(without_qa_flag(old)) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
         check(not re.search(r'href="/holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/"', new), f"{rel}: product links go straight to /holiday/#card")
     for rel in ("_includes/home-header.html", "_includes/ta-crosslink.html"):
         inc = (ROOT / rel).read_text(encoding="utf-8")
