@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+"""One-page holiday shop at /holiday/ (feat/holiday-one-page-1117).
+
+Hero is the Holiday Host Kit with three real preview pages and one primary
+Buy button, then Gather & Play as the smaller option, then five single
+printables. Every Buy href is the existing Stripe Payment Link for that
+product. Old product URLs redirect to card anchors and keep the query string.
+
+Run: python3 tests/check_holiday_one_page.py
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import re
+import struct
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+PAGE = ROOT / "holiday" / "index.html"
+
+# card anchor -> (button id, Stripe link, price string on the card)
+CARDS = {
+    "host-kit": ("host-kit-checkout-holiday", "https://buy.stripe.com/28EbJ07qmaes36l7Abds40f", "$17.99"),
+    "gather-and-play": ("holiday-checkout", "https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405", "$7.99"),
+    "trivia": ("trivia-checkout-holiday", "https://buy.stripe.com/bJecN4aCyfyM4apbQrds406", "$5.99"),
+    "table-set": ("table-set-checkout-holiday", "https://buy.stripe.com/dRm28q9yu2M08qFaMnds40e", "$4.99"),
+    "host-planner": ("host-planner-checkout-holiday", "https://buy.stripe.com/9B69ASdOK1HWayNdYzds40b", "$4.99"),
+    "kids-table": ("kids-checkout-holiday", "https://buy.stripe.com/6oU7sK7qm2M05et3jVds40c", "$5.99"),
+    "travel-adventure": ("travel-adventure-checkout-holiday", "https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g", "$4.99"),
+}
+REMOVED_LINKS = (
+    "https://buy.stripe.com/14A5kC7qmdqEfT78Efds407",  # Trivia + Gather & Play bundle
+    "https://buy.stripe.com/4gM9ASeSO72g9uJbQrds40d",  # Kids' Table + Gather & Play bundle
+    "https://buy.stripe.com/fZu00i9yu0DS22h1bNds408",  # journal US Letter
+    "https://buy.stripe.com/4gM6oGh0WfyM0Yd6w7ds40a",  # journal half-letter
+)
+# Hero previews: downscaled WebP copies of these existing post-#1045 preview pages.
+PREVIEWS = {
+    "/holiday/assets/shop/gather-and-play-page-09-360.webp": "holiday/assets/previews/CyberDadKit-preview-page-09.png",
+    "/holiday/assets/shop/christmas-trivia-page-05-360.webp": "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png",
+    "/holiday/assets/shop/host-planner-page-03-360.webp": "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
+}
+# Every downscaled image: source file and its sha256 at the time of the copy, and the output size.
+IMAGES = json.loads((ROOT / "tests" / "holiday_one_page_images.json").read_text(encoding="utf-8"))
+REFUND_LINKS = ("/holiday/host-kit/refund/", "/holiday/refund/", "/holiday/trivia/refund/", "/holiday/table-set/refund/",
+                "/holiday/host-planner/refund/", "/holiday/kids-table/refund/", "/holiday/travel-adventure/refund/")
+# old URL (repo file) -> expected JS hash expression, meta refresh target
+REDIRECTS = {
+    "holiday/travel-adventure/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
+    "holiday/host-kit/index.html": ('var h = "#host-kit";', "/holiday/#host-kit"),
+    "holiday/host-planner/index.html": ('var h = "#host-planner";', "/holiday/#host-planner"),
+    "holiday/kids-table/index.html": ('var h = "#kids-table";', "/holiday/#kids-table"),
+    "holiday/table-set/index.html": ('var h = "#table-set";', "/holiday/#table-set"),
+    "holiday/trivia/index.html": ('var h = "#trivia";', "/holiday/#trivia"),
+    "holiday/sample/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
+    "holiday/trivia/sample/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
+    "shop/index.html": ('var h = window.location.hash || "";', "/holiday/"),
+}
+KEEP_UNCHANGED = ("journal/2027/index.html",)
+# Refund pages: only product-link hrefs may change (to /holiday/#card); the text stays the same.
+REFUND_PAGES = (
+    "holiday/refund/index.html",
+    "holiday/host-kit/refund/index.html",
+    "holiday/host-planner/refund/index.html",
+    "holiday/kids-table/refund/index.html",
+    "holiday/table-set/refund/index.html",
+    "holiday/travel-adventure/refund/index.html",
+    "holiday/trivia/refund/index.html",
+)
+BANNED = [r"\u2014", r"\u2013", r"\bguarantee", r"\bworldwide\b", r"\bCDK\b", r"\bA4\b", r"\bfamily\b",
+          r"\bchildren\b", r"\bages?\b", r"\bhurry\b", r"\blimited\b", r"\blast chance\b", r"\btonight\b", r"preview\.mailerlite\.io"]
+
+
+def visible(html: str) -> str:
+    s = re.sub(r"<script\b.*?</script>|<style\b.*?</style>", " ", html, flags=re.S | re.I)
+    s = re.sub(r"^---\n.*?\n---\n", "", s, flags=re.S)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s))
+
+
+def main() -> int:
+    failed: list[str] = []
+
+    def check(ok: bool, msg: str) -> None:
+        print(("ok  " if ok else "FAIL") + " " + msg)
+        if not ok:
+            failed.append(msg)
+
+    html = PAGE.read_text(encoding="utf-8")
+    hrefs = re.findall(r'href="(https://buy\.stripe\.com/[^"]+)"', html)
+    check(len(hrefs) == len(CARDS), f"/holiday/ has exactly {len(CARDS)} Buy links ({len(hrefs)})")
+    for anchor, (bid, link, price) in CARDS.items():
+        check(f'id="{anchor}"' in html, f"card #{anchor} exists")
+        m = re.search(rf'<a [^>]*id="{bid}"[^>]*href="([^"]+)"[^>]*>([^<]+)</a>', html)
+        check(bool(m) and m.group(1) == link, f"#{anchor} Buy button {bid} links to {link}")
+        check(bool(m) and m.group(2).endswith(f"for {price} USD"), f"#{anchor} Buy label ends with 'for {price} USD' (begin_checkout value)")
+        check(html.count(link) == 1, f"#{anchor} Stripe link appears once")
+    for link in REMOVED_LINKS:
+        check(link not in html, f"removed card link {link} is not on /holiday/")
+    check(html.index('id="host-kit"') < html.index('id="gather-and-play"') < html.index('id="more"'), "order: Host Kit hero, Gather & Play, then the single printables")
+    check(html.count('class="hk-buy"') == 1, "one primary Buy CTA (Host Kit)")
+    check('class="gp-buy"' in html, "Gather & Play uses the secondary button style")
+    check("Digital PDFs, U.S. customers, 7-day refund policy" in html, "hero fine line is present")
+    check("$24.96 separately" in html, "hero shows the verified $24.96 separate-price line (7.99 + 5.99 + 4.99 + 5.99)")
+    for p, src in PREVIEWS.items():
+        check(html.count(f'src="{p}"') == 1 and (ROOT / p.lstrip("/")).is_file() and (ROOT / src).is_file(), f"hero preview {p} (from {src}) is on the page and exists")
+    used = set(re.findall(r'/holiday/assets/shop/[a-z0-9-]+\.webp', html))
+    check(used == {"/" + k for k in IMAGES}, f"/holiday/ uses exactly the {len(IMAGES)} listed downscaled images")
+    for rel, meta in IMAGES.items():
+        path = ROOT / rel
+        src = ROOT / meta["source"]
+        ok = path.is_file() and src.is_file() and hashlib.sha256(src.read_bytes()).hexdigest() == meta["source_sha256"]
+        if ok:
+            data = path.read_bytes()
+            ok = data[:4] == b"RIFF" and data[8:12] == b"WEBP" and len(data) < 80000
+        check(ok, f"{rel} exists, is WebP under 80 KB, and its source {meta['source']} is unchanged")
+    imgs = re.findall(r"<img [^>]*>", html)
+    check(len(imgs) >= 4 and all('loading="lazy"' not in i for i in imgs[:4]), "hero cover and 3 previews load eagerly")
+    check(all('loading="lazy"' in i for i in imgs[4:]), "every image below the hero is lazy-loaded")
+    check(all("width=" in i and "height=" in i for i in imgs), "every image has width and height")
+    for link in REFUND_LINKS:
+        check(f'href="{link}"' in html, f"/holiday/ links the refund page {link}")
+    for phrase in ("Available only to customers located in the United States.", "Stripe checkout displays CyberDad Kit.",
+                   "After a successful payment, Stripe's confirmation screen shows the download link.",
+                   "with your checkout email address", "does not promise automatic processing", "CyberDad Kit LLC"):
+        check(phrase in html, f"/holiday/ keeps the checkout/refund wording: {phrase}")
+    for anchor, (bid, link, price) in CARDS.items():
+        check(f'id="{bid}" data-list-id="holiday-{anchor}"' in html, f"#{anchor} Buy button sends item_list_id holiday-{anchor}")
+    ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+    ldj = json.loads(ld.group(1)) if ld else {}
+    check(ldj.get("offers", {}).get("price") == "17.99" and ldj.get("name") == "Holiday Host Kit", "JSON-LD is the Host Kit at 17.99 USD")
+    ga = (ROOT / "_includes" / "ga4.html").read_text(encoding="utf-8")
+    check("a.getAttribute('data-list-id') || location.pathname" in ga, "ga4.html uses data-list-id for item_list_id, else the page path")
+    body = visible(html.split("<body", 1)[1])
+    check(body.count("7 days") == 1, "refund window sentence appears once in visible text")
+    check(body.count("located in the United States") == 1, "US eligibility sentence appears once in visible text")
+    check("mailerlite" not in html.lower(), "no MailerLite signup on /holiday/ (form is inactive, share URL is preview-only)")
+    check("2027 Bible Verse Journal" not in html, "journal card removed from /holiday/")
+    check("{% include ga4.html %}" in html, "site GA4 include (buy_click + begin_checkout listener) is present")
+    text = visible(html)
+    for pat in BANNED:
+        check(not re.search(pat, html if "mailerlite" in pat else text, re.I), f"no banned string /{pat}/ in /holiday/")
+    footer = re.search(r"<footer\b.*?</footer>", html, re.S).group(0)
+    check("PO Box 940061, Maitland, FL 32794" in footer and len(re.findall(r"\bFL\b", footer)) == 1, "footer has the PO Box address only")
+    for rel, (js, dest) in REDIRECTS.items():
+        stub = (ROOT / rel).read_text(encoding="utf-8")
+        label = "/" + rel[: -len("index.html")]
+        check("sitemap: false" in stub and 'content="noindex, follow"' in stub, f"{label} is noindex and out of the sitemap")
+        check(js in stub, f"{label} lands on {dest}")
+        check('window.location.replace("/holiday/" + window.location.search + h)' in stub, f"{label} keeps the full query string, hash last")
+        check(f'content="0; url={dest}"' in stub, f"{label} meta refresh fallback goes to {dest}")
+        check('rel="canonical" href="https://getcyberdadkit.com/holiday/"' in stub, f"{label} canonical is /holiday/")
+        check("buy.stripe.com" not in stub, f"{label} has no Buy link")
+    check('"trivia-bundle": "trivia"' in html and '"kids-table-bundle": "kids-table"' in html, "old bundle anchors land on the single-product cards")
+    for name in ("kids-table", "trivia"):
+        stub = (ROOT / "holiday" / name / "index.html").read_text(encoding="utf-8")
+        check("#bundle" not in stub, f"/holiday/{name}/#bundle lands on #{name}")
+    import subprocess
+    for rel in KEEP_UNCHANGED:
+        diff = subprocess.run(["git", "diff", "--quiet", "origin/main", "--", rel], cwd=ROOT).returncode
+        check(diff == 0, f"{rel} is unchanged versus origin/main")
+    for rel in REFUND_PAGES:
+        old = subprocess.run(["git", "show", f"origin/main:{rel}"], cwd=ROOT, capture_output=True, text=True).stdout
+        new = (ROOT / rel).read_text(encoding="utf-8")
+        norm = lambda t: re.sub(r'href="/(holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/|holiday/#[a-z-]+|shop/|holiday/)"', 'href="X"', t)
+        check(norm(old) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
+        check(not re.search(r'href="/holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/"', new), f"{rel}: product links go straight to /holiday/#card")
+    for rel in ("_includes/home-header.html", "_includes/ta-crosslink.html"):
+        inc = (ROOT / rel).read_text(encoding="utf-8")
+        check(not re.search(r'href="/(shop/|holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/)"', inc), f"{rel} links straight to /holiday/ cards (no redirect hop)")
+    print()
+    if failed:
+        print(f"FAILED {len(failed)} check(s)")
+        return 1
+    print("ALL ONE-PAGE HOLIDAY SHOP CHECKS PASSED")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -18,6 +18,9 @@ from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from holiday_one_page_retired import retired_reason  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[1]
 HOLIDAY = ROOT / "holiday"
 STORE = HOLIDAY / "index.html"
@@ -127,15 +130,18 @@ TRIVIA_FILES = {
         # Sprint 1113: re-pinned after the buy_click listener script was added (was 41d13f3c).
         # Nov 15: re-pinned after begin_checkout was added to the listener and data-product to the bundle button (was c6a68908).
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was 571ac152).
-        "847f4963d96436ddc961e3d0954ffee62eb8242e087b55206c3ad6811ab60c7c",
+        # Nov 17: re-pinned as the one-page shop redirect stub to /holiday/#trivia (was 847f4963).
+        "85f61773c96ec6f740903df8f1b1bbf8e1d7a0dc5d67703be4afab5e5d1906db",
     "holiday/trivia/sample/index.html":
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
         # Nov 16: re-pinned as the noindex Travel Adventure redirect stub with GA4 (was 526fd37c).
-        "a5036f5013070a2c00bc3387fc2f84630e81a786e4cffcab43e023cd8cfc7d86",
+        # Nov 17: re-pinned as the redirect stub to /holiday/#travel-adventure (query string kept) (was a5036f50).
+        "533cae0cdfe26b6b8f36f773d271bd0e7d2daedbc6f853edb276c3ea8c6e7cb6",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was abba1e5c).
-        "74dbc3054cd0595f6cc467098569f328ea835f40482f8df662b047fb69c59c78",
+        # Nov 17: re-pinned after product links became /holiday/#trivia and /holiday/#travel-adventure (hrefs only; refund text unchanged) (was 74dbc305).
+        "146b0a0ea9dff0533e3e3f1a10d8554d3702dc4733fe043846ee6aed25d0b481",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
         "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
@@ -254,6 +260,21 @@ for _festive_name in (
         ROUTES["/" + _rel] = ROOT / _rel
 
 ROUTES[TRAVEL_COVER] = ROOT / TRAVEL_COVER.lstrip("/")
+# One-page shop: /holiday/ shows downscaled WebP copies of existing images. Each one
+# is allowed only while its recorded source file still exists with the same sha256.
+ONE_PAGE_IMAGES = json.loads((ROOT / "tests" / "holiday_one_page_images.json").read_text(encoding="utf-8"))
+ONE_PAGE_DERIVATIVES = {
+    "/" + rel
+    for rel, meta in ONE_PAGE_IMAGES.items()
+    if (ROOT / rel).is_file()
+    and (ROOT / meta["source"]).is_file()
+    and hashlib.sha256((ROOT / meta["source"]).read_bytes()).hexdigest() == meta["source_sha256"]
+}
+for _src in ONE_PAGE_DERIVATIVES:
+    ROUTES[_src] = ROOT / _src.lstrip("/")
+# The single 7-day refund line on /holiday/ links every product refund page.
+for _slug in ("host-kit", "trivia", "table-set", "host-planner", "kids-table", "travel-adventure"):
+    ROUTES.setdefault(f"/holiday/{_slug}/refund/", HOLIDAY / _slug / "refund" / "index.html")
 
 # Thanksgiving Host Planner and Kids' Table Activity Pack.
 # Preview digests match previews/ in each product's final release folder.
@@ -510,6 +531,10 @@ def main() -> int:
     failed = []
 
     def check(ok: bool, message: str) -> None:
+        reason = retired_reason("check_holiday_storefront", message)
+        if reason is not None:
+            print(f"skip {message} [retired: {reason}]")
+            return
         print(("ok  " if ok else "FAIL") + " " + message)
         if not ok:
             failed.append(message)
@@ -561,7 +586,7 @@ def main() -> int:
             allowed = {p["src"] for p in manifest["previews"]} | {
                 "/assets/img/festive/gather-and-play-cover.jpg",
                 TRAVEL_COVER,
-            }
+            } | ONE_PAGE_DERIVATIVES
             check(src in allowed, f"{page_name} image is a preview or the festive cover: {src}")
         for anchor in doc.anchors:
             href = anchor.get("href", "")
@@ -587,7 +612,7 @@ def main() -> int:
             check(path in ROUTES and ROUTES[path].is_file(), f"{page_name} link {href}")
 
     check(store.images[0]["src"] == "/assets/img/festive/gather-and-play-cover.jpg", "hero image is the Gather and Play cover")
-    check(any(img["src"].endswith("page-09.png") for img in store.images), "storefront still shows the winter-game preview")
+    check(any("gather-and-play-page-09" in img["src"] for img in store.images) and (ROOT / "holiday/assets/previews/CyberDadKit-preview-page-09.png").is_file(), "storefront still shows the winter-game preview (downscaled copy of page 9)")
     for game in GAMES:
         check(game in store_html, f"lists {game}")
 
@@ -596,8 +621,10 @@ def main() -> int:
     check("disabled" not in pay[0], "product checkout anchor is not disabled")
     check("$7.99" in element_text(store_html, "holiday-checkout") and "USD" in element_text(store_html, "holiday-checkout"), "product button names $7.99 USD")
     check(US_ELIGIBILITY in store_html, "product page states US eligibility")
-    check("Stripe checkout displays Ruel Miller." in store_html, "product page names the checkout display name")
-    check(store_html.find("Stripe checkout displays Ruel Miller.") < store_html.find('id="holiday-checkout"'), "merchant notice is before the product pay link")
+    check("Stripe checkout displays CyberDad Kit." in store_html, "product page names the checkout display name")
+    # One-page shop: legal text appears once, so the merchant notice is checked for
+    # presence and count on /holiday/ instead of its position before one pay link.
+    check(store_html.count("Stripe checkout displays CyberDad Kit.") == 1, "merchant notice appears once on /holiday/")
     check("CyberDad Kit LLC" in store_html and 'href="/holiday/refund/"' in store_html, "seller and refund stay on the product page")
     robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
     check("User-agent: *" in robots and "Allow: /" in robots, "robots.txt still allows the site")
@@ -848,11 +875,11 @@ def main() -> int:
         "table-set-checkout-holiday": TABLE_SET_PAYMENT_URL,
         "travel-adventure-checkout-holiday": TRAVEL_PAYMENT_URL,
         "kids-checkout-holiday": KIDS_PAYMENT_URL,
-        "kids-bundle-checkout-holiday": KIDS_BUNDLE_PAYMENT_URL,
+        # one-page shop: the Kids' Table bundle card was removed from /holiday/
         "host-kit-checkout-holiday": HOST_KIT_PAYMENT_URL,
     }
     for button_id, url in holiday_extra.items():
-        check(f'id="{button_id}" href="{url}"' in store_html, f"/holiday/ has buy button {button_id}")
+        check(re.search(rf'id="{button_id}"[^>]*href="{re.escape(url)}"', store_html) is not None, f"/holiday/ has buy button {button_id}")
     # Sprint 1113: Travel Adventure is reachable near the top of /holiday/ on mobile (nav item plus one text line
     # before the free sample round), with no extra Stripe href.
     check('<li><a href="/holiday/travel-adventure/">Travel Adventure</a></li>' in store_html, "/holiday/ nav links the Travel Adventure page")
@@ -864,7 +891,7 @@ def main() -> int:
     check(store_html.count(TA_PRODUCT_LINK) >= 2, "/holiday/ has plain text links to the Travel Adventure page")
     check("utm_campaign=ap006_travel" not in store_html and "utm_medium=internal" not in store_html, "/holiday/ in-site Travel Adventure links have no UTMs")
     check("data-placeholder" not in store_html, "/holiday/ has no checkout placeholder attribute")
-    check(TRAVEL_COVER in store_html, "/holiday/ includes the Travel Adventure cover image")
+    check("/holiday/assets/shop/travel-adventure-cover-240.webp" in store_html and (ROOT / "holiday/assets/shop/travel-adventure-cover-240.webp").is_file() and (ROOT / TRAVEL_COVER.lstrip("/")).is_file(), "/holiday/ includes the Travel Adventure cover image (downscaled copy of the festive cover)")
     buy_counts = Counter(BUY_HREF_RE.findall(store_html))
     base_html = subprocess.check_output(
         ["git", "show", f"{BUY_HREF_BASE}:holiday/index.html"],
@@ -964,14 +991,14 @@ def main() -> int:
     check(sorted(gp_files) == [
         "holiday/index.html",
         "holiday/product.json",
+        "tests/check_holiday_one_page.py",
         "tests/check_holiday_storefront.py",
     ], "Gather & Play payment URL is unchanged everywhere it appears" + ("" if not gp_files else ": " + ", ".join(sorted(gp_files))))
     check(sorted(bundle_files) == [
-        "holiday/index.html",
-        "holiday/trivia/index.html",
         "tests/check_holiday_funnel.py",
+        "tests/check_holiday_one_page.py",
         "tests/check_holiday_storefront.py",
-    ], "bundle payment URL is only on the approved holiday pages and tests" + ("" if not bundle_files else ": " + ", ".join(sorted(bundle_files))))
+    ], "bundle payment URL is on no page (bundle cards removed) and only in tests" + ("" if not bundle_files else ": " + ", ".join(sorted(bundle_files))))
     for rel, digest in PIN_FILES.items():
         path = ROOT / rel
         check(path.is_file() and sha256(path) == digest, f"pin hash {rel}")
@@ -1166,7 +1193,7 @@ def main() -> int:
             pending.append(placeholder)
             check("TODO: replace " + placeholder in html, f"{slug} placeholder is marked TODO")
         check(price in element_text(html, buy_id) and "USD" in element_text(html, buy_id), f"{slug} button names {price} USD")
-        check(html.find("Stripe checkout displays Ruel Miller.") < html.find(f'id="{buy_id}"'), f"{slug} merchant notice is before the pay link")
+        check(html.find("Stripe checkout displays CyberDad Kit.") < html.find(f'id="{buy_id}"'), f"{slug} merchant notice is before the pay link")
         check(US_ELIGIBILITY in html and US_ELIGIBILITY in refund_html, f"{slug} states US eligibility")
         check("After a successful payment, Stripe's confirmation screen shows the download link." in html, f"{slug} says Stripe's confirmation screen shows the download link")
         check("with your checkout email address" in html, f"{slug} keeps the checkout-email re-send instruction")
@@ -1305,7 +1332,7 @@ def main() -> int:
             preview_rel = f"/holiday/assets/previews/CyberDadKit-travel-adventure-page-{page_no}.png"
             check(f'src="{preview_rel}"' in travel_html, f"Travel Adventure page shows inside page {page_no}")
             check((ROOT / preview_rel.lstrip("/")).is_file(), f"Travel Adventure inside page {page_no} preview file exists")
-        check("page 6 and is not shown here" in travel_html, "Travel Adventure previews do not show the answer key")
+        check("travel-adventure-page-06" not in store_html and "answer-key" not in store_html.lower(), "/holiday/ shows no Travel Adventure answer key image")
         check(travel_html.replace("a[href^=\"https://buy.stripe.com/\"]", "").count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href (buy_click selector excluded)")
         check("/holiday/travel-adventure/files/" not in travel_html and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in travel_html, "Travel Adventure page does not link the unlisted ZIP")
         check("The Great Thanksgiving Travel Adventure" in travel_html, "Travel Adventure page uses the product name")
@@ -1384,11 +1411,15 @@ def main() -> int:
     check(travel_refund_page.is_file(), "Travel Adventure refund page exists")
     if travel_refund_page.is_file():
         travel_refund_html = travel_refund_page.read_text(encoding="utf-8")
+        # One-page shop: the product page is a redirect stub now, so the refund page is
+        # compared with the product page wording as it stands on origin/main.
+        main_travel_html = subprocess.check_output(["git", "show", "origin/main:holiday/travel-adventure/index.html"], cwd=ROOT, text=True)
         if travel_page.is_file():
             check(
-                " ".join(element_text(travel_html, "travel-adventure-refund-wording").split())
-                == " ".join(element_text(travel_refund_html, "travel-adventure-refund-wording").split()),
-                "Travel Adventure refund page uses the product page 7-day wording",
+                " ".join(element_text(main_travel_html, "travel-adventure-refund-wording").split())
+                == " ".join(element_text(travel_refund_html, "travel-adventure-refund-wording").split())
+                and " ".join(element_text(travel_refund_html, "travel-adventure-refund-wording").split()) != "",
+                "Travel Adventure refund page keeps the main product page 7-day wording",
             )
         check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/refund/"' in travel_refund_html, "Travel Adventure refund canonical is exact")
         check(meta_content(travel_refund_html, "property", "og:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure refund og:image is the share card")
@@ -1401,7 +1432,7 @@ def main() -> int:
             check("buy.stripe.com" not in travel_refund_html, "Travel Adventure refund page has no buy.stripe.com href")
         else:
             check(travel_refund_html.count('href="' + TRAVEL_PAYMENT_URL + '"') == 1, "Travel Adventure refund page uses the Travel Adventure Stripe href")
-        check('href="/holiday/travel-adventure/"' in travel_refund_html, "Travel Adventure refund page links back to the product")
+        check('href="/holiday/#travel-adventure"' in travel_refund_html, "Travel Adventure refund page links back to the product card")
         check("The Great Thanksgiving Travel Adventure" in travel_refund_html, "Travel Adventure refund page uses the product name")
         check("{%" not in travel_refund_html and "layout:" not in travel_refund_html and "sitemap: false" not in travel_refund_html, "Travel Adventure refund page is static HTML that the sitemap lists")
         check("\u2014" not in travel_refund_html and "\u2013" not in travel_refund_html, "Travel Adventure refund page has no em dashes")
@@ -1467,7 +1498,7 @@ def main() -> int:
     return 0
 
 
-TA_CROSSLINK_HREF = "/holiday/travel-adventure/"
+TA_CROSSLINK_HREF = "/holiday/#travel-adventure"
 TA_CROSSLINK_PAGES = (
     ("index.html", "home"),
 )
@@ -1524,7 +1555,7 @@ def check_ta_crosslinks(check) -> None:
         hrefs = [href.replace("&amp;", "&") for href in re.findall(r'href="([^"]*)"', blocks[0])] if blocks else []
         check(
             hrefs == [TA_CROSSLINK_HREF],
-            f"built {rel} cross-link href is exactly /holiday/travel-adventure/",
+            f"built {rel} cross-link href is exactly /holiday/#travel-adventure",
         )
         check(
             f'data-crosslink="{slug}"' in (blocks[0] if blocks else ""),

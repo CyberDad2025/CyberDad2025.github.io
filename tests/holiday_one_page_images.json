@@ -1,0 +1,86 @@
+{
+ "holiday/assets/shop/host-kit-cover-320.webp": {
+  "source": "holiday/host-kit/img/CyberDadKit-Holiday-Host-Kit-cover.png",
+  "source_sha256": "126e7d055802056c9c83732aa4b421d5f174616f5e1cc9dfde74cbbd56d269aa",
+  "width": 320,
+  "height": 427
+ },
+ "holiday/assets/shop/host-kit-cover-600.webp": {
+  "source": "holiday/host-kit/img/CyberDadKit-Holiday-Host-Kit-cover.png",
+  "source_sha256": "126e7d055802056c9c83732aa4b421d5f174616f5e1cc9dfde74cbbd56d269aa",
+  "width": 600,
+  "height": 800
+ },
+ "holiday/assets/shop/gather-and-play-page-09-240.webp": {
+  "source": "holiday/assets/previews/CyberDadKit-preview-page-09.png",
+  "source_sha256": "b2dc84e54a3d6692421176659fe3e51da9c915fcc50fa8c44bffe8143ae4ce70",
+  "width": 240,
+  "height": 311
+ },
+ "holiday/assets/shop/gather-and-play-page-09-360.webp": {
+  "source": "holiday/assets/previews/CyberDadKit-preview-page-09.png",
+  "source_sha256": "b2dc84e54a3d6692421176659fe3e51da9c915fcc50fa8c44bffe8143ae4ce70",
+  "width": 360,
+  "height": 466
+ },
+ "holiday/assets/shop/christmas-trivia-page-05-240.webp": {
+  "source": "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png",
+  "source_sha256": "7b2ba870b4ce50401caa2ed513c115121a9fd3c8b6177929e133ffd2f94c37d2",
+  "width": 240,
+  "height": 311
+ },
+ "holiday/assets/shop/christmas-trivia-page-05-360.webp": {
+  "source": "holiday/assets/trivia/previews/CyberDadKit-Christmas-Trivia-preview-page-05.png",
+  "source_sha256": "7b2ba870b4ce50401caa2ed513c115121a9fd3c8b6177929e133ffd2f94c37d2",
+  "width": 360,
+  "height": 466
+ },
+ "holiday/assets/shop/host-planner-page-03-240.webp": {
+  "source": "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
+  "source_sha256": "3a304463ef3e43c65d54c5d513dc3f8d628ed8675ba441e5843247c6c49951e9",
+  "width": 240,
+  "height": 311
+ },
+ "holiday/assets/shop/host-planner-page-03-360.webp": {
+  "source": "holiday/assets/host-planner/previews/CyberDadKit-Host-Planner-preview-page-03.png",
+  "source_sha256": "3a304463ef3e43c65d54c5d513dc3f8d628ed8675ba441e5843247c6c49951e9",
+  "width": 360,
+  "height": 466
+ },
+ "holiday/assets/shop/gather-and-play-cover-240.webp": {
+  "source": "assets/img/festive/gather-and-play-cover.jpg",
+  "source_sha256": "48c28c98e45334813d9b48d71127c9d8e55c16c6d5f892803f99eaee09aee86a",
+  "width": 240,
+  "height": 341
+ },
+ "holiday/assets/shop/christmas-trivia-night-cover-240.webp": {
+  "source": "assets/img/festive/christmas-trivia-night-cover.jpg",
+  "source_sha256": "17ec84994aa1b8cccbc03b9bfb30c4a86b83fccc3761f52216963348fa10fc23",
+  "width": 240,
+  "height": 341
+ },
+ "holiday/assets/shop/table-set-cover-240.webp": {
+  "source": "holiday/table-set/img/CyberDadKit-Thanksgiving-Table-Set-cover.png",
+  "source_sha256": "c1411412015036d0aa8f86aff376d8a8a510aec8d0b147b845ba114c86e58778",
+  "width": 240,
+  "height": 320
+ },
+ "holiday/assets/shop/host-planner-cover-240.webp": {
+  "source": "assets/img/festive/thanksgiving-host-planner-cover.jpg",
+  "source_sha256": "f95656c94399de14d363eeb877e428332e1883ec2e8f8f9c9bb35ea68a8a229f",
+  "width": 240,
+  "height": 341
+ },
+ "holiday/assets/shop/kids-table-pack-cover-240.webp": {
+  "source": "assets/img/festive/kids-table-pack-cover.jpg",
+  "source_sha256": "4c7c8747b8673531dbdbde5d286bcdc7dff4d77ba39799d3980d5eaca7ff4c94",
+  "width": 240,
+  "height": 341
+ },
+ "holiday/assets/shop/travel-adventure-cover-240.webp": {
+  "source": "assets/img/festive/thanksgiving-travel-adventure-cover.jpg",
+  "source_sha256": "f0de8704ab275d75169cf802d3433a73b74ec3b37a82c26eadb2a7e30a480d2d",
+  "width": 240,
+  "height": 341
+ }
+}
