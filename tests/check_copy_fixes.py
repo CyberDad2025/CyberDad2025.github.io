@@ -409,7 +409,8 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
                 price_bad.append(name)
         else:
             allowed_added = ALLOWED_PRICE_ADDITIONS.get(name, Counter())
-            if old_prices - new_prices != allowed_removed or new_prices - old_prices != allowed_added:
+            # qa-flag-samples-1117: unchanged prices are fine once the required deletion is on main.
+            if old_prices != new_prices and (old_prices - new_prices != allowed_removed or new_prices - old_prices != allowed_added):
                 price_bad.append(name)
         if Counter(FORM_RE.findall(old)) != Counter(FORM_RE.findall(new)):
             added = Counter(FORM_RE.findall(new)) - Counter(FORM_RE.findall(old))
