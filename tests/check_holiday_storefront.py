@@ -58,7 +58,7 @@ UNCHANGED_BUY_HREFS = Counter({
 })
 BUY_HREF_BASE = "e8d9b220ddd4f2755ab8d15a7111e6e8399b70ab"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
-HOST_KIT_ZIP_SHA = "611b0cf0c0e0dae1468e572d28563af8fbca589ee898dd657af2f59ebbc55a80"
+HOST_KIT_ZIP_SHA = "0a43e1765c99b069c88cc7b60c889d49834aa5945ed7e5cb57eff222a556d6d1"
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 TRAVEL_ZIP_REL = "holiday/travel-adventure/files/CyberDadKit-Thanksgiving-Travel-Adventure.zip"
 TRAVEL_ZIP_SHA = "3715c03c7f7c86cc2f8d4f81e0aa42f1d8e2107323e2acc7f9ccf67757eb80f1"
@@ -80,7 +80,7 @@ PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
 PIN_FILES = {
     "holiday/pins/02-christmas-gathering.png": "030b08c8184a507ea3d2306555c0583d050f8e54c91c3e90edae1df0548a9761",
     "holiday/pins/03-office-holiday.png": "41c319da9ff35ac5a3197f449fc00d845b09acea8c7d17eb83afe4f1c7f48301",
-    "holiday/pins/04-low-ink-last-minute.png": "a9d2d2daf46b2a4e59f27e05abae653546ed38e0bac4bcde386c0eb92d8ce72c",
+    "holiday/pins/04-low-ink-last-minute.png": "a598350139986c77f4b8545cfb8b3257f81e77c0e56d41410758d944eda7fd05",
     "holiday/pins/pin-free-sample.png": "e08417c56df6305927e939b86417efd660b71dd354a9d8706d192c9841b2de9a",
     "holiday/pins/pin-gathering-games.png": "e9242464864383a55d8dadaef7d227c6cb1c09d8b04ba76c60d7847437fc8c5c",
     "holiday/pins/pin-low-ink.png": "f511846e350e7b6c33dc2d91da55fbd1678ad25f836c6f5e54a4f7ad5c74aa69",
@@ -308,8 +308,8 @@ KIDS_REFUND = (
     "Pack and does not limit your statutory rights."
 )
 KIDS_BUNDLE_REFUND = (
-    "If you bought the $11.99 bundle of Kids' Table Activity Pack and Gather & Play, "
-    "this 7-day policy covers the whole bundle purchase."
+    "If you bought Kids' Table Activity Pack together with Gather & Play, "
+    "this 7-day policy covers that whole purchase."
 )
 THANKSGIVING_PRODUCTS = {
     # page dir: (price, buy id, placeholder, refund wording id, refund wording)

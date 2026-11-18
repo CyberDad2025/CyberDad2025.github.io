@@ -60,7 +60,8 @@ REDIRECTS = {
     "shop/index.html": ('var h = window.location.hash || "";', "/holiday/"),
 }
 KEEP_UNCHANGED = ("journal/2027/index.html",)
-# Refund pages: only product-link hrefs may change (to /holiday/#card); the text stays the same.
+# Refund pages: only product-link hrefs may change (to /holiday/#card); the text stays the same,
+# except holiday/kids-table/refund/index.html, which drops the old $11.99 bundle offer wording.
 REFUND_PAGES = (
     "holiday/refund/index.html",
     "holiday/host-kit/refund/index.html",
@@ -165,7 +166,12 @@ def main() -> int:
         old = subprocess.run(["git", "show", f"origin/main:{rel}"], cwd=ROOT, capture_output=True, text=True).stdout
         new = (ROOT / rel).read_text(encoding="utf-8")
         norm = lambda t: re.sub(r'href="/(holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/|holiday/#[a-z-]+|shop/|holiday/)"', 'href="X"', t)
-        check(norm(old) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
+        if rel == "holiday/kids-table/refund/index.html":
+            check("If you bought Kids' Table Activity Pack together with Gather &amp; Play, this 7-day policy covers that whole purchase." in new, f"{rel}: bundle sentence no longer cites the $11.99 offer")
+            check("$11.99" not in new, f"{rel}: $11.99 is gone")
+            check('id="kids-refund-wording"' in new and "within 7 days of your purchase date" in new, f"{rel}: KT purchase refund wording remains")
+        else:
+            check(norm(old) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
         check(not re.search(r'href="/holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/"', new), f"{rel}: product links go straight to /holiday/#card")
     for rel in ("_includes/home-header.html", "_includes/ta-crosslink.html"):
         inc = (ROOT / rel).read_text(encoding="utf-8")

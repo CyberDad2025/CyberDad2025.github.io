@@ -77,6 +77,8 @@ SHIELD_HREF_RE = re.compile(r"""href\s*=\s*["'][^"']*shield-kit""", re.I)
 ALLOWED_PRICE_REMOVALS = {
     "about.md": Counter({"$47": 1}),
     "affiliate-disclosure.html": Counter({"$2": 1}),
+    # Follow-up SMALL 1117: drop the retired $11.99 Kids' Table + Gather & Play bundle price from the KT refund page.
+    "holiday/kids-table/refund/index.html": Counter({"$11.99": 1}),
     "assets/js/ethical-compliance.js": Counter({"$2": 1}),
     # Retired product price, removed when that page was archived.
     "terms-of-sale.md": Counter({"$47": 2}),
@@ -221,7 +223,7 @@ def main() -> int:
     check(holiday_zips == [allowed_zip], "only the unlisted Host Kit ZIP is under holiday/" + ("" if holiday_zips == [allowed_zip] else f" {holiday_zips}"))
     if allowed_zip.is_file():
         digest = __import__("hashlib").sha256(allowed_zip.read_bytes()).hexdigest()
-        check(digest == "611b0cf0c0e0dae1468e572d28563af8fbca589ee898dd657af2f59ebbc55a80", "Host Kit ZIP sha256 is the cleared AP-004 file")
+        check(digest == "0a43e1765c99b069c88cc7b60c889d49834aa5945ed7e5cb57eff222a556d6d1", "Host Kit ZIP sha256 is the 15-PDF release")
 
     llc_bad = changed_llc_lines()
     check(not llc_bad, "approved CyberDad Kit LLC, PO Box lines unchanged" + ("" if not llc_bad else f" {llc_bad[:5]}"))
