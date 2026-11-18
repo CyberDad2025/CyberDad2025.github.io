@@ -118,7 +118,6 @@ Every recommendation is practical for real families with real constraints.
 ## 📧 **Stay Protected**
 
 ### **🔔 Get Instant Cybersecurity Alerts**
-Join **12,000+ families** getting real-time notifications about threats affecting their devices.
 
 **👉 [Subscribe for FREE alerts](https://getcyberdadkit.com) 👈**
 
@@ -165,7 +164,6 @@ Join **12,000+ families** getting real-time notifications about threats affectin
 ### **Community Impact**
 - 🛡️ **Protecting families** through accessible cybersecurity education
 - 📈 **Growing audience** of security-conscious parents
-- 🌍 **International reach** helping families worldwide
 - 💡 **Practical advice** that families actually implement
 
 ---
