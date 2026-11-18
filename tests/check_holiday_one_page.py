@@ -55,13 +55,28 @@ REDIRECTS = {
     "holiday/kids-table/index.html": ('var h = "#kids-table";', "/holiday/#kids-table"),
     "holiday/table-set/index.html": ('var h = "#table-set";', "/holiday/#table-set"),
     "holiday/trivia/index.html": ('var h = "#trivia";', "/holiday/#trivia"),
-    "holiday/sample/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
-    "holiday/trivia/sample/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
+    "holiday/sample/index.html": ('var h = "#gather-and-play";', "/holiday/#gather-and-play"),
+    "holiday/trivia/sample/index.html": ('var h = "#trivia";', "/holiday/#trivia"),
     "shop/index.html": ('var h = window.location.hash || "";', "/holiday/"),
 }
 # The journal storefront may swap the hero picture to the real page-1 cover.
 # Caption, alt, prices, Stripe hrefs, and all other markup stay locked to main.
 JOURNAL_PAGE = "journal/2027/index.html"
+
+# qa-flag-samples-1117: the ?cdk_qa=1 internal-traffic flag replaced the one GA4
+# config line with a small block. Fold it back so lock-to-main comparisons only
+# see the edits they were written to allow.
+QA_FLAG_BLOCK = (
+    "      (function () {\n"
+    "        var qa = false;\n"
+    "        try { var p = new URLSearchParams(location.search).get('cdk_qa'); if (p === '1') localStorage.setItem('cdk_qa', '1'); else if (p === '0') localStorage.removeItem('cdk_qa'); qa = localStorage.getItem('cdk_qa') === '1'; } catch (err) {}\n"
+    "        if (qa) { gtag('config', 'G-5B1LNCPB56', { traffic_type: 'internal' }); } else { gtag('config', 'G-5B1LNCPB56'); }\n"
+    "      })();\n"
+)
+
+
+def without_qa_flag(html: str) -> str:
+    return html.replace(QA_FLAG_BLOCK, "      gtag('config', 'G-5B1LNCPB56');\n")
 JOURNAL_HERO_PICTURE_RE = re.compile(r'<picture class="festive-cover">.*?</picture>', re.S)
 
 def journal_without_hero_picture(html: str) -> str:
@@ -167,7 +182,7 @@ def main() -> int:
         check("#bundle" not in stub, f"/holiday/{name}/#bundle lands on #{name}")
     import subprocess
     journal_old = subprocess.run(["git", "show", f"origin/main:{JOURNAL_PAGE}"], cwd=ROOT, capture_output=True, text=True).stdout
-    journal_new = (ROOT / JOURNAL_PAGE).read_text(encoding="utf-8")
+    journal_new = without_qa_flag((ROOT / JOURNAL_PAGE).read_text(encoding="utf-8"))
     check(journal_without_hero_picture(journal_old) == journal_without_hero_picture(journal_new),
           "journal/2027/index.html only changes the hero picture")
     check("/journal/2027/assets/CyberDadKit-2027-Journal-preview-page-01.webp" in journal_new,
@@ -182,7 +197,7 @@ def main() -> int:
           "journal hero is not the festive marketing graphic")
     for rel in REFUND_PAGES:
         old = subprocess.run(["git", "show", f"origin/main:{rel}"], cwd=ROOT, capture_output=True, text=True).stdout
-        new = (ROOT / rel).read_text(encoding="utf-8")
+        new = without_qa_flag((ROOT / rel).read_text(encoding="utf-8"))
         norm = lambda t: re.sub(r'href="/(holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/|holiday/#[a-z-]+|shop/|holiday/)"', 'href="X"', t)
         if rel == "holiday/kids-table/refund/index.html":
             check("If you bought the Kids' Table Activity Pack together with Gather &amp; Play, this 7-day policy covers that whole purchase." in new, f"{rel}: bundle sentence no longer cites the $11.99 offer")

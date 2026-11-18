@@ -136,12 +136,14 @@ TRIVIA_FILES = {
         # Footer identity is four lines. The free-sample PDFs keep their own pins.
         # Nov 16: re-pinned as the noindex Travel Adventure redirect stub with GA4 (was 526fd37c).
         # Nov 17: re-pinned as the redirect stub to /holiday/#travel-adventure (query string kept) (was a5036f50).
-        "533cae0cdfe26b6b8f36f773d271bd0e7d2daedbc6f853edb276c3ea8c6e7cb6",
+        # Nov 17 (qa-flag-samples-1117): re-pinned as the redirect stub to /holiday/#trivia (query string kept) (was 533cae0c).
+        "4a123c34c1fbcc10d513a4078c0781eef6af0e8c262c2c6a66d521611cc71818",
     "holiday/trivia/refund/index.html":
         # Footer identity is four lines.
         # Nov 16: re-pinned after Free sample links became plain Travel Adventure hrefs (was abba1e5c).
         # Nov 17: re-pinned after product links became /holiday/#trivia and /holiday/#travel-adventure (hrefs only; refund text unchanged) (was 74dbc305).
-        "146b0a0ea9dff0533e3e3f1a10d8554d3702dc4733fe043846ee6aed25d0b481",
+        # Nov 17 (qa-flag-samples-1117): re-pinned after the cdk_qa internal-traffic flag was added to the inline GA4 config (was 146b0a0e).
+        "d6b921afbfb5722ca5b4ac71d8183a76755bb52316c8c6c0e2f978af3db8bb23",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-A4.pdf":
         "3e5ac375bab5eb3c56748a12eee2d9a8449137329a6bfb52608a03b30288e0d3",
     "holiday/trivia/sample/CyberDadKit-Christmas-Trivia-Night-FREE-SAMPLE-US-Letter.pdf":
@@ -1040,7 +1042,7 @@ def main() -> int:
     check(meta_content(store_html, "property", "og:description") == HOLIDAY_DESC, "holiday og:description matches description")
     check(meta_content(store_html, "property", "og:image") == PRODUCT_IMAGE, "holiday og:image is the landscape share card")
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/"' in store_html, "holiday canonical")
-    check("The Great Thanksgiving Travel Adventure" in title_text(sample_html), "sample redirect title names the Travel Adventure")
+    check("Gather" in title_text(sample_html), "sample redirect title names Gather & Play")
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in sample_html, "sample canonical points at the Travel Adventure page")
     check('name="robots" content="noindex, follow"' in sample_html, "sample redirect is noindex, follow")
     check("sitemap: false" in sample_path.read_text(encoding="utf-8") and "layout: null" in sample_path.read_text(encoding="utf-8"), "sample redirect stays out of the sitemap")
