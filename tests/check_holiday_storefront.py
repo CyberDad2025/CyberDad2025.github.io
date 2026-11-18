@@ -80,7 +80,7 @@ PIN_REL = "holiday/assets/pins/01-thanksgiving-host.png"
 PIN_FILES = {
     "holiday/pins/02-christmas-gathering.png": "030b08c8184a507ea3d2306555c0583d050f8e54c91c3e90edae1df0548a9761",
     "holiday/pins/03-office-holiday.png": "41c319da9ff35ac5a3197f449fc00d845b09acea8c7d17eb83afe4f1c7f48301",
-    "holiday/pins/04-low-ink-last-minute.png": "a598350139986c77f4b8545cfb8b3257f81e77c0e56d41410758d944eda7fd05",
+    "holiday/pins/04-low-ink-last-minute.png": "c4d19f730d54c671ba3ac1c1be3f2e477023017559b8ab1ba1751c88e38483b2",
     "holiday/pins/pin-free-sample.png": "e08417c56df6305927e939b86417efd660b71dd354a9d8706d192c9841b2de9a",
     "holiday/pins/pin-gathering-games.png": "e9242464864383a55d8dadaef7d227c6cb1c09d8b04ba76c60d7847437fc8c5c",
     "holiday/pins/pin-low-ink.png": "f511846e350e7b6c33dc2d91da55fbd1678ad25f836c6f5e54a4f7ad5c74aa69",
