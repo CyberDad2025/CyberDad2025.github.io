@@ -58,7 +58,7 @@ UNCHANGED_BUY_HREFS = Counter({
 })
 BUY_HREF_BASE = "e8d9b220ddd4f2755ab8d15a7111e6e8399b70ab"
 HOST_KIT_ZIP_REL = "holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
-HOST_KIT_ZIP_SHA = "0a43e1765c99b069c88cc7b60c889d49834aa5945ed7e5cb57eff222a556d6d1"
+HOST_KIT_ZIP_SHA = "ab23df6d9c5e9f7603a4b6fa185b1c5917b3953aefead9a298de34996d22d4d7"  # Nov 18 fix/trivia-penguin-q-1118: Trivia R8 Q2 reworded in the 4 trivia PDFs (was 0a43e176)
 HOST_KIT_ZIP_URL = "https://getcyberdadkit.com/holiday/host-kit/files/CyberDadKit-Holiday-Host-Kit.zip"
 TRAVEL_ZIP_REL = "holiday/travel-adventure/files/CyberDadKit-Thanksgiving-Travel-Adventure.zip"
 TRAVEL_ZIP_SHA = "3715c03c7f7c86cc2f8d4f81e0aa42f1d8e2107323e2acc7f9ccf67757eb80f1"
