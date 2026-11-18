@@ -127,6 +127,28 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
 }
 @media (min-width: 1100px) { .mp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } #kids-table, #travel-adventure { align-self: start; } }
 </style>
+<script>
+(function () {
+  /* Host Kit email capture, Buy prefill (hostkit-capture-1118 v2). The Buy href in the page never changes, so GA
+     (buy_click, begin_checkout, enhanced-measurement outbound clicks) only ever sees the clean Stripe link. A captured
+     email is held in this closure only. Registered before the GA tag, on window in the capture phase, so it runs before
+     any document listener; it does not stop propagation, so buy_click and begin_checkout fire as before. Only a plain
+     left click or Enter with an email held is redirected to the same link plus ?prefilled_email=. Modifier clicks and
+     new tabs fall through to the clean link. */
+  var held = "";
+  window.__hkPrefill = function (email) { held = String(email || ""); };
+  window.addEventListener("click", function (e) {
+    if (!held || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest("#host-kit-checkout-holiday") : null;
+    if (!a || (a.target && a.target !== "_self")) return;
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf("https://buy.stripe.com/") !== 0) return;
+    e.preventDefault();
+    var dest = href.split("?")[0].split("#")[0] + "?prefilled_email=" + encodeURIComponent(held);
+    setTimeout(function () { window.location.assign(dest); }, 0);
+  }, true);
+})();
+</script>
 {% include ga4.html %}
 </head>
 <body class="festive festive-holiday">
@@ -155,14 +177,14 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
     <p class="hk-merchant">Secure checkout by Stripe. Merchant: <span style="white-space:nowrap">CyberDad Kit LLC</span>.</p>
     <p class="hk-fine">Digital PDFs, U.S. customers, 7-day refund policy</p>
     <form class="hk-save" id="hk-save" action="https://assets.mailerlite.com/jsonp/1632878/forms/204511141540399100/subscribe" method="post" novalidate hidden>
-      <label for="hk-save-email">Email me this checkout link <span class="hk-save-opt">(optional)</span></label>
+      <label for="hk-save-email">Email me a link to this kit <span class="hk-save-opt">(optional)</span></label>
       <div class="hk-save-row">
         <input id="hk-save-email" name="fields[email]" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" aria-describedby="hk-save-consent">
-        <button type="submit">Email me the link</button>
+        <button type="submit">Email me a link to this kit</button>
       </div>
       <input type="hidden" name="ml-submit" value="1">
       <input type="hidden" name="anticsrf" value="true">
-      <p class="hk-save-consent" id="hk-save-consent">We'll email you this link plus one reminder. Unsubscribe anytime. <a href="/cyberdadkit-privacy-policy.html">Privacy</a></p>
+      <p class="hk-save-consent" id="hk-save-consent">We'll email you a link to this kit plus one reminder, nothing else. Unsubscribe anytime. <a href="/cyberdadkit-privacy-policy.html">Privacy</a></p>
       <p class="hk-save-status" id="hk-save-status" role="status" aria-live="polite"></p>
     </form>
     <div class="hk-prevs" aria-label="Real pages from the kit">
@@ -305,14 +327,13 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
 </script>
 <script>
 (function () {
-  /* Host Kit optional "Email me this checkout link" (feat/hostkit-email-capture-1118). Optional and separate from Buy:
+  /* Host Kit optional "Email me a link to this kit" (feat/hostkit-email-capture-1118). Optional and separate from Buy:
      Buy stays a plain link and is never blocked. Posts to MailerLite embedded form 204511141540399100 (group
-     "Host Kit checkout started"). On success: GA4 email_capture (no email sent to GA) and the Buy href gets
-     ?prefilled_email= so Stripe can fill the email. Hidden without JavaScript. */
+     "Host Kit checkout started"). On success: GA4 email_capture (no email sent to GA) and the email is handed to the
+     in-memory Buy prefill handler in the head; the Buy href is never changed. Hidden without JavaScript. */
   var form = document.getElementById("hk-save"), buy = document.getElementById("host-kit-checkout-holiday");
   if (!form || !buy || !window.fetch || !window.URLSearchParams) return;
   var input = document.getElementById("hk-save-email"), status = document.getElementById("hk-save-status"), btn = form.querySelector("button");
-  var base = buy.getAttribute("href").split("?")[0];
   form.hidden = false;
   function say(msg, err) { status.textContent = msg; status.className = "hk-save-status" + (err ? " is-error" : ""); }
   form.addEventListener("submit", function (e) {
@@ -329,7 +350,7 @@ body.festive a.gp-buy:hover, body.festive a.mp-buy:hover { background: #fff4d6; 
         if (timer) clearTimeout(timer);
         btn.disabled = false;
         if (!ok) { say("We couldn't save your email just now. The Buy button still works.", true); return; }
-        buy.setAttribute("href", base + "?prefilled_email=" + encodeURIComponent(email));
+        if (typeof window.__hkPrefill === "function") window.__hkPrefill(email);
         say("Done. Check your inbox for the link. You can still buy now.");
         input.value = "";
         if (typeof window.gtag === "function") {
