@@ -254,7 +254,11 @@ def main() -> int:
     check("{% include ga4.html %}" in ta, "Travel Adventure page includes ga4.html")
     check('href="https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g"' in ta, "Travel Adventure page reuses the live Travel Adventure Stripe link")
     check('href="/holiday/travel-adventure/"' in html, "/holiday/ card links /holiday/travel-adventure/")
-    check("<title>Thanksgiving Road Trip Printables | Travel Adventure</title>" in ta and 'content="Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity. Instant digital download for US customers. Print it before you leave."' in ta and "<h1 id=\"product-title\">Printable Activities for Your Thanksgiving Road Trip</h1>" in ta, "Travel Adventure title, meta and H1 match the Growth handoff")
+    check("<title>Thanksgiving Road Trip Printables | Travel Adventure</title>" in ta and 'content="Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity pack. Instant digital download for US customers. Print it before you leave."' in ta and "<h1 id=\"product-title\">Printable Activities for Your Thanksgiving Road Trip</h1>" in ta, "Travel Adventure title, meta and H1 use the Growth handoff with activity pack wording")
+    check("The seller is CyberDad Kit LLC (CyberDadKit)." in ta and "does not promise automatic processing" not in ta, "Travel Adventure seller and processing lines match the Proofreader polish")
+    check("The cover is above. These are pages 2 and 4, the word search and the Fall Trail Maze. They are pictures of the pages, not the file download. The answer key is on page 6 and is not shown here." in ta, "Travel Adventure previews paragraph names pages 2 and 4")
+    check('src="/holiday/assets/previews/CyberDadKit-travel-adventure-page-02.png"' in ta and 'src="/holiday/assets/previews/CyberDadKit-travel-adventure-page-04.png"' in ta, "Travel Adventure page shows the word search and maze previews")
+    check("CyberDadKit-travel-adventure-page-03.png" not in ta and "airport" not in ta.lower(), "Travel Adventure page no longer shows the page 3 bingo preview or airport wording")
 
 
 

@@ -437,7 +437,7 @@ def json_ld_blocks(html: str) -> list:
 TA_PAGE_URL = "https://getcyberdadkit.com/holiday/travel-adventure/"
 # Title, meta and og:description are the Growth handoff (SEO-HANDOFF.md v2).
 # Pinterest rich-pin structure (og:type product, og:price, image, JSON-LD Offer) is unchanged.
-TA_OG_DESCRIPTION = 'Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity. Instant digital download for US customers. Print it before you leave.'
+TA_OG_DESCRIPTION = 'Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity pack. Instant digital download for US customers. Print it before you leave.'
 
 
 def travel_rich_pin_checks(html: str, label: str) -> list[tuple[bool, str]]:
@@ -1329,7 +1329,7 @@ def main() -> int:
         travel_doc = parse(travel_page)
         check("<title>Thanksgiving Road Trip Printables | Travel Adventure</title>" in travel_html, "Travel Adventure title matches the Growth handoff")
         check(meta_content(travel_html, "property", "og:title") == 'Thanksgiving Road Trip Printables | Travel Adventure', "Travel Adventure og:title matches the Growth title")
-        check(meta_content(travel_html, "name", "description") == 'Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity. Instant digital download for US customers. Print it before you leave.', "Travel Adventure meta description matches the Growth meta")
+        check(meta_content(travel_html, "name", "description") == 'Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity pack. Instant digital download for US customers. Print it before you leave.', "Travel Adventure meta description matches the Growth meta")
         check('<h1 id="product-title">Printable Activities for Your Thanksgiving Road Trip</h1>' in travel_html, "Travel Adventure H1 matches the Growth handoff")
         check(meta_content(travel_html, "property", "og:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure og:image is the landscape share card")
         check(meta_content(travel_html, "property", "og:image:width") == "1200", "Travel Adventure og:image:width is 1200")
@@ -1337,7 +1337,7 @@ def main() -> int:
         check(meta_content(travel_html, "name", "twitter:card") == "summary_large_image", "Travel Adventure twitter:card is summary_large_image")
         check(meta_content(travel_html, "name", "twitter:image") == "https://getcyberdadkit.com/assets/share/holiday-travel-adventure.png", "Travel Adventure twitter:image is the landscape share card")
         check(meta_content(travel_html, "name", "twitter:title") == 'Thanksgiving Road Trip Printables | Travel Adventure', "Travel Adventure twitter:title matches the Growth title")
-        check(meta_content(travel_html, "name", "twitter:description") == 'Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity. Instant digital download for US customers. Print it before you leave.', "Travel Adventure twitter:description matches the Growth meta")
+        check(meta_content(travel_html, "name", "twitter:description") == 'Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity pack. Instant digital download for US customers. Print it before you leave.', "Travel Adventure twitter:description matches the Growth meta")
         check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in travel_html, "Travel Adventure canonical is exact")
         pay = [a for a in travel_doc.anchors if a.get("id") == "travel-adventure-checkout"]
         check(len(pay) == 1 and pay[0].get("href") == TRAVEL_PAYMENT_URL, "Travel Adventure buy href is the same URL as /holiday/")
@@ -1351,10 +1351,16 @@ def main() -> int:
         buy_first_pages = [q.relative_to(ROOT).as_posix() for q in ROOT.rglob("*.html") if "_site" not in q.parts and "hday-hero-buy-first" in q.read_text(encoding="utf-8", errors="replace")]
         check("holiday/gather-and-play/index.html" in buy_first_pages, "Gather & Play page uses hday-hero-buy-first")
         check(set(buy_first_pages) <= {"holiday/gather-and-play/index.html", "holiday/travel-adventure/index.html"}, "hday-hero-buy-first is only on Gather & Play and Travel Adventure")
-        for page_no in ("03", "04"):
+        for page_no in ("02", "04"):
             preview_rel = f"/holiday/assets/previews/CyberDadKit-travel-adventure-page-{page_no}.png"
             check(f'src="{preview_rel}"' in travel_html, f"Travel Adventure page shows inside page {page_no}")
             check((ROOT / preview_rel.lstrip("/")).is_file(), f"Travel Adventure inside page {page_no} preview file exists")
+        check("CyberDadKit-travel-adventure-page-03.png" not in travel_html, "Travel Adventure page no longer shows the page 3 bingo preview")
+        check("airport" not in travel_html.lower(), "Travel Adventure page has no airport wording")
+        check("The cover is above. These are pages 2 and 4, the word search and the Fall Trail Maze. They are pictures of the pages, not the file download. The answer key is on page 6 and is not shown here." in travel_html, "Travel Adventure previews paragraph names pages 2 and 4")
+        check("The seller is CyberDad Kit LLC (CyberDadKit)." in travel_html, "Travel Adventure seller line uses the polished LLC (CyberDadKit) wording")
+        check("The seller is CyberDad Kit LLC, CyberDadKit." not in travel_html, "Travel Adventure seller line no longer uses the comma form")
+        check("does not promise automatic processing" not in travel_html, "Travel Adventure page no longer promises or disclaims a processing time")
         check("travel-adventure-page-06" not in store_html and "answer-key" not in store_html.lower(), "/holiday/ shows no Travel Adventure answer key image")
         check(travel_html.replace("a[href^=\"https://buy.stripe.com/\"]", "").count("buy.stripe.com") == 1, "Travel Adventure page adds only that Stripe href (buy_click selector excluded)")
         check("/holiday/travel-adventure/files/" not in travel_html and "CyberDadKit-Thanksgiving-Travel-Adventure.zip" not in travel_html, "Travel Adventure page does not link the unlisted ZIP")
@@ -1551,7 +1557,7 @@ def main() -> int:
     check('id="gather-and-play"' in store_html and store_html.count('href="/holiday/gather-and-play/"') >= 2, "/holiday/ links the Gather & Play product page at least twice")
     ta_src = (HOLIDAY / "travel-adventure" / "index.html").read_text(encoding="utf-8")
     check("<title>Thanksgiving Road Trip Printables | Travel Adventure</title>" in ta_src, "Travel Adventure title matches the Growth handoff")
-    check('name="description" content="Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity. Instant digital download for US customers. Print it before you leave."' in ta_src, "Travel Adventure meta description matches the Growth handoff")
+    check('name="description" content="Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity pack. Instant digital download for US customers. Print it before you leave."' in ta_src, "Travel Adventure meta description matches the Growth handoff")
     check('<h1 id="product-title">Printable Activities for Your Thanksgiving Road Trip</h1>' in ta_src, "Travel Adventure H1 matches the Growth handoff")
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in ta_src, "Travel Adventure canonical is self")
     check('href="/holiday/travel-adventure/"' in store_html, "/holiday/ #travel-adventure card links the product page")
