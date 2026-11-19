@@ -359,7 +359,15 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         # New holiday product files. Existing checkout links and prices stay locked.
         if old_raw is None and (
             name.startswith("holiday/table-set/") or name.startswith("holiday/host-kit/")
+            or name.startswith("holiday/gather-and-play/")
         ):
+            # New Gather & Play page may only reuse checkout URLs and prices already
+            # live on a holiday page on main.
+            if name.startswith("holiday/gather-and-play/"):
+                if set(STRIPE_RE.findall(new)) - main_holiday_stripe_links():
+                    stripe_bad.append(name)
+                if set(PRICE_RE.findall(new)) - main_holiday_prices():
+                    price_bad.append(name)
             continue
         old = old_raw or ""
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):

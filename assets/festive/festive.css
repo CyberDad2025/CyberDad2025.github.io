@@ -266,7 +266,7 @@ body.festive .hday-hero { align-items: start; }
     margin: 0.4rem 0 0.6rem;
   }
 
-  /* Travel Adventure only: on phones, price and buy button come before the cover. */
+  /* Travel Adventure and Gather & Play: on phones, price and buy button come before the cover. */
   body.festive .hday-hero.hday-hero-buy-first > .hday-shot { order: 5; }
 }
 

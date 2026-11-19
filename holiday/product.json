@@ -50,7 +50,11 @@
     "currency": "USD",
     "type": "one_time",
     "element_id": "holiday-checkout",
-    "pages": ["/holiday/", "/holiday/sample/"],
+    "pages": [
+      "/holiday/",
+      "/holiday/gather-and-play/",
+      "/holiday/sample/"
+    ],
     "eligibility": "Available only to customers located in the United States."
   },
   "delivery": {

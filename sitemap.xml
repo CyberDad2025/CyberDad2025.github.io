@@ -8,6 +8,8 @@ layout: null
 # host-planner, kids-table, table-set (/holiday/table-set/ and
 # /holiday/table-set/refund/), host-kit (/holiday/host-kit/ and
 # /holiday/host-kit/refund/), and /journal/2027/ plus their refund pages.
+# /holiday/gather-and-play/ is a Jekyll page (front matter, sitemap: true,
+# no noindex), so it is listed from site.pages, not site.static_files.
 # jekyll-sitemap 1.4 does not also write sitemap.xml when this page exists.
 sitemap: false
 ---

@@ -234,6 +234,18 @@ def main() -> int:
     for rel in ("_includes/home-header.html", "_includes/ta-crosslink.html"):
         inc = (ROOT / rel).read_text(encoding="utf-8")
         check(not re.search(r'href="/(shop/|holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/)"', inc), f"{rel} links straight to /holiday/ cards (no redirect hop)")
+    gp = (ROOT / "holiday/gather-and-play/index.html").read_text(encoding="utf-8")
+    check("sitemap: true" in gp and "sitemap: false" not in gp and "noindex" not in gp, "Gather & Play page is not a noindex stub")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/gather-and-play/"' in gp, "Gather & Play canonical is the product URL")
+    check("{% include ga4.html %}" in gp, "Gather & Play page includes ga4.html")
+    check('href="https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"' in gp, "Gather & Play page reuses the live Gather & Play Stripe link")
+    check('href="/holiday/gather-and-play/"' in html, "/holiday/ card links /holiday/gather-and-play/")
+    check("<title>Printable Office Party Games | Gather &amp; Play</title>" in gp and 'content="Hosting an office holiday party? Gather &amp; Play offers printable group activities. Instant digital download for US customers. Print before guests arrive."' in gp and "<h1 id=\"product-title\">Printable Games for Your Office Holiday Party</h1>" in gp, "Gather & Play title, meta and H1 match the Growth handoff")
+    check("<h3>Color and low-ink</h3>" in gp and "US Letter color and US Letter low-ink PDFs. Each holds the same 12 games." in gp, "Gather & Play facts card names the two US Letter PDFs")
+    check("Hosting a work party? You may print copies for internal office use." in gp, "Gather & Play states internal office printing")
+    check("The seller is CyberDad Kit LLC (CyberDadKit)." in gp and "does not promise automatic processing" not in gp, "Gather & Play seller and processing lines match the Watchdog polish")
+    check(not re.search(r"\bA4\b", gp), "Gather & Play page has no A4")
+
     print()
     if failed:
         print(f"FAILED {len(failed)} check(s)")
