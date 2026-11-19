@@ -251,6 +251,7 @@ ROUTES = {
     "/assets/share/holiday-travel-adventure.png": ROOT / "assets" / "share" / "holiday-travel-adventure.png",
     "/holiday/travel-adventure/": HOLIDAY / "travel-adventure" / "index.html",
     "/holiday/travel-adventure/refund/": HOLIDAY / "travel-adventure" / "refund" / "index.html",
+    "/holiday/gather-and-play/": HOLIDAY / "gather-and-play" / "index.html",
 }
 for _festive_name in (
     "gather-and-play-cover",
@@ -1008,6 +1009,7 @@ def main() -> int:
         if BUNDLE_PAYMENT_URL in text:
             bundle_files.append(rel)
     check(sorted(gp_files) == [
+        "holiday/gather-and-play/index.html",
         "holiday/index.html",
         "holiday/product.json",
         "tests/check_holiday_one_page.py",
@@ -1346,7 +1348,8 @@ def main() -> int:
         festive_css = (ROOT / "assets" / "festive" / "festive.css").read_text(encoding="utf-8")
         check("body.festive .hday-hero.hday-hero-buy-first > .hday-shot { order: 5; }" in festive_css, "buy-first cover order rule is present and scoped to hday-hero-buy-first")
         buy_first_pages = [q.relative_to(ROOT).as_posix() for q in ROOT.rglob("*.html") if "_site" not in q.parts and "hday-hero-buy-first" in q.read_text(encoding="utf-8", errors="replace")]
-        check(buy_first_pages == ["holiday/travel-adventure/index.html"], "only the Travel Adventure page uses hday-hero-buy-first")
+        check("holiday/gather-and-play/index.html" in buy_first_pages, "Gather & Play page uses hday-hero-buy-first")
+        check(set(buy_first_pages) <= {"holiday/gather-and-play/index.html", "holiday/travel-adventure/index.html"}, "hday-hero-buy-first is only on Gather & Play and Travel Adventure")
         for page_no in ("03", "04"):
             preview_rel = f"/holiday/assets/previews/CyberDadKit-travel-adventure-page-{page_no}.png"
             check(f'src="{preview_rel}"' in travel_html, f"Travel Adventure page shows inside page {page_no}")
@@ -1506,6 +1509,40 @@ def main() -> int:
                     finally:
                         httpd.shutdown()
                 check(status == 200, "built Travel Adventure refund page returns 200")
+
+
+    # Dedicated, indexable Gather & Play page (feat/gather-and-play-page-1119).
+    gp_page = HOLIDAY / "gather-and-play" / "index.html"
+    gp_html = gp_page.read_text(encoding="utf-8")
+    check(gp_page.is_file(), "Gather & Play product page exists")
+    check(gp_html.startswith("---\nlayout: null\nsitemap: true\n---\n"), "Gather & Play page is a Jekyll page with sitemap: true")
+    check("sitemap: false" not in gp_html and 'name="robots"' not in gp_html and "noindex" not in gp_html, "Gather & Play page is indexable (no noindex, not sitemap: false)")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/gather-and-play/"' in gp_html, "Gather & Play canonical is self")
+    check("<title>Printable Office Party Games | Gather &amp; Play</title>" in gp_html, "Gather & Play title matches the Growth handoff")
+    check('name="description" content="Hosting an office holiday party? Gather &amp; Play offers printable group activities. Instant digital download for US customers. Print before guests arrive."' in gp_html, "Gather & Play meta description matches the Growth handoff")
+    check('<h1 id="product-title">Printable Games for Your Office Holiday Party</h1>' in gp_html, "Gather & Play H1 matches the Growth handoff")
+    check(meta_content(gp_html, "property", "og:title") == 'Printable Office Party Games | Gather & Play', "Gather & Play og:title matches the Growth title")
+    check(meta_content(gp_html, "property", "og:description") == 'Hosting an office holiday party? Gather & Play offers printable group activities. Instant digital download for US customers. Print before guests arrive.', "Gather & Play og:description matches the Growth meta")
+    check(meta_content(gp_html, "name", "twitter:title") == 'Printable Office Party Games | Gather & Play', "Gather & Play twitter:title matches the Growth title")
+    check(meta_content(gp_html, "name", "twitter:description") == 'Hosting an office holiday party? Gather & Play offers printable group activities. Instant digital download for US customers. Print before guests arrive.', "Gather & Play twitter:description matches the Growth meta")
+    check("{% include ga4.html %}" in gp_html, "Gather & Play page includes the site GA4 tag (buy_click + begin_checkout)")
+    check(gp_html.count('href="' + PAYMENT_URL + '"') == 1, "Gather & Play page has one live Gather & Play Stripe href")
+    check('id="gather-and-play-checkout"' in gp_html and f'data-list-id="gather-and-play"' in gp_html, "Gather & Play buy button has tracking ids")
+    check('data-product="Gather &amp; Play"' in gp_html or 'data-product="Gather & Play"' in gp_html, "Gather & Play buy button has data-product")
+    check("https://buy.stripe.com/" in gp_html and gp_html.count("https://buy.stripe.com/") == 2, "Gather & Play page reuses only the existing payment link (attribute + href)")
+    check("<p>CyberDad Kit LLC</p>" in gp_html and "<p>PO Box 940061, Maitland, FL 32794</p>" in gp_html, "Gather & Play footer has the LLC mailing lines")
+    check('href="/holiday/refund/"' in gp_html and 'href="/terms-of-sale/"' in gp_html, "Gather & Play page links refund and terms")
+    check("Available only to customers located in the United States." in gp_html, "Gather & Play page has the US-only sentence")
+    check("\u2014" not in gp_html and "\u2013" not in gp_html and "&mdash;" not in gp_html and "&ndash;" not in gp_html, "Gather & Play page has no em or en dashes")
+    check("guarantee" not in gp_html.lower() and "worldwide" not in gp_html.lower(), "Gather & Play page has no guarantee or worldwide")
+    check(not re.search(r"\bCDK\b", gp_html), "Gather & Play page has no CDK")
+    check("AggregateRating" not in gp_html and '"@type": "Review"' not in gp_html and "ratingValue" not in gp_html, "Gather & Play page has no ratings or review markup")
+    check("/holiday/assets/previews/CyberDadKit-preview-page-01.png" in gp_html, "Gather & Play page reuses the page 1 preview")
+    check("gather-and-play-page-09-360.webp" in gp_html, "Gather & Play page reuses the page 9 shop preview")
+    check('href="/holiday/gather-and-play/"' in store_html, "/holiday/ #gather-and-play card links the product page")
+    check('id="gather-and-play"' in store_html and store_html.count('href="/holiday/gather-and-play/"') >= 2, "/holiday/ links the Gather & Play product page at least twice")
+    ta_src = (HOLIDAY / "travel-adventure" / "index.html").read_text(encoding="utf-8")
+    check("<title>The Great Thanksgiving Travel Adventure · CyberDadKit</title>" in ta_src, "Travel Adventure current title is unchanged pending the Travel Adventure page commit")
 
     check_ta_crosslinks(check)
 

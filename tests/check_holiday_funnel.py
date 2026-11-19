@@ -187,7 +187,7 @@ def main() -> int:
             check(bool(stripe_now) and set(stripe_now) <= main_links, f"{label} Stripe hrefs are all live on main")
             for href in hrefs(html):
                 path = holiday_page_path(href)
-                check(path is None or path in {"/holiday/"} or path.endswith("/refund/"), f"{label} link {href} does not hop through a redirect stub")
+                check(path is None or path in {"/holiday/", "/holiday/gather-and-play/"} or path.endswith("/refund/"), f"{label} link {href} does not hop through a redirect stub")
         else:
             check(not stripe_now, f"{label} redirect stub has no Stripe href")
             check('location.replace("/holiday/" + window.location.search' in html, f"{label} redirect stub keeps the query string")
