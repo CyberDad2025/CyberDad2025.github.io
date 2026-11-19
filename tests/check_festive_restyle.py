@@ -538,6 +538,7 @@ def main() -> int:
         "holiday/host-kit/index.html",
         "holiday/host-kit/refund/index.html",
         "holiday/gather-and-play/index.html",
+        "holiday/travel-adventure/index.html",
         *POLICY_PAGES,
     ]
     # Jekyll does not serve _unpublished/.
