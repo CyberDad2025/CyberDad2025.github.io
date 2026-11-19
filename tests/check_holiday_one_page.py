@@ -56,7 +56,6 @@ REFUND_LINKS = ("/holiday/host-kit/refund/", "/holiday/refund/", "/holiday/trivi
                 "/holiday/host-planner/refund/", "/holiday/kids-table/refund/", "/holiday/travel-adventure/refund/")
 # old URL (repo file) -> expected JS hash expression, meta refresh target
 REDIRECTS = {
-    "holiday/travel-adventure/index.html": ('var h = "#travel-adventure";', "/holiday/#travel-adventure"),
     "holiday/host-kit/index.html": ('var h = "#host-kit";', "/holiday/#host-kit"),
     "holiday/host-planner/index.html": ('var h = "#host-planner";', "/holiday/#host-planner"),
     "holiday/kids-table/index.html": ('var h = "#kids-table";', "/holiday/#kids-table"),
@@ -230,7 +229,10 @@ def main() -> int:
             check('id="kids-refund-wording"' in new and "within 7 days of your purchase date" in new, f"{rel}: KT purchase refund wording remains")
         else:
             check(norm(without_qa_flag(old)) == norm(new), f"{rel}: only product-link hrefs changed; refund text is unchanged")
-        check(not re.search(r'href="/holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/"', new), f"{rel}: product links go straight to /holiday/#card")
+        if rel == "holiday/travel-adventure/refund/index.html":
+            check('href="/holiday/travel-adventure/"' in new and 'href="/holiday/#travel-adventure"' not in new, f"{rel}: product links go to the indexable Travel Adventure page")
+        else:
+            check(not re.search(r'href="/holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/"', new), f"{rel}: product links go straight to /holiday/#card")
     for rel in ("_includes/home-header.html", "_includes/ta-crosslink.html"):
         inc = (ROOT / rel).read_text(encoding="utf-8")
         check(not re.search(r'href="/(shop/|holiday/(travel-adventure|host-kit|host-planner|kids-table|table-set|trivia)/)"', inc), f"{rel} links straight to /holiday/ cards (no redirect hop)")
@@ -245,6 +247,20 @@ def main() -> int:
     check("Hosting a work party? You may print copies for internal office use." in gp, "Gather & Play states internal office printing")
     check("The seller is CyberDad Kit LLC (CyberDadKit)." in gp and "does not promise automatic processing" not in gp, "Gather & Play seller and processing lines match the Watchdog polish")
     check(not re.search(r"\bA4\b", gp), "Gather & Play page has no A4")
+    ta = (ROOT / "holiday/travel-adventure/index.html").read_text(encoding="utf-8")
+    check("sitemap: true" in ta and "sitemap: false" not in ta and "noindex" not in ta, "Travel Adventure page is not a noindex stub")
+    check('rel="canonical" href="https://getcyberdadkit.com/holiday/travel-adventure/"' in ta, "Travel Adventure canonical is the product URL")
+    check("window.location.replace" not in ta and "http-equiv=\"refresh\"" not in ta, "Travel Adventure page does not redirect")
+    check("{% include ga4.html %}" in ta, "Travel Adventure page includes ga4.html")
+    check('href="https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g"' in ta, "Travel Adventure page reuses the live Travel Adventure Stripe link")
+    check('href="/holiday/travel-adventure/"' in html, "/holiday/ card links /holiday/travel-adventure/")
+    check("<title>Thanksgiving Road Trip Printables | Travel Adventure</title>" in ta and 'content="Heading out for Thanksgiving? Travel Adventure is a printable road-trip activity pack. Instant digital download for US customers. Print it before you leave."' in ta and "<h1 id=\"product-title\">Printable Activities for Your Thanksgiving Road Trip</h1>" in ta, "Travel Adventure title, meta and H1 use the Growth handoff with activity pack wording")
+    check("The seller is CyberDad Kit LLC (CyberDadKit)." in ta and "does not promise automatic processing" not in ta, "Travel Adventure seller and processing lines match the Proofreader polish")
+    check("The cover is above. These are pages 2 and 4, the word search and the Fall Trail Maze. They are pictures of the pages, not the file download. The answer key is on page 6 and is not shown here." in ta, "Travel Adventure previews paragraph names pages 2 and 4")
+    check('src="/holiday/assets/previews/CyberDadKit-travel-adventure-page-02.png"' in ta and 'src="/holiday/assets/previews/CyberDadKit-travel-adventure-page-04.png"' in ta, "Travel Adventure page shows the word search and maze previews")
+    check("CyberDadKit-travel-adventure-page-03.png" not in ta and "airport" not in ta.lower(), "Travel Adventure page no longer shows the page 3 bingo preview or airport wording")
+
+
 
     print()
     if failed:

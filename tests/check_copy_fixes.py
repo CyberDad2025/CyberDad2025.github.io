@@ -111,7 +111,6 @@ ONE_PAGE_STUBS = {
     "holiday/host-planner/index.html",
     "holiday/kids-table/index.html",
     "holiday/table-set/index.html",
-    "holiday/travel-adventure/index.html",
     "holiday/trivia/index.html",
 }
 ONE_PAGE_FORM_REMOVALS = {"holiday/index.html"} | ONE_PAGE_STUBS
@@ -391,6 +390,14 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             # the historical deletion of that one A4 payment link and nothing else.
             if added or (removed and removed != Counter({JOURNAL_A4_LINK: 1})):
                 stripe_bad.append(name)
+        elif name == "holiday/travel-adventure/index.html":
+            # Restored indexable product page. Only the existing live Travel Adventure
+            # checkout URL and prices already live on a holiday page on main.
+            if set(new_links) - main_holiday_stripe_links():
+                stripe_bad.append(name)
+            if set(PRICE_RE.findall(new)) - main_holiday_prices():
+                price_bad.append(name)
+            continue
         elif name == "holiday/index.html":
             # One-page shop: every checkout URL on /holiday/ must already be live on main.
             if set(new_links) - main_holiday_stripe_links():

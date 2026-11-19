@@ -187,10 +187,22 @@ def main() -> int:
             check(bool(stripe_now) and set(stripe_now) <= main_links, f"{label} Stripe hrefs are all live on main")
             for href in hrefs(html):
                 path = holiday_page_path(href)
-                check(path is None or path in {"/holiday/", "/holiday/gather-and-play/"} or path.endswith("/refund/"), f"{label} link {href} does not hop through a redirect stub")
+                check(path is None or path in {"/holiday/", "/holiday/gather-and-play/", "/holiday/travel-adventure/"} or path.endswith("/refund/"), f"{label} link {href} does not hop through a redirect stub")
         else:
             check(not stripe_now, f"{label} redirect stub has no Stripe href")
             check('location.replace("/holiday/" + window.location.search' in html, f"{label} redirect stub keeps the query string")
+
+    ta_html = (ROOT / "holiday/travel-adventure/index.html").read_text(encoding="utf-8")
+    check(not GUARANTEE_RE.search(ta_html), "/holiday/travel-adventure/ has no guarantee wording")
+    check(not SHIELD_RE.search(ta_html), "/holiday/travel-adventure/ has no Shield mention")
+    check(DOC_NUMBER not in ta_html, "/holiday/travel-adventure/ has no retired filing identifier")
+    ta_footer = footer(ta_html)
+    check(ta_html.count("<footer") == 1 and ta_footer.count("</footer>") == 1, "/holiday/travel-adventure/ has one footer")
+    for line in FOOTER_LINES:
+        check(ta_footer.count(line) == 1, f"/holiday/travel-adventure/ footer line once: {line}")
+    check(US_ONLY in ta_html, "/holiday/travel-adventure/ keeps the US-only sentence")
+    check("https://buy.stripe.com/00waEW4ea3Q4eP3f2Dds40g" in ta_html, "/holiday/travel-adventure/ reuses the live Travel Adventure Stripe link")
+    check("window.location.replace" not in ta_html, "/holiday/travel-adventure/ is not a redirect stub")
 
     for rel in UNCHANGED + ("holiday/sample/index.html", "holiday/trivia/sample/index.html"):
         html = (ROOT / rel).read_text(encoding="utf-8")
