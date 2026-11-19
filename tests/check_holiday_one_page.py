@@ -241,6 +241,10 @@ def main() -> int:
     check('href="https://buy.stripe.com/9B67sK4ea4U8dKZ07Jds405"' in gp, "Gather & Play page reuses the live Gather & Play Stripe link")
     check('href="/holiday/gather-and-play/"' in html, "/holiday/ card links /holiday/gather-and-play/")
     check("<title>Printable Office Party Games | Gather &amp; Play</title>" in gp and 'content="Hosting an office holiday party? Gather &amp; Play offers printable group activities. Instant digital download for US customers. Print before guests arrive."' in gp and "<h1 id=\"product-title\">Printable Games for Your Office Holiday Party</h1>" in gp, "Gather & Play title, meta and H1 match the Growth handoff")
+    check("<h3>Color and low-ink</h3>" in gp and "US Letter color and US Letter low-ink PDFs. Each holds the same 12 games." in gp, "Gather & Play facts card names the two US Letter PDFs")
+    check("Hosting a work party? You may print copies for internal office use." in gp, "Gather & Play states internal office printing")
+    check("The seller is CyberDad Kit LLC (CyberDadKit)." in gp and "does not promise automatic processing" not in gp, "Gather & Play seller and processing lines match the Watchdog polish")
+    check(not re.search(r"\bA4\b", gp), "Gather & Play page has no A4")
 
     print()
     if failed:
