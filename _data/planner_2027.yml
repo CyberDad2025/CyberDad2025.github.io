@@ -1,0 +1,6 @@
+# 2027 Family Planner (AP-005) storefront values. The one place to swap the checkout and delivery links.
+# stripe_link: the Stripe Payment Link used by every Buy button (/planner/2027/ and the /holiday/ card).
+# drive_link: the link-only Drive delivery file. It is shown on Stripe's confirmation screen after payment,
+#   never on this site; it is kept here only as the record of what the payment link delivers.
+stripe_link: "STRIPE_PLANNER_2027_TBD"
+drive_link: "DRIVE_PLANNER_2027_TBD"

@@ -82,5 +82,11 @@
   "source_sha256": "f0de8704ab275d75169cf802d3433a73b74ec3b37a82c26eadb2a7e30a480d2d",
   "width": 240,
   "height": 341
+ },
+ "holiday/assets/shop/planner-2027-cover-240.webp": {
+  "source": "planner/2027/assets/planner-2027-cover-600.webp",
+  "source_sha256": "3b87d5f298ad841ab1ea993ef92d055be66072eba9a426d495fa427c09377f32",
+  "width": 240,
+  "height": 360
  }
 }

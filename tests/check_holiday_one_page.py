@@ -169,8 +169,10 @@ def main() -> int:
     check("2027 Bible Verse Journal" not in html, "journal card removed from /holiday/")
     check("{% include ga4.html %}" in html, "site GA4 include (buy_click + begin_checkout listener) is present")
     text = visible(html)
+    # feat/planner-2027: the product name "2027 Family Planner" is the only allowed use of "family" on /holiday/.
+    text_np = text.replace("2027 Family Planner", "")
     for pat in BANNED:
-        check(not re.search(pat, html if "mailerlite" in pat else text, re.I), f"no banned string /{pat}/ in /holiday/")
+        check(not re.search(pat, html if "mailerlite" in pat else text_np, re.I), f"no banned string /{pat}/ in /holiday/")
     card = re.search(r'<article class="mp-card" id="trivia".*?</article>', html, re.S)
     card = card.group(0) if card else ""
     samples = SAMPLE_LINE_RE.findall(html)

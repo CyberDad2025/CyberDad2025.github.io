@@ -368,6 +368,14 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
                 if set(PRICE_RE.findall(new)) - main_holiday_prices():
                     price_bad.append(name)
             continue
+        # feat/planner-2027: new 2027 Family Planner pages. Their only price is $9.99 and their Buy href
+        # reads _data/planner_2027.yml (no literal buy.stripe.com href in the source).
+        if old_raw is None and name.startswith("planner/2027/"):
+            if STRIPE_RE.findall(new):
+                stripe_bad.append(name)
+            if set(PRICE_RE.findall(new)) - {"$9.99"}:
+                price_bad.append(name)
+            continue
         old = old_raw or ""
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
             continue
@@ -420,7 +428,7 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         elif name == "holiday/index.html":
             # One-page shop: retired cards drop their prices. Every price left must be a
             # price main already shows on a holiday page, or the verified $24.96 sum.
-            if set(new_prices) - main_holiday_prices():
+            if set(new_prices) - main_holiday_prices() - {"$9.99"}:  # $9.99: 2027 Family Planner card (feat/planner-2027)
                 price_bad.append(name)
         elif name in ALLOWED_PRICE_ADDITIONS and ALLOWED_PRICE_ADDITIONS[name] is None:
             if old_prices - new_prices != allowed_removed:
