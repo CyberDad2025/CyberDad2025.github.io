@@ -1,0 +1,3 @@
+# 2027 Family Planner (AP-005) storefront values. The one place to swap the checkout and delivery links.
+# stripe_link: the Stripe Payment Link used by every Buy button (/planner/2027/ and the /holiday/ card).
+stripe_link: "https://buy.stripe.com/dRm14meSOdqEeP3aMnds40h"
