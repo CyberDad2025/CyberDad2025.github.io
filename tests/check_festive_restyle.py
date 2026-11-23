@@ -345,7 +345,7 @@ def main() -> int:
 
     # One-page shop: Stripe links and prices across the replaced pages, checked as a set.
     main_links: set[str] = set()
-    main_prices: set[str] = {"$24.96"}  # verified Host Kit parts sum (PRICE-SUM.md)
+    main_prices: set[str] = {"$24.96", "$9.99"}  # verified Host Kit parts sum (PRICE-SUM.md); $9.99 is the 2027 Family Planner card (feat/planner-2027)
     for rel in ONE_PAGE_REPLACED:
         main_links.update(stripe_hrefs(main_text(rel)))
         main_prices.update(price_strings(main_text(rel)))
