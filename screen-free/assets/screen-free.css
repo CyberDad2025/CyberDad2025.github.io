@@ -1,0 +1,26 @@
+/* Evergreen palette for /screen-free/ on the shared festive house style. Stars and dots replace seasonal ribbon icons. */
+body.festive-screen-free {
+  --festive-header: #7f1d1d;
+  --festive-banner: #6b2a1a;
+  --festive-heading: #7f1d1d;
+  --festive-card-border: #c4a35a;
+  --festive-shadow: #7f1d1d;
+  --festive-price: #9a3412;
+  --festive-ribbon: #fff1dc;
+  --festive-glow: #c2410c;
+  --festive-icon-a: var(--festive-star-sm);
+  --festive-icon-b: var(--festive-star);
+  --festive-icon-c: var(--festive-star-sm);
+}
+body.festive-screen-free .hday-header { background: linear-gradient(90deg, #9a3412 0%, #7f1d1d 55%, #14532d 100%); }
+body.festive-screen-free .screen-free-benefits li { margin: 0 0 .55rem; }
+body.festive-screen-free .cd-site-footer { background: #3b1d12; color: #fff6e8; max-width: none !important; margin: 2rem 0 0 !important; padding: 1.3rem 1rem 1.5rem !important; border-top: 6px solid #e0b03a !important; }
+body.festive-screen-free .cd-site-footer a { color: #fff6e8; }
+body.festive-screen-free .screen-free-table-wrap { overflow-x: auto; }
+body.festive-screen-free .screen-free-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+body.festive-screen-free .screen-free-table th, body.festive-screen-free .screen-free-table td { text-align: left; vertical-align: top; padding: .5rem .55rem; border-bottom: 1px solid #e8d2a8; }
+body.festive-screen-free .screen-free-table th { font-family: var(--festive-display); color: var(--festive-heading); }
+body.festive-screen-free .screen-free-faq dt { font-weight: 700; margin-top: .9rem; }
+body.festive-screen-free .screen-free-faq dd { margin: .25rem 0 0; }
+body.festive-screen-free .hday-price-note { margin-top: .2rem; font-weight: 600; }
+body.festive-screen-free .screen-free-footnote { text-align: center; margin: 2rem 1rem 0; font-size: .92rem; }

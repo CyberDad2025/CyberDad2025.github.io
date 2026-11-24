@@ -378,6 +378,15 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             if set(PRICE_RE.findall(new)) - {"$9.99"}:
                 price_bad.append(name)
             continue
+        # Screen-Free Kids Activity Bundle: only $14.99. Its one payment link lives in _data/screen_free.yml;
+        # the pages read it through Liquid (no literal buy.stripe.com href in the page source).
+        if old_raw is None and (name.startswith("screen-free/") or name == "_data/screen_free.yml"):
+            allowed_links = {"https://buy.stripe.com/6oU6oG11Y3Q48qF9Ijds40i"} if name == "_data/screen_free.yml" else set()
+            if set(STRIPE_RE.findall(new)) - allowed_links:
+                stripe_bad.append(name)
+            if set(PRICE_RE.findall(new)) - {"$14.99"}:
+                price_bad.append(name)
+            continue
         old = old_raw or ""
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
             continue
@@ -430,7 +439,7 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         elif name == "holiday/index.html":
             # One-page shop: retired cards drop their prices. Every price left must be a
             # price main already shows on a holiday page, or the verified $24.96 sum.
-            if set(new_prices) - main_holiday_prices() - {"$9.99"}:  # $9.99: 2027 Family Planner card (feat/planner-2027)
+            if set(new_prices) - main_holiday_prices() - {"$9.99", "$14.99"}:  # $9.99: 2027 Family Planner card (feat/planner-2027)
                 price_bad.append(name)
         elif name in ALLOWED_PRICE_ADDITIONS and ALLOWED_PRICE_ADDITIONS[name] is None:
             if old_prices - new_prices != allowed_removed:

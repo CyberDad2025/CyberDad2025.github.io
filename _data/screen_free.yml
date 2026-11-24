@@ -1,0 +1,3 @@
+# Screen-Free Kids Activity Bundle storefront values. The one place to swap the checkout link.
+# stripe_link: the Stripe Payment Link used by every Buy button (/screen-free/ and the /holiday/ card).
+stripe_link: "https://buy.stripe.com/6oU6oG11Y3Q48qF9Ijds40i"
