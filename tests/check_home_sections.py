@@ -69,32 +69,11 @@ HOLIDAY = [
         "source_files": ["holiday/index.html"],
     },
     {
-        "name": "Thanksgiving Table Set",
-        "href": "/holiday/#table-set",
-        "prices": ["4.99"],
-        "source": "/holiday/ card ($4.99). /holiday/table-set/ is a redirect stub.",
-        "source_files": ["holiday/index.html"],
-    },
-    {
-        "name": "Thanksgiving Host Planner",
-        "href": "/holiday/#host-planner",
-        "prices": ["4.99"],
-        "source": "/holiday/ card ($4.99). /holiday/host-planner/ is a redirect stub.",
-        "source_files": ["holiday/index.html"],
-    },
-    {
         "name": "Kids' Table Activity Pack",
         "href": "/holiday/#kids-table",
         "prices": ["5.99"],
         "source": "/holiday/ card ($5.99). /holiday/kids-table/ is a redirect stub.",
         "source_files": ["holiday/index.html"],
-    },
-    {
-        "name": "The Great Thanksgiving Travel Adventure",
-        "href": "/holiday/travel-adventure/",
-        "prices": ["4.99"],
-        "source": "/holiday/ card and /holiday/travel-adventure/ ($4.99).",
-        "source_files": ["holiday/index.html", "holiday/travel-adventure/index.html"],
     },
 ]
 
@@ -213,6 +192,14 @@ def main() -> int:
     check(ev_pos != -1 and hol_pos != -1 and ev_pos < hol_pos, "Evergreen section appears before the Holiday section")
     check('id="evergreen-title">Year-round family kits</h2>' in kits_html, "Evergreen heading is Year-round family kits")
     check('id="holiday-title">Holiday picks</h2>' in kits_html, "Holiday heading is Holiday picks")
+    check(
+        "Games, trivia and table activities for your Christmas gatherings. One-time USD prices, US customers only." in kits_html,
+        "Holiday lead is Christmas-only",
+    )
+    check("Thanksgiving and Christmas gatherings" not in kits_html, "Holiday lead no longer pairs Thanksgiving with Christmas")
+    for retired in ("Thanksgiving Table Set", "Thanksgiving Host Planner", "The Great Thanksgiving Travel Adventure"):
+        check(f"<h3>{retired}</h3>" not in kits_html and retired not in kits_html, f"Holiday picks no longer lists {retired}")
+
     check('>Shop all holiday kits</a>' in kits_html and 'href="/holiday/"' in kits_html, "Holiday section links to /holiday/")
     check(SAMPLE_HREF in kits_html and SAMPLE.is_file(), "free sample CTA points at the existing Screen-Free US Letter PDF")
     check("mailerlite" not in kits_html.lower(), "no new MailerLite form was added")
