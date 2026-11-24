@@ -98,6 +98,9 @@ JOURNAL_A4_LINK = "https://buy.stripe.com/14AfZg9yudqEfT74nZds409"
 # allowed, so this check passes whether that page lands on main first or here.
 # Holiday printable prices are already on main, so terms-of-sale.md is not listed.
 ALLOWED_PRICE_ADDITIONS = {
+    # feat/home-evergreen-holiday-1124: homepage kit cards repeat live prices already
+    # on /screen-free/, /planner/2027/, /journal/2027/ and /holiday/. No new prices.
+    "index.html": Counter({"$7.99": 3, "$4.99": 3, "$9.99": 2, "$5.99": 2, "$14.99": 1, "$17.99": 1}),
     "shop/index.html": None,
     "holiday/index.html": None,
     "holiday/sample/index.html": None,
