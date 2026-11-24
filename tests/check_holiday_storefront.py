@@ -212,6 +212,8 @@ ROUTES = {
     "/journal/2027/": ROOT / "journal" / "2027" / "index.html",
     "/holiday/": STORE,
     # feat/planner-2027: the 2027 Family Planner page and its refund page.
+    "/screen-free/": ROOT / "screen-free/index.html",
+    "/screen-free/refund/": ROOT / "screen-free/refund/index.html",
     "/planner/2027/": ROOT / "planner" / "2027" / "index.html",
     "/planner/2027/refund/": ROOT / "planner" / "2027" / "refund" / "index.html",
     "/holiday/refund/": HOLIDAY / "refund" / "index.html",
@@ -622,6 +624,10 @@ def main() -> int:
                 continue
             if href in EXTRA_HOLIDAY_PAYMENT_URLS:
                 check(page_name == "storefront", f"extra holiday payment link stays on the product page: {href}")
+                continue
+            if href == "{{ site.data.screen_free.stripe_link }}":
+                # Screen-Free card Buy href reads _data/screen_free.yml stripe_link.
+                check(page_name == "storefront", "Screen-Free Buy href stays on the storefront card")
                 continue
             if href == PLANNER_2027_HREF:
                 # feat/planner-2027: the /holiday/ card's Buy href reads _data/planner_2027.yml stripe_link.
@@ -1358,7 +1364,7 @@ def main() -> int:
         check("body.festive .hday-hero.hday-hero-buy-first > .hday-shot { order: 5; }" in festive_css, "buy-first cover order rule is present and scoped to hday-hero-buy-first")
         buy_first_pages = [q.relative_to(ROOT).as_posix() for q in ROOT.rglob("*.html") if "_site" not in q.parts and "hday-hero-buy-first" in q.read_text(encoding="utf-8", errors="replace")]
         check("holiday/gather-and-play/index.html" in buy_first_pages, "Gather & Play page uses hday-hero-buy-first")
-        check(set(buy_first_pages) <= {"holiday/gather-and-play/index.html", "holiday/travel-adventure/index.html", "planner/2027/index.html"}, "hday-hero-buy-first is only on Gather & Play, Travel Adventure and the 2027 Family Planner")
+        check(set(buy_first_pages) <= {"holiday/gather-and-play/index.html", "holiday/travel-adventure/index.html", "planner/2027/index.html", "screen-free/index.html"}, "hday-hero-buy-first is only on the approved product pages")
         for page_no in ("02", "04"):
             preview_rel = f"/holiday/assets/previews/CyberDadKit-travel-adventure-page-{page_no}.png"
             check(f'src="{preview_rel}"' in travel_html, f"Travel Adventure page shows inside page {page_no}")

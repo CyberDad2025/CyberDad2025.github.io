@@ -88,5 +88,11 @@
   "source_sha256": "3b87d5f298ad841ab1ea993ef92d055be66072eba9a426d495fa427c09377f32",
   "width": 240,
   "height": 360
+ },
+ "holiday/assets/shop/screen-free-cover-240.webp": {
+  "source": "screen-free/assets/screen-free-cover-600.webp",
+  "source_sha256": "c15263c2b7848eb3d823764e60e3b808b730b0ffd398e90f4bc755a05c2fa0ec",
+  "width": 240,
+  "height": 311
  }
 }
