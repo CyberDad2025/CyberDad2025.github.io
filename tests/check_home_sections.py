@@ -68,13 +68,6 @@ HOLIDAY = [
         "source": "/holiday/ card ($5.99). /holiday/trivia/ is a redirect stub.",
         "source_files": ["holiday/index.html"],
     },
-    {
-        "name": "Kids' Table Activity Pack",
-        "href": "/holiday/#kids-table",
-        "prices": ["5.99"],
-        "source": "/holiday/ card ($5.99). /holiday/kids-table/ is a redirect stub.",
-        "source_files": ["holiday/index.html"],
-    },
 ]
 
 ALLOWED_TITLES = {c["name"] for c in EVERGREEN + HOLIDAY}
@@ -197,7 +190,7 @@ def main() -> int:
         "Holiday lead is Christmas-only",
     )
     check("Thanksgiving and Christmas gatherings" not in kits_html, "Holiday lead no longer pairs Thanksgiving with Christmas")
-    for retired in ("Thanksgiving Table Set", "Thanksgiving Host Planner", "The Great Thanksgiving Travel Adventure"):
+    for retired in ("Thanksgiving Table Set", "Thanksgiving Host Planner", "The Great Thanksgiving Travel Adventure", "Kids' Table Activity Pack"):
         check(f"<h3>{retired}</h3>" not in kits_html and retired not in kits_html, f"Holiday picks no longer lists {retired}")
 
     check('>Shop all holiday kits</a>' in kits_html and 'href="/holiday/"' in kits_html, "Holiday section links to /holiday/")
@@ -228,6 +221,7 @@ def main() -> int:
     # New-copy lint: the kits block, with known product titles allowed.
     vis = visible(kits_html)
     check("\u2014" not in kits_html and "\u2013" not in kits_html and "&mdash;" not in kits_html and "&ndash;" not in kits_html, "new kits copy has no em or en dashes")
+    check("\u2014" not in src and "\u2013" not in src and "&mdash;" not in src and "&ndash;" not in src, "homepage index.html has no em or en dashes")
     for label, pat in BANNED.items():
         hit = re.search(pat, vis, re.I)
         check(hit is None, "new kits copy has no " + label + ("" if hit is None else f": {hit.group(0)}"))

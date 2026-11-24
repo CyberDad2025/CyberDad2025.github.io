@@ -75,10 +75,10 @@ SHIELD_HREF_RE = re.compile(r"""href\s*=\s*["'][^"']*shield-kit""", re.I)
 # the about-page "$47" product sentence, and the "$2 signup bonus" inside the
 # partner commission-rate list. No price token may be added or rewritten.
 ALLOWED_PRICE_REMOVALS = {
-    # feat/home-retire-thanksgiving-1127: drop Table Set, Host Planner and Travel
-    # Adventure cards from the homepage Holiday picks section. Their $4.99 prices
-    # stay live on /holiday/.
-    "index.html": Counter({"$4.99": 3}),
+    # feat/home-retire-thanksgiving-1127: drop Table Set, Host Planner, Travel
+    # Adventure and Kids' Table cards from the homepage Holiday picks section.
+    # Their prices stay live on /holiday/.
+    "index.html": Counter({"$4.99": 3, "$5.99": 1}),
     "about.md": Counter({"$47": 1}),
     "affiliate-disclosure.html": Counter({"$2": 1}),
     # Follow-up SMALL 1117: drop the retired $11.99 Kids' Table + Gather & Play bundle price from the KT refund page.
@@ -103,7 +103,7 @@ JOURNAL_A4_LINK = "https://buy.stripe.com/14AfZg9yudqEfT74nZds409"
 # Holiday printable prices are already on main, so terms-of-sale.md is not listed.
 ALLOWED_PRICE_ADDITIONS = {
     # feat/home-evergreen-holiday-1124 prices are now on main. This change only
-    # removes three $4.99 Thanksgiving cards from the homepage (see ALLOWED_PRICE_REMOVALS).
+    # removes Thanksgiving cards from the homepage (see ALLOWED_PRICE_REMOVALS).
     "index.html": Counter(),
     "shop/index.html": None,
     "holiday/index.html": None,
