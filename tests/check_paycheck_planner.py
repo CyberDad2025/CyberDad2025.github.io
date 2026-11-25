@@ -237,7 +237,7 @@ check('href="/paycheck-planner/sample/"' in html["sales"], "[sales] links the fr
 check("/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" in html["sales"] and (DIR / "assets" / "paycheck-planner-dashboard-600.webp").is_file() and (DIR / "assets" / "paycheck-planner-dashboard-1000.webp").is_file(), "[sales] dashboard image exists and is used")
 
 # ---------- Buy buttons ----------
-for name, expect in (("sales", {"planner": 1, "bundle": 1}), ("bundle", {"planner": 0, "bundle": 1}), ("sample", {}), ("refund", {})):
+for name, expect in (("sales", {"planner": 1, "bundle": 1}), ("bundle", {"planner": 0, "bundle": 1}), ("sample", {"planner": 1}), ("refund", {})):
     buttons = re.findall(r"<a [^>]*data-price=[^>]*>", html[name])
     planner = [b for b in buttons if "pp.stripe_url_planner" in b]
     bundle = [b for b in buttons if "pp.stripe_url_bundle" in b]
@@ -253,10 +253,11 @@ check("a[href^=\"https://buy.stripe.com/\"]" in ga and "'buy_click'" in ga and "
 check(ga.count("G-5B1LNCPB56") >= 3, "ga4.html keeps the one G-5B1LNCPB56 tag")
 for ev in ("view_item", "sign_up"):
     check(f"'{ev}'" in js, f"planner JS sends {ev}")
-check("'purchase'" not in js and "session_id" not in js and "localStorage" not in js, "planner JS has no purchase event (hosted Stripe confirmation never returns to the site)")
+# Marketing pass 1125: the click-time attribution reads ONLY the existing cdk_qa flag from localStorage to prefix qa_ (no writes).
+check("'purchase'" not in js and "session_id" not in js and "localStorage.setItem" not in js and "localStorage.removeItem" not in js, "planner JS has no purchase event (hosted Stripe confirmation never returns to the site)")
 check(not (ROOT / "thanks").exists() and not (DIR / "thank-you").exists(), "no thank-you or delivery pages exist")
-check("utm_source" not in js and "utm_campaign" not in js and "sessionStorage" not in js and "searchParams" not in js,
-      "planner JS does not rewrite internal links with utm_ params")
+check("sessionStorage" not in js and "document.cookie" not in js and 'a[data-pp-ref][href^="https://buy.stripe.com/"]' in js,
+      "planner JS touches only Stripe Buy links (a[data-pp-ref]) at click time, no cookies or sessionStorage; internal links are never rewritten (tests/check_planner_marketing.py pins the behavior)")
 check(not re.search(r"fetch\(|XMLHttpRequest|sendBeacon|document\.cookie|createElement\(.script", js), "planner JS makes no network calls of its own and sets no cookies")
 check(not re.search(r"G-5B1LNCPB56|gtag\('config'|gtag\('js'", js), "planner JS adds no GA config (uses the existing tag)")
 check('data-pp-page="sales"' in html["sales"] and 'data-pp-page="bundle"' in html["bundle"] and 'data-pp-page="sample"' in html["sample"], "page types wire view_item, sign_up")
@@ -274,7 +275,8 @@ for n in ("sales", "bundle"):
     t = visible_text(html[n])
     check("hosted confirmation screen" in t and "ruel@getcyberdadkit.com" in t, f"[{n}] describes hosted confirmation and the re-send email")
 for n, h in html.items():
-    check("receipt" not in visible_text(h).lower() and "receipt email" not in h.lower(), f"[{n}] never says a receipt or receipt email carries the links")
+    _t = visible_text(h).replace("Lost your files? Email ruel@getcyberdadkit.com with your receipt and we'll resend them.", "")
+    check("receipt" not in _t.lower() and "receipt email" not in h.lower().replace("with your receipt and we'll resend them", ""), f"[{n}] never says a receipt or receipt email carries the links (the one Lost your files line is allowed)")
 HOME = ROOT / "index.html"
 home = HOME.read_text(encoding="utf-8") if HOME.is_file() else ""
 friday = re.search(r'<style>\s*/\* Paycheck Planner Friday callout only\..*?</aside>', home, re.S)
@@ -317,7 +319,7 @@ try:
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "_includes/paycheck-planner-signup.html", "_includes/paycheck-planner-ml-embed.html", "tests/check_paycheck_planner.py", "tests/check_planner_guides.py", "tests/check_planner_signup.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
+    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "_includes/paycheck-planner-signup.html", "_includes/paycheck-planner-ml-embed.html", "tests/check_paycheck_planner.py", "tests/check_planner_guides.py", "tests/check_planner_signup.py", "tests/check_planner_marketing.py", "tests/check_planner_marketing_browser.py", "_includes/ga4.html", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
     check(not stray, f"change touches only planner files ({stray[:5]})")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")
