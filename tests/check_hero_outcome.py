@@ -50,6 +50,20 @@ PAGES = (
             "and play together. US customers only."
         ),
     },
+    {
+        "label": "/sites/",
+        "rel": "sites/index.html",
+        "pick": "SI-S1",
+        "h1_re": re.compile(r"<section class=\"hero\">.*?<h1>(.*?)</h1>", re.S),
+        "lede_re": re.compile(r'<p class="lead">(.*?)</p>', re.S),
+        "hero": "Give potential customers a professional first impression before they even pick up the phone.",
+        "lede": (
+            "We rebuild the site you already have so it looks right on a phone, "
+            "and so a customer can call you or ask for a quote in one tap. "
+            "Your homepage mockup is free, and you pay only after you approve it. "
+            "Everything happens by email."
+        ),
+    },
 )
 
 PRICE_RE = re.compile(r"\$[0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{2})?(?:/mo)?")
