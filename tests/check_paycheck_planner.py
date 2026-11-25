@@ -326,6 +326,7 @@ try:
         "_includes/paycheck-planner-signup.html",
         "_includes/paycheck-planner-ml-embed.html",
         "tests/check_paycheck_planner.py",
+        "tests/check_planner_guides.py",
         "tests/check_planner_signup.py",
         "tests/check_copy_fixes.py",
         "tests/check_home_sections.py",
@@ -340,7 +341,7 @@ try:
     )
     if pay_touched:
         # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in pay_names or f.startswith("tests/__pycache__/"))]
+        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in pay_names or f.startswith("tests/__pycache__/"))]
         check(not stray, f"change touches only planner files ({stray[:5]})")
     else:
         print("skip scope check (no paycheck-planner files in the diff)")
