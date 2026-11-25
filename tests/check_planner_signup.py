@@ -29,9 +29,10 @@ DASH_RE = re.compile(r"[\u2014\u2013]|&mdash;|&ndash;", re.I)
 PRICE_RE = re.compile(r"\$\d+(?:\.\d+)?")
 FORM_ID = "205066869153990151"
 UNUSED_FORM = "205147" + "354497549940"
-BUY_PLANNER = '<a class="pp-btn" id="pp-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner" data-product="Paycheck Planner" data-price="14.99">Get the Paycheck Planner, $14.99</a>'
-BUY_BUNDLE_ON_SALES = '<a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner" data-product="Paycheck Planner Plus Bundle" data-price="39.00">Get the Plus Bundle, $39</a>'
-BUY_BUNDLE = '<a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner-bundle" data-product="Paycheck Planner Plus Bundle" data-price="39.00">Get the Plus Bundle, $39</a>'
+# Marketing pass 1125: Buy markup now also carries data-pp-ref (click-time attribution); hrefs still read _data/paycheck_planner.yml.
+BUY_PLANNER = '<a class="pp-btn" id="pp-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get the Paycheck Planner, $14.99</a>'
+BUY_BUNDLE_ON_SALES = '<a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner" data-product="Paycheck Planner Plus Bundle" data-price="39.00" data-pp-ref="bundle">Get the Plus Bundle, $39</a>'
+BUY_BUNDLE = '<a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner-bundle" data-product="Paycheck Planner Plus Bundle" data-price="39.00" data-pp-ref="bundle">Get the Plus Bundle, $39</a>'
 
 failed: list[str] = []
 
