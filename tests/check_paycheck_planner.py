@@ -213,8 +213,8 @@ check("Add debt payoff, savings goals, sinking funds and a 2027 year view." in v
 check("Includes everything in the Paycheck Planner" in visible_text(html["bundle"]), "[bundle] includes-everything heading is the Proofreader wording")
 check("Plus everything in the Paycheck Planner" not in html["bundle"], "[bundle] no longer says Plus everything")
 site_refund = (ROOT / "refund-policy" / "index.html").read_text(encoding="utf-8")
-check("Paycheck Planner and Plus Bundle: see" in site_refund and 'href="/paycheck-planner/refund/"' in site_refund and ">/paycheck-planner/refund/</a>" in site_refund,
-      "site refund-policy page links to /paycheck-planner/refund/ under the intro")
+check("Paycheck Planner and Plus Bundle:" in site_refund and 'href="/paycheck-planner/refund/"' in site_refund and ">See the Paycheck Planner refund policy</a>" in site_refund and ">/paycheck-planner/refund/</a>" not in site_refund,
+      "site refund-policy page links to /paycheck-planner/refund/ as See the Paycheck Planner refund policy")
 check("{{ pp.stripe_url_planner }}" in html["sales"] and "{{ pp.stripe_url_bundle }}" in html["sales"], "[sales] Buy hrefs read _data")
 check('href="/paycheck-planner/sample/"' in html["sales"], "[sales] links the free mini sheet page")
 check("/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" in html["sales"] and (DIR / "assets" / "paycheck-planner-dashboard-600.webp").is_file() and (DIR / "assets" / "paycheck-planner-dashboard-1000.webp").is_file(), "[sales] dashboard image exists and is used")
@@ -261,8 +261,9 @@ friday = re.search(r'<style>\s*/\* Paycheck Planner Friday callout only\..*?</as
 friday = friday.group(0) if friday else ""
 check(bool(friday), "homepage has the Paycheck Planner Friday callout (id=pp-home-friday)")
 check('href="/paycheck-planner/"' in friday and "See the Paycheck Planner" in friday, "homepage callout links to /paycheck-planner/")
-check(HEADLINE in friday and "Find it Friday" in friday and "New: digital planner" in friday,
-      "homepage callout uses the relief headline, a New: digital planner kicker, and Find it Friday")
+check(HEADLINE in friday and "New: digital planner" in friday,
+      "homepage callout uses the relief headline and a New: digital planner kicker")
+check("Find it Friday" not in home, "homepage no longer says Find it Friday")
 check("holiday.css" not in friday and "festive" not in friday, "homepage callout does not use holiday or festive styles")
 check("#14304f" in friday and "#0b7a4b" in friday and "#fffdf8" in friday and "#f2c14e" in friday, "homepage callout uses navy, green, warm white and gold")
 check("\u2014" not in friday and "\u2013" not in friday and "guarantee" not in friday.lower() and "receipt" not in friday.lower(), "homepage callout has no dashes, guarantee or receipt wording")
