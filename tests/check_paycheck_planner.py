@@ -31,7 +31,8 @@ PAGES = {
 CSS = DIR / "assets" / "paycheck-planner.css"
 JS = DIR / "assets" / "paycheck-planner.js"
 GA4 = ROOT / "_includes" / "ga4.html"
-FOOTER = ROOT / "_includes" / "site-footer.html"
+FOOTER = ROOT / "_includes" / "paycheck-planner-footer.html"
+SITE_FOOTER = ROOT / "_includes" / "site-footer.html"
 ADDRESS = "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794"
 US_ONLY = "Available to customers located in the United States and Canada."
 REFUND_PLANNER = ('Paycheck Planner is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Paycheck Planner and does not limit your statutory rights.')
@@ -155,7 +156,9 @@ for name, text in html.items():
             hit = phrase.lower() in text.lower()
         check(not hit, f"{label} has no forbidden phrase {phrase!r}")
     check(US_ONLY in text, f"{label} has the US and Canada declaration")
-    check("{% include site-footer.html %}" in text and ADDRESS in footer, f"{label} uses the site footer with the publisher line")
+    check("/refund-policy/" not in text, f"{label} does not link the sitewide /refund-policy/")
+    check("{% include paycheck-planner-footer.html %}" in text and ADDRESS in footer, f"{label} uses the planner footer with the publisher line")
+    check("{% include site-footer.html %}" not in text, f"{label} does not use the sitewide footer include")
     check("CyberDadKit" in text.split("<main")[0], f"{label} shows the CyberDadKit name in the header")
     check(text.count("{% include ga4.html %}") == 1, f"{label} includes the existing GA4 tag once")
     check("G-5B1LNCPB56" not in text and "gtag(" not in text, f"{label} adds no second GA config or inline gtag")
@@ -215,6 +218,14 @@ check("Plus everything in the Paycheck Planner" not in html["bundle"], "[bundle]
 site_refund = (ROOT / "refund-policy" / "index.html").read_text(encoding="utf-8")
 check("Paycheck Planner and Plus Bundle:" in site_refund and 'href="/paycheck-planner/refund/"' in site_refund and ">See the Paycheck Planner refund policy</a>" in site_refund and ">/paycheck-planner/refund/</a>" not in site_refund,
       "site refund-policy page links to /paycheck-planner/refund/ as See the Paycheck Planner refund policy")
+check('<p class="pp-price"><span>USD</span> <strong>$39</strong> <span>one-time. Prices in USD. US and Canada customers only</span></p>' in html["bundle"],
+      "[bundle] price note is one-time. Prices in USD. US and Canada customers only")
+check("Prices in USD." in visible_text(html["bundle"]), "[bundle] visible text includes Prices in USD.")
+footer = FOOTER.read_text(encoding="utf-8")
+check("paycheck-planner/refund/" in footer and ">Refund</a>" in footer and "/refund-policy/" not in footer,
+      "planner footer Refund link points at /paycheck-planner/refund/")
+check("'/refund-policy/' | relative_url" in SITE_FOOTER.read_text(encoding="utf-8") and ">Refund</a>" in SITE_FOOTER.read_text(encoding="utf-8"),
+      "sitewide footer include is unchanged and still points Refund at /refund-policy/")
 check("{{ pp.stripe_url_planner }}" in html["sales"] and "{{ pp.stripe_url_bundle }}" in html["sales"], "[sales] Buy hrefs read _data")
 check('href="/paycheck-planner/sample/"' in html["sales"], "[sales] links the free mini sheet page")
 check("/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" in html["sales"] and (DIR / "assets" / "paycheck-planner-dashboard-600.webp").is_file() and (DIR / "assets" / "paycheck-planner-dashboard-1000.webp").is_file(), "[sales] dashboard image exists and is used")
@@ -297,7 +308,7 @@ try:
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
+    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
     check(not stray, f"change touches only planner files ({stray[:5]})")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")
