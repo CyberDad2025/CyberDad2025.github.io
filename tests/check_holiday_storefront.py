@@ -1600,7 +1600,8 @@ HOME_OG = {
         "We rebuild outdated business websites into fast, mobile-friendly sites. "
         "Everything happens by email, with a written scope and price before you pay."
     ),
-    "og:image": "https://getcyberdadkit.com/sites/assets/examples/demo-sampletown-roofing.jpg",
+    # CoS ruling 2026-11-25: the home share image is the planner OG card (title and description unchanged).
+    "og:image": "https://getcyberdadkit.com/paycheck-planner/assets/paycheck-planner-og-1200x630.png",
 }
 TA_BANNED_RE = re.compile(
     r"\b(?:CDK|guarantee|worldwide|A4|hurry|limited|last chance|now only)\b",
@@ -1653,15 +1654,21 @@ def check_ta_crosslinks(check) -> None:
         block = blocks[0] if blocks else ""
         check("buy.stripe.com" not in block, f"built {rel} cross-link block has no Stripe href")
         main_html = subprocess.check_output(["git", "show", f"origin/main:{rel}"], cwd=ROOT, text=True)
+        expected_buy = Counter(BUY_HREF_RE.findall(main_html))
+        if rel == "index.html":
+            # Marketing pass 1125: the new home planner block adds the planner Buy link and the old lower planner callout (no Stripe link) is removed.
+            planner_url = re.search(r'^stripe_url_planner:\s*"([^"]+)"', (ROOT / "_data" / "paycheck_planner.yml").read_text(encoding="utf-8"), re.M).group(1)
+            expected_buy[planner_url] += 1
         check(
-            Counter(BUY_HREF_RE.findall(built)) == Counter(BUY_HREF_RE.findall(main_html)),
-            f"built {rel} buy.stripe.com href count is unchanged from main",
+            Counter(BUY_HREF_RE.findall(built)) == expected_buy,
+            f"built {rel} buy.stripe.com href count is unchanged from main" + (" plus the one home planner Buy" if rel == "index.html" else ""),
         )
         if rel == "index.html":
             expected_og = HOME_OG
             front_now = (ROOT / rel).read_text(encoding="utf-8").split("---", 2)[1]
             front_main = main_html.split("---", 2)[1]
-            check(front_now == front_main, "homepage front matter is unchanged, including title, description, and image")
+            strip_image = lambda fm: re.sub(r"(?m)^image:\n(?:[ \t]+.*\n?)+", "", fm)
+            check(strip_image(front_now) == strip_image(front_main), "homepage front matter is unchanged except the image block, including title and description")
         else:
             expected_og = {key: meta_content(main_html, "property", key) for key in ("og:title", "og:description", "og:image")}
         for key, value in expected_og.items():

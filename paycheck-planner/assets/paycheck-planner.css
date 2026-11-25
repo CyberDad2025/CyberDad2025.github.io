@@ -103,3 +103,7 @@ body.pp .pp-ink { color: var(--pp-ink); }
 .pp-guide-nav a { text-decoration: none; color: inherit; display: block; }
 .pp-guide-nav a:hover, .pp-guide-nav a:focus-visible { background: #fff; }
 .pp-cta { margin: 1.2rem 0 0; }
+/* Previews strip (marketing 1125): real sheet stills, lazy loaded. */
+.pp-previews { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+.pp-preview img { aspect-ratio: auto; }
+@media (min-width: 760px) { .pp-previews { grid-template-columns: repeat(2, 1fr); } }

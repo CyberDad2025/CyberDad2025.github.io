@@ -405,6 +405,13 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
         # buy.stripe.com href; the data file holds at most the planner and bundle Payment Links (placeholders until the CoS supplies them).
         # Prices: $14.99 intro, $19.99 regular, $39 bundle.
         # The sample page uses a MailerLite embed slug from the data file, which is the only form reference allowed in these files.
+        # Marketing pass 1125: home planner block include. One planner Buy button ($14.99) whose href reads _data/paycheck_planner.yml.
+        if name == "_includes/home-planner-hero.html":
+            if STRIPE_RE.findall(new):
+                stripe_bad.append(name)
+            if set(PRICE_RE.findall(new)) - {"$14.99"}:
+                price_bad.append(name)
+            continue
         # Marketing pass 1125: edits to existing planner pages (Buy on sample, intro price note) follow the same price and link rules.
         if (old_raw is None or name.startswith("paycheck-planner/")) and (name.startswith("paycheck-planner/") or name == "_data/paycheck_planner.yml"):
             if name == "_data/paycheck_planner.yml":

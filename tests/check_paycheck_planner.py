@@ -279,27 +279,19 @@ for n, h in html.items():
     check("receipt" not in _t.lower() and "receipt email" not in h.lower().replace("with your receipt and we'll resend them", ""), f"[{n}] never says a receipt or receipt email carries the links (the one Lost your files line is allowed)")
 HOME = ROOT / "index.html"
 home = HOME.read_text(encoding="utf-8") if HOME.is_file() else ""
-friday = re.search(r'<style>\s*/\* Paycheck Planner Friday callout only\..*?</aside>', home, re.S)
-friday = friday.group(0) if friday else ""
-check(bool(friday), "homepage has the Paycheck Planner Friday callout (id=pp-home-friday)")
-check('href="/paycheck-planner/"' in friday and "See the Paycheck Planner" in friday, "homepage callout links to /paycheck-planner/")
-check(HEADLINE in friday and "New: digital planner" in friday,
-      "homepage callout uses the relief headline and a New: digital planner kicker")
-check("Google Sheets and Excel. US and Canada customers only." in friday and "US customers only." not in friday,
-      "homepage callout is US and Canada customers only")
+# Marketing pass 1125 (CoS ruling): the old lower Friday callout (#pp-home-friday) is gone. The one planner promo on the home page is the
+# self-contained include _includes/home-planner-hero.html near the top (pinned in detail by tests/check_planner_home_hero.py).
+hero_inc_path = ROOT / "_includes" / "home-planner-hero.html"
+hero_inc = hero_inc_path.read_text(encoding="utf-8") if hero_inc_path.is_file() else ""
+check("pp-home-friday" not in home and "Paycheck Planner Friday callout" not in home and "pp-home-cta" not in home, "homepage no longer has the old lower planner callout (id=pp-home-friday)")
+check(home.count("{% include home-planner-hero.html %}") == 1 and home.split("---", 2)[2].count("/paycheck-planner/") == 0, "homepage has exactly one planner promo, the include (no other /paycheck-planner/ link in index.html)")
+check(HEADLINE in hero_inc and "Google Sheets and Excel" in hero_inc and "US and Canada customers only" in hero_inc and "US customers only." not in hero_inc, "homepage planner block uses the relief headline and is US and Canada customers only")
 check("Find it Friday" not in home, "homepage no longer says Find it Friday")
-check("holiday.css" not in friday and "festive" not in friday, "homepage callout does not use holiday or festive styles")
-check("#14304f" in friday and "#0b7a4b" in friday and "#fffdf8" in friday and "#f2c14e" in friday, "homepage callout uses navy, green, warm white and gold")
-check("\u2014" not in friday and "\u2013" not in friday and "guarantee" not in friday.lower() and "receipt" not in friday.lower(), "homepage callout has no dashes, guarantee or receipt wording")
-check("buy.stripe.com" not in friday and not re.search(r"(?:drive|docs)\.(?:google|usercontent)", friday, re.I), "homepage callout has no Stripe or Drive link")
-# The callout is its own block immediately after #year-round (a region PR #1070 does not edit).
-yr = home.find('id="year-round"')
-yr_close = home.find('</section>', yr)
-callout_pos = home.find('id="pp-home-friday"')
-hol_pos = home.find('id="holiday-picks"')
-check(yr != -1 and yr_close != -1 and yr < yr_close < callout_pos < hol_pos,
-      "callout sits in its own block after the year-round section, before Holiday picks")
-check(contrast("#0b7a4b", "#fffdf8") >= 4.5 and contrast("#14304f", "#f2c14e") >= 4.5 and contrast("#1d2939", "#fffdf8") >= 4.5, "homepage callout text and button colors meet WCAG AA")
+check("holiday.css" not in hero_inc and "festive" not in hero_inc, "homepage planner block does not use holiday or festive styles")
+check("#14304f" in hero_inc and "#0b7a4b" in hero_inc and "#fffdf8" in hero_inc and "#f2c14e" in hero_inc, "homepage planner block uses navy, green, warm white and gold")
+check("\u2014" not in hero_inc and "\u2013" not in hero_inc and "guarantee" not in hero_inc.lower() and "receipt" not in hero_inc.lower(), "homepage planner block has no dashes, guarantee or receipt wording")
+check('id="holiday-picks"' in home and 'id="year-round"' in home, "home keeps the year-round and Holiday picks sections")
+check(contrast("#0b7a4b", "#fffdf8") >= 4.5 and contrast("#14304f", "#f2c14e") >= 4.5 and contrast("#1d2939", "#fffdf8") >= 4.5, "homepage planner block text and button colors meet WCAG AA")
 for name in ("sales", "sample", "bundle", "refund"):
     check("noindex" not in html[name] and "sitemap: true" in html[name], f"[{name}] is indexable and in the sitemap")
 check('rel="canonical"' in html["sales"] and 'href="https://getcyberdadkit.com/paycheck-planner/"' in html["sales"], "[sales] canonical is the live URL")
@@ -335,6 +327,9 @@ try:
         "_includes/ga4.html",
         "tests/check_copy_fixes.py",
         "tests/check_home_sections.py",
+        "_includes/home-planner-hero.html",
+        "tests/check_planner_home_hero.py",
+        "tests/check_holiday_storefront.py",
     }
     # Product files only. A later PR that edits this test, or the shared
     # homepage, must not retrigger the paycheck-only allowlist.
