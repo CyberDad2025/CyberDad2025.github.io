@@ -54,8 +54,10 @@ body.pp {
 .pp-faq dd { margin: .25rem 0 0; }
 .pp-todo { background: #fee4e2; border: 2px dashed #b42318; padding: .8rem 1rem; color: #7a271a; font-weight: 600; }
 .pp-sample-form { max-width: 34rem; }
-.pp-sample-form .ml-embedded { min-height: 18rem; width: 100%; }
-.pp-sample-form .ml-embedded input:not([type="hidden"]), .pp-sample-form .ml-embedded button { min-height: 44px; max-width: 100%; }
+.pp-signup { max-width: 36rem; }
+.pp-sample-form .ml-embedded, .pp-signup .ml-embedded { min-height: 18rem; width: 100%; }
+.pp-sample-form .ml-embedded input:not([type="hidden"]), .pp-sample-form .ml-embedded button,
+.pp-signup .ml-embedded input:not([type="hidden"]), .pp-signup .ml-embedded button { min-height: 44px; max-width: 100%; }
 .pp-success { display: none; border: 2px solid var(--pp-green); background: var(--pp-green-bg); border-radius: .6rem; padding: .8rem 1rem; margin-top: 1rem; }
 .pp-success.pp-show { display: block; }
 .pp-footnote { text-align: center; margin: 1.5rem 1rem 0; font-size: .92rem; color: var(--pp-muted); }
@@ -70,10 +72,3 @@ body.pp .pp-shot { margin: 0; }
 body.pp .pp-shot img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid var(--pp-line); border-radius: .8rem; box-shadow: 0 6px 18px rgba(20,48,79,.1); background: #fff; }
 body.pp .pp-shot figcaption { margin-top: .4rem; text-align: center; }
 body.pp .pp-ink { color: var(--pp-ink); }
-.pp-signup { max-width: 36rem; }
-.pp-signup-form label { display: block; font-weight: 700; color: var(--pp-navy); margin: 0 0 .35rem; }
-.pp-signup-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: stretch; }
-.pp-signup-row input[type="email"] { flex: 1 1 14rem; min-width: 0; min-height: 44px; font: inherit; font-size: 1rem; padding: .6rem .7rem; border: 1px solid var(--pp-line); border-radius: .55rem; background: #fff; color: var(--pp-ink); }
-.pp-signup-row .pp-btn { flex: 0 0 auto; }
-.pp-signup-form input:focus-visible { outline: 3px solid var(--pp-navy); outline-offset: 2px; }
-.pp-signup-form button:disabled { opacity: .6; cursor: default; }

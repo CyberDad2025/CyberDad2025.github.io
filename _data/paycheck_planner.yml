@@ -13,4 +13,4 @@ stripe_url_bundle: "https://buy.stripe.com/aFacN42620DS5et8Efds40k"
 # ml_webform_success_<id> fires sign_up). The form renders empty until Support finishes its fields in MailerLite.
 mailerlite_form_slug: "IW0v9B"
 mailerlite_form_id: "205066869153990151"
-# Optional sales and bundle signup include posts to this same form (IW0v9B / mailerlite_form_id).
+# Optional sales and bundle signup include uses this same official IW0v9B embed (reCAPTCHA included).

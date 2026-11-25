@@ -391,13 +391,13 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
                 price_bad.append(name)
             continue
         # Optional planner signup include (feat/planner-email-capture-1125): one new MailerLite form token, no prices, no Stripe.
-        if old_raw is None and name == "_includes/paycheck-planner-signup.html":
+        if old_raw is None and name in {"_includes/paycheck-planner-signup.html", "_includes/paycheck-planner-ml-embed.html"}:
             if STRIPE_RE.findall(new):
                 stripe_bad.append(name)
             if PRICE_RE.findall(new):
                 price_bad.append(name)
-            # The include reads the action URL from _data, so it may have no literal forms/id token.
-            extra = set(FORM_RE.findall(new)) - {"forms/205066869153990151"}
+            # The official embed uses the slug from _data; a literal forms/id token is optional.
+            extra = set(FORM_RE.findall(new)) - {"forms/205066869153990151", 'data-form="{{ pp.mailerlite_form_slug }}"'}
             if extra:
                 form_bad.append(name)
             continue
@@ -485,14 +485,19 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             # The holiday sample page adds one embedded form. Tests may quote that slug and URL.
             allowed = {'data-form="eMwTaD"', "forms/1632878"}
             # feat/planner-email-capture-1125: planner pages and the signup include may add this form only.
-            if name.startswith("paycheck-planner/") or name in {"_data/paycheck_planner.yml", "_includes/paycheck-planner-signup.html"}:
-                allowed = allowed | {"forms/205066869153990151"}
+            if name.startswith("paycheck-planner/") or name in {"_data/paycheck_planner.yml", "_includes/paycheck-planner-signup.html", "_includes/paycheck-planner-ml-embed.html"}:
+                allowed = allowed | {"forms/205066869153990151", 'data-form="{{ pp.mailerlite_form_slug }}"'}
+            # The sample page moved the official IW0v9B embed into the shared include,
+            # so dropping the inline data-form token there is expected.
+            allowed_removed = set()
+            if name == "paycheck-planner/sample/index.html":
+                allowed_removed = {'data-form="{{ pp.mailerlite_form_slug }}"'}
             # One-page shop removes the inactive eMwTaD signup embed from /holiday/,
             # so removals are allowed there. Nothing may be added.
             if name in ONE_PAGE_FORM_REMOVALS:
                 if added:
                     form_bad.append(name)
-            elif removed or any(token not in allowed for token in added):
+            elif any(token not in allowed_removed for token in removed) or any(token not in allowed for token in added):
                 form_bad.append(name)
     return stripe_bad, price_bad, form_bad
 

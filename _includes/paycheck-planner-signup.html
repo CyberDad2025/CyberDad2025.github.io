@@ -1,71 +1,7 @@
-{%- comment -%} Optional Paycheck Planner signup on the sales and bundle pages only. Posts to the existing mini-sheet form IW0v9B (mailerlite_form_id), the same form as /paycheck-planner/sample/. Not used on the sample or refund pages. Buy buttons stay unchanged. {%- endcomment -%}
-{%- assign pp = site.data.paycheck_planner -%}
+{%- comment -%} Optional Paycheck Planner signup on the sales and bundle pages only. Uses the official IW0v9B embed (the same include as /paycheck-planner/sample/). Not used on the sample or refund pages. Buy buttons stay unchanged. {%- endcomment -%}
 <section class="pp-section pp-signup" id="pp-signup" aria-labelledby="pp-signup-title">
-  <h2 id="pp-signup-title">Not ready to buy? Get the free Paycheck-to-Bills Mini Sheet by email.</h2>
-  <form class="pp-signup-form" id="pp-signup-form" action="https://assets.mailerlite.com/jsonp/1632878/forms/{{ pp.mailerlite_form_id }}/subscribe" method="post" novalidate>
-    <label for="pp-signup-email">Email</label>
-    <div class="pp-signup-row">
-      <input id="pp-signup-email" name="fields[email]" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required aria-describedby="pp-signup-note pp-signup-privacy">
-      <button class="pp-btn pp-btn-alt" type="submit">Send me the free sheet</button>
-    </div>
-    <input type="hidden" name="ml-submit" value="1">
-    <input type="hidden" name="anticsrf" value="true">
-    <p class="pp-small" id="pp-signup-note">You'll get a confirmation email first.</p>
-    <p class="pp-small" id="pp-signup-privacy">We use your email only to send the sample and planner tips. Unsubscribe anytime. <a href="/privacy/">Privacy policy</a></p>
-  </form>
-  <div class="pp-success" id="pp-signup-success" role="status" aria-live="polite">
-    <p>Check your inbox to confirm, then we'll send the free Paycheck-to-Bills Mini Sheet.</p>
-  </div>
+  <h2 id="pp-signup-title">Not ready to buy?</h2>
+  <p class="pp-small" id="pp-signup-note">You'll get a confirmation email first.</p>
+  {% include paycheck-planner-ml-embed.html %}
+  <p class="pp-small" id="pp-signup-privacy"><a href="/privacy/">Privacy policy</a></p>
 </section>
-<script>
-(function () {
-  var form = document.getElementById("pp-signup-form");
-  if (!form || !window.fetch || !window.URLSearchParams) return;
-  var input = document.getElementById("pp-signup-email");
-  var success = document.getElementById("pp-signup-success");
-  var btn = form.querySelector("button[type='submit']");
-  var statusLine = document.createElement("p");
-  statusLine.className = "pp-small";
-  statusLine.id = "pp-signup-status";
-  statusLine.setAttribute("role", "status");
-  statusLine.setAttribute("aria-live", "polite");
-  form.appendChild(statusLine);
-  function say(msg) { statusLine.textContent = msg || ""; }
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var email = (input.value || "").trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      say(email ? "Please check the email address." : "Enter an email address.");
-      return;
-    }
-    btn.disabled = true;
-    say("Sending...");
-    var body = new URLSearchParams();
-    body.append("fields[email]", email);
-    body.append("ml-submit", "1");
-    body.append("anticsrf", "true");
-    var ctl = window.AbortController ? new AbortController() : null;
-    var timer = ctl && setTimeout(function () { ctl.abort(); }, 15000);
-    fetch(form.action, {
-      method: "POST",
-      mode: "cors",
-      credentials: "omit",
-      body: body,
-      signal: ctl ? ctl.signal : undefined,
-      referrerPolicy: "strict-origin"
-    }).then(function (r) {
-      return r.ok ? r.json().then(function (j) { return !!(j && j.success); }, function () { return false; }) : false;
-    }, function () { return false; }).then(function (ok) {
-      if (timer) clearTimeout(timer);
-      btn.disabled = false;
-      if (!ok) {
-        say("We couldn't send that just now. Please try again.");
-        return;
-      }
-      say("");
-      form.hidden = true;
-      if (success) success.classList.add("pp-show");
-    });
-  });
-})();
-</script>
