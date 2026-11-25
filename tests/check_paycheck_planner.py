@@ -122,6 +122,7 @@ if LAUNCH:
     check(not placeholders, f"LAUNCH: no placeholder left ({sorted(placeholders)})")
     check(values.get("stripe_url_planner") == STRIPE_PLANNER and values.get("stripe_url_bundle") == STRIPE_BUNDLE, "LAUNCH: Payment Links are the exact CoS URLs")
     check(re.fullmatch(r"\d+", values.get("mailerlite_form_id", "")) is not None, "LAUNCH: mailerlite_form_id is numeric")
+    check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == "205066869153990151", "LAUNCH: MailerLite form is still IW0v9B")
 elif placeholders:
     print(f"NOTE: {len(placeholders)} placeholder(s) flagged; run with --launch before merge (they must be 0 then).")
 else:
@@ -170,7 +171,12 @@ for name, text in html.items():
     srcs = re.findall(r"<script[^>]+src=\"([^\"]+)\"", text)
     allowed = {"/paycheck-planner/assets/paycheck-planner.js"}
     check(set(srcs) <= allowed, f"{label} loads no extra script src ({srcs})")
-    check("mailerlite.com" not in text or name == "sample", f"{label} loads MailerLite only on the sample page")
+    if name in ("sales", "bundle"):
+        check('{% include paycheck-planner-signup.html %}' in text and "mailerlite.com" not in text, f"{label} adds the optional signup include; the page source itself has no MailerLite URL")
+    elif name == "sample":
+        check('{% include paycheck-planner-signup.html %}' not in text and '{% include paycheck-planner-ml-embed.html %}' in text and text.count('{% include paycheck-planner-ml-embed.html %}') == 1, "[sample] keeps exactly one MailerLite embed include and has no signup include")
+    else:
+        check("mailerlite.com" not in text and '{% include paycheck-planner-signup.html %}' not in text, f"{label} loads no MailerLite and has no signup include")
     check(text.count("<h1") == 1, f"{label} has one h1")
     check('lang="en"' in text and 'name="viewport"' in text, f"{label} has lang and viewport")
     # internal links resolve
@@ -254,12 +260,15 @@ check("utm_source" not in js and "utm_campaign" not in js and "sessionStorage" n
 check(not re.search(r"fetch\(|XMLHttpRequest|sendBeacon|document\.cookie|createElement\(.script", js), "planner JS makes no network calls of its own and sets no cookies")
 check(not re.search(r"G-5B1LNCPB56|gtag\('config'|gtag\('js'", js), "planner JS adds no GA config (uses the existing tag)")
 check('data-pp-page="sales"' in html["sales"] and 'data-pp-page="bundle"' in html["bundle"] and 'data-pp-page="sample"' in html["sample"], "page types wire view_item, sign_up")
-check("data-pp-form-id" in html["sample"] and 'class="ml-embedded"' in html["sample"] and 'contains "_TODO"' in html["sample"] and "pp-sample-placeholder" in html["sample"],
-      "[sample] renders the MailerLite embed, or a clearly marked placeholder while the form is unset")
+embed_inc = (ROOT / "_includes" / "paycheck-planner-ml-embed.html").read_text(encoding="utf-8") if (ROOT / "_includes" / "paycheck-planner-ml-embed.html").is_file() else ""
+check("data-pp-form-id" in html["sample"] and '{% include paycheck-planner-ml-embed.html %}' in html["sample"],
+      "[sample] has the form-id hook and the shared official MailerLite embed include")
+check('class="ml-embedded"' in embed_inc and 'contains "_TODO"' in embed_inc and "pp-sample-placeholder" in embed_inc,
+      "shared embed include renders the MailerLite embed, or a clearly marked placeholder while the form is unset")
 check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == "205066869153990151", "MailerLite form is Support's planner-sample form (slug IW0v9B, id 205066869153990151)")
 check("(double opt-in)" not in html["sample"] and "confirm your address to get the sheet." in visible_text(html["sample"]) and 'id="pp-sample-fallback"' in html["sample"],
       "[sample] tells visitors to confirm their address to get the sheet, without saying double opt-in")
-check(html["sample"].count("assets.mailerlite.com/js/universal.js") == 1 and "ml('account','1632878'" in html["sample"], "[sample] reuses the site's MailerLite account loader once")
+check(embed_inc.count("assets.mailerlite.com/js/universal.js") == 1 and "ml('account','1632878'" in embed_inc, "shared embed include reuses the site's MailerLite account loader once")
 # ---------- delivery wording, homepage link, and indexing ----------
 for n in ("sales", "bundle"):
     t = visible_text(html[n])
@@ -308,7 +317,7 @@ try:
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "_includes/paycheck-planner-signup.html", "tests/check_paycheck_planner.py", "tests/check_planner_guides.py", "tests/check_planner_signup.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
+    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "_includes/paycheck-planner-signup.html", "_includes/paycheck-planner-ml-embed.html", "tests/check_paycheck_planner.py", "tests/check_planner_guides.py", "tests/check_planner_signup.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
     check(not stray, f"change touches only planner files ({stray[:5]})")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")

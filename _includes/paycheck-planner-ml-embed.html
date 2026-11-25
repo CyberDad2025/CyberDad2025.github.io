@@ -1,0 +1,8 @@
+{%- comment -%} Official MailerLite IW0v9B embed. The same markup the sample page used (universal.js, then the ml-embedded box that loads reCAPTCHA and the form). {%- endcomment -%}
+{%- assign pp = site.data.paycheck_planner -%}
+{%- if pp.mailerlite_form_slug contains "_TODO" %}
+<p class="pp-todo" id="pp-sample-placeholder">PLACEHOLDER: the MailerLite signup form is not set yet ({{ pp.mailerlite_form_slug }}). Set mailerlite_form_slug and mailerlite_form_id in _data/paycheck_planner.yml.</p>
+{%- else %}
+<script>if(!window.ml){(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');ml('enablePopups',false);ml('account','1632878');}</script>
+<div class="ml-embedded" data-form="{{ pp.mailerlite_form_slug }}"></div>
+{%- endif %}
