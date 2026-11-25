@@ -1,0 +1,72 @@
+/* Paycheck Planner pages only (body.pp). Calm and trustworthy: deep navy, fresh green for money-left moments,
+   warm white backgrounds, soft gold Buy buttons. Scoped to .pp so no other page is affected. */
+body.pp {
+  --pp-navy: #14304f;
+  --pp-navy-2: #1f4469;
+  --pp-green: #0b7a4b;
+  --pp-green-bg: #e7f6ee;
+  --pp-gold: #f2c14e;
+  --pp-gold-hover: #e8ae25;
+  --pp-warm: #fffdf8;
+  --pp-warm-2: #f8f2e4;
+  --pp-ink: #1d2939;
+  --pp-muted: #475467;
+  --pp-line: #dcd3bd;
+  margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--pp-ink); background: var(--pp-warm); line-height: 1.6;
+}
+.pp *, .pp *::before, .pp *::after { box-sizing: border-box; }
+.pp a { color: var(--pp-navy-2); }
+.pp-skip { position: absolute; left: -999px; top: 0; background: #fff; color: var(--pp-navy); padding: .5rem 1rem; z-index: 10; }
+.pp-skip:focus { left: 0; }
+.pp-banner { background: var(--pp-navy); color: #fff; text-align: center; padding: .55rem 1rem; font-size: .92rem; }
+.pp-banner p { margin: 0; }
+.pp-header { border-bottom: 1px solid var(--pp-line); background: #fff; }
+.pp-bar { max-width: 62rem; margin: 0 auto; padding: .7rem 1rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1.25rem; }
+.pp-brand { font-weight: 800; font-size: 1.2rem; color: var(--pp-navy) !important; text-decoration: none; letter-spacing: .01em; }
+.pp-brand-name::after { content: ""; display: inline-block; width: .55rem; height: .55rem; margin-left: .35rem; border-radius: 50%; background: var(--pp-green); }
+.pp-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; font-size: .95rem; }
+.pp-nav a { display: inline-block; padding: .35rem 0; }
+.pp-main { max-width: 62rem; margin: 0 auto; padding: 0 1rem 2rem; }
+.pp-hero { padding: 2.2rem 0 1.4rem; display: grid; gap: 1.6rem; grid-template-columns: 1fr; align-items: center; }
+.pp-hero h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 .6rem; color: var(--pp-navy); }
+.pp-lede { font-size: 1.2rem; color: var(--pp-ink); margin: 0 0 1rem; }
+.pp-price { margin: .4rem 0 .2rem; font-size: 1rem; color: var(--pp-muted); }
+.pp-price strong { font-size: 2rem; color: var(--pp-navy); }
+.pp-price-note { margin: 0 0 1rem; color: var(--pp-muted); font-size: .95rem; }
+.pp-btn { display: inline-block; background: var(--pp-gold); color: var(--pp-navy) !important; text-decoration: none; font-weight: 800; padding: .85rem 1.4rem; border-radius: .55rem; min-height: 44px; border: 2px solid #c9961a; font-size: 1.02rem; cursor: pointer; }
+.pp-btn:hover, .pp-btn:focus-visible { background: var(--pp-gold-hover); }
+.pp-btn-alt { background: #fff; border: 2px solid var(--pp-navy); }
+.pp-btn-alt:hover, .pp-btn-alt:focus-visible { background: var(--pp-warm-2); }
+.pp-btn:focus-visible, .pp a:focus-visible { outline: 3px solid var(--pp-navy); outline-offset: 2px; }
+.pp-small { font-size: .92rem; color: var(--pp-muted); }
+.pp-card { border: 1px solid var(--pp-line); border-radius: .8rem; background: var(--pp-warm-2); padding: 1.1rem 1.2rem; }
+.pp-section { padding: 1.4rem 0; border-top: 1px solid var(--pp-line); }
+.pp-section h2 { font-size: 1.6rem; color: var(--pp-navy); margin: 0 0 .6rem; }
+.pp-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+.pp-grid h3 { margin: 0 0 .3rem; font-size: 1.1rem; color: var(--pp-navy); }
+.pp-grid p { margin: 0; }
+.pp-afford { color: var(--pp-green); }
+.pp-list { padding-left: 1.2rem; margin: .5rem 0; }
+.pp-list li { margin: .3rem 0; }
+.pp-bundle { border: 2px solid var(--pp-green); border-radius: .8rem; padding: 1.2rem; background: var(--pp-green-bg); }
+.pp-faq dt { font-weight: 700; margin-top: 1rem; color: var(--pp-navy); }
+.pp-faq dd { margin: .25rem 0 0; }
+.pp-todo { background: #fee4e2; border: 2px dashed #b42318; padding: .8rem 1rem; color: #7a271a; font-weight: 600; }
+.pp-sample-form { max-width: 34rem; }
+.pp-sample-form .ml-embedded { min-height: 18rem; width: 100%; }
+.pp-sample-form .ml-embedded input:not([type="hidden"]), .pp-sample-form .ml-embedded button { min-height: 44px; max-width: 100%; }
+.pp-success { display: none; border: 2px solid var(--pp-green); background: var(--pp-green-bg); border-radius: .6rem; padding: .8rem 1rem; margin-top: 1rem; }
+.pp-success.pp-show { display: block; }
+.pp-footnote { text-align: center; margin: 1.5rem 1rem 0; font-size: .92rem; color: var(--pp-muted); }
+body.pp .cd-site-footer { background: var(--pp-navy); color: #fff; max-width: none !important; margin: 2rem 0 0 !important; padding: 1.3rem 1rem 1.5rem !important; border-top: 4px solid var(--pp-gold) !important; }
+body.pp .cd-site-footer a { color: #fff; }
+@media (min-width: 760px) {
+  .pp-hero { grid-template-columns: 1.15fr .85fr; }
+  .pp-grid { grid-template-columns: repeat(3, 1fr); }
+  .pp-grid.pp-grid-2 { grid-template-columns: repeat(2, 1fr); }
+}
+body.pp .pp-shot { margin: 0; }
+body.pp .pp-shot img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid var(--pp-line); border-radius: .8rem; box-shadow: 0 6px 18px rgba(20,48,79,.1); background: #fff; }
+body.pp .pp-shot figcaption { margin-top: .4rem; text-align: center; }
+body.pp .pp-ink { color: var(--pp-ink); }

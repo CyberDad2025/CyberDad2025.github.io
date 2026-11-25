@@ -390,6 +390,22 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             if set(PRICE_RE.findall(new)) - {"$14.99"}:
                 price_bad.append(name)
             continue
+        # Paycheck Planner (feat/paycheck-planner-1127): new pages that read _data/paycheck_planner.yml. The pages carry no literal
+        # buy.stripe.com href; the data file holds at most the planner and bundle Payment Links (placeholders until the CoS supplies them).
+        # Prices: $14.99 intro, $19.99 regular, $39 bundle.
+        # The sample page uses a MailerLite embed slug from the data file, which is the only form reference allowed in these files.
+        if old_raw is None and (name.startswith("paycheck-planner/") or name == "_data/paycheck_planner.yml"):
+            if name == "_data/paycheck_planner.yml":
+                if len(STRIPE_RE.findall(new)) > 2:
+                    stripe_bad.append(name)
+            elif STRIPE_RE.findall(new):
+                stripe_bad.append(name)
+            planner_prices = {"$14.99", "$19.99", "$39"}
+            if set(PRICE_RE.findall(new)) - planner_prices:
+                price_bad.append(name)
+            if name != "paycheck-planner/sample/index.html" and FORM_RE.findall(new):
+                form_bad.append(name)
+            continue
         old = old_raw or ""
         if name.startswith("_site/") or name.startswith(".jekyll-cache/") or name.startswith("vendor/"):
             continue
