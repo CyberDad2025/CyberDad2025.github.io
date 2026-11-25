@@ -205,6 +205,16 @@ check("7 days" in html["sales"] and "/paycheck-planner/refund/" in html["sales"]
 check("US customers only." in visible_text(html["sample"]) and "Unsubscribe anytime. US customers only." in visible_text(html["sample"]), "[sample] mini-sheet fine print is US customers only.")
 check("months to pay off" in visible_text(html["bundle"]) and "debt-free" not in visible_text(html["bundle"]).lower(), "[bundle] debt line is months to pay off")
 check(HOW_GET in visible_text(html["bundle"]), "[bundle] uses the How do I get it delivery wording")
+check("For personal use only. Please do not resell, rehost or share the file." in sales_vis, "[sales] use-terms line is the Proofreader wording")
+check('<p id="sales-refund-planner">' in html["sales"] and '<p id="sales-refund-bundle">' in html["sales"], "[sales] planner and bundle refund paragraphs are separate p tags")
+check('id="us-eligibility"' not in html["sales"] and US_ONLY in html["sales"], "[sales] drops the repeated US-only hero line; banner, FAQ and footnote keep it")
+check("The launch price is $14.99 through December 31, 2026, then $19.99. One-time payment, US customers only." in visible_text(html["sample"]), "[sample] launch-price line is the Proofreader wording")
+check("Add debt payoff, savings goals, sinking funds and a 2027 year view." in visible_text(html["bundle"]), "[bundle] lede adds debt, savings, sinking funds and a 2027 year view")
+check("Includes everything in the Paycheck Planner" in visible_text(html["bundle"]), "[bundle] includes-everything heading is the Proofreader wording")
+check("Plus everything in the Paycheck Planner" not in html["bundle"], "[bundle] no longer says Plus everything")
+site_refund = (ROOT / "refund-policy" / "index.html").read_text(encoding="utf-8")
+check("Paycheck Planner and Plus Bundle: see" in site_refund and 'href="/paycheck-planner/refund/"' in site_refund and ">/paycheck-planner/refund/</a>" in site_refund,
+      "site refund-policy page links to /paycheck-planner/refund/ under the intro")
 check("{{ pp.stripe_url_planner }}" in html["sales"] and "{{ pp.stripe_url_bundle }}" in html["sales"], "[sales] Buy hrefs read _data")
 check('href="/paycheck-planner/sample/"' in html["sales"], "[sales] links the free mini sheet page")
 check("/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" in html["sales"] and (DIR / "assets" / "paycheck-planner-dashboard-600.webp").is_file() and (DIR / "assets" / "paycheck-planner-dashboard-1000.webp").is_file(), "[sales] dashboard image exists and is used")
@@ -228,14 +238,16 @@ for ev in ("view_item", "sign_up"):
     check(f"'{ev}'" in js, f"planner JS sends {ev}")
 check("'purchase'" not in js and "session_id" not in js and "localStorage" not in js, "planner JS has no purchase event (hosted Stripe confirmation never returns to the site)")
 check(not (ROOT / "thanks").exists() and not (DIR / "thank-you").exists(), "no thank-you or delivery pages exist")
-check("utm_source" in js and "utm_campaign" in js and "sessionStorage" in js, "planner JS keeps utm_* on internal links")
+check("utm_source" not in js and "utm_campaign" not in js and "sessionStorage" not in js and "searchParams" not in js,
+      "planner JS does not rewrite internal links with utm_ params")
 check(not re.search(r"fetch\(|XMLHttpRequest|sendBeacon|document\.cookie|createElement\(.script", js), "planner JS makes no network calls of its own and sets no cookies")
 check(not re.search(r"G-5B1LNCPB56|gtag\('config'|gtag\('js'", js), "planner JS adds no GA config (uses the existing tag)")
 check('data-pp-page="sales"' in html["sales"] and 'data-pp-page="bundle"' in html["bundle"] and 'data-pp-page="sample"' in html["sample"], "page types wire view_item, sign_up")
 check("data-pp-form-id" in html["sample"] and 'class="ml-embedded"' in html["sample"] and 'contains "_TODO"' in html["sample"] and "pp-sample-placeholder" in html["sample"],
       "[sample] renders the MailerLite embed, or a clearly marked placeholder while the form is unset")
 check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == "205066869153990151", "MailerLite form is Support's planner-sample form (slug IW0v9B, id 205066869153990151)")
-check("double opt-in" in visible_text(html["sample"]) and "confirm your address" in visible_text(html["sample"]) and 'id="pp-sample-fallback"' in html["sample"], "[sample] tells visitors to confirm their email (double opt-in) and has a fallback line")
+check("(double opt-in)" not in html["sample"] and "confirm your address to get the sheet." in visible_text(html["sample"]) and 'id="pp-sample-fallback"' in html["sample"],
+      "[sample] tells visitors to confirm their address to get the sheet, without saying double opt-in")
 check(html["sample"].count("assets.mailerlite.com/js/universal.js") == 1 and "ml('account','1632878'" in html["sample"], "[sample] reuses the site's MailerLite account loader once")
 # ---------- delivery wording, homepage link, and indexing ----------
 for n in ("sales", "bundle"):
@@ -249,13 +261,19 @@ friday = re.search(r'<style>\s*/\* Paycheck Planner Friday callout only\..*?</as
 friday = friday.group(0) if friday else ""
 check(bool(friday), "homepage has the Paycheck Planner Friday callout (id=pp-home-friday)")
 check('href="/paycheck-planner/"' in friday and "See the Paycheck Planner" in friday, "homepage callout links to /paycheck-planner/")
-check(HEADLINE in friday and "Find it Friday" in friday, "homepage callout uses the relief headline and Find it Friday")
+check(HEADLINE in friday and "Find it Friday" in friday and "New: digital planner" in friday,
+      "homepage callout uses the relief headline, a New: digital planner kicker, and Find it Friday")
 check("holiday.css" not in friday and "festive" not in friday, "homepage callout does not use holiday or festive styles")
 check("#14304f" in friday and "#0b7a4b" in friday and "#fffdf8" in friday and "#f2c14e" in friday, "homepage callout uses navy, green, warm white and gold")
 check("\u2014" not in friday and "\u2013" not in friday and "guarantee" not in friday.lower() and "receipt" not in friday.lower(), "homepage callout has no dashes, guarantee or receipt wording")
 check("buy.stripe.com" not in friday and not re.search(r"(?:drive|docs)\.(?:google|usercontent)", friday, re.I), "homepage callout has no Stripe or Drive link")
-# The callout is inside #year-round, a region PR #1070 does not edit.
-check('id="year-round"' in home and home.find('id="year-round"') < home.find('id="pp-home-friday"') < home.find('id="holiday-picks"'), "callout sits in the year-round section, before Holiday picks")
+# The callout is its own block immediately after #year-round (a region PR #1070 does not edit).
+yr = home.find('id="year-round"')
+yr_close = home.find('</section>', yr)
+callout_pos = home.find('id="pp-home-friday"')
+hol_pos = home.find('id="holiday-picks"')
+check(yr != -1 and yr_close != -1 and yr < yr_close < callout_pos < hol_pos,
+      "callout sits in its own block after the year-round section, before Holiday picks")
 check(contrast("#0b7a4b", "#fffdf8") >= 4.5 and contrast("#14304f", "#f2c14e") >= 4.5 and contrast("#1d2939", "#fffdf8") >= 4.5, "homepage callout text and button colors meet WCAG AA")
 for name in ("sales", "sample", "bundle", "refund"):
     check("noindex" not in html[name] and "sitemap: true" in html[name], f"[{name}] is indexable and in the sitemap")
@@ -276,7 +294,7 @@ try:
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "_data/paycheck_planner.yml", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
+    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
     check(not stray, f"change touches only planner files ({stray[:5]})")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")
