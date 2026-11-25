@@ -255,6 +255,16 @@ def main() -> int:
     check(gender is None, "new editorial copy has no gender words" + ("" if gender is None else f": {gender.group(0)}"))
 
     check("CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794" in src, "homepage footer still has the PO Box address line")
+    check('<figcaption>Example with a fictional business, not a real company or client.</figcaption>' in src,
+          "hero figcaption uses a comma, not an em or en dash")
+    cap = re.search(r"<figcaption>(.*?)</figcaption>", src, re.S)
+    check(bool(cap) and "—" not in cap.group(1) and "–" not in cap.group(1) and "&mdash;" not in cap.group(1) and "&ndash;" not in cap.group(1),
+          "hero figcaption has no em or en dash")
+    check('<div class="footer-brand-desc">CyberDad Kit Sites, a service of CyberDad Kit LLC. Fixed prices, handled by email.</div>' in src,
+          "Kit Sites home footer line uses the Proofreader wording")
+    desc = re.search(r'<div class="footer-brand-desc">(.*?)</div>', src, re.S)
+    check(bool(desc) and "—" not in desc.group(1) and "–" not in desc.group(1) and "&mdash;" not in desc.group(1) and "&ndash;" not in desc.group(1),
+          "Kit Sites home footer line has no em or en dash")
 
     if SITE.is_file():
         built = SITE.read_text(encoding="utf-8")
