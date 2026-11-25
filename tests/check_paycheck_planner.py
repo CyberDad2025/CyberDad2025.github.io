@@ -33,7 +33,7 @@ JS = DIR / "assets" / "paycheck-planner.js"
 GA4 = ROOT / "_includes" / "ga4.html"
 FOOTER = ROOT / "_includes" / "site-footer.html"
 ADDRESS = "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794"
-US_ONLY = "Available only to customers located in the United States."
+US_ONLY = "Available to customers located in the United States and Canada."
 REFUND_PLANNER = ('Paycheck Planner is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Paycheck Planner and does not limit your statutory rights.')
 REFUND_BUNDLE = ('Paycheck Planner Plus Bundle is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Paycheck Planner Plus Bundle and does not limit your statutory rights.')
 REFUND_TEXT = REFUND_PLANNER + " " + REFUND_BUNDLE
@@ -154,7 +154,7 @@ for name, text in html.items():
         else:
             hit = phrase.lower() in text.lower()
         check(not hit, f"{label} has no forbidden phrase {phrase!r}")
-    check(US_ONLY in text, f"{label} has the US-only declaration")
+    check(US_ONLY in text, f"{label} has the US and Canada declaration")
     check("{% include site-footer.html %}" in text and ADDRESS in footer, f"{label} uses the site footer with the publisher line")
     check("CyberDadKit" in text.split("<main")[0], f"{label} shows the CyberDadKit name in the header")
     check(text.count("{% include ga4.html %}") == 1, f"{label} includes the existing GA4 tag once")
@@ -187,7 +187,7 @@ check(prices(html["sales"]) == {"$14.99", "$19.99", "$39"}, f"[sales] prices are
 check(prices(html["bundle"]) == {"$39"}, f"[bundle] only price is $39: {sorted(prices(html['bundle']))}")
 check(prices(html["sample"]) == {"$14.99", "$19.99"}, f"[sample] prices are the $14.99 intro and $19.99 regular: {sorted(prices(html['sample']))}")
 check(prices(html["refund"]) == set(), "[refund] shows no prices")
-check(LAUNCH_PRICE + ". Google Sheets and Excel. Instant download. US customers only." in sales_vis, "[sales] hero states $14.99 launch price through December 31, 2026, then $19.99")
+check(LAUNCH_PRICE + ". Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only." in sales_vis, "[sales] hero states $14.99 launch price through December 31, 2026, then $19.99")
 check(LAUNCH_PRICE in visible_text(html["sales"]) and html["sales"].count(LAUNCH_PRICE) >= 2, "[sales] launch-price line is in the hero and in What's inside")
 check("Get the Paycheck Planner, $14.99" in html["sales"] and "Get the Plus Bundle, $39" in html["sales"], "[sales] both Buy labels carry their price")
 check("not financial, tax or legal advice" in sales_vis.lower() and "planning tool" in sales_vis, "[sales] says planning tool, not financial advice")
@@ -202,13 +202,13 @@ check("Published by CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794. Author:
 check("Google Sheets is a trademark of Google LLC. Excel is a trademark of Microsoft Corporation. Not affiliated with either." in sales_vis, "[sales] trademark disclaimer")
 check(REFUND_PLANNER in visible_text(html["refund"]) and REFUND_BUNDLE in visible_text(html["refund"]), "[refund] has the exact PRODUCT-PAGE refund wording for both products")
 check("7 days" in html["sales"] and "/paycheck-planner/refund/" in html["sales"], "[sales] links the refund policy")
-check("US customers only." in visible_text(html["sample"]) and "Unsubscribe anytime. US customers only." in visible_text(html["sample"]), "[sample] mini-sheet fine print is US customers only.")
+check("US and Canada customers only." in visible_text(html["sample"]) and "Unsubscribe anytime. US and Canada customers only." in visible_text(html["sample"]), "[sample] mini-sheet fine print is US and Canada customers only.")
 check("months to pay off" in visible_text(html["bundle"]) and "debt-free" not in visible_text(html["bundle"]).lower(), "[bundle] debt line is months to pay off")
 check(HOW_GET in visible_text(html["bundle"]), "[bundle] uses the How do I get it delivery wording")
 check("For personal use only. Please do not resell, rehost or share the file." in sales_vis, "[sales] use-terms line is the Proofreader wording")
 check('<p id="sales-refund-planner">' in html["sales"] and '<p id="sales-refund-bundle">' in html["sales"], "[sales] planner and bundle refund paragraphs are separate p tags")
-check('id="us-eligibility"' not in html["sales"] and US_ONLY in html["sales"], "[sales] drops the repeated US-only hero line; banner, FAQ and footnote keep it")
-check("The launch price is $14.99 through December 31, 2026, then $19.99. One-time payment, US customers only." in visible_text(html["sample"]), "[sample] launch-price line is the Proofreader wording")
+check('id="us-eligibility"' not in html["sales"] and US_ONLY in html["sales"], "[sales] drops the repeated eligibility hero line; banner, FAQ and footnote keep it")
+check("The launch price is $14.99 through December 31, 2026, then $19.99. One-time payment. Prices in USD. US and Canada customers only." in visible_text(html["sample"]), "[sample] launch-price line is the Proofreader wording")
 check("Add debt payoff, savings goals, sinking funds and a 2027 year view." in visible_text(html["bundle"]), "[bundle] lede adds debt, savings, sinking funds and a 2027 year view")
 check("Includes everything in the Paycheck Planner" in visible_text(html["bundle"]), "[bundle] includes-everything heading is the Proofreader wording")
 check("Plus everything in the Paycheck Planner" not in html["bundle"], "[bundle] no longer says Plus everything")
@@ -263,6 +263,8 @@ check(bool(friday), "homepage has the Paycheck Planner Friday callout (id=pp-hom
 check('href="/paycheck-planner/"' in friday and "See the Paycheck Planner" in friday, "homepage callout links to /paycheck-planner/")
 check(HEADLINE in friday and "New: digital planner" in friday,
       "homepage callout uses the relief headline and a New: digital planner kicker")
+check("Google Sheets and Excel. US and Canada customers only." in friday and "US customers only." not in friday,
+      "homepage callout is US and Canada customers only")
 check("Find it Friday" not in home, "homepage no longer says Find it Friday")
 check("holiday.css" not in friday and "festive" not in friday, "homepage callout does not use holiday or festive styles")
 check("#14304f" in friday and "#0b7a4b" in friday and "#fffdf8" in friday and "#f2c14e" in friday, "homepage callout uses navy, green, warm white and gold")
