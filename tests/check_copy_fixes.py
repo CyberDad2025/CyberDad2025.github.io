@@ -476,7 +476,8 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             # One-page shop removes the inactive eMwTaD signup embed from /holiday/,
             # so removals are allowed there. Nothing may be added.
             if name in ONE_PAGE_FORM_REMOVALS:
-                if added:
+                # hostkit-capture-1118: /holiday/ may add exactly the Host Kit capture form (embedded form 204511141540399100).
+                if added and not (name == "holiday/index.html" and added == Counter({"forms/204511141540399100": 1})):
                     form_bad.append(name)
             elif removed or any(token not in allowed for token in added):
                 form_bad.append(name)

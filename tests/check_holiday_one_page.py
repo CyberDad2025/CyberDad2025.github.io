@@ -165,7 +165,20 @@ def main() -> int:
     body = visible(html.split("<body", 1)[1])
     check(body.count("7 days") == 1, "refund window sentence appears once in visible text")
     check(body.count("located in the United States") == 1, "US eligibility sentence appears once in visible text")
-    check("mailerlite" not in html.lower(), "no MailerLite signup on /holiday/ (form is inactive, share URL is preview-only)")
+    # hostkit-capture-1118: the only MailerLite reference allowed on /holiday/ is the optional Host Kit
+    # "Email me this checkout link" form (embedded form 204511141540399100, group "Host Kit checkout started").
+    hk_action = 'action="https://assets.mailerlite.com/jsonp/1632878/forms/204511141540399100/subscribe"'
+    check(html.count(hk_action) == 1, "Host Kit email capture form posts to MailerLite form 204511141540399100 once")
+    check("mailerlite" not in html.replace(hk_action, "").replace("MailerLite embedded form 204511141540399100", "").lower(), "no other MailerLite signup on /holiday/ (old sample form stays removed)")
+    hk_buy = re.search(r'<a class="hk-buy"[^>]*>', html)
+    check(bool(hk_buy) and 'href="https://buy.stripe.com/28EbJ07qmaes36l7Abds40f"' in hk_buy.group(0), "Host Kit Buy is still a plain Stripe link in the HTML")
+    # v2 (Watchdog FIX on #1057): the Buy href is never rewritten; a captured email lives in memory only and a
+    # window capture-phase click handler, registered before the GA tag, navigates to ?prefilled_email=.
+    check('setAttribute("href"' not in html and "setAttribute('href'" not in html and ".href =" not in html, "no script rewrites an href on /holiday/ (email never enters the DOM)")
+    check(html.find("window.__hkPrefill = function") != -1 and html.find("window.__hkPrefill = function") < html.find("{% include ga4.html %}"), "Buy prefill handler is registered before the GA tag")
+    check('window.addEventListener("click"' in html and "}, true);" in html, "Buy prefill handler listens on window in the capture phase")
+    check('<label for="hk-save-email">Email me a link to this kit' in html and '<button type="submit">Email me a link to this kit</button>' in html and "checkout link" not in html, "capture label and button say 'Email me a link to this kit'")
+    check("We'll email you a link to this kit plus one reminder, nothing else. Unsubscribe anytime." in html and 'aria-live="polite"' in html, "Host Kit capture has the consent text and a polite live region")
     check("2027 Bible Verse Journal" not in html, "journal card removed from /holiday/")
     check("{% include ga4.html %}" in html, "site GA4 include (buy_click + begin_checkout listener) is present")
     text = visible(html)

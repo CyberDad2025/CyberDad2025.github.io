@@ -872,7 +872,9 @@ def main() -> int:
         check(sha256(built_travel_zip) == TRAVEL_ZIP_SHA, "built _site Travel Adventure ZIP sha256 matches")
 
     # Sprint 1113: GA4 buy_click listener. One delegated click handler, shipped in _includes/ga4.html.
-    buy_click_marker = "gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' })"
+    # hostkit-capture-1118: link_url is the href without its query string (keeps ?prefilled_email= out of GA).
+    buy_click_marker = "gtag('event', 'buy_click', { product_name: name, link_url: href, transport_type: 'beacon' })"
+    legacy_buy_click_marker = "gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' })"
     ga_include = (ROOT / "_includes" / "ga4.html").read_text(encoding="utf-8")
     check(ga_include.count(buy_click_marker) == 1, "_includes/ga4.html has the buy_click listener once")
     begin_checkout_marker = "gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' })"
@@ -889,7 +891,10 @@ def main() -> int:
         for built_page in sorted(built_site.rglob("*.html")):
             built = built_page.read_text(encoding="utf-8", errors="replace")
             if 'href="https://buy.stripe.com/' in built:
-                check(built.count(buy_click_marker) == 1, f"built {built_page.relative_to(built_site)} has a buy link and the buy_click listener once")
+                # Inline GA copies (e.g. journal/2027/) keep the original a.href marker; only pages on the
+                # ga4.html include rewrite a Buy href with ?prefilled_email=, and they use the query-stripped marker.
+                n_markers = built.count(buy_click_marker) + built.count(legacy_buy_click_marker)
+                check(n_markers == 1, f"built {built_page.relative_to(built_site)} has a buy link and the buy_click listener once")
                 check(built.count(begin_checkout_marker) == 1, f"built {built_page.relative_to(built_site)} has a buy link and the begin_checkout event once")
     ops_names = list(ROOT.glob("CyberDadKit-Gather-and-Play-Ops-Review*")) + list(ROOT.glob("**/source/build.py"))
     check(ops_names == [], "Ops archive and source builder are not in the repo")
