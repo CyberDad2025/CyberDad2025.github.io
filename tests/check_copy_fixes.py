@@ -390,6 +390,17 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             if set(PRICE_RE.findall(new)) - {"$14.99"}:
                 price_bad.append(name)
             continue
+        # Optional planner signup include (feat/planner-email-capture-1125): one new MailerLite form token, no prices, no Stripe.
+        if old_raw is None and name == "_includes/paycheck-planner-signup.html":
+            if STRIPE_RE.findall(new):
+                stripe_bad.append(name)
+            if PRICE_RE.findall(new):
+                price_bad.append(name)
+            # The include reads the action URL from _data, so it may have no literal forms/id token.
+            extra = set(FORM_RE.findall(new)) - {"forms/205147354497549940"}
+            if extra:
+                form_bad.append(name)
+            continue
         # Paycheck Planner (feat/paycheck-planner-1127): new pages that read _data/paycheck_planner.yml. The pages carry no literal
         # buy.stripe.com href; the data file holds at most the planner and bundle Payment Links (placeholders until the CoS supplies them).
         # Prices: $14.99 intro, $19.99 regular, $39 bundle.
@@ -473,6 +484,9 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             removed = Counter(FORM_RE.findall(old)) - Counter(FORM_RE.findall(new))
             # The holiday sample page adds one embedded form. Tests may quote that slug and URL.
             allowed = {'data-form="eMwTaD"', "forms/1632878"}
+            # feat/planner-email-capture-1125: planner pages and the signup include may add this form only.
+            if name.startswith("paycheck-planner/") or name in {"_data/paycheck_planner.yml", "_includes/paycheck-planner-signup.html"}:
+                allowed = allowed | {"forms/205147354497549940"}
             # One-page shop removes the inactive eMwTaD signup embed from /holiday/,
             # so removals are allowed there. Nothing may be added.
             if name in ONE_PAGE_FORM_REMOVALS:

@@ -47,7 +47,7 @@ STRIPE_PLANNER = "https://buy.stripe.com/bJe28qaCyfyMeP33jVds40j"
 STRIPE_BUNDLE = "https://buy.stripe.com/aFacN42620DS5et8Efds40k"
 FORBIDDEN_PHRASES = ("exactly", "spending money", "debt-free", "receipt email", "/thanks/", "drive.google.com")
 
-EXPECTED_KEYS = ["stripe_url_planner", "stripe_url_bundle", "mailerlite_form_slug", "mailerlite_form_id"]
+EXPECTED_KEYS = ["stripe_url_planner", "stripe_url_bundle", "mailerlite_form_slug", "mailerlite_form_id", "mailerlite_signup_form_id", "mailerlite_signup_form_slug", "mailerlite_signup_action"]
 BANNED = {
     "em or en dash": r"[\u2014\u2013]",
     "guarantee": r"guarantee",
@@ -122,6 +122,8 @@ if LAUNCH:
     check(not placeholders, f"LAUNCH: no placeholder left ({sorted(placeholders)})")
     check(values.get("stripe_url_planner") == STRIPE_PLANNER and values.get("stripe_url_bundle") == STRIPE_BUNDLE, "LAUNCH: Payment Links are the exact CoS URLs")
     check(re.fullmatch(r"\d+", values.get("mailerlite_form_id", "")) is not None, "LAUNCH: mailerlite_form_id is numeric")
+    check(values.get("mailerlite_signup_form_id") == "205147354497549940" and values.get("mailerlite_signup_form_slug") == "vRIwVD", "LAUNCH: optional signup form is the new MailerLite form only")
+    check(values.get("mailerlite_signup_action") == "https://assets.mailerlite.com/jsonp/1632878/forms/205147354497549940/subscribe", "LAUNCH: optional signup posts to the new form subscribe URL")
 elif placeholders:
     print(f"NOTE: {len(placeholders)} placeholder(s) flagged; run with --launch before merge (they must be 0 then).")
 else:
@@ -170,7 +172,12 @@ for name, text in html.items():
     srcs = re.findall(r"<script[^>]+src=\"([^\"]+)\"", text)
     allowed = {"/paycheck-planner/assets/paycheck-planner.js"}
     check(set(srcs) <= allowed, f"{label} loads no extra script src ({srcs})")
-    check("mailerlite.com" not in text or name == "sample", f"{label} loads MailerLite only on the sample page")
+    if name in ("sales", "bundle"):
+        check('{% include paycheck-planner-signup.html %}' in text and "mailerlite.com" not in text, f"{label} adds the optional signup include and hardcodes no MailerLite URL")
+    elif name == "sample":
+        check('{% include paycheck-planner-signup.html %}' in text and "assets.mailerlite.com/js/universal.js" in text, "[sample] keeps the mini-sheet MailerLite embed and adds the optional signup include")
+    else:
+        check("mailerlite.com" not in text and '{% include paycheck-planner-signup.html %}' not in text, f"{label} loads no MailerLite and has no signup include")
     check(text.count("<h1") == 1, f"{label} has one h1")
     check('lang="en"' in text and 'name="viewport"' in text, f"{label} has lang and viewport")
     # internal links resolve
@@ -308,7 +315,7 @@ try:
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
+    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "_includes/paycheck-planner-signup.html", "tests/check_paycheck_planner.py", "tests/check_planner_signup.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
     check(not stray, f"change touches only planner files ({stray[:5]})")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")

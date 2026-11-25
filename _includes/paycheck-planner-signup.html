@@ -1,0 +1,71 @@
+{%- comment -%} Optional Paycheck Planner sample signup. Posts only to the MailerLite form in paycheck_planner.yml (mailerlite_signup_action). Used on the sales, bundle, and sample pages, not the refund page. Buy buttons stay unchanged. {%- endcomment -%}
+{%- assign pp = site.data.paycheck_planner -%}
+<section class="pp-section pp-signup" id="pp-signup" aria-labelledby="pp-signup-title">
+  <h2 id="pp-signup-title">Not ready to buy? Get the free sample page by email.</h2>
+  <form class="pp-signup-form" id="pp-signup-form" action="{{ pp.mailerlite_signup_action }}" method="post" novalidate>
+    <label for="pp-signup-email">Email</label>
+    <div class="pp-signup-row">
+      <input id="pp-signup-email" name="fields[email]" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required aria-describedby="pp-signup-note pp-signup-privacy">
+      <button class="pp-btn pp-btn-alt" type="submit">Send me the sample</button>
+    </div>
+    <input type="hidden" name="ml-submit" value="1">
+    <input type="hidden" name="anticsrf" value="true">
+    <p class="pp-small" id="pp-signup-note">You'll get a confirmation email first.</p>
+    <p class="pp-small" id="pp-signup-privacy">We use your email only to send the sample and planner tips. Unsubscribe anytime. <a href="/privacy/">Privacy policy</a></p>
+  </form>
+  <div class="pp-success" id="pp-signup-success" role="status" aria-live="polite">
+    <p>Check your inbox to confirm, then we will send the sample. <a href="/paycheck-planner/sample/">Open the free sample page</a></p>
+  </div>
+</section>
+<script>
+(function () {
+  var form = document.getElementById("pp-signup-form");
+  if (!form || !window.fetch || !window.URLSearchParams) return;
+  var input = document.getElementById("pp-signup-email");
+  var success = document.getElementById("pp-signup-success");
+  var btn = form.querySelector("button[type='submit']");
+  var statusLine = document.createElement("p");
+  statusLine.className = "pp-small";
+  statusLine.id = "pp-signup-status";
+  statusLine.setAttribute("role", "status");
+  statusLine.setAttribute("aria-live", "polite");
+  form.appendChild(statusLine);
+  function say(msg) { statusLine.textContent = msg || ""; }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = (input.value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      say(email ? "Please check the email address." : "Enter an email address, or open the free sample page.");
+      return;
+    }
+    btn.disabled = true;
+    say("Sending...");
+    var body = new URLSearchParams();
+    body.append("fields[email]", email);
+    body.append("ml-submit", "1");
+    body.append("anticsrf", "true");
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = ctl && setTimeout(function () { ctl.abort(); }, 15000);
+    fetch(form.action, {
+      method: "POST",
+      mode: "cors",
+      credentials: "omit",
+      body: body,
+      signal: ctl ? ctl.signal : undefined,
+      referrerPolicy: "strict-origin"
+    }).then(function (r) {
+      return r.ok ? r.json().then(function (j) { return !!(j && j.success); }, function () { return false; }) : false;
+    }, function () { return false; }).then(function (ok) {
+      if (timer) clearTimeout(timer);
+      btn.disabled = false;
+      if (!ok) {
+        say("We could not send that just now. You can still open the free sample page.");
+        return;
+      }
+      say("");
+      form.hidden = true;
+      if (success) success.classList.add("pp-show");
+    });
+  });
+})();
+</script>
