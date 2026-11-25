@@ -38,6 +38,18 @@ PAGES = (
             "US customers only."
         ),
     },
+    {
+        "label": "/holiday/gather-and-play/",
+        "rel": "holiday/gather-and-play/index.html",
+        "pick": "GP-S1",
+        "h1_re": re.compile(r'<h1 id="product-title">(.*?)</h1>', re.S),
+        "lede_re": re.compile(r'<p class="hday-lede">(.*?)</p>', re.S),
+        "hero": "Turn an awkward office Christmas party into an afternoon of laughter and friendly competition.",
+        "lede": (
+            "Print the pages before coworkers arrive, then put a game on the table "
+            "and play together. US customers only."
+        ),
+    },
 )
 
 PRICE_RE = re.compile(r"\$[0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{2})?(?:/mo)?")

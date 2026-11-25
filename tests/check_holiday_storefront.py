@@ -1540,7 +1540,7 @@ def main() -> int:
     check('rel="canonical" href="https://getcyberdadkit.com/holiday/gather-and-play/"' in gp_html, "Gather & Play canonical is self")
     check("<title>Printable Office Party Games | Gather &amp; Play</title>" in gp_html, "Gather & Play title matches the Growth handoff")
     check('name="description" content="Hosting an office holiday party? Gather &amp; Play offers printable group activities. Instant digital download for US customers. Print before guests arrive."' in gp_html, "Gather & Play meta description matches the Growth handoff")
-    check('<h1 id="product-title">Printable Games for Your Office Holiday Party</h1>' in gp_html, "Gather & Play H1 matches the Growth handoff")
+    check('<h1 id="product-title">Turn an awkward office Christmas party into an afternoon of laughter and friendly competition.</h1>' in gp_html, "Gather & Play H1 matches the Growth handoff")
     check(meta_content(gp_html, "property", "og:title") == 'Printable Office Party Games | Gather & Play', "Gather & Play og:title matches the Growth title")
     check(meta_content(gp_html, "property", "og:description") == 'Hosting an office holiday party? Gather & Play offers printable group activities. Instant digital download for US customers. Print before guests arrive.', "Gather & Play og:description matches the Growth meta")
     check(meta_content(gp_html, "name", "twitter:title") == 'Printable Office Party Games | Gather & Play', "Gather & Play twitter:title matches the Growth title")
