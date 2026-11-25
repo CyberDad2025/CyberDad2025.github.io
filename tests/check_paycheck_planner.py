@@ -218,9 +218,9 @@ check("Plus everything in the Paycheck Planner" not in html["bundle"], "[bundle]
 site_refund = (ROOT / "refund-policy" / "index.html").read_text(encoding="utf-8")
 check("Paycheck Planner and Plus Bundle:" in site_refund and 'href="/paycheck-planner/refund/"' in site_refund and ">See the Paycheck Planner refund policy</a>" in site_refund and ">/paycheck-planner/refund/</a>" not in site_refund,
       "site refund-policy page links to /paycheck-planner/refund/ as See the Paycheck Planner refund policy")
-check('<p class="pp-price"><span>USD</span> <strong>$39</strong> <span>one-time. Prices in USD. US and Canada customers only</span></p>' in html["bundle"],
-      "[bundle] price note is one-time. Prices in USD. US and Canada customers only")
-check("Prices in USD." in visible_text(html["bundle"]), "[bundle] visible text includes Prices in USD.")
+check('<p class="pp-price"><span>USD</span> <strong>$39</strong> <span>one-time. US and Canada customers only.</span></p>' in html["bundle"],
+      "[bundle] price note is one-time. US and Canada customers only.")
+check('<span>USD</span>' in html["bundle"] and "USD" in visible_text(html["bundle"]), "[bundle] visible text includes the USD label")
 footer = FOOTER.read_text(encoding="utf-8")
 check("paycheck-planner/refund/" in footer and ">Refund</a>" in footer and "/refund-policy/" not in footer,
       "planner footer Refund link points at /paycheck-planner/refund/")
