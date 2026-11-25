@@ -18,8 +18,9 @@ PAGES = {
 INCLUDE_TAG = '{% include paycheck-planner-signup.html %}'
 DASH_RE = re.compile(r"[\u2014\u2013]|&mdash;|&ndash;", re.I)
 PRICE_RE = re.compile(r"\$\d+(?:\.\d+)?")
-FORM_ID = "205147354497549940"
-ACTION = "https://assets.mailerlite.com/jsonp/1632878/forms/205147354497549940/subscribe"
+FORM_ID = "205066869153990151"
+ACTION_MARK = 'action="https://assets.mailerlite.com/jsonp/1632878/forms/{{ pp.mailerlite_form_id }}/subscribe"'
+UNUSED_FORM = "205147" + "354497549940"
 BUY_PLANNER = '<a class="pp-btn" id="pp-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner" data-product="Paycheck Planner" data-price="14.99">Get the Paycheck Planner, $14.99</a>'
 BUY_BUNDLE_ON_SALES = '<a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner" data-product="Paycheck Planner Plus Bundle" data-price="39.00">Get the Plus Bundle, $39</a>'
 BUY_BUNDLE = '<a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner-bundle" data-product="Paycheck Planner Plus Bundle" data-price="39.00">Get the Plus Bundle, $39</a>'
@@ -45,21 +46,20 @@ inc = INCLUDE.read_text(encoding="utf-8") if INCLUDE.is_file() else ""
 html = {name: path.read_text(encoding="utf-8") if path.is_file() else "" for name, path in PAGES.items()}
 
 check(INCLUDE.is_file(), "_includes/paycheck-planner-signup.html exists")
-check(values.get("mailerlite_signup_action") == ACTION, "yml signup action is the new MailerLite form only")
-check(values.get("mailerlite_signup_form_id") == FORM_ID and values.get("mailerlite_signup_form_slug") == "vRIwVD", "yml signup form id and slug match the new form")
-check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == "205066869153990151", "existing mini-sheet MailerLite form ids are unchanged")
-check("mailerlite.com" not in inc and 'action="{{ pp.mailerlite_signup_action }}"' in inc, "include action comes from yml (no hardcoded MailerLite URL)")
-check('action="{{ pp.mailerlite_signup_action }}"' in inc, "form action is the yml signup URL, not a hardcoded second form")
-check(inc.count(FORM_ID) == 0, "include does not hardcode the numeric form id (reads _data)")
-check('href="/privacy/"' in inc and "Privacy policy" in inc, "privacy line links /privacy/")
-check("Not ready to buy? Get the free sample page by email." in inc, "headline is the agreed wording")
+check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == FORM_ID, "yml still points at the existing mini-sheet form IW0v9B")
+check("mailerlite_signup_form_id" not in values and "mailerlite_signup_action" not in values, "yml has no separate signup form keys")
+check(ACTION_MARK in inc, "include posts to IW0v9B's jsonp subscribe endpoint via mailerlite_form_id")
+check(inc.count("mailerlite.com") == 1 and inc.count("forms/{{ pp.mailerlite_form_id }}/subscribe") == 1, "include has one MailerLite action, the IW0v9B endpoint")
+check('name="fields[email]"' in inc and 'name="ml-submit" value="1"' in inc and 'name="anticsrf" value="true"' in inc, "include uses the same email field and hidden inputs as the live IW0v9B embed")
+check(inc.count('type="email"') == 1 and "fields[name]" not in inc, "the form collects Email only")
 check('for="pp-signup-email">Email</label>' in inc, "the only visible field label is Email")
-check('type="email"' in inc and inc.count('type="text"') == 0 and "fields[name]" not in inc, "the form collects Email only")
-check(">Send me the sample</button>" in inc, "button says Send me the sample")
+check("Not ready to buy? Get the free Paycheck-to-Bills Mini Sheet by email." in inc, "headline promises the free Mini Sheet")
+check(">Send me the free sheet</button>" in inc, "button matches the live IW0v9B button")
 check("You'll get a confirmation email first." in inc, "confirmation-email note is present")
-check("We use your email only to send the sample and planner tips. Unsubscribe anytime." in inc, "privacy line is the agreed wording")
-check("Check your inbox to confirm, then we will send the sample." in inc, "success message is the agreed wording")
-check('href="/paycheck-planner/sample/"' in inc and "Open the free sample page" in inc, "success message links the existing sample page")
+check("We use your email only to send the sample and planner tips. Unsubscribe anytime." in inc, "privacy line is unchanged")
+check('href="/privacy/"' in inc and "Privacy policy" in inc, "privacy line links /privacy/")
+check("Check your inbox to confirm, then we'll send the free Paycheck-to-Bills Mini Sheet." in inc, "success line uses we'll and names the Mini Sheet")
+check("we will" not in inc, "include has no 'we will'")
 check("payday checklist" not in inc.lower(), "include does not invent a payday checklist asset")
 check(not DASH_RE.search(inc), "include has no em or en dashes")
 check(not PRICE_RE.search(inc), "include has no price strings")
@@ -67,32 +67,26 @@ check("buy.stripe.com" not in inc and "checkout.stripe.com" not in inc, "include
 check("guarantee" not in inc.lower() and not re.search(r"\bCDK\b", inc), "include has no guarantee and no bare CDK")
 check("gtag(" not in inc and "G-5B1LNCPB56" not in inc, "include adds no GA tag")
 
-for name in ("sales", "bundle", "sample"):
-    check(INCLUDE_TAG in html[name], f"[{name}] includes paycheck-planner-signup.html")
-    check(html[name].count(INCLUDE_TAG) == 1, f"[{name}] includes the signup block once")
+for name in ("sales", "bundle"):
+    check(INCLUDE_TAG in html[name] and html[name].count(INCLUDE_TAG) == 1, f"[{name}] includes paycheck-planner-signup.html once")
+check(INCLUDE_TAG not in html["sample"] and "pp-signup" not in html["sample"], "[sample] has no signup include")
+check(html["sample"].count('class="ml-embedded"') == 1 and html["sample"].count("assets.mailerlite.com/js/universal.js") == 1, "[sample] keeps exactly one email form, the IW0v9B embed")
 check(INCLUDE_TAG not in html["refund"] and "pp-signup" not in html["refund"] and "mailerlite.com" not in html["refund"], "[refund] has no signup include and no MailerLite")
 
-# Placement: include comes after the main buy section, never above a Buy button.
-sales_buy = html["sales"].find(BUY_PLANNER)
+# Placement: include comes after the last Buy button in source order.
+sales_last_buy = max(html["sales"].rfind(BUY_PLANNER), html["sales"].rfind(BUY_BUNDLE_ON_SALES))
 sales_inc = html["sales"].find(INCLUDE_TAG)
-check(sales_buy != -1 and sales_inc > sales_buy, "[sales] signup include is below the main Buy button")
-bundle_buy = html["bundle"].find(BUY_BUNDLE)
+check(sales_last_buy != -1 and sales_inc > sales_last_buy, "[sales] signup include is after the last Buy button")
+bundle_buy = html["bundle"].rfind(BUY_BUNDLE)
 bundle_inc = html["bundle"].find(INCLUDE_TAG)
-check(bundle_buy != -1 and bundle_inc > bundle_buy, "[bundle] signup include is below the Buy button")
-sample_cta = html["sample"].find('See the Paycheck Planner')
-sample_inc = html["sample"].find(INCLUDE_TAG)
-check(sample_cta != -1 and sample_inc > sample_cta, "[sample] signup include is below the full-year call to action")
+check(bundle_buy != -1 and bundle_inc > bundle_buy, "[bundle] signup include is after the Buy button")
 
-# Buy buttons unchanged
 check(BUY_PLANNER in html["sales"] and html["sales"].count('id="pp-buy-planner"') == 1, "[sales] planner Buy button is unchanged")
 check(BUY_BUNDLE_ON_SALES in html["sales"] and html["sales"].count('id="pp-buy-bundle"') == 1, "[sales] bundle Buy button is unchanged")
 check(BUY_BUNDLE in html["bundle"] and html["bundle"].count('id="pp-buy-bundle"') == 1, "[bundle] Buy button is unchanged")
-check("buy.stripe.com" not in html["sales"] and "buy.stripe.com" not in html["bundle"], "page source still has no hardcoded Stripe URL")
 
-# The signup block itself (the include file) is the form action source
-for name in ("sales", "bundle", "sample"):
-    # After Liquid would render; in source, action is the Liquid tag
-    check('action="{{ pp.mailerlite_signup_action }}"' in inc, "source form action is the yml key")
+site_texts = [data_text, inc, html["sales"], html["bundle"], html["sample"], html["refund"]]
+check(all(UNUSED_FORM not in t for t in site_texts), "planner pages, include, and yml do not reference the unused new form")
 
 if failed:
     print(f"FAILED {len(failed)} check(s)")

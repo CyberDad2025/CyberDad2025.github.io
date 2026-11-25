@@ -397,7 +397,7 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             if PRICE_RE.findall(new):
                 price_bad.append(name)
             # The include reads the action URL from _data, so it may have no literal forms/id token.
-            extra = set(FORM_RE.findall(new)) - {"forms/205147354497549940"}
+            extra = set(FORM_RE.findall(new)) - {"forms/205066869153990151"}
             if extra:
                 form_bad.append(name)
             continue
@@ -486,7 +486,7 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             allowed = {'data-form="eMwTaD"', "forms/1632878"}
             # feat/planner-email-capture-1125: planner pages and the signup include may add this form only.
             if name.startswith("paycheck-planner/") or name in {"_data/paycheck_planner.yml", "_includes/paycheck-planner-signup.html"}:
-                allowed = allowed | {"forms/205147354497549940"}
+                allowed = allowed | {"forms/205066869153990151"}
             # One-page shop removes the inactive eMwTaD signup embed from /holiday/,
             # so removals are allowed there. Nothing may be added.
             if name in ONE_PAGE_FORM_REMOVALS:

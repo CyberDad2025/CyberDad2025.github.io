@@ -1,12 +1,12 @@
-{%- comment -%} Optional Paycheck Planner sample signup. Posts only to the MailerLite form in paycheck_planner.yml (mailerlite_signup_action). Used on the sales, bundle, and sample pages, not the refund page. Buy buttons stay unchanged. {%- endcomment -%}
+{%- comment -%} Optional Paycheck Planner signup on the sales and bundle pages only. Posts to the existing mini-sheet form IW0v9B (mailerlite_form_id), the same form as /paycheck-planner/sample/. Not used on the sample or refund pages. Buy buttons stay unchanged. {%- endcomment -%}
 {%- assign pp = site.data.paycheck_planner -%}
 <section class="pp-section pp-signup" id="pp-signup" aria-labelledby="pp-signup-title">
-  <h2 id="pp-signup-title">Not ready to buy? Get the free sample page by email.</h2>
-  <form class="pp-signup-form" id="pp-signup-form" action="{{ pp.mailerlite_signup_action }}" method="post" novalidate>
+  <h2 id="pp-signup-title">Not ready to buy? Get the free Paycheck-to-Bills Mini Sheet by email.</h2>
+  <form class="pp-signup-form" id="pp-signup-form" action="https://assets.mailerlite.com/jsonp/1632878/forms/{{ pp.mailerlite_form_id }}/subscribe" method="post" novalidate>
     <label for="pp-signup-email">Email</label>
     <div class="pp-signup-row">
       <input id="pp-signup-email" name="fields[email]" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required aria-describedby="pp-signup-note pp-signup-privacy">
-      <button class="pp-btn pp-btn-alt" type="submit">Send me the sample</button>
+      <button class="pp-btn pp-btn-alt" type="submit">Send me the free sheet</button>
     </div>
     <input type="hidden" name="ml-submit" value="1">
     <input type="hidden" name="anticsrf" value="true">
@@ -14,7 +14,7 @@
     <p class="pp-small" id="pp-signup-privacy">We use your email only to send the sample and planner tips. Unsubscribe anytime. <a href="/privacy/">Privacy policy</a></p>
   </form>
   <div class="pp-success" id="pp-signup-success" role="status" aria-live="polite">
-    <p>Check your inbox to confirm, then we will send the sample. <a href="/paycheck-planner/sample/">Open the free sample page</a></p>
+    <p>Check your inbox to confirm, then we'll send the free Paycheck-to-Bills Mini Sheet.</p>
   </div>
 </section>
 <script>
@@ -35,7 +35,7 @@
     e.preventDefault();
     var email = (input.value || "").trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      say(email ? "Please check the email address." : "Enter an email address, or open the free sample page.");
+      say(email ? "Please check the email address." : "Enter an email address.");
       return;
     }
     btn.disabled = true;
@@ -59,7 +59,7 @@
       if (timer) clearTimeout(timer);
       btn.disabled = false;
       if (!ok) {
-        say("We could not send that just now. You can still open the free sample page.");
+        say("We couldn't send that just now. Please try again.");
         return;
       }
       say("");

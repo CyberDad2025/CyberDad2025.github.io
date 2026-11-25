@@ -47,7 +47,7 @@ STRIPE_PLANNER = "https://buy.stripe.com/bJe28qaCyfyMeP33jVds40j"
 STRIPE_BUNDLE = "https://buy.stripe.com/aFacN42620DS5et8Efds40k"
 FORBIDDEN_PHRASES = ("exactly", "spending money", "debt-free", "receipt email", "/thanks/", "drive.google.com")
 
-EXPECTED_KEYS = ["stripe_url_planner", "stripe_url_bundle", "mailerlite_form_slug", "mailerlite_form_id", "mailerlite_signup_form_id", "mailerlite_signup_form_slug", "mailerlite_signup_action"]
+EXPECTED_KEYS = ["stripe_url_planner", "stripe_url_bundle", "mailerlite_form_slug", "mailerlite_form_id"]
 BANNED = {
     "em or en dash": r"[\u2014\u2013]",
     "guarantee": r"guarantee",
@@ -122,8 +122,7 @@ if LAUNCH:
     check(not placeholders, f"LAUNCH: no placeholder left ({sorted(placeholders)})")
     check(values.get("stripe_url_planner") == STRIPE_PLANNER and values.get("stripe_url_bundle") == STRIPE_BUNDLE, "LAUNCH: Payment Links are the exact CoS URLs")
     check(re.fullmatch(r"\d+", values.get("mailerlite_form_id", "")) is not None, "LAUNCH: mailerlite_form_id is numeric")
-    check(values.get("mailerlite_signup_form_id") == "205147354497549940" and values.get("mailerlite_signup_form_slug") == "vRIwVD", "LAUNCH: optional signup form is the new MailerLite form only")
-    check(values.get("mailerlite_signup_action") == "https://assets.mailerlite.com/jsonp/1632878/forms/205147354497549940/subscribe", "LAUNCH: optional signup posts to the new form subscribe URL")
+    check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == "205066869153990151", "LAUNCH: MailerLite form is still IW0v9B")
 elif placeholders:
     print(f"NOTE: {len(placeholders)} placeholder(s) flagged; run with --launch before merge (they must be 0 then).")
 else:
@@ -173,9 +172,9 @@ for name, text in html.items():
     allowed = {"/paycheck-planner/assets/paycheck-planner.js"}
     check(set(srcs) <= allowed, f"{label} loads no extra script src ({srcs})")
     if name in ("sales", "bundle"):
-        check('{% include paycheck-planner-signup.html %}' in text and "mailerlite.com" not in text, f"{label} adds the optional signup include and hardcodes no MailerLite URL")
+        check('{% include paycheck-planner-signup.html %}' in text and "mailerlite.com" not in text, f"{label} adds the optional signup include; the page source itself has no MailerLite URL")
     elif name == "sample":
-        check('{% include paycheck-planner-signup.html %}' in text and "assets.mailerlite.com/js/universal.js" in text, "[sample] keeps the mini-sheet MailerLite embed and adds the optional signup include")
+        check('{% include paycheck-planner-signup.html %}' not in text and "assets.mailerlite.com/js/universal.js" in text and text.count('class="ml-embedded"') == 1, "[sample] keeps exactly one MailerLite embed and has no signup include")
     else:
         check("mailerlite.com" not in text and '{% include paycheck-planner-signup.html %}' not in text, f"{label} loads no MailerLite and has no signup include")
     check(text.count("<h1") == 1, f"{label} has one h1")
