@@ -30,7 +30,7 @@ planner_url = re.search(r'^stripe_url_planner:\s*"([^"]+)"', yml, re.M).group(1)
 bundle_url = re.search(r'^stripe_url_bundle:\s*"([^"]+)"', yml, re.M).group(1)
 js, css, ga = rd(DIR / "assets/paycheck-planner.js"), rd(DIR / "assets/paycheck-planner.css"), rd(ROOT / "_includes/ga4.html")
 
-INTRO = "Intro price $14.99 ends Dec 31."
+PRICE_NOTE = "$14.99 launch price through December 31, 2026, then $19.99."
 TRUST = ["Built by a Marine Corps veteran with Security+ certification", "Refund policy", "Secure checkout by Stripe"]
 LOST = "Lost your files? Email ruel@getcyberdadkit.com with your receipt and we'll resend them."
 DASH = re.compile(r"[\u2014\u2013]")
@@ -43,9 +43,9 @@ for name, h, btn in (("sales", sales, "pp-buy-planner"), ("bundle", bundle, "pp-
     b = hero.index('id="%s"' % btn)
     check(b < hero.find("<img") or "<img" not in hero, f"[{name}] Buy comes before any hero image")
     check("sample/" not in hero[:b] and "Free sample" not in hero[:b], f"[{name}] no free sample link in the hero at or above the Buy button")
-    check("pp-trust" not in hero[:b] and "pp-intro-note" not in hero[:b], f"[{name}] trust row and intro note sit after the Buy button")
-check(pos(sales, 'id="checkout"') < pos(sales, 'id="pp-intro-note"') < pos(sales, 'id="pp-trust"') < pos(sales, 'id="pp-sample-line"'),
-      "[sales] order: Buy, intro price note, trust row, then the free sample link")
+    check("pp-trust" not in hero[:b], f"[{name}] trust row sits after the Buy button")
+check(pos(sales, 'id="checkout"') < pos(sales, 'class="pp-price-note"') < pos(sales, 'id="pp-trust"') < pos(sales, 'id="pp-sample-line"'),
+      "[sales] order: Buy, launch price note, trust row, then the free sample link")
 check(pos(bundle, 'id="checkout"') < pos(bundle, 'id="pp-trust"') < pos(bundle, 'id="pp-sample-line"'), "[bundle] order: Buy, trust row, then the free sample link")
 for n, h in (("sales", sales), ("bundle", bundle)):
     check('href="/paycheck-planner/sample/"' in h[h.index('id="pp-sample-line"'):], f"[{n}] a free sample link sits in the page below the Buy area (the header nav item is untouched here; the SEO PR owns nav)")
@@ -60,8 +60,8 @@ for n, h in (("sales", sales), ("bundle", bundle), ("sample", sample)):
 check(bool(re.search(r"data-pp-ref=\"planner\"", sales)) and bool(re.search(r"data-pp-ref=\"bundle\"", bundle)) and bool(re.search(r"data-pp-ref=\"planner\"", sample)), "planner Buy buttons on sales and sample, bundle Buy on bundle, all carry data-pp-ref")
 
 # ---- price note, trust row, badge
-check(f'<p class="pp-intro-note" id="pp-intro-note">{INTRO}</p>' in sales and vis(sales).count(INTRO) == 1, "[sales] intro price note is exact and appears once")
-check(INTRO not in vis(bundle) and INTRO not in vis(sample), "intro price note is only on the sales page")
+check(vis(sales).count(PRICE_NOTE) == 1 and "pp-intro-note" not in sales and "Intro price" not in vis(sales), "[sales] one launch price note, no separate intro line")
+check("Intro price" not in vis(bundle) and "Intro price" not in vis(sample), "no Intro price line on bundle or sample")
 for n, h in (("sales", sales), ("bundle", bundle)):
     m = re.search(r'(?s)<ul class="pp-trust" id="pp-trust"[^>]*>(.*?)</ul>', h)
     items = [vis(x) for x in re.findall(r"(?s)<li>(.*?)</li>", m.group(1))] if m else []

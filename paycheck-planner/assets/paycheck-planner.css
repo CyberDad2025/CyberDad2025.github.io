@@ -73,7 +73,6 @@ body.pp .pp-shot img { display: block; width: 100%; max-width: 100%; height: aut
 body.pp .pp-shot figcaption { margin-top: .4rem; text-align: center; }
 body.pp .pp-ink { color: var(--pp-ink); }
 /* Marketing pass (1125): trust row, intro note, Sample numbers badge, lost-files line. Existing palette vars only. */
-.pp-intro-note { margin: .2rem 0 .4rem; font-weight: 700; color: var(--pp-navy); font-size: .98rem; }
 .pp-trust { list-style: none; margin: .6rem 0 .5rem; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .92rem; color: var(--pp-muted); }
 .pp-trust li { position: relative; padding-left: 1.1rem; }
 .pp-trust li::before { content: ""; position: absolute; left: 0; top: .55em; width: .5rem; height: .5rem; border-radius: 50%; background: var(--pp-green); }
