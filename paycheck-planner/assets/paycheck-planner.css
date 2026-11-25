@@ -72,3 +72,12 @@ body.pp .pp-shot { margin: 0; }
 body.pp .pp-shot img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid var(--pp-line); border-radius: .8rem; box-shadow: 0 6px 18px rgba(20,48,79,.1); background: #fff; }
 body.pp .pp-shot figcaption { margin-top: .4rem; text-align: center; }
 body.pp .pp-ink { color: var(--pp-ink); }
+/* Marketing pass (1125): trust row, intro note, Sample numbers badge, lost-files line. Existing palette vars only. */
+.pp-intro-note { margin: .2rem 0 .4rem; font-weight: 700; color: var(--pp-navy); font-size: .98rem; }
+.pp-trust { list-style: none; margin: .6rem 0 .5rem; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .92rem; color: var(--pp-muted); }
+.pp-trust li { position: relative; padding-left: 1.1rem; }
+.pp-trust li::before { content: ""; position: absolute; left: 0; top: .55em; width: .5rem; height: .5rem; border-radius: 50%; background: var(--pp-green); }
+.pp-shot-frame { position: relative; }
+.pp-badge { position: absolute; top: .6rem; right: .6rem; z-index: 1; background: var(--pp-navy); color: #fff; font-size: .78rem; font-weight: 700; letter-spacing: .02em; padding: .2rem .6rem; border-radius: 999px; }
+.pp-sample-line { margin: .3rem 0 0; }
+.pp-lost { margin-top: 1rem; }

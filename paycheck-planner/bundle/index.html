@@ -50,10 +50,14 @@ sitemap: true
       <p class="pp-price"><span>USD</span> <strong>$39</strong> <span>one-time. US and Canada customers only.</span></p>
       <p class="pp-price-note">Not a subscription. It is a complete download, so you do not need to buy the Paycheck Planner as well.</p>
       <div id="checkout">
-        <a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner-bundle" data-product="Paycheck Planner Plus Bundle" data-price="39.00">Get the Plus Bundle, $39</a>
+        <a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner-bundle" data-product="Paycheck Planner Plus Bundle" data-price="39.00" data-pp-ref="bundle">Get the Plus Bundle, $39</a>
       </div>
       <p class="pp-small" id="us-eligibility">Available to customers located in the United States and Canada.</p>
-      <p class="pp-small"><a href="/paycheck-planner/refund/">Refund policy</a></p>
+      <ul class="pp-trust" id="pp-trust" aria-label="Why you can buy with confidence">
+        <li>Built by a Marine Corps veteran with Security+ certification</li>
+        <li><a href="/paycheck-planner/refund/">Refund policy</a></li>
+        <li>Secure checkout by Stripe</li>
+      </ul>
     </div>
     <aside class="pp-card" aria-label="What the bundle adds">
       <h2 class="pp-afford">What the Plus Bundle adds</h2>
@@ -70,6 +74,8 @@ sitemap: true
     <h2 id="inc-title">Includes everything in the Paycheck Planner</h2>
     <p>Dashboard, Settings, Bills, One-Time, Paycheck Plan, Can I Afford It and Check Detail. Delivered as a Google Sheets copy link and an Excel (.xlsx) file, plus the guide as a PDF. It does not connect to your bank.</p>
     <p>Right after you pay, Stripe's hosted confirmation screen shows real links to your Google Sheets copy and the Excel (.xlsx) file. Plus Bundle purchases also include The January Money Reset PDF. Save those files now. If you need the links again, email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with the email address you used at checkout.</p>
+    <p class="pp-small pp-lost" id="pp-lost">Lost your files? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your receipt and we'll resend them.</p>
+    <p class="pp-small pp-sample-line" id="pp-sample-line">Want to try it first? <a href="/paycheck-planner/sample/">Get the free one-month mini sheet</a></p>
     <p>The planner and bundle are budgeting tools, not financial advice. <a href="/paycheck-planner/">See the Paycheck Planner on its own</a>.</p>
   </section>
   {% include paycheck-planner-signup.html %}

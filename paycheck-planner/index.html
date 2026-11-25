@@ -48,13 +48,19 @@ sitemap: true
       <h1 id="product-title">Know which bills your next paycheck covers.</h1>
       <p class="pp-lede">Type your paychecks and bills once. See what each check has to pay, what is left after, and whether you can afford the next thing on your list, before you buy it.</p>
       <div id="checkout">
-        <a class="pp-btn" id="pp-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner" data-product="Paycheck Planner" data-price="14.99">Get the Paycheck Planner, $14.99</a>
+        <a class="pp-btn" id="pp-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get the Paycheck Planner, $14.99</a>
       </div>
+      <p class="pp-intro-note" id="pp-intro-note">Intro price $14.99 ends Dec 31.</p>
       <p class="pp-price-note">$14.99 launch price through December 31, 2026, then $19.99. Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only.</p>
-      <p><a href="/paycheck-planner/sample/">Not ready? Get the free one-month mini sheet</a> &middot; <a href="/paycheck-planner/refund/">Refund policy</a></p>
+      <ul class="pp-trust" id="pp-trust" aria-label="Why you can buy with confidence">
+        <li>Built by a Marine Corps veteran with Security+ certification</li>
+        <li><a href="/paycheck-planner/refund/">Refund policy</a></li>
+        <li>Secure checkout by Stripe</li>
+      </ul>
+      <p class="pp-small pp-sample-line" id="pp-sample-line">Not ready? <a href="/paycheck-planner/sample/">Get the free one-month mini sheet</a></p>
     </div>
     <figure class="pp-shot">
-      <picture><img src="/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" srcset="/paycheck-planner/assets/paycheck-planner-dashboard-600.webp 600w, /paycheck-planner/assets/paycheck-planner-dashboard-1000.webp 1000w" sizes="(min-width: 760px) 420px, 92vw" width="600" height="606" alt="The Paycheck Planner Dashboard showing the next paycheck, the bills it has to pay, and what is left on this check, with made-up sample numbers." fetchpriority="high" decoding="async"></picture>
+      <div class="pp-shot-frame"><span class="pp-badge">Sample numbers</span><picture><img src="/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" srcset="/paycheck-planner/assets/paycheck-planner-dashboard-600.webp 600w, /paycheck-planner/assets/paycheck-planner-dashboard-1000.webp 1000w" sizes="(min-width: 760px) 420px, 92vw" width="600" height="606" alt="The Paycheck Planner Dashboard showing the next paycheck, the bills it has to pay, and what is left on this check, with made-up sample numbers." fetchpriority="high" decoding="async"></picture></div>
       <figcaption class="pp-small">The Dashboard, with made-up sample numbers.</figcaption>
     </figure>
   </section>
@@ -99,6 +105,7 @@ sitemap: true
         <li>Delivered as a Google Sheets copy link and an Excel (.xlsx) file</li>
       </ul>
     </div>
+    <p class="pp-small pp-lost" id="pp-lost">Lost your files? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your receipt and we'll resend them.</p>
   </section>
   <section class="pp-section" id="bundle" aria-labelledby="bundle-title">
     <div class="pp-bundle">
@@ -111,7 +118,7 @@ sitemap: true
         <li>2027 Overview: income, bills and left over for every month, including third-paycheck months</li>
         <li>The January Money Reset guide (PDF, 6 pages): a 7-day plan to start 2027 with every paycheck mapped</li>
       </ul>
-      <p><a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner" data-product="Paycheck Planner Plus Bundle" data-price="39.00">Get the Plus Bundle, $39</a></p>
+      <p><a class="pp-btn" id="pp-buy-bundle" href="{{ pp.stripe_url_bundle }}" data-list-id="paycheck-planner" data-product="Paycheck Planner Plus Bundle" data-price="39.00" data-pp-ref="bundle">Get the Plus Bundle, $39</a></p>
       <p class="pp-small">One-time USD price, US and Canada customers only. <a href="/paycheck-planner/bundle/">More about the Plus Bundle</a></p>
     </div>
   </section>
@@ -130,7 +137,7 @@ sitemap: true
       <h2 id="sample-title">Try it free for one month.</h2>
       <p>The Paycheck-to-Bills Mini Sheet maps up to 4 paychecks and 12 bills for one month, including bills due before your first check. See which paycheck pays which bill in about 3 minutes.</p>
       <p><a class="pp-btn pp-btn-alt" id="pp-sample-link" href="/paycheck-planner/sample/">Send me the free sheet</a></p>
-      <p class="pp-small">We will email the sheet and occasional money planning tips. Unsubscribe anytime. US and Canada customers only.</p>
+      <p class="pp-small">We'll email the sheet and occasional money planning tips. Unsubscribe anytime. US and Canada customers only.</p>
     </div>
   </section>
   <section class="pp-section" id="faq" aria-labelledby="faq-title">
