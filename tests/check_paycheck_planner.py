@@ -314,13 +314,42 @@ for fg, bg in CONTRAST_PAIRS:
 check(contrast("#14304f", "#f2c14e") >= 4.5 and "--pp-gold: #f2c14e" in css and "--pp-navy: #14304f" in css, "gold Buy button uses navy text on soft gold")
 
 # ---------- scope: only planner files changed ----------
+# Enforce the allowlist only when a Paycheck Planner file is in the diff, so
+# later PRs that do not touch paycheck-planner/ still pass this test.
 try:
     base = subprocess.run(["git", "merge-base", "HEAD", "origin/main"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
-    # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in ("index.html", "refund-policy/index.html", "_data/paycheck_planner.yml", "_includes/paycheck-planner-footer.html", "_includes/paycheck-planner-signup.html", "_includes/paycheck-planner-ml-embed.html", "tests/check_paycheck_planner.py", "tests/check_planner_guides.py", "tests/check_planner_signup.py", "tests/check_planner_marketing.py", "tests/check_planner_marketing_browser.py", "_includes/ga4.html", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
-    check(not stray, f"change touches only planner files ({stray[:5]})")
+    pay_names = {
+        "index.html",
+        "refund-policy/index.html",
+        "_data/paycheck_planner.yml",
+        "_includes/paycheck-planner-footer.html",
+        "_includes/paycheck-planner-signup.html",
+        "_includes/paycheck-planner-ml-embed.html",
+        "tests/check_paycheck_planner.py",
+        "tests/check_planner_guides.py",
+        "tests/check_planner_signup.py",
+        "tests/check_planner_marketing.py",
+        "tests/check_planner_marketing_browser.py",
+        "_includes/ga4.html",
+        "tests/check_copy_fixes.py",
+        "tests/check_home_sections.py",
+    }
+    # Product files only. A later PR that edits this test, or the shared
+    # homepage, must not retrigger the paycheck-only allowlist.
+    pay_touched = any(
+        f.startswith("paycheck-planner/")
+        or f.startswith("_includes/paycheck-planner-")
+        or f == "_data/paycheck_planner.yml"
+        for f in changed + untracked
+    )
+    if pay_touched:
+        # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
+        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in pay_names or f.startswith("tests/__pycache__/"))]
+        check(not stray, f"change touches only planner files ({stray[:5]})")
+    else:
+        print("skip scope check (no paycheck-planner files in the diff)")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")
 
