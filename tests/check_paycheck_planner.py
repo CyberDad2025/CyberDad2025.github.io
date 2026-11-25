@@ -34,9 +34,18 @@ GA4 = ROOT / "_includes" / "ga4.html"
 FOOTER = ROOT / "_includes" / "site-footer.html"
 ADDRESS = "CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794"
 US_ONLY = "Available only to customers located in the United States."
-REFUND_TEXT = ("Paycheck Planner and Paycheck Planner Plus Bundle are digital products. You may request a full refund for any reason "
-               "within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your "
-               "order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required.")
+REFUND_PLANNER = ('Paycheck Planner is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Paycheck Planner and does not limit your statutory rights.')
+REFUND_BUNDLE = ('Paycheck Planner Plus Bundle is a digital product. You may request a full refund for any reason within 7 days of your purchase date. Email ruel@getcyberdadkit.com with the email address used for purchase and your order reference. Never send card details. Refunds are returned to the original payment method. No physical return is required. This policy applies only to Paycheck Planner Plus Bundle and does not limit your statutory rights.')
+REFUND_TEXT = REFUND_PLANNER + " " + REFUND_BUNDLE
+HEADLINE = "Know which bills your next paycheck covers."
+LAUNCH_PRICE = "$14.99 launch price through December 31, 2026, then $19.99"
+EXCEL_FAQ = "No. Use the Google Sheets copy link (free Google account). The .xlsx should open in Excel 2016 or later. Both are included."
+HOW_GET = ("Right after you pay, Stripe's hosted confirmation screen shows real links to your Google Sheets copy and the Excel (.xlsx) file. "
+           "Plus Bundle purchases also include The January Money Reset PDF. Save those files now. If you need the links again, email ruel@getcyberdadkit.com with the email address you used at checkout.")
+STRIPE_PLANNER = "https://buy.stripe.com/bJe28qaCyfyMeP33jVds40j"
+STRIPE_BUNDLE = "https://buy.stripe.com/aFacN42620DS5et8Efds40k"
+FORBIDDEN_PHRASES = ("exactly", "spending money", "debt-free", "receipt email", "/thanks/", "drive.google.com")
+
 EXPECTED_KEYS = ["stripe_url_planner", "stripe_url_bundle", "mailerlite_form_slug", "mailerlite_form_id"]
 BANNED = {
     "em or en dash": r"[\u2014\u2013]",
@@ -105,13 +114,17 @@ for k in ("stripe_url_planner", "stripe_url_bundle"):
     check(v == f"#{k.upper()}_TODO" or re.fullmatch(r"https://buy\.stripe\.com/[A-Za-z0-9]+", v) is not None,
           f"{k} is the placeholder or one https://buy.stripe.com/ Payment Link")
 check(values.get("stripe_url_planner") != values.get("stripe_url_bundle"), "planner and bundle Stripe values differ")
+check(values.get("stripe_url_planner") == STRIPE_PLANNER, "stripe_url_planner matches the CoS Payment Link")
+check(values.get("stripe_url_bundle") == STRIPE_BUNDLE, "stripe_url_bundle matches the CoS Payment Link")
+check("receipt email" not in data_text.lower() and "receipt" not in data_text.lower(), "yml comments do not say buyers get links in a receipt email")
 if LAUNCH:
     check(not placeholders, f"LAUNCH: no placeholder left ({sorted(placeholders)})")
-    for k in ("stripe_url_planner", "stripe_url_bundle"):
-        check(re.fullmatch(r"https://buy\.stripe\.com/[A-Za-z0-9]+", values.get(k, "")) is not None, f"LAUNCH: {k} is a real Payment Link")
+    check(values.get("stripe_url_planner") == STRIPE_PLANNER and values.get("stripe_url_bundle") == STRIPE_BUNDLE, "LAUNCH: Payment Links are the exact CoS URLs")
     check(re.fullmatch(r"\d+", values.get("mailerlite_form_id", "")) is not None, "LAUNCH: mailerlite_form_id is numeric")
-else:
+elif placeholders:
     print(f"NOTE: {len(placeholders)} placeholder(s) flagged; run with --launch before merge (they must be 0 then).")
+else:
+    print("NOTE: no placeholders remain; --launch is the merge gate and should also pass.")
 
 # ---------- pages ----------
 html: dict[str, str] = {}
@@ -130,6 +143,17 @@ for name, text in html.items():
     for what, rx in BANNED.items():
         hit = re.search(rx, text if what in ("em or en dash", "guarantee", "other tracker") else seen, re.I)
         check(hit is None, f"{label} no {what}" + (f" (found {hit.group(0)!r})" if hit else ""))
+    check("DRAFT" not in text, f"{label} has no DRAFT copy marker")
+    for phrase in FORBIDDEN_PHRASES:
+        hit = phrase.lower() in (text.lower() if phrase != "exactly" else seen.lower())
+        # 'exactly' is checked in visible text so test comments and markup ids cannot trip it.
+        if phrase == "exactly":
+            hit = "exactly" in seen.lower()
+        elif phrase == "/thanks/":
+            hit = "/thanks/" in text.lower()
+        else:
+            hit = phrase.lower() in text.lower()
+        check(not hit, f"{label} has no forbidden phrase {phrase!r}")
     check(US_ONLY in text, f"{label} has the US-only declaration")
     check("{% include site-footer.html %}" in text and ADDRESS in footer, f"{label} uses the site footer with the publisher line")
     check("CyberDadKit" in text.split("<main")[0], f"{label} shows the CyberDadKit name in the header")
@@ -163,14 +187,24 @@ check(prices(html["sales"]) == {"$14.99", "$19.99", "$39"}, f"[sales] prices are
 check(prices(html["bundle"]) == {"$39"}, f"[bundle] only price is $39: {sorted(prices(html['bundle']))}")
 check(prices(html["sample"]) == {"$14.99", "$19.99"}, f"[sample] prices are the $14.99 intro and $19.99 regular: {sorted(prices(html['sample']))}")
 check(prices(html["refund"]) == set(), "[refund] shows no prices")
-check("Intro price. Regular $19.99. Google Sheets and Excel. Instant download. US only." in sales_vis, "[sales] states intro and regular price under the button")
+check(LAUNCH_PRICE + ". Google Sheets and Excel. Instant download. US customers only." in sales_vis, "[sales] hero states $14.99 launch price through December 31, 2026, then $19.99")
+check(LAUNCH_PRICE in visible_text(html["sales"]) and html["sales"].count(LAUNCH_PRICE) >= 2, "[sales] launch-price line is in the hero and in What's inside")
 check("Get the Paycheck Planner, $14.99" in html["sales"] and "Get the Plus Bundle, $39" in html["sales"], "[sales] both Buy labels carry their price")
 check("not financial, tax or legal advice" in sales_vis.lower() and "planning tool" in sales_vis, "[sales] says planning tool, not financial advice")
-check("Know exactly which bills your next paycheck covers." in html["sales"] and "whether you can afford the next thing on your list" in html["sales"], "[sales] leads with the relief line")
+check(HEADLINE in html["sales"] and html["sales"].count("Know exactly") == 0 and "whether you can afford the next thing on your list" in html["sales"], "[sales] headline is the relief line with no 'exactly'")
+check("Living money" in sales_vis and "spending money" not in sales_vis.lower(), "[sales] uses Living money, not spending money")
+check("NOT IN THIS PLAN" in sales_vis, "[sales] Can I Afford It answers include NOT IN THIS PLAN")
+check("months to pay off" in sales_vis and "debt-free" not in sales_vis.lower(), "[sales] debt line is months to pay off, never debt-free")
+check(EXCEL_FAQ in sales_vis, "[sales] Excel FAQ matches PRODUCT-PAGE wording")
+check(HOW_GET in sales_vis, "[sales] How do I get it FAQ matches PRODUCT-PAGE wording")
+check(REFUND_PLANNER in sales_vis and REFUND_BUNDLE in sales_vis, "[sales] Refunds FAQ matches the refund-page wording")
 check("Published by CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794. Author: CyberDadKit." in sales_vis, "[sales] publisher and author line")
 check("Google Sheets is a trademark of Google LLC. Excel is a trademark of Microsoft Corporation. Not affiliated with either." in sales_vis, "[sales] trademark disclaimer")
-check(REFUND_TEXT in visible_text(html["refund"]), "[refund] has the exact 7-day refund wording")
+check(REFUND_PLANNER in visible_text(html["refund"]) and REFUND_BUNDLE in visible_text(html["refund"]), "[refund] has the exact PRODUCT-PAGE refund wording for both products")
 check("7 days" in html["sales"] and "/paycheck-planner/refund/" in html["sales"], "[sales] links the refund policy")
+check("US customers only." in visible_text(html["sample"]) and "Unsubscribe anytime. US customers only." in visible_text(html["sample"]), "[sample] mini-sheet fine print is US customers only.")
+check("months to pay off" in visible_text(html["bundle"]) and "debt-free" not in visible_text(html["bundle"]).lower(), "[bundle] debt line is months to pay off")
+check(HOW_GET in visible_text(html["bundle"]), "[bundle] uses the How do I get it delivery wording")
 check("{{ pp.stripe_url_planner }}" in html["sales"] and "{{ pp.stripe_url_bundle }}" in html["sales"], "[sales] Buy hrefs read _data")
 check('href="/paycheck-planner/sample/"' in html["sales"], "[sales] links the free mini sheet page")
 check("/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" in html["sales"] and (DIR / "assets" / "paycheck-planner-dashboard-600.webp").is_file() and (DIR / "assets" / "paycheck-planner-dashboard-1000.webp").is_file(), "[sales] dashboard image exists and is used")
@@ -203,14 +237,26 @@ check("data-pp-form-id" in html["sample"] and 'class="ml-embedded"' in html["sam
 check(values.get("mailerlite_form_slug") == "IW0v9B" and values.get("mailerlite_form_id") == "205066869153990151", "MailerLite form is Support's planner-sample form (slug IW0v9B, id 205066869153990151)")
 check("double opt-in" in visible_text(html["sample"]) and "confirm your address" in visible_text(html["sample"]) and 'id="pp-sample-fallback"' in html["sample"], "[sample] tells visitors to confirm their email (double opt-in) and has a fallback line")
 check(html["sample"].count("assets.mailerlite.com/js/universal.js") == 1 and "ml('account','1632878'" in html["sample"], "[sample] reuses the site's MailerLite account loader once")
-# ---------- delivery wording and indexing ----------
+# ---------- delivery wording, homepage link, and indexing ----------
 for n in ("sales", "bundle"):
     t = visible_text(html[n])
-    check("download links appear on the confirmation screen right after payment" in t.lower().replace("your download links", "download links") or "Your download links appear on the confirmation screen right after payment" in t, f"[{n}] says the download links appear on the confirmation screen right after payment")
-    check("ruel@getcyberdadkit.com" in t, f"[{n}] gives the email for a re-send")
+    check("hosted confirmation screen" in t and "ruel@getcyberdadkit.com" in t, f"[{n}] describes hosted confirmation and the re-send email")
 for n, h in html.items():
-    check("receipt" not in visible_text(h).lower(), f"[{n}] never says a receipt carries the links")
-check("with the email address you used at checkout" in visible_text(html["sales"]), "[sales] lost-download line matches the Screen-Free wording")
+    check("receipt" not in visible_text(h).lower() and "receipt email" not in h.lower(), f"[{n}] never says a receipt or receipt email carries the links")
+HOME = ROOT / "index.html"
+home = HOME.read_text(encoding="utf-8") if HOME.is_file() else ""
+friday = re.search(r'<style>\s*/\* Paycheck Planner Friday callout only\..*?</aside>', home, re.S)
+friday = friday.group(0) if friday else ""
+check(bool(friday), "homepage has the Paycheck Planner Friday callout (id=pp-home-friday)")
+check('href="/paycheck-planner/"' in friday and "See the Paycheck Planner" in friday, "homepage callout links to /paycheck-planner/")
+check(HEADLINE in friday and "Find it Friday" in friday, "homepage callout uses the relief headline and Find it Friday")
+check("holiday.css" not in friday and "festive" not in friday, "homepage callout does not use holiday or festive styles")
+check("#14304f" in friday and "#0b7a4b" in friday and "#fffdf8" in friday and "#f2c14e" in friday, "homepage callout uses navy, green, warm white and gold")
+check("\u2014" not in friday and "\u2013" not in friday and "guarantee" not in friday.lower() and "receipt" not in friday.lower(), "homepage callout has no dashes, guarantee or receipt wording")
+check("buy.stripe.com" not in friday and not re.search(r"(?:drive|docs)\.(?:google|usercontent)", friday, re.I), "homepage callout has no Stripe or Drive link")
+# The callout is inside #year-round, a region PR #1070 does not edit.
+check('id="year-round"' in home and home.find('id="year-round"') < home.find('id="pp-home-friday"') < home.find('id="holiday-picks"'), "callout sits in the year-round section, before Holiday picks")
+check(contrast("#0b7a4b", "#fffdf8") >= 4.5 and contrast("#14304f", "#f2c14e") >= 4.5 and contrast("#1d2939", "#fffdf8") >= 4.5, "homepage callout text and button colors meet WCAG AA")
 for name in ("sales", "sample", "bundle", "refund"):
     check("noindex" not in html[name] and "sitemap: true" in html[name], f"[{name}] is indexable and in the sitemap")
 check('rel="canonical"' in html["sales"] and 'href="https://getcyberdadkit.com/paycheck-planner/"' in html["sales"], "[sales] canonical is the live URL")
@@ -229,7 +275,8 @@ try:
     base = subprocess.run(["git", "merge-base", "HEAD", "origin/main"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
     changed = subprocess.run(["git", "diff", "--name-only", base], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
-    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("_data/paycheck_planner.yml", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py") or f.startswith("tests/__pycache__/"))]
+    # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
+    stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f in ("index.html", "_data/paycheck_planner.yml", "tests/check_paycheck_planner.py", "tests/check_copy_fixes.py", "tests/check_home_sections.py") or f.startswith("tests/__pycache__/"))]
     check(not stray, f"change touches only planner files ({stray[:5]})")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")
@@ -237,4 +284,4 @@ except Exception as exc:  # shallow clone or no origin/main
 if failed:
     print(f"FAILED {len(failed)} check(s); {len(flags)} placeholder flag(s)")
     sys.exit(1)
-print(f"ALL PAYCHECK PLANNER CHECKS PASSED ({len(flags)} placeholder flag(s); run with --launch before merge)")
+print(f"ALL PAYCHECK PLANNER CHECKS PASSED ({len(flags)} placeholder flag(s)" + ("; --launch gate passed)" if not flags else "; run with --launch before merge)"))
