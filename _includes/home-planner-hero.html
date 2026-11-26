@@ -1,0 +1,44 @@
+{%- comment -%} Home planner block (marketing 1125). Self-contained: its own scoped styles, no dependency on the home hero copy. The Buy href reads
+    _data/paycheck_planner.yml; data-pp-ref turns on the click-time client_reference_id and UTM pass-through in paycheck-planner.js (same as the planner pages). {%- endcomment %}
+{%- assign pp = site.data.paycheck_planner -%}
+<style>
+#pp-home-hero { max-width: 1160px; margin: 0 auto; padding: 1rem 1.5rem 0; }
+#pp-home-hero .pp-hh-card { display: grid; grid-template-columns: 1fr; align-items: center; gap: 0.9rem 1.5rem; padding: 1.1rem 1.3rem; background: #fffdf8; border: 2px solid #14304f; border-radius: 14px; }
+#pp-home-hero .pp-hh-text { min-width: 0; }
+#pp-home-hero .pp-hh-kicker { margin: 0; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #0b7a4b; }
+#pp-home-hero h2 { margin: 0.2rem 0 0.35rem; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; font-size: 1.45rem; line-height: 1.2; color: #14304f; }
+#pp-home-hero p { margin: 0; color: #1d2939; font-size: 1rem; line-height: 1.45; }
+#pp-home-hero .pp-hh-note { margin-top: 0.4rem; font-size: 0.9rem; color: #475467; }
+#pp-home-hero .pp-hh-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+#pp-home-hero .pp-hh-buy { display: inline-block; background: #f2c14e; color: #14304f; font-weight: 800; text-decoration: none; padding: 0.8rem 1.3rem; border-radius: 0.5rem; border: 2px solid #c9961a; min-height: 44px; }
+#pp-home-hero .pp-hh-buy:hover, #pp-home-hero .pp-hh-buy:focus-visible { background: #e8ae25; }
+#pp-home-hero .pp-hh-buy:focus-visible, #pp-home-hero .pp-hh-more:focus-visible { outline: 3px solid #14304f; outline-offset: 2px; }
+#pp-home-hero .pp-hh-more { color: #1f4469; font-size: 0.95rem; }
+#pp-home-hero .pp-hh-media { margin: 0; min-width: 0; }
+#pp-home-hero .pp-hh-media video, #pp-home-hero .pp-hh-media img { display: block; width: 100%; height: auto; border: 1px solid #dcd3bd; border-radius: 10px; background: #fff; aspect-ratio: 4 / 5; }
+#pp-home-hero .pp-hh-media figcaption { margin-top: 0.3rem; font-size: 0.85rem; color: #475467; text-align: center; }
+@media (min-width: 900px) { #pp-home-hero .pp-hh-card { grid-template-columns: 1fr 16rem; } #pp-home-hero .pp-hh-text { grid-column: 1; grid-row: 1; align-self: end; } #pp-home-hero .pp-hh-actions { grid-column: 1; grid-row: 2; align-self: start; } #pp-home-hero .pp-hh-media { grid-column: 2; grid-row: 1 / span 2; } }
+@media (max-width: 899px) { #pp-home-hero .pp-hh-media { max-width: 16rem; margin: 0 auto; } }
+@media (max-width: 600px) { #pp-home-hero { padding: 0.75rem 1rem 0; } #pp-home-hero .pp-hh-buy { width: 100%; text-align: center; } #pp-home-hero .pp-hh-actions { width: 100%; align-items: stretch; } }
+</style>
+<section id="pp-home-hero" aria-labelledby="pp-hh-title">
+  <div class="pp-hh-card">
+    <div class="pp-hh-text">
+      <p class="pp-hh-kicker">Paycheck Planner</p>
+      <h2 id="pp-hh-title">Know which bills your next paycheck covers.</h2>
+      <p>A budget planner for Google Sheets and Excel. Type your paychecks and bills once, then see what each check pays and what is left.</p>
+      <p class="pp-hh-note">Prices in USD. Instant download. US and Canada customers only. A budgeting tool, not financial advice.</p>
+    </div>
+    <div class="pp-hh-actions">
+      <a class="pp-hh-buy" id="pp-home-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="home-planner" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get the Paycheck Planner, $14.99</a>
+      <a class="pp-hh-more" href="/paycheck-planner/">See what is inside</a>
+    </div>
+    <figure class="pp-hh-media">
+      <video id="pp-home-video" data-pp-video muted autoplay loop playsinline preload="none" data-src="/paycheck-planner/assets/hero-paycheck-planner-4x5.mp4" width="1080" height="1350" poster="/paycheck-planner/assets/hero-paycheck-planner-4x5-poster.webp" aria-label="Silent screen recording of the Paycheck Planner Check Detail sheet, made with sample numbers.">
+        <img src="/paycheck-planner/assets/hero-paycheck-planner-4x5-poster.webp" width="720" height="900" alt="The Paycheck Planner Check Detail sheet with made-up sample numbers.">
+      </video>
+      <figcaption>Sample numbers</figcaption>
+    </figure>
+  </div>
+</section>
+<script src="/paycheck-planner/assets/paycheck-planner.js" defer></script>

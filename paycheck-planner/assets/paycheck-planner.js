@@ -27,6 +27,29 @@
     send('view_item', { currency: 'USD', value: PRODUCTS.bundle.price, items: [item('bundle', 'paycheck-planner-bundle')] });
   }
 
+  // 1a-0. Light video: video[data-pp-video][data-src] ships with preload="none" and no source, so the poster paints first and the MP4 is
+  // fetched only after the window load event (and never when the visitor prefers reduced motion). No JS: the poster stays.
+  function attachVideos() {
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.prototype.forEach.call(document.querySelectorAll('video[data-pp-video][data-src]'), function (v) {
+        var src = v.getAttribute('data-src'); v.removeAttribute('data-src');
+        v.src = src; v.load();
+        var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+      });
+    } catch (err) {}
+  }
+  if (document.readyState === 'complete') { setTimeout(attachVideos, 0); } else { window.addEventListener('load', function () { setTimeout(attachVideos, 0); }); }
+
+  // 1a. Reduced motion: video[data-pp-video] shows its poster only (no autoplay, no loop) when the visitor prefers reduced motion.
+  try {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      Array.prototype.forEach.call(document.querySelectorAll('video[data-pp-video]'), function (v) {
+        v.removeAttribute('autoplay'); v.removeAttribute('loop'); v.pause();
+      });
+    }
+  } catch (err) {}
+
   // 1b. Buy attribution (progressive enhancement). The href in the HTML stays the plain Payment Link. On click only:
   // (a) a window CAPTURE listener runs before the site-wide GA listener in _includes/ga4.html and stores an opaque random id in
   //     data-client-ref and calls gtag('set', { client_reference_id }) so the site-wide buy_click and begin_checkout events that follow in

@@ -73,6 +73,19 @@ check('<span class="pp-badge">Sample numbers</span>' in sales and "Sample number
 check(re.search(r'<img [^>]*alt="The Paycheck Planner Dashboard[^"]{40,}"', sales) is not None, "[sales] hero preview has descriptive alt text")
 check(sales.count("<video") == 0, "[sales] no video tag in this patch (video slot deferred)")
 
+# ---- sheet stills (Video Producer webps) in the sales preview area
+import hashlib
+STILLS = [("still-1-paycheck-plan", "ec7f7d46", 1600, 744, "Paycheck Plan"), ("still-2-bills", "02e55734", 1600, 656, "Bills"),
+          ("still-3-sinking-funds", "7d784daf", 1600, 659, "Sinking Funds"), ("still-4-savings-goals", "ed1e6a09", 1600, 854, "Savings Goals")]
+prev = sales[sales.index('id="previews"'):sales.index('id="problem"')]
+check(prev.count("<img") == 4 and sales.index('id="previews"') > sales.index('id="pp-buy-planner"'), "[sales] four preview stills, after the hero Buy")
+for n, sha, w, h, sheet in STILLS:
+    f = DIR / "assets" / f"paycheck-planner-{n}.webp"
+    tagm = re.search(r'<img src="/paycheck-planner/assets/paycheck-planner-%s\.webp"[^>]*>' % n, prev)
+    t = tagm.group(0) if tagm else ""
+    check(f.is_file() and hashlib.sha256(f.read_bytes()).hexdigest().startswith(sha), f"still {n} is the Video Producer file (sha256 {sha}...)")
+    check(f'width="{w}" height="{h}"' in t and 'loading="lazy"' in t and re.search(r'alt="[^"]*%s sheet[^"]*sample numbers' % sheet, t) is not None, f"[sales] {n}: width/height, lazy, alt names the {sheet} sheet and says sample numbers")
+
 # ---- Lost your files line and delivered page
 for n, h in (("sales", sales), ("bundle", bundle), ("delivered", delivered)):
     check(LOST in vis(h) and vis(h).count(LOST) == 1, f"[{n}] has the exact Lost your files line once")
@@ -84,11 +97,12 @@ check(not others and "/delivered/" not in "".join(rd(DIR / p) for p in ("index.h
       f"[delivered] is unlinked from the site, nav and footer ({others})")
 check("<h1" in delivered and "Download now" in delivered and "Google Drive" in delivered and "Stripe receipt" in delivered, "[delivered] has the save-your-files tips")
 
+BASE = subprocess.run(["git", "merge-base", "HEAD", "origin/main"], cwd=ROOT, capture_output=True, text=True).stdout.strip() or "origin/main"
 # ---- head: this patch makes no <head> edits on the planner pages (title, description, og, schema and nav belong to the SEO PR)
 for n, p in (("sales", "index.html"), ("bundle", "bundle/index.html"), ("sample", "sample/index.html")):
-    d = subprocess.run(["git", "diff", "origin/main", "--", f"paycheck-planner/{p}"], cwd=ROOT, capture_output=True, text=True).stdout
+    d = subprocess.run(["git", "diff", BASE, "--", f"paycheck-planner/{p}"], cwd=ROOT, capture_output=True, text=True).stdout
     touched = [l for l in d.splitlines() if l[:1] in "+-" and l[:3] not in ("+++", "---") and re.search(r"<(title|meta|link|script type=\"application/ld\+json)|pp-nav|<li><a href=\"/(?:paycheck-planner/[^\"]*|contact/)\">(?:Paycheck Planner|Free sample|Plus Bundle|FAQ|Refund|Contact)</a></li>", l)]
-    check(not touched, f"[{n}] no head, meta, schema or nav lines changed vs origin/main ({touched[:2]})")
+    check(not touched, f"[{n}] no head, meta, schema or nav lines changed vs the merge base with origin/main ({touched[:2]})")
 
 # ---- attribution wiring (source level; tests/check_planner_marketing_browser.py proves the behavior)
 check("client_reference_id" in js and "UTM_KEYS" in js and all(k in js for k in ("utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term")), "JS appends client_reference_id and the five utm_* keys")
