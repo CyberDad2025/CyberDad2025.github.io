@@ -236,6 +236,45 @@ check("{{ pp.stripe_url_planner }}" in html["sales"] and "{{ pp.stripe_url_bundl
 check('href="/paycheck-planner/sample/"' in html["sales"], "[sales] links the free mini sheet page")
 check("/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" in html["sales"] and (DIR / "assets" / "paycheck-planner-dashboard-600.webp").is_file() and (DIR / "assets" / "paycheck-planner-dashboard-1000.webp").is_file(), "[sales] dashboard image exists and is used")
 
+# ---------- page demo loop ----------
+import hashlib
+DEMO_ARIA = (
+    "Silent loop of the Paycheck Planner with sample numbers. "
+    "Settings shows usual take-home pay entered. "
+    "The Paycheck Plan then shows what is left. "
+    "A phone bill is added, and what is left on the second paycheck updates from $1,406.60 to $1,321.60. "
+    "The second paycheck includes a $200 one-time column."
+)
+demo_mp4 = DIR / "assets" / "page-paycheck-planner-demo.mp4"
+demo_webp = DIR / "assets" / "page-paycheck-planner-demo-poster.webp"
+demo_png = DIR / "assets" / "page-paycheck-planner-demo-poster.png"
+check(demo_mp4.is_file() and hashlib.sha256(demo_mp4.read_bytes()).hexdigest() == "61dff740424feec1f841cb99309c7a7386ddb79163b7fc7045a6ffe7207bf644",
+      "[sales] demo MP4 matches the Video Producer sha256")
+check(demo_webp.is_file() and hashlib.sha256(demo_webp.read_bytes()).hexdigest() == "27c2702a227028f2c44bdac36906670d6f0d842391d21b2780ff0dbb90ae201d",
+      "[sales] demo poster webp matches the Video Producer sha256")
+check(demo_png.is_file() and hashlib.sha256(demo_png.read_bytes()).hexdigest() == "a2fb0f138dfa2d98b26060fb16a8eef86c24ece8f9474a428fa21bd28b90c42f",
+      "[sales] demo poster PNG matches the Video Producer sha256")
+check(html["sales"].count("<video") == 1, "[sales] one video element")
+check(all("<video" not in html[n] for n in ("sample", "bundle", "refund")), "sample, bundle and refund pages have no video")
+vm = re.search(r"(?s)<video\b([^>]*)>(.*?)</video>", html["sales"])
+va, vi = (vm.group(1), vm.group(2)) if vm else ("", "")
+check(bool(vm) and 'id="pp-page-demo-video"' in va and "data-pp-video" in va, "[sales] demo video id and data-pp-video hook")
+check("autoplay" in va.split() and "muted" in va.split() and "loop" in va.split() and "playsinline" in va.split() and 'preload="none"' in va,
+      "[sales] video attrs: autoplay muted loop playsinline preload=none")
+check('poster="/paycheck-planner/assets/page-paycheck-planner-demo-poster.webp"' in va, "[sales] poster is the webp")
+check('data-src="/paycheck-planner/assets/page-paycheck-planner-demo.mp4"' in va and re.search(r"\ssrc=", va) is None, "[sales] MP4 is lazy (data-src, no src)")
+check('width="1920"' in va and 'height="1080"' in va, "[sales] video width and height are 1920x1080")
+check(f'aria-label="{DEMO_ARIA}"' in va, "[sales] aria-label describes the exact sheet and sample leftover change")
+check(f'alt="{DEMO_ARIA}"' in vi and "page-paycheck-planner-demo-poster.png" in vi, "[sales] poster img fallback alt matches the aria-label")
+check(html["sales"].index('id="pp-buy-planner"') < html["sales"].index("paycheck-planner-dashboard-600.webp") < html["sales"].index('id="pp-page-demo-video"') < html["sales"].index('id="previews"'),
+      "[sales] demo video sits below the hero image and above the preview stills")
+check("IntersectionObserver" in js and "prefers-reduced-motion: reduce" in js, "planner JS lazy-loads video and honors reduced motion")
+check("prefers-reduced-motion: reduce" in css and "aspect-ratio: 16 / 9" in css, "planner CSS reserves 16:9 and has a reduced-motion rule")
+check("No. It is a planning tool for your own numbers. It is not financial, tax or legal advice." in visible_text(html["sales"]),
+      "[sales] NFA FAQ line is unchanged")
+check("Paycheck Planner is a budgeting tool, not financial advice." in visible_text(html["sales"]),
+      "[sales] NFA footnote is unchanged")
+
 # ---------- Buy buttons ----------
 for name, expect in (("sales", {"planner": 1, "bundle": 1}), ("bundle", {"planner": 0, "bundle": 1}), ("sample", {"planner": 1}), ("refund", {})):
     buttons = re.findall(r"<a [^>]*data-price=[^>]*>", html[name])

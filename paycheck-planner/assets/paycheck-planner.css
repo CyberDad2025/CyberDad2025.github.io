@@ -107,3 +107,21 @@ body.pp .pp-ink { color: var(--pp-ink); }
 .pp-previews { display: grid; gap: 1rem; grid-template-columns: 1fr; }
 .pp-preview img { aspect-ratio: auto; }
 @media (min-width: 760px) { .pp-previews { grid-template-columns: repeat(2, 1fr); } }
+
+/* Page demo loop (below the sales hero): 16:9 box so the poster and video do not shift the layout. */
+body.pp #pp-page-demo .pp-demo-video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--pp-line);
+  border-radius: .8rem;
+  box-shadow: 0 6px 18px rgba(20,48,79,.1);
+  background: #fff;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.pp #pp-page-demo .pp-demo-video {
+    pointer-events: none;
+  }
+}

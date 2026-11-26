@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 yml = (ROOT / "_data/paycheck_planner.yml").read_text()
 URL = {"planner": re.search(r'^stripe_url_planner:\s*"([^"]+)"', yml, re.M).group(1), "bundle": re.search(r'^stripe_url_bundle:\s*"([^"]+)"', yml, re.M).group(1)}
 BASE = "https://getcyberdadkit.com"
-TYPES = {".html": "text/html", ".css": "text/css", ".js": "application/javascript", ".png": "image/png", ".webp": "image/webp", ".xml": "application/xml"}
+TYPES = {".html": "text/html", ".css": "text/css", ".js": "application/javascript", ".png": "image/png", ".webp": "image/webp", ".xml": "application/xml", ".mp4": "video/mp4"}
 fails, results, stripe_seen, other, collect_seen = [], {}, [], [], []
 def check(c, m):
     print(("PASS " if c else "FAIL ") + m)
@@ -45,11 +45,23 @@ def collect_cid(h):
     m = re.search(r"(?:^|[?&])cid=([^&]*)", blob)
     return unquote(m.group(1)) if m else None
 
+def req_host(u):
+    try:
+        return u.split("/")[2].lower()
+    except Exception:
+        return ""
+GA_HOSTS = {"www.googletagmanager.com", "googletagmanager.com", "www.google-analytics.com", "google-analytics.com", "analytics.google.com"}
+STRIPE_HOSTS = {"buy.stripe.com", "checkout.stripe.com"}
 def handler(route):
     req = route.request
     u = req.url
-    if u.startswith("https://buy.stripe.com/") or u.startswith("https://checkout.stripe.com/"):
+    h = req_host(u)
+    if h in STRIPE_HOSTS or u.startswith("https://buy.stripe.com/") or u.startswith("https://checkout.stripe.com/"):
         stripe_seen.append(u); return route.abort()
+    if h in GA_HOSTS:
+        if is_collect(u):
+            collect_seen.append({"url": u, "method": req.method, "body": req.post_data or ""})
+        return route.abort()
     if is_collect(u):
         collect_seen.append({"url": u, "method": req.method, "body": req.post_data or ""})
         return route.abort()
@@ -66,7 +78,7 @@ PAGES = [("sales", "/paycheck-planner/", ["#pp-buy-planner"], "planner"), ("bund
          ("sample", "/paycheck-planner/sample/", ["#pp-buy-planner"], "planner"), ("refund", "/paycheck-planner/refund/", [], None),
          ("delivered", "/paycheck-planner/delivered/", [], None)]
 with sync_playwright() as p:
-    b = p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox", "--host-resolver-rules=MAP www.googletagmanager.com 127.0.0.1, MAP www.google-analytics.com 127.0.0.1, MAP buy.stripe.com 127.0.0.1, MAP checkout.stripe.com 127.0.0.1"])
+    b = p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox", "--host-resolver-rules=MAP www.googletagmanager.com 127.0.0.1, MAP googletagmanager.com 127.0.0.1, MAP www.google-analytics.com 127.0.0.1, MAP google-analytics.com 127.0.0.1, MAP analytics.google.com 127.0.0.1, MAP buy.stripe.com 127.0.0.1, MAP checkout.stripe.com 127.0.0.1"])
     for w, h in ((375, 812), (1280, 800)):
         ctx = b.new_context(viewport={"width": w, "height": h}); ctx.route("**/*", handler)
         for name, path, btns, key in PAGES:
@@ -152,6 +164,82 @@ with sync_playwright() as p:
     pg.evaluate(HOOK); pg.click("#pp-buy-planner"); pg.wait_for_timeout(200); pg.click("#pp-buy-bundle"); pg.wait_for_timeout(200)
     ids = [re.search(r"client_reference_id=([^&]+)", u).group(1) for u in pg.evaluate("() => window.__clicks")]
     check(len(ids) == 2 and ids[0] == ids[1], "one opaque id per page view across both Buy buttons")
+    # Page demo loop on /paycheck-planner/: attributes, below the hero, Buy above the fold, lazy attach, reduced motion.
+    DEMO_SRC = "/paycheck-planner/assets/page-paycheck-planner-demo.mp4"
+    DEMO_POSTER = "/paycheck-planner/assets/page-paycheck-planner-demo-poster.webp"
+    DEMO_ARIA = (
+        "Silent loop of the Paycheck Planner with sample numbers. "
+        "Settings shows usual take-home pay entered. "
+        "The Paycheck Plan then shows what is left. "
+        "A phone bill is added, and what is left on the second paycheck updates from $1,406.60 to $1,321.60. "
+        "The second paycheck includes a $200 one-time column."
+    )
+    STATE = """() => {
+      const v = document.getElementById('pp-page-demo-video');
+      const hero = document.querySelector('.pp-hero img');
+      const buy = document.getElementById('pp-buy-planner');
+      const nfa = Array.from(document.querySelectorAll('p, dd')).some(el => /not financial, tax or legal advice/i.test(el.textContent || ''));
+      const foot = Array.from(document.querySelectorAll('p')).some(el => /budgeting tool, not financial advice/i.test(el.textContent || ''));
+      if (!v || !hero || !buy) return {missing: true};
+      const vr = v.getBoundingClientRect(), hr = hero.getBoundingClientRect(), br = buy.getBoundingClientRect();
+      const near = vr.top < (window.innerHeight + 200) && vr.bottom > -200;
+      return {
+        autoplay: v.autoplay, muted: v.muted, loop: v.loop, playsInline: v.playsInline,
+        preload: v.preload, poster: v.getAttribute('poster'),
+        src: v.getAttribute('src'), dataSrc: v.getAttribute('data-src'),
+        paused: v.paused, currentTime: v.currentTime,
+        videoTop: vr.top, heroBottom: hr.bottom, buyBottom: br.bottom, buyTop: br.top,
+        near: near, aria: v.getAttribute('aria-label'), nfa: nfa, foot: foot,
+        pe: window.getComputedStyle(v).pointerEvents
+      };
+    }"""
+    ctx = b.new_context(viewport={"width": 375, "height": 812}); ctx.route("**/*", handler)
+    pg = ctx.new_page(); pg.goto(BASE + "/paycheck-planner/", wait_until="load"); pg.wait_for_timeout(600)
+    st = pg.evaluate(STATE)
+    check(not st.get("missing"), "[sales 375] demo video, hero image and Buy button are present")
+    check(st.get("muted") and st.get("playsInline") and st.get("preload") == "none" and st.get("poster") == DEMO_POSTER,
+          f"[sales 375] video is muted, playsinline, preload=none, webp poster ({st})")
+    check(st.get("aria") == DEMO_ARIA, "[sales 375] aria-label is the exact sheet description")
+    check(st.get("buyTop") >= 0 and st.get("buyBottom") <= 812, f"[sales 375] Buy stays above the fold ({st.get('buyTop')}, {st.get('buyBottom')})")
+    check(st.get("videoTop") > st.get("heroBottom"), f"[sales 375] video sits below the hero image ({st.get('heroBottom')} then {st.get('videoTop')})")
+    check(st.get("nfa") and st.get("foot"), "[sales 375] NFA FAQ and footnote are present")
+    if st.get("near"):
+        check(st.get("src") == DEMO_SRC and st.get("autoplay") and st.get("loop"), f"[sales 375] near viewport so MP4 is attached and stays autoplay loop ({st})")
+    else:
+        check(st.get("src") is None and st.get("dataSrc") == DEMO_SRC, f"[sales 375] MP4 stays in data-src until near the viewport ({st})")
+    if SHOTS: pg.screenshot(path=str(SHOTS / "sales-375-top.png"), full_page=False)
+    pg.locator("#pp-page-demo-video").scroll_into_view_if_needed(); pg.wait_for_timeout(800)
+    st2 = pg.evaluate(STATE)
+    check(st2.get("src") == DEMO_SRC, f"[sales 375] after scrolling to the demo, MP4 is attached ({st2})")
+    check(st2.get("muted") and st2.get("autoplay") and st2.get("loop") and st2.get("playsInline"),
+          f"[sales 375] after scroll: autoplay muted loop playsinline ({st2})")
+    check(st2.get("paused") is False, f"[sales 375] video is playing after it is near the viewport ({st2})")
+    if SHOTS: pg.screenshot(path=str(SHOTS / "sales-375-video.png"), full_page=False)
+    pg.close(); ctx.close()
+    ctx = b.new_context(viewport={"width": 1280, "height": 800}); ctx.route("**/*", handler)
+    pg = ctx.new_page(); pg.goto(BASE + "/paycheck-planner/", wait_until="load"); pg.wait_for_timeout(600)
+    st = pg.evaluate(STATE)
+    check(st.get("buyTop") >= 0 and st.get("buyBottom") <= 800, f"[sales 1280] Buy stays above the fold ({st.get('buyTop')}, {st.get('buyBottom')})")
+    check(st.get("videoTop") > st.get("heroBottom"), f"[sales 1280] video sits below the hero image ({st.get('heroBottom')} then {st.get('videoTop')})")
+    check(st.get("muted") and st.get("playsInline") and st.get("poster") == DEMO_POSTER, f"[sales 1280] muted playsinline poster ({st})")
+    check(st.get("nfa") and st.get("foot"), "[sales 1280] NFA lines are present")
+    if SHOTS: pg.screenshot(path=str(SHOTS / "sales-1280-desktop.png"), full_page=False)
+    if st.get("near") or st.get("src"):
+        check(st.get("src") == DEMO_SRC, f"[sales 1280] MP4 attached when near or in view ({st})")
+    pg.locator("#pp-page-demo-video").scroll_into_view_if_needed(); pg.wait_for_timeout(800)
+    st2 = pg.evaluate(STATE)
+    check(st2.get("src") == DEMO_SRC and st2.get("paused") is False, f"[sales 1280] video plays after it is in view ({st2})")
+    pg.close(); ctx.close()
+    ctx = b.new_context(viewport={"width": 375, "height": 812}, reduced_motion="reduce"); ctx.route("**/*", handler)
+    pg = ctx.new_page(); pg.goto(BASE + "/paycheck-planner/", wait_until="load"); pg.wait_for_timeout(600)
+    pg.locator("#pp-page-demo-video").scroll_into_view_if_needed(); pg.wait_for_timeout(800)
+    st = pg.evaluate(STATE)
+    check((not st.get("autoplay")) and (not st.get("loop")) and st.get("paused") and st.get("currentTime") == 0,
+          f"[sales 375 reduced-motion] no autoplay, no loop, paused at 0 ({st})")
+    check(st.get("src") is None, f"[sales 375 reduced-motion] MP4 is never attached; poster only ({st})")
+    check(st.get("pe") == "none", f"[sales 375 reduced-motion] CSS pointer-events is none ({st})")
+    if SHOTS: pg.screenshot(path=str(SHOTS / "sales-375-reduced-motion.png"), full_page=False)
+    pg.close(); ctx.close()
     b.close()
 check(len(stripe_seen) == 0, "no request to buy.stripe.com or checkout.stripe.com was attempted at all")
 check(not any("stripe" in u for u in other), "no other Stripe request")

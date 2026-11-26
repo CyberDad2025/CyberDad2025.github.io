@@ -27,16 +27,33 @@
     send('view_item', { currency: 'USD', value: PRODUCTS.bundle.price, items: [item('bundle', 'paycheck-planner-bundle')] });
   }
 
-  // 1a-0. Light video: video[data-pp-video][data-src] ships with preload="none" and no source, so the poster paints first and the MP4 is
-  // fetched only after the window load event (and never when the visitor prefers reduced motion). No JS: the poster stays.
+  // 1a-0. Light video: video[data-pp-video][data-src] ships with preload="none" and no source, so the poster paints first.
+  // The MP4 is attached only when the element is near the viewport (IntersectionObserver; load-event fallback if that
+  // API is missing) and never when the visitor prefers reduced motion. No JS: the poster stays.
+  function attachOneVideo(v) {
+    var src = v.getAttribute('data-src');
+    if (!src) return;
+    v.removeAttribute('data-src');
+    v.src = src; v.load();
+    var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+  }
   function attachVideos() {
     try {
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      Array.prototype.forEach.call(document.querySelectorAll('video[data-pp-video][data-src]'), function (v) {
-        var src = v.getAttribute('data-src'); v.removeAttribute('data-src');
-        v.src = src; v.load();
-        var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
-      });
+      var nodes = document.querySelectorAll('video[data-pp-video][data-src]');
+      if (!nodes.length) return;
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          Array.prototype.forEach.call(entries, function (en) {
+            if (!en.isIntersecting) return;
+            io.unobserve(en.target);
+            attachOneVideo(en.target);
+          });
+        }, { root: null, rootMargin: '200px 0px', threshold: 0 });
+        Array.prototype.forEach.call(nodes, function (v) { io.observe(v); });
+      } else {
+        Array.prototype.forEach.call(nodes, attachOneVideo);
+      }
     } catch (err) {}
   }
   if (document.readyState === 'complete') { setTimeout(attachVideos, 0); } else { window.addEventListener('load', function () { setTimeout(attachVideos, 0); }); }
