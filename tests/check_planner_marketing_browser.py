@@ -40,6 +40,11 @@ def collect_events(entries):
                 names.append(n)
     return names
 
+def collect_cid(h):
+    blob = (h.get("url") or "") + "&" + (h.get("body") or "")
+    m = re.search(r"(?:^|[?&])cid=([^&]*)", blob)
+    return unquote(m.group(1)) if m else None
+
 def handler(route):
     req = route.request
     u = req.url
@@ -86,6 +91,7 @@ with sync_playwright() as p:
             sel = btns[0]; plain = pg.get_attribute(sel, "href")
             check(plain == URL[key], f"[{name} qa={qa}] href is the plain yml URL at load")
             pg.evaluate(HOOK)
+            pg.context.clear_cookies()
             collect_seen.clear()
             pg.click(sel); pg.wait_for_timeout(200)
             new = pg.evaluate("() => window.__clicks")
@@ -113,6 +119,11 @@ with sync_playwright() as p:
             else:
                 check(all("tt=internal" not in h["url"] for h in hits), f"[{name} qa={qa}] collect requests are not marked internal")
             check(all("utm_source=pinterest" in h["url"] or "utm_source%3Dpinterest" in h["url"] for h in hits), f"[{name} qa={qa}] collect dl carries page UTMs")
+            has_ga = any(c.get("name") == "_ga" for c in pg.context.cookies())
+            check(not has_ga, f"[{name} qa={qa}] no _ga cookie exists at click time")
+            cid_buy = collect_cid(bcl[0]) if bcl else None
+            cid_co = collect_cid(bc[0]) if bc else None
+            check(bool(cid_buy) and cid_buy == cid_co, f"[{name} qa={qa}] both fallback collect hits share one cid ({cid_buy!r} vs {cid_co!r})")
             pg.close()
         ctx.close()
     # When the gtag library is already present, use the original gtag path only (no collect sendBeacon, no duplicates).

@@ -888,6 +888,8 @@ def main() -> int:
     check("tt=internal" in ga_include, "fallback marks cdk_qa traffic as traffic_type internal")
     check("sendCollect('buy_click'" in ga_include and "sendCollect('begin_checkout'" in ga_include, "fallback sends buy_click and begin_checkout")
     check(ga_include.count("window.gtag('event', 'buy_click'") == 1 and ga_include.count("sendCollect('buy_click'") == 1, "ready path and fallback each send buy_click once")
+    check("var clientId = cid();" in ga_include and ga_include.count("sendCollect('buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }, clientId)") == 1 and ga_include.count("sendCollect('begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }, clientId)") == 1, "fallback computes one client id per click and passes it to both collect calls")
+    check("skips quietly if gtag is missing" not in ga_include, "ga4.html comment no longer says the listener skips when gtag is missing")
     built_site = ROOT / "_site"
     if (built_site / "holiday" / "index.html").is_file():
         for rel in ("holiday/index.html", "holiday/sample/index.html", "index.html"):
