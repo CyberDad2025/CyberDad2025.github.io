@@ -251,6 +251,8 @@ for name, expect in (("sales", {"planner": 1, "bundle": 1}), ("bundle", {"planne
 ga = GA4.read_text(encoding="utf-8")
 check("a[href^=\"https://buy.stripe.com/\"]" in ga and "'buy_click'" in ga and "'begin_checkout'" in ga, "ga4.html still sends buy_click and begin_checkout on buy.stripe.com links")
 check(ga.count("G-5B1LNCPB56") >= 3, "ga4.html keeps the one G-5B1LNCPB56 tag")
+check("navigator.sendBeacon" in ga and "https://www.google-analytics.com/g/collect" in ga, "ga4.html sendBeacon fallback to the GA4 collect endpoint is present")
+check("preventDefault" not in ga and "setTimeout" not in ga, "planner GA listener still does not delay or cancel the Stripe click")
 for ev in ("view_item", "sign_up"):
     check(f"'{ev}'" in js, f"planner JS sends {ev}")
 # Marketing pass 1125: the click-time attribution reads ONLY the existing cdk_qa flag from localStorage to prefix qa_ (no writes).

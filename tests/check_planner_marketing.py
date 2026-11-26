@@ -108,7 +108,7 @@ for n, p in (("sales", "index.html"), ("bundle", "bundle/index.html"), ("sample"
 check("client_reference_id" in js and "UTM_KEYS" in js and all(k in js for k in ("utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term")), "JS appends client_reference_id and the five utm_* keys")
 check("window.addEventListener('click'" in js and js.count("window.addEventListener('click'") == 2 and "}, true);" in js, "JS uses a window capture listener (before GA) and a window bubble listener (after GA)")
 check("'qa_'" in js and "cdk_qa" in js and "document.cookie" not in js and "sessionStorage" not in js and "localStorage.setItem" not in js, "JS prefixes qa_ from the existing cdk_qa flag and stores nothing")
-check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html is unchanged (holiday tests pin its exact lines)")
+check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
 
 # ---- no dashes in anything added or touched
 for n, h in (("sales", sales), ("bundle", bundle), ("sample", sample), ("delivered", delivered)):

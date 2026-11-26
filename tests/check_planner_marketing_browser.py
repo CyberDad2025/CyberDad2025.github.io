@@ -5,8 +5,9 @@ computed href at activation time and calls preventDefault, so no navigation is a
 by request interception on https://getcyberdadkit.com (nothing live is contacted). Any request to buy.stripe.com or checkout.stripe.com is
 RECORDED AND ABORTED, never fulfilled and never sent (the host maps to 127.0.0.1 anyway). Checks per page at 375 and 1280 wide:
 exactly one clear Buy button above the fold (rect inside the viewport) whose href equals the yml value; click attribution (client_reference_id,
-utm pass-through, qa_ prefix, plain href at load, GA event fields); reduced layout shift risks are not measured here."""
+utm pass-through, qa_ prefix, plain href at load, GA event fields, including the sendBeacon collect fallback when gtag.js is not loaded); reduced layout shift risks are not measured here."""
 import json, re, sys, pathlib
+from urllib.parse import unquote
 from playwright.sync_api import sync_playwright
 
 SITE = pathlib.Path(sys.argv[1]); SHOTS = pathlib.Path(sys.argv[2]) if len(sys.argv) > 2 else None
@@ -15,15 +16,38 @@ yml = (ROOT / "_data/paycheck_planner.yml").read_text()
 URL = {"planner": re.search(r'^stripe_url_planner:\s*"([^"]+)"', yml, re.M).group(1), "bundle": re.search(r'^stripe_url_bundle:\s*"([^"]+)"', yml, re.M).group(1)}
 BASE = "https://getcyberdadkit.com"
 TYPES = {".html": "text/html", ".css": "text/css", ".js": "application/javascript", ".png": "image/png", ".webp": "image/webp", ".xml": "application/xml"}
-fails, results, stripe_seen, other = [], {}, [], []
+fails, results, stripe_seen, other, collect_seen = [], {}, [], [], []
 def check(c, m):
     print(("PASS " if c else "FAIL ") + m)
     if not c: fails.append(m)
 
+def is_collect(u):
+    return "/g/collect" in u and ("google-analytics.com" in u or "analytics.google.com" in u)
+
+def collect_events(entries):
+    names = []
+    for e in entries:
+        u, body = e.get("url") or "", e.get("body") or ""
+        qs = []
+        if "en=" in u:
+            qs += re.findall(r"(?:^|[?&])en=([^&]*)", u)
+        if body:
+            for line in body.splitlines() or [body]:
+                qs += re.findall(r"(?:^|[?&])en=([^&]*)", line if line.startswith("en=") or "&en=" in line or line.startswith("?") else ("?" + line))
+        for n in qs:
+            n = re.sub(r"%20", " ", n)
+            if n and n not in names:
+                names.append(n)
+    return names
+
 def handler(route):
-    u = route.request.url
+    req = route.request
+    u = req.url
     if u.startswith("https://buy.stripe.com/") or u.startswith("https://checkout.stripe.com/"):
         stripe_seen.append(u); return route.abort()
+    if is_collect(u):
+        collect_seen.append({"url": u, "method": req.method, "body": req.post_data or ""})
+        return route.abort()
     if u.startswith(BASE):
         path = u[len(BASE):].split("?")[0].split("#")[0]
         f = SITE / path.lstrip("/")
@@ -52,7 +76,8 @@ with sync_playwright() as p:
             if SHOTS: pg.screenshot(path=str(SHOTS / f"{name}-{w}.png"))
             pg.close()
         ctx.close()
-    # click attribution (1280 only)
+    # click attribution (1280 only). gtag.js is mapped to 127.0.0.1 so the library is not ready;
+    # the fallback must sendBeacon both events and must not also push them to dataLayer.
     for qa in (False, True):
         ctx = b.new_context(viewport={"width": 1280, "height": 800}); ctx.route("**/*", handler)
         for name, path, btns, key in PAGES[:3]:
@@ -61,6 +86,7 @@ with sync_playwright() as p:
             sel = btns[0]; plain = pg.get_attribute(sel, "href")
             check(plain == URL[key], f"[{name} qa={qa}] href is the plain yml URL at load")
             pg.evaluate(HOOK)
+            collect_seen.clear()
             pg.click(sel); pg.wait_for_timeout(200)
             new = pg.evaluate("() => window.__clicks")
             check(len(new) == 1, f"[{name} qa={qa}] one click recorded; navigation prevented by the test hook (Stripe never contacted)")
@@ -71,13 +97,42 @@ with sync_playwright() as p:
             sets = [i for i, e in enumerate(dl) if e[0] == "set" and isinstance(e[1], dict) and "client_reference_id" in e[1]]
             evi = [i for i, e in enumerate(dl) if e[0] == "event" and e[1] in ("buy_click", "begin_checkout")]
             ref = dl[sets[0]][1]["client_reference_id"] if sets else None
-            check(len(sets) == 1 and len(evi) == 2 and sets[0] < min(evi) and ref == (m.group(1) if m else None), f"[{name} qa={qa}] gtag set client_reference_id fires once, before both buy_click and begin_checkout, with the same id")
-            bcl = [dl[i] for i in evi if dl[i][1] == "buy_click"]
-            check(bool(bcl) and bcl[0][2].get("link_url") == URL[key], f"[{name} qa={qa}] buy_click link_url is still the plain URL")
-            bc = [dl[i][2] for i in evi if dl[i][1] == "begin_checkout"]
-            check(bool(bc) and bc[0].get("items", [{}])[0].get("item_id") == URL[key].rsplit("/", 1)[1], f"[{name} qa={qa}] begin_checkout item_id still the plain link id")
+            check(len(sets) == 1 and ref == (m.group(1) if m else None), f"[{name} qa={qa}] gtag set client_reference_id fires once, with the same id")
+            check(len(evi) == 0, f"[{name} qa={qa}] fallback does not also push buy_click or begin_checkout to dataLayer")
+            evnames = collect_events(list(collect_seen))
+            check(evnames.count("buy_click") == 1 and evnames.count("begin_checkout") == 1, f"[{name} qa={qa}] sendBeacon collect fires exactly one buy_click and one begin_checkout ({evnames})")
+            hits = list(collect_seen)
+            def blob(h):
+                return unquote(h["url"] + "&" + (h["body"] or ""))
+            bcl = [h for h in hits if "en=buy_click" in blob(h)]
+            bc = [h for h in hits if "en=begin_checkout" in blob(h)]
+            check(bool(bcl) and (URL[key] in blob(bcl[0])), f"[{name} qa={qa}] fallback buy_click link_url is the plain URL")
+            check(bool(bc) and (URL[key].rsplit("/", 1)[1] in blob(bc[0])), f"[{name} qa={qa}] fallback begin_checkout item_id is the plain link id")
+            if qa:
+                check(all("tt=internal" in h["url"] for h in hits), f"[{name} qa={qa}] collect requests carry tt=internal")
+            else:
+                check(all("tt=internal" not in h["url"] for h in hits), f"[{name} qa={qa}] collect requests are not marked internal")
+            check(all("utm_source=pinterest" in h["url"] or "utm_source%3Dpinterest" in h["url"] for h in hits), f"[{name} qa={qa}] collect dl carries page UTMs")
             pg.close()
         ctx.close()
+    # When the gtag library is already present, use the original gtag path only (no collect sendBeacon, no duplicates).
+    ctx = b.new_context(viewport={"width": 1280, "height": 800}); ctx.route("**/*", handler)
+    q = "?utm_source=pinterest&utm_medium=social&utm_campaign=pp-test&cdk_qa=1"
+    pg = ctx.new_page(); pg.goto(BASE + "/paycheck-planner/" + q, wait_until="load")
+    pg.evaluate("() => { window.google_tag_data = window.google_tag_data || {}; }")
+    pg.evaluate(HOOK)
+    collect_seen.clear()
+    pg.click("#pp-buy-planner"); pg.wait_for_timeout(200)
+    dl = pg.evaluate("() => (window.dataLayer||[]).map(a => Array.prototype.slice.call(a))")
+    evi = [e for e in dl if e and e[0] == "event" and e[1] in ("buy_click", "begin_checkout")]
+    evnames = collect_events(list(collect_seen))
+    check(sum(1 for e in evi if e[1] == "buy_click") == 1 and sum(1 for e in evi if e[1] == "begin_checkout") == 1, "ready path pushes exactly one buy_click and one begin_checkout to gtag/dataLayer")
+    check("buy_click" not in evnames and "begin_checkout" not in evnames, "ready path does not also sendBeacon collect for those events")
+    bcl = [e for e in evi if e[1] == "buy_click"]
+    bc = [e for e in evi if e[1] == "begin_checkout"]
+    check(bool(bcl) and bcl[0][2].get("link_url") == URL["planner"], "ready path buy_click link_url is the plain URL")
+    check(bool(bc) and bc[0][2].get("items", [{}])[0].get("item_id") == URL["planner"].rsplit("/", 1)[1], "ready path begin_checkout item_id is the plain link id")
+    pg.close(); ctx.close()
     # second click on same page view reuses the id; internal links never rewritten
     ctx = b.new_context(viewport={"width": 1280, "height": 800}); ctx.route("**/*", handler)
     pg = ctx.new_page(); pg.goto(BASE + "/paycheck-planner/?utm_source=x", wait_until="load")
