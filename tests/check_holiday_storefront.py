@@ -881,6 +881,15 @@ def main() -> int:
     check("preventDefault" not in ga_include, "buy_click listener never calls preventDefault")
     check("G-5B1LNCPB56" in ga_include and ga_include.count("googletagmanager.com/gtag/js") == 1, "GA include keeps the one existing property and loader")
     check(not ga_include.endswith("\n"), "_includes/ga4.html keeps no trailing newline")
+    check("navigator.sendBeacon" in ga_include and "https://www.google-analytics.com/g/collect" in ga_include, "ga4.html has a sendBeacon fallback to the GA4 web collect endpoint")
+    check("api_secret" not in ga_include, "fallback does not use a Measurement Protocol secret")
+    check("setTimeout" not in ga_include and "await " not in ga_include, "buy_click listener adds no delay before navigation")
+    check("google_tag_data" in ga_include and "google_tag_manager" in ga_include, "fallback runs only when the gtag library is not ready")
+    check("tt=internal" in ga_include, "fallback marks cdk_qa traffic as traffic_type internal")
+    check("sendCollect('buy_click'" in ga_include and "sendCollect('begin_checkout'" in ga_include, "fallback sends buy_click and begin_checkout")
+    check(ga_include.count("window.gtag('event', 'buy_click'") == 1 and ga_include.count("sendCollect('buy_click'") == 1, "ready path and fallback each send buy_click once")
+    check("var clientId = cid();" in ga_include and ga_include.count("sendCollect('buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }, clientId)") == 1 and ga_include.count("sendCollect('begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }, clientId)") == 1, "fallback computes one client id per click and passes it to both collect calls")
+    check("skips quietly if gtag is missing" not in ga_include, "ga4.html comment no longer says the listener skips when gtag is missing")
     built_site = ROOT / "_site"
     if (built_site / "holiday" / "index.html").is_file():
         for rel in ("holiday/index.html", "holiday/sample/index.html", "index.html"):

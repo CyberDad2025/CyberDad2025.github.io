@@ -1,7 +1,7 @@
 {%- comment -%} GA4 tag (G-5B1LNCPB56), the one copy of the snippet. Included by _layouts/default.html (home page, posts and every
     page on the default layout) and by the three layout-null /sites/ service pages (sites/, sites/refund/, sites/intake/), P57.
     Not gated by any consent banner (the site has none); same as before. The second script is the buy_click listener (sprint 1113):
-    one delegated click handler for buy.stripe.com links that sends buy_click and the GA4 begin_checkout event (USD, price from the button label or data-price; item_list_id from data-list-id when set, else the page path); it does not cancel the click and skips quietly if gtag is missing. Keep the file free of a trailing newline so default.html
+    one delegated click handler for buy.stripe.com links that sends buy_click and the GA4 begin_checkout event (USD, price from the button label or data-price; item_list_id from data-list-id when set, else the page path); it does not cancel the click. If the gtag library is not ready yet, the same two events go out with navigator.sendBeacon to the GA4 web collect endpoint (no Measurement Protocol secret, no dataLayer push, no wait before navigation), sharing one client id for both events on that click. When the library is ready, the original gtag beacon path is used alone so events are not counted twice. Keep the file free of a trailing newline so default.html
     output stays byte-identical. {%- endcomment -%}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5B1LNCPB56"></script>
     <script>
@@ -18,17 +18,95 @@
       (function () {
         if (window.__buyClickBound) return;
         window.__buyClickBound = true;
+        function gtagLibReady() {
+          try { return !!(window.google_tag_data || window.google_tag_manager) && typeof window.gtag === 'function'; } catch (err) { return false; }
+        }
+        function cid() {
+          try {
+            var m = document.cookie.match(/(?:^|;\s*)_ga=([^;]+)/);
+            if (m) {
+              var p = decodeURIComponent(m[1]).split('.');
+              if (p.length >= 2) return p[p.length - 2] + '.' + p[p.length - 1];
+            }
+          } catch (err) {}
+          var n = Math.floor(Math.random() * 1e9);
+          try { var b = new Uint8Array(4); window.crypto.getRandomValues(b); n = (b[0] * 16777216 + b[1] * 65536 + b[2] * 256 + b[3]) >>> 0; } catch (err) {}
+          return String(n) + '.' + String(Math.floor(Date.now() / 1000));
+        }
+        function sid() {
+          try {
+            var m = document.cookie.match(/(?:^|;\s*)_ga_5B1LNCPB56=([^;]+)/);
+            if (m) {
+              var raw = decodeURIComponent(m[1]);
+              var gs2 = raw.match(/s(\d+)/);
+              if (gs2) return gs2[1];
+              var gs1 = raw.split('.');
+              if (gs1.length >= 3 && /^\d+$/.test(gs1[2])) return gs1[2];
+            }
+          } catch (err) {}
+          return String(Math.floor(Date.now() / 1000));
+        }
+        function enc(v) { return encodeURIComponent(v == null ? '' : String(v)); }
+        function itemField(it, n) {
+          var bits = [];
+          if (it.item_id) bits.push('id' + it.item_id);
+          if (it.item_name) bits.push('nm' + it.item_name);
+          if (it.item_list_id) bits.push('li' + it.item_list_id);
+          if (it.price != null && it.price !== '') bits.push('pr' + it.price);
+          if (it.quantity != null) bits.push('qt' + it.quantity);
+          return 'pr' + n + '=' + bits.map(enc).join('~');
+        }
+        function sendCollect(name, params, clientId) {
+          if (typeof navigator === 'undefined' || typeof navigator.sendBeacon !== 'function') return;
+          var qa = false;
+          try { qa = window.localStorage.getItem('cdk_qa') === '1'; } catch (err) {}
+          var q = [
+            'v=2',
+            'tid=G-5B1LNCPB56',
+            'cid=' + enc(clientId),
+            'en=' + enc(name),
+            'dl=' + enc(location.href),
+            'dt=' + enc(document.title || ''),
+            'sid=' + enc(sid()),
+            'sct=1'
+          ];
+          if (document.referrer) q.push('dr=' + enc(document.referrer));
+          if (qa) q.push('tt=internal');
+          var body = [];
+          if (params) {
+            if (params.product_name) body.push('ep.product_name=' + enc(params.product_name));
+            if (params.link_url) body.push('ep.link_url=' + enc(params.link_url));
+            if (params.transport_type) body.push('ep.transport_type=' + enc(params.transport_type));
+            if (params.currency) body.push('cu=' + enc(params.currency));
+            if (params.value != null && params.value !== '') body.push('epn.value=' + enc(params.value));
+            if (params.items && params.items[0]) body.push(itemField(params.items[0], 1));
+          }
+          var url = 'https://www.google-analytics.com/g/collect?' + q.join('&');
+          var payload = body.join('&');
+          try {
+            if (payload) navigator.sendBeacon(url, payload);
+            else navigator.sendBeacon(url);
+          } catch (err) {
+            try { navigator.sendBeacon(payload ? url + '&' + payload : url); } catch (err2) {}
+          }
+        }
         document.addEventListener('click', function (e) {
           var a = e.target && e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com/"]') : null;
-          if (!a || typeof window.gtag !== 'function') return;
+          if (!a) return;
           var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
           var name = a.getAttribute('data-product') || label.replace(/^Buy (the )?/, '').replace(/ for \$\d+\.\d{2} USD$/, '');
-          try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
           var m = label.match(/\$(\d+\.\d{2}) USD$/);
           var value = parseFloat(a.getAttribute('data-price') || (m ? m[1] : '')) || 0;
           var slug = a.getAttribute('data-list-id') || location.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
           var item = { item_id: a.href.split('/').pop(), item_name: name, item_list_id: slug, price: value, quantity: 1 };
-          try { window.gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }); } catch (err) {}
+          if (gtagLibReady()) {
+            try { window.gtag('event', 'buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }); } catch (err) {}
+            try { window.gtag('event', 'begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }); } catch (err) {}
+          } else {
+            var clientId = cid();
+            try { sendCollect('buy_click', { product_name: name, link_url: a.href, transport_type: 'beacon' }, clientId); } catch (err) {}
+            try { sendCollect('begin_checkout', { currency: 'USD', value: value, items: [item], transport_type: 'beacon' }, clientId); } catch (err) {}
+          }
         }, true);
       })();
     </script>
