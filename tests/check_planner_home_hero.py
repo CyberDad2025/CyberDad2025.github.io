@@ -61,7 +61,7 @@ check("aspect-ratio: 4 / 5" in inc and "<figcaption>Sample numbers</figcaption>"
 js = rd(ROOT / "paycheck-planner/assets/paycheck-planner.js")
 check("video[data-pp-video][data-src]" in js and "addEventListener('load'" in js and js.index("function attachVideos") < js.index("1a. Reduced motion"), "JS attaches the MP4 only after the load event and returns early under prefers-reduced-motion")
 check("prefers-reduced-motion: reduce" in js and "video[data-pp-video]" in js and "v.pause()" in js and "removeAttribute('autoplay')" in js, "JS shows the poster only (pause, no autoplay or loop) under prefers-reduced-motion")
-check(not any(f.suffix.lower() in (".xlsx", ".pdf", ".zip", ".csv") for f in A.rglob("*")) and sorted(f.name for f in A.glob("*.mp4")) == ["hero-paycheck-planner-4x5.mp4"], "only the one 4x5 mp4 and webp media added, no xlsx, pdf or zip")
+check(not any(f.suffix.lower() in (".xlsx", ".pdf", ".zip", ".csv") for f in A.rglob("*")) and sorted(f.name for f in A.glob("*.mp4")) == ["hero-paycheck-planner-4x5.mp4", "page-paycheck-planner-demo.mp4"], "planner asset MP4s are the home 4x5 hero and the page demo loop, no xlsx, pdf or zip")
 
 if "--site" in sys.argv:
     site = Path(sys.argv[sys.argv.index("--site") + 1]); shots = Path(sys.argv[sys.argv.index("--shots") + 1]) if "--shots" in sys.argv else None

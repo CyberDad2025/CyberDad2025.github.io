@@ -71,10 +71,59 @@ for n, h in (("sales", sales), ("bundle", bundle)):
     check(not re.search(r"soc analyst|analyst|guarantee|family|wife|kids?|child|employer|\bcdk\b", low), f"[{n}] trust row has no family, employer, SOC Analyst or guarantee wording")
 check('<span class="pp-badge">Sample numbers</span>' in sales and "Sample numbers" in sales[sales.index("pp-shot-frame"):sales.index("</figure>")], "[sales] hero preview carries the Sample numbers badge")
 check(re.search(r'<img [^>]*alt="The Paycheck Planner Dashboard[^"]{40,}"', sales) is not None, "[sales] hero preview has descriptive alt text")
-check(sales.count("<video") == 0, "[sales] no video tag in this patch (video slot deferred)")
+
+# ---- page demo loop (below the hero image; sample amounts live only in aria-label and alt)
+DEMO_ARIA = (
+    "Silent loop of the Paycheck Planner with sample numbers. "
+    "Settings shows usual take-home pay entered. "
+    "The Paycheck Plan then shows what is left. "
+    "A phone bill is added, and what is left on the second paycheck updates from $1,406.60 to $1,321.60. "
+    "The second paycheck includes a $200 one-time column."
+)
+NFA_FAQ = "No. It is a planning tool for your own numbers. It is not financial, tax or legal advice."
+NFA_FOOT = "Paycheck Planner is a budgeting tool, not financial advice."
+check(sales.count("<video") == 1 and bundle.count("<video") == 0 and sample.count("<video") == 0 and refund.count("<video") == 0,
+      "[sales] one demo video on the sales page only")
+vm = re.search(r"(?s)<video\b([^>]*)>(.*?)</video>", sales)
+vattrs, vinner = (vm.group(1), vm.group(2)) if vm else ("", "")
+check(bool(vm) and 'id="pp-page-demo-video"' in vattrs and 'data-pp-video' in vattrs, "[sales] demo video has id and data-pp-video")
+check(all(a in vattrs.split() or a in vattrs for a in ("autoplay", "muted", "loop", "playsinline")) and 'preload="none"' in vattrs,
+      "[sales] video has autoplay muted loop playsinline preload=none")
+check('poster="/paycheck-planner/assets/page-paycheck-planner-demo-poster.webp"' in vattrs, "[sales] video poster is the webp still")
+check('data-src="/paycheck-planner/assets/page-paycheck-planner-demo.mp4"' in vattrs and re.search(r"\ssrc=", vattrs) is None,
+      "[sales] MP4 is in data-src only (no src), so the poster can paint first")
+check('width="1920"' in vattrs and 'height="1080"' in vattrs, "[sales] video has explicit 1920x1080 to avoid layout shift")
+check(f'aria-label="{DEMO_ARIA}"' in vattrs, "[sales] video aria-label describes the sheet, sample numbers and leftover update")
+check(f'<img src="/paycheck-planner/assets/page-paycheck-planner-demo-poster.png" width="1920" height="1080" alt="{DEMO_ARIA}">' in vinner,
+      "[sales] PNG poster fallback uses the same descriptive alt")
+demo = sales[sales.index('id="pp-page-demo"'):sales.index('id="previews"')]
+hero_img_at = sales.index('paycheck-planner-dashboard-600.webp')
+video_at = sales.index('id="pp-page-demo-video"')
+previews_at = sales.index('id="previews"')
+buy_at = sales.index('id="pp-buy-planner"')
+check(buy_at < hero_img_at < video_at < previews_at, "[sales] order: Buy, hero image, then the demo video, then the preview stills")
+check('id="pp-page-demo"' in sales[sales.index('class="pp-hero"'):] and sales.index('class="pp-hero"') < sales.index('id="pp-page-demo"') < previews_at,
+      "[sales] demo section sits below the hero section and above the previews")
+check(NFA_FAQ in vis(sales) and NFA_FOOT in vis(sales) and "Not financial, tax or legal advice." in vis(sales),
+      "[sales] NFA lines are unchanged")
+check("$1,406.60" not in vis(sales) and "$1,321.60" not in vis(sales) and "$200" not in vis(sales),
+      "[sales] sample leftover amounts are not in visible copy (aria-label and alt only)")
+check("IntersectionObserver" in js and "prefers-reduced-motion: reduce" in js and "rootMargin" in js,
+      "JS attaches the MP4 via IntersectionObserver and skips it when motion is reduced")
+check("prefers-reduced-motion: reduce" in css and "aspect-ratio: 16 / 9" in css and "pointer-events: none" in css,
+      "CSS reserves a 16:9 box and disables video pointer events when motion is reduced")
 
 # ---- sheet stills (Video Producer webps) in the sales preview area
 import hashlib
+DEMO_MP4 = DIR / "assets" / "page-paycheck-planner-demo.mp4"
+DEMO_POSTER = DIR / "assets" / "page-paycheck-planner-demo-poster.webp"
+DEMO_PNG = DIR / "assets" / "page-paycheck-planner-demo-poster.png"
+check(DEMO_MP4.is_file() and hashlib.sha256(DEMO_MP4.read_bytes()).hexdigest() == "61dff740424feec1f841cb99309c7a7386ddb79163b7fc7045a6ffe7207bf644",
+      "demo MP4 is the Video Producer file (sha256 61dff740...)")
+check(DEMO_POSTER.is_file() and hashlib.sha256(DEMO_POSTER.read_bytes()).hexdigest() == "27c2702a227028f2c44bdac36906670d6f0d842391d21b2780ff0dbb90ae201d",
+      "demo poster webp is the Video Producer file (sha256 27c2702a...)")
+check(DEMO_PNG.is_file() and hashlib.sha256(DEMO_PNG.read_bytes()).hexdigest() == "a2fb0f138dfa2d98b26060fb16a8eef86c24ece8f9474a428fa21bd28b90c42f",
+      "demo poster PNG fallback is the Video Producer file (sha256 a2fb0f13...)")
 STILLS = [("still-1-paycheck-plan", "ec7f7d46", 1600, 744, "Paycheck Plan"), ("still-2-bills", "02e55734", 1600, 656, "Bills"),
           ("still-3-sinking-funds", "7d784daf", 1600, 659, "Sinking Funds"), ("still-4-savings-goals", "ed1e6a09", 1600, 854, "Savings Goals")]
 prev = sales[sales.index('id="previews"'):sales.index('id="problem"')]
@@ -109,6 +158,12 @@ check("client_reference_id" in js and "UTM_KEYS" in js and all(k in js for k in 
 check("window.addEventListener('click'" in js and js.count("window.addEventListener('click'") == 2 and "}, true);" in js, "JS uses a window capture listener (before GA) and a window bubble listener (after GA)")
 check("'qa_'" in js and "cdk_qa" in js and "document.cookie" not in js and "sessionStorage" not in js and "localStorage.setItem" not in js, "JS prefixes qa_ from the existing cdk_qa flag and stores nothing")
 check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
+
+# ---- yml and GA are out of scope for this page-demo patch
+d_yml = subprocess.run(["git", "diff", BASE, "--", "_data/paycheck_planner.yml"], cwd=ROOT, capture_output=True, text=True).stdout
+d_ga = subprocess.run(["git", "diff", BASE, "--", "_includes/ga4.html"], cwd=ROOT, capture_output=True, text=True).stdout
+check(not d_yml.strip(), "paycheck_planner.yml is unchanged vs the merge base with origin/main")
+check(not d_ga.strip(), "ga4.html is unchanged vs the merge base with origin/main")
 
 # ---- no dashes in anything added or touched
 for n, h in (("sales", sales), ("bundle", bundle), ("sample", sample), ("delivered", delivered)):
