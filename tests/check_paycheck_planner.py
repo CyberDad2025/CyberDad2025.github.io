@@ -47,7 +47,17 @@ STRIPE_PLANNER = "https://buy.stripe.com/bJe28qaCyfyMeP33jVds40j"
 STRIPE_BUNDLE = "https://buy.stripe.com/aFacN42620DS5et8Efds40k"
 FORBIDDEN_PHRASES = ("exactly", "spending money", "debt-free", "receipt email", "/thanks/", "drive.google.com")
 
-EXPECTED_KEYS = ["stripe_url_planner", "stripe_url_bundle", "mailerlite_form_slug", "mailerlite_form_id"]
+EXPECTED_KEYS = [
+    "stripe_url_planner",
+    "stripe_url_bundle",
+    "mailerlite_form_slug",
+    "mailerlite_form_id",
+    "price_planner",
+    "price_planner_regular",
+    "price_planner_regular_from",
+    "price_bundle",
+    "price_currency",
+]
 BANNED = {
     "em or en dash": r"[\u2014\u2013]",
     "guarantee": r"guarantee",
@@ -117,6 +127,9 @@ for k in ("stripe_url_planner", "stripe_url_bundle"):
 check(values.get("stripe_url_planner") != values.get("stripe_url_bundle"), "planner and bundle Stripe values differ")
 check(values.get("stripe_url_planner") == STRIPE_PLANNER, "stripe_url_planner matches the CoS Payment Link")
 check(values.get("stripe_url_bundle") == STRIPE_BUNDLE, "stripe_url_bundle matches the CoS Payment Link")
+check(values.get("price_planner") == "14.99" and values.get("price_planner_regular") == "19.99", "planner offer prices are 14.99 launch and 19.99 regular")
+check(values.get("price_planner_regular_from") == "2027-01-01", "planner regular price starts on January 1, 2027")
+check(values.get("price_bundle") == "39.00" and values.get("price_currency") == "USD", "bundle offer price is 39.00 USD")
 check("receipt email" not in data_text.lower() and "receipt" not in data_text.lower(), "yml comments do not say buyers get links in a receipt email")
 if LAUNCH:
     check(not placeholders, f"LAUNCH: no placeholder left ({sorted(placeholders)})")
@@ -371,6 +384,12 @@ try:
         "_includes/home-planner-hero.html",
         "tests/check_planner_home_hero.py",
         "tests/check_holiday_storefront.py",
+        "tests/check_planner_seo.py",
+        "_posts/2026-01-01-simple-home-network-security-for-non-tech-parents.md",
+        "_posts/2026-10-20-safe-online-shopping.md",
+        "_posts/2026-10-20-safe-social-media.md",
+        "_posts/2026-10-20-simple-privacy-tips.md",
+        "_posts/2026-09-27-prevent-online-scams.md",
     }
     # Product files only. A later PR that edits this test, or the shared
     # homepage, must not retrigger the paycheck-only allowlist.

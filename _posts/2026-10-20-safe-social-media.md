@@ -473,5 +473,7 @@ code {
 }
 </style>
 
+If you want a simple way to plan each paycheck, try the [Paycheck Planner](/paycheck-planner/).
+
 *Stay safe online! 🔒*
 *- The Cyber Dad Team*
