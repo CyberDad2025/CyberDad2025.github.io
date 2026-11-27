@@ -164,6 +164,22 @@ check("window.addEventListener('click'" in js and js.count("window.addEventListe
 check("'qa_'" in js and "cdk_qa" in js and "document.cookie" not in js and "sessionStorage" not in js and "localStorage.setItem" not in js, "JS prefixes qa_ from the existing cdk_qa flag and stores nothing")
 check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
 
+# ---- checkout clarity 1127: (A) source page in the ref, (B) QA clicks never open Stripe, (C+D) one checkout line, no thank-you links
+check("function sourcePage()" in js and all(f"return '{c}';" in js for c in ("home", "sales", "bundle", "sample", "other")) and "(qa ? 'qa_' : 'pp_') + sourcePage() + '_' + hex" in js,
+      "(A) client_reference_id is <pp|qa>_<home|sales|bundle|sample|other>_<24 hex> (max 34 chars of [a-z0-9_], inside Stripe's 200-char limit)")
+check(js.count("e.preventDefault()") == 2 and js.count("if (ref.indexOf('qa_') === 0) e.preventDefault();") == 1 and "qaNotice(a, ref);" in js and "role', 'status'" in js,
+      "(B) preventDefault appears only behind the qa_ check (capture and bubble), and QA shows a role=status notice")
+PRICE_LINE_D = "$14.99 launch price through December 31, 2026, then $19.99. Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only. Nothing is shipped."
+CHECKOUT_LINE = "Secure checkout by Stripe asks for your email, card and billing address."
+check(('<p class="pp-price-note">' + PRICE_LINE_D + '</p>') in sales and vis(sales).count(PRICE_LINE_D) == 1, "(D) [sales] the $14.99 price line is exactly Growth's final D wording, nothing appended")
+check(('<p class="pp-small pp-checkout-line" id="pp-checkout-line">' + CHECKOUT_LINE + '</p>') in sales and vis(sales).count(CHECKOUT_LINE) == 1, "(C) [sales] one checkout note under the Buy button")
+check(pos(sales, 'id="pp-buy-planner"') < pos(sales, 'id="pp-checkout-line"') < pos(sales, 'class="pp-price-note"') < pos(sales, 'id="pp-trust"'), "(C) [sales] checkout note sits right under the Buy, above the price line and trust row")
+check("Nothing is shipped" not in CHECKOUT_LINE and not re.search(r"US and Canada|Instant download|\$|\d", CHECKOUT_LINE), "(C) the under-Buy line does not contain 'Nothing is shipped' and repeats none of D's facts (no US and Canada, no Instant download, no price)")
+check(not re.search(r"[\u2013\u2014]|guarantee", CHECKOUT_LINE + " " + PRICE_LINE_D, re.I), "(C+D) no dashes and no guarantee in either line")
+check("pp-checkout-line" not in bundle and "Checkout asks for" not in bundle and "asks for your email" not in bundle, "(C+D) bundle unchanged: its $39 line does not mirror the planner line")
+_ty = subprocess.run(["git", "grep", "-n", "paycheck-planner/thank-you", "--", ".", ":!tests/"], cwd=ROOT, capture_output=True, text=True).stdout
+check(not _ty.strip() and not (DIR / "thank-you").exists(), f"no site file links to the nonexistent /paycheck-planner/thank-you/ (post-purchase page is the noindex /paycheck-planner/delivered/) ({_ty[:120]})")
+
 # ---- Stripe and MailerLite keys in paycheck_planner.yml stay the same. SEO may add offer-price keys for JSON-LD.
 # ga4.html may add the production hostname allowlist; event and cdk_qa behavior stay pinned.
 check('stripe_url_planner: "https://buy.stripe.com/bJe28qaCyfyMeP33jVds40j"' in yml, "stripe_url_planner is unchanged")

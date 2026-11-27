@@ -1,7 +1,7 @@
 /* Paycheck Planner pages: GA4 events (the site's existing GA4 tag only, via window.gtag from _includes/ga4.html).
    buy_click and begin_checkout on Buy buttons are sent by the site-wide listener in _includes/ga4.html for every
    a[href^="https://buy.stripe.com/"], so every Buy button here is a plain Stripe link. This file adds:
-   view_item (sales and bundle pages), sign_up (sample page), and generate_lead (sales and bundle signup). It does not rewrite links on load. On click only, section 1b appends client_reference_id and the page's utm_* to the Stripe link.
+   view_item (sales and bundle pages), sign_up (sample page), and generate_lead (sales and bundle signup). It does not rewrite links on load. On click only, section 1b appends client_reference_id (with the source page) and the page's utm_* to the Stripe link; in QA mode (cdk_qa) it records the click but does not open Stripe.
    There is no purchase event: Stripe's hosted confirmation screen never returns to this site, so nothing here can see a purchase. No other scripts, no cookies. */
 (function () {
   'use strict';
@@ -74,6 +74,11 @@
   // (b) a window BUBBLE listener runs after GA and only then appends client_reference_id and any utm_* from the page URL to the
   //     link, so the browser navigates to the enhanced URL. No PII, no cookies, no storage. The id starts with qa_ when the
   //     existing cdk_qa localStorage flag is on, so QA clicks stay separable from buyers.
+  //     The id is <pp|qa>_<source page>_<24 hex>, source page one of home, sales, bundle, sample, other (from the URL path), at most
+  //     34 characters of [a-z0-9_], inside Stripe's client_reference_id limit (200 characters; letters, digits, dashes, underscores).
+  // (c) QA mode (cdk_qa=1): GA still records buy_click and begin_checkout exactly as for a buyer (the GA listener runs first and is
+  //     unchanged), but the bubble listener cancels the navigation, so a QA click never opens or creates a Stripe Checkout session,
+  //     and shows a small QA-only notice next to the button. Real visitors (no cdk_qa flag) are unchanged.
   var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   var refId = '';
   function newRef() {
@@ -87,8 +92,32 @@
     }
     var qa = false;
     try { qa = window.localStorage.getItem('cdk_qa') === '1'; } catch (err) {}
-    refId = (qa ? 'qa_' : 'pp_') + hex;
+    refId = (qa ? 'qa_' : 'pp_') + sourcePage() + '_' + hex;
     return refId;
+  }
+  function sourcePage() {
+    var path = '/';
+    try { path = String(window.location.pathname || '/').replace(/index\.html$/, ''); } catch (err) {}
+    if (path.charAt(path.length - 1) !== '/') path += '/';
+    if (path === '/') return 'home';
+    if (path === '/paycheck-planner/') return 'sales';
+    if (path === '/paycheck-planner/bundle/') return 'bundle';
+    if (path === '/paycheck-planner/sample/') return 'sample';
+    return 'other';
+  }
+  function qaNotice(a, ref) {
+    var id = (a.id || 'pp-buy') + '-qa-note';
+    var n = document.getElementById(id);
+    if (!n) {
+      n = document.createElement('p');
+      n.id = id;
+      n.className = 'pp-qa-note';
+      n.setAttribute('role', 'status');
+      n.setAttribute('data-pp-qa-note', '');
+      n.style.cssText = 'margin:.5rem 0;padding:.4rem .6rem;border:1px dashed #8a6d00;background:#fff8e1;color:#4a3b00;font-size:.85rem;';
+      a.insertAdjacentElement('afterend', n);
+    }
+    n.textContent = 'QA mode: Stripe checkout was not opened. Buy click recorded as test traffic (' + ref + ').';
   }
   function buyAnchor(e) {
     var t = e.target;
@@ -102,6 +131,9 @@
     var ref = newRef();
     a.setAttribute('data-client-ref', ref);
     if (typeof window.gtag === 'function') { try { window.gtag('set', { client_reference_id: ref }); } catch (err) {} }
+    // QA click: cancel navigation here too, so even a later stopPropagation cannot let it reach Stripe. GA's listener does not
+    // read defaultPrevented, so buy_click and begin_checkout still fire.
+    if (ref.indexOf('qa_') === 0) e.preventDefault();
   }, true);
   window.addEventListener('click', function (e) {
     var a = buyAnchor(e);
@@ -118,6 +150,11 @@
       }
     } catch (err) {}
     a.setAttribute('href', base + (base.indexOf('?') === -1 ? '?' : '&') + q.join('&'));
+    if (ref.indexOf('qa_') === 0) {
+      // QA click: GA already saw it; never navigate to Stripe.
+      e.preventDefault();
+      qaNotice(a, ref);
+    }
     // Put the plain link back right after navigation starts, so copy-link and a bfcache return show the clean URL.
     window.setTimeout(function () { a.setAttribute('href', base); }, 1500);
   }, false);
