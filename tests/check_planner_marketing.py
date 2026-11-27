@@ -170,7 +170,7 @@ check("function sourcePage()" in js and all(f"return '{c}';" in js for c in ("ho
 check(js.count("e.preventDefault()") == 2 and js.count("if (ref.indexOf('qa_') === 0) e.preventDefault();") == 1 and "qaNotice(a, ref);" in js and "role', 'status'" in js,
       "(B) preventDefault appears only behind the qa_ check (capture and bubble), and QA shows a role=status notice")
 PRICE_LINE_D = "$14.99 launch price through December 31, 2026, then $19.99. Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only. Nothing is shipped."
-CHECKOUT_LINE = "Checkout asks for your email, card and billing address."
+CHECKOUT_LINE = "Checkout asks for your email and card details."
 check(('<p class="pp-price-note">' + PRICE_LINE_D + '</p>') in sales and vis(sales).count(PRICE_LINE_D) == 1, "(D) [sales] the $14.99 price line is exactly Growth's final D wording, nothing appended")
 check(('<p class="pp-small pp-checkout-line" id="pp-checkout-line">' + CHECKOUT_LINE + '</p>') in sales and vis(sales).count(CHECKOUT_LINE) == 1, "(C) [sales] one checkout note under the Buy button")
 check(pos(sales, 'id="pp-buy-planner"') < pos(sales, 'id="pp-checkout-line"') < pos(sales, 'class="pp-price-note"') < pos(sales, 'id="pp-trust"'), "(C) [sales] checkout note sits right under the Buy, above the price line and trust row")

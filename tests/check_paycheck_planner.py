@@ -383,6 +383,8 @@ try:
         "tests/check_planner_home_hero.py",
         "tests/check_holiday_storefront.py",
         "tests/check_planner_seo.py",
+        "tests/check_no_dashes.py",
+        "tests/check_hero_outcome.py",
         # M-S65 sign-off pack publishes refund/FAQ pages in the same commit as the planner refund sentence.
         "faq/index.html",
         "support/index.html",
