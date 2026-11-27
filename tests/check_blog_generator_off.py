@@ -7,7 +7,12 @@
 2. /feed.xml is a site template (jekyll-feed then skips its own) that leaves out redirect stubs.
    With --site, the built feed has 0 stub entries, the newest-10 real posts in date order, and
    no empty entries.
-Run: python3 tests/check_blog_generator_off.py [--site /path/to/_site]
+3. _layouts/redirect.html escapes the target: only a site path ("/...") is accepted, it is
+   uri_escape'd, HTML-escaped in the refresh, canonical and href, and written with jsonify in
+   the script. With --site, every built stub prints one target, the same in all four places, with
+   no raw quote or angle bracket. With --escape-fixture SITE, the 8 hostile fixture stubs built
+   from tests/fixtures (see TEST-EVIDENCE) render escaped or fall back to "/".
+Run: python3 tests/check_blog_generator_off.py [--site /path/to/_site] [--escape-fixture /path/to/fixture_site]
 Stdlib only. Never requests anything live.
 """
 from __future__ import annotations
@@ -124,11 +129,110 @@ def check_feed(site: Path | None) -> None:
     check(self_link == [base + "/feed.xml"], "feed self link is https://getcyberdadkit.com/feed.xml")
 
 
+REDIRECT = ROOT / "_layouts" / "redirect.html"
+TARGET_RE = {
+    "canonical": re.compile(r'<link rel="canonical" href="https://getcyberdadkit\.com([^"]*)">'),
+    "refresh": re.compile(r'<meta http-equiv="refresh" content="0; url=([^"]*)">'),
+    "script": re.compile(r'<script>location\.replace\(("(?:[^"\\]|\\.)*")\);</script>'),
+    "href": re.compile(r'<p>This guide has moved: <a href="([^"]*)">'),
+}
+
+
+def stub_targets(html: str) -> dict:
+    out = {}
+    for k, rx in TARGET_RE.items():
+        m = rx.findall(html)
+        out[k] = m
+    if len(out["script"]) == 1:
+        out["script"] = [json.loads(out["script"][0])]
+    return out
+
+
+def unescape_attr(v: str) -> str:
+    import html as _h
+    return _h.unescape(v)
+
+
+def check_redirect_source() -> None:
+    src = REDIRECT.read_text(encoding="utf-8")
+    check("uri_escape" in src, "redirect.html: target goes through uri_escape")
+    check("{{ cdk_to | jsonify }}" in src, "redirect.html: script target written with jsonify")
+    check('content="0; url={{ cdk_to | escape }}"' in src and 'href="{{ cdk_to | escape }}"' in src, "redirect.html: refresh and href HTML-escaped")
+    check('href="{{ cdk_canonical | escape }}"' in src, "redirect.html: canonical HTML-escaped")
+    check('cdk_c1 != "/"' in src and 'cdk_c2 == "/"' in src, "redirect.html: only a site path is accepted")
+    raw = [l for l in src.splitlines() if "page.redirect_to" in l and "{{" in l]
+    check(not raw, "redirect.html: page.redirect_to is never printed raw")
+
+
+def check_built_stub(html: str, label: str) -> str | None:
+    t = stub_targets(html)
+    vals = []
+    for k in ("canonical", "refresh", "href"):
+        if len(t[k]) != 1:
+            check(False, f"{label}: one {k} target")
+            return None
+        vals.append(unescape_attr(t[k][0]))
+    if len(t["script"]) != 1:
+        check(False, f"{label}: one script target")
+        return None
+    vals.append(t["script"][0])
+    ok = len(set(vals)) == 1 and vals[0].startswith("/") and not vals[0].startswith("//")
+    ok = ok and not re.search(r'[\s"<>\\]', vals[0])
+    if not ok:
+        check(False, f"{label}: target same in all four places, site path, no raw quote/angle/space ({vals})")
+        return None
+    return vals[0]
+
+
+def check_redirect_site(site: Path) -> None:
+    n = bad = 0
+    for p in site.rglob("*.html"):
+        rel = p.relative_to(site).as_posix()
+        if not re.match(r"20\d\d/", rel):
+            continue
+        h = p.read_text(encoding="utf-8")
+        if 'http-equiv="refresh"' not in h:
+            continue
+        n += 1
+        if check_built_stub(h, rel) is None:
+            bad += 1
+    check(n > 0 and bad == 0, f"built stubs: {n} checked, all print one escaped site-path target ({bad} bad)")
+
+
+FIXTURE_EXPECT = {
+    "fx-normal": "/2025/07/25/parental-controls-guide.html",
+    "fx-quote": "/x%22%3E%3Cscript%3Ealert(1)%3C/script%3E.html",
+    "fx-space": "/a%20b/'q'&c.html",
+    "fx-js": "/",
+    "fx-proto": "/",
+    "fx-https": "/",
+    "fx-backslash": "/",
+    "fx-scriptclose": "/p%3C/script%3E%3Cscript%3Ealert(2)%3C/script%3E",
+}
+
+
+def check_escape_fixture(site: Path) -> None:
+    for k, want in FIXTURE_EXPECT.items():
+        f = site / "2026" / "11" / "27" / f"{k}.html"
+        if not f.is_file():
+            check(False, f"fixture {k} built")
+            continue
+        h = f.read_text(encoding="utf-8")
+        got = check_built_stub(h, f"fixture {k}")
+        check(got == want, f"fixture {k}: target {got!r} == {want!r}")
+        check(h.count("<script") == 1 and h.count("</script") == 1 and "<script>alert" not in h, f"fixture {k}: one script tag, no injected markup")
+
+
 def main() -> int:
     args = sys.argv[1:]
     site = Path(args[args.index("--site") + 1]) if "--site" in args else None
     check_generator()
     check_feed(site)
+    check_redirect_source()
+    if site:
+        check_redirect_site(site)
+    if "--escape-fixture" in args:
+        check_escape_fixture(Path(args[args.index("--escape-fixture") + 1]))
     print("PASS" if not fails else f"{len(fails)} failure(s)")
     return 1 if fails else 0
 
