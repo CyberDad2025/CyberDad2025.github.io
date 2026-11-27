@@ -67,6 +67,21 @@
     }
   } catch (err) {}
 
+  // 1c. Mobile sticky Buy bar (checkout audit 1127). #pp-sticky ships hidden; it shows whenever the hero Buy button
+  // (#pp-buy-planner) is not fully on screen (small phones, in-app browsers, or after scrolling), and hides while it is. CSS hides it at 760px and wider. No JS or no
+  // IntersectionObserver: the bar stays hidden and the in-page Buy buttons still work.
+  try {
+    var stickyBar = document.getElementById('pp-sticky');
+    var heroBuy = document.getElementById('pp-buy-planner');
+    if (stickyBar && heroBuy && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        var show = entries[0].intersectionRatio < 0.99;
+        stickyBar.hidden = !show;
+        document.body.classList.toggle('pp-has-sticky', show);
+      }, { root: null, threshold: [0, 0.99, 1] }).observe(heroBuy);
+    }
+  } catch (err) {}
+
   // 1b. Buy attribution (progressive enhancement). The href in the HTML stays the plain Payment Link. On click only:
   // (a) a window CAPTURE listener runs before the site-wide GA listener in _includes/ga4.html and stores an opaque random id in
   //     data-client-ref and calls gtag('set', { client_reference_id }) so the site-wide buy_click and begin_checkout events that follow in
@@ -76,13 +91,31 @@
   //     existing cdk_qa localStorage flag is on, so QA clicks stay separable from buyers.
   //     The id is <pp|qa>_<source page>_<24 hex>, source page one of home, sales, bundle, sample, other (from the URL path), at most
   //     34 characters of [a-z0-9_], inside Stripe's client_reference_id limit (200 characters; letters, digits, dashes, underscores).
+  //     Checkout audit 1127: when the click looks automated, ax_ is added before the hex (<pp|qa>_<page>_ax_<24 hex>, at most 37
+  //     characters). Automated means any of: the click event is not trusted (script click), navigator.webdriver is true (browser
+  //     automation, including our own Playwright QA), the user agent names a known crawler or headless browser, or the click came
+  //     less than 2 seconds after the page loaded. The same reason goes to GA as pp_suspect. Real visitors are unchanged.
   // (c) QA mode (cdk_qa=1): GA still records buy_click and begin_checkout exactly as for a buyer (the GA listener runs first and is
   //     unchanged), but the bubble listener cancels the navigation, so a QA click never opens or creates a Stripe Checkout session,
   //     and shows a small QA-only notice next to the button. Real visitors (no cdk_qa flag) are unchanged.
   var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   var refId = '';
-  function newRef() {
+  var suspect = '';
+  var loadedAt = Date.now();
+  var buyAt = 0;
+  var BOT_UA = /bot|crawl|spider|slurp|headless|lighthouse|inspectiontool|mediapartners|facebookexternalhit|bingpreview|preview|scanner|python|curl|wget/i;
+  function suspectReason(e) {
+    try {
+      if (e && e.isTrusted === false) return 'untrusted_click';
+      if (window.navigator && window.navigator.webdriver) return 'webdriver';
+      if (BOT_UA.test(String((window.navigator && window.navigator.userAgent) || ''))) return 'bot_ua';
+      if (Date.now() - loadedAt < 2000) return 'fast_click';
+    } catch (err) {}
+    return '';
+  }
+  function newRef(e) {
     if (refId) return refId;
+    suspect = suspectReason(e);
     var hex = '';
     try {
       var buf = new Uint8Array(12); window.crypto.getRandomValues(buf);
@@ -92,7 +125,7 @@
     }
     var qa = false;
     try { qa = window.localStorage.getItem('cdk_qa') === '1'; } catch (err) {}
-    refId = (qa ? 'qa_' : 'pp_') + sourcePage() + '_' + hex;
+    refId = (qa ? 'qa_' : 'pp_') + sourcePage() + '_' + (suspect ? 'ax_' : '') + hex;
     return refId;
   }
   function sourcePage() {
@@ -128,9 +161,10 @@
     var a = buyAnchor(e);
     if (!a) return;
     if (!a.getAttribute('data-pp-base')) a.setAttribute('data-pp-base', a.getAttribute('href'));
-    var ref = newRef();
+    var ref = newRef(e);
     a.setAttribute('data-client-ref', ref);
-    if (typeof window.gtag === 'function') { try { window.gtag('set', { client_reference_id: ref }); } catch (err) {} }
+    buyAt = Date.now();
+    if (typeof window.gtag === 'function') { try { window.gtag('set', { client_reference_id: ref, pp_suspect: suspect || 'none' }); } catch (err) {} }
     // QA click: cancel navigation here too, so even a later stopPropagation cannot let it reach Stripe. GA's listener does not
     // read defaultPrevented, so buy_click and begin_checkout still fire.
     if (ref.indexOf('qa_') === 0) e.preventDefault();
@@ -201,5 +235,27 @@
       }).observe(root, { childList: true, subtree: true, attributes: true });
     }
   }
+
+  // 4. checkout_return (checkout audit 1127). Payment Links have no cancel URL, so a visitor who leaves Stripe without paying
+  // comes back with the browser Back button. If the page is restored from the back/forward cache after a Buy click in this
+  // page view, send checkout_return with the same client_reference_id and the seconds spent away, so a Stripe session can be
+  // matched to a person who came back. If the browser reloads the page instead (no cache), the ref is gone (this file stores
+  // nothing), so the event goes out without a ref and return_type back_forward_reload; it can also mean a Back from another site.
+  function sendReturn(type) {
+    send('checkout_return', {
+      return_type: type,
+      client_reference_id: refId || '(none)',
+      pp_suspect: suspect || 'none',
+      seconds_away: buyAt ? Math.round((Date.now() - buyAt) / 1000) : -1,
+      transport_type: 'beacon'
+    });
+  }
+  window.addEventListener('pageshow', function (ev) {
+    if (ev.persisted && buyAt) sendReturn('bfcache');
+  });
+  try {
+    var nav = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+    if (nav && nav.type === 'back_forward' && (page === 'sales' || page === 'bundle')) sendReturn('back_forward_reload');
+  } catch (err) {}
 
 })();

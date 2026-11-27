@@ -125,3 +125,27 @@ body.pp #pp-page-demo .pp-demo-video {
     pointer-events: none;
   }
 }
+
+/* Checkout audit 1127: value stack, urgency and refund lines next to Buy, mid page Buy, mobile sticky Buy bar. */
+.pp-stack { list-style: none; margin: 0 0 .9rem; padding: 0; }
+.pp-stack li { position: relative; padding-left: 1.6rem; margin: .35rem 0; }
+.pp-stack li::before { content: ""; position: absolute; left: .25rem; top: .35em; width: .4rem; height: .75rem; border: solid var(--pp-green); border-width: 0 3px 3px 0; transform: rotate(45deg); }
+.pp-urgency { margin: 0 0 .8rem; font-weight: 600; color: var(--pp-navy); }
+.pp-refund-line { margin: .35rem 0 .4rem; font-size: .95rem; font-weight: 600; color: var(--pp-green); }
+body.pp .pp-price-note { color: var(--pp-ink); font-weight: 600; }
+.pp-cta-mid { margin: 1.2rem 0 .3rem; }
+.pp-sticky { display: none; }
+@media (max-width: 759px) {
+  .pp-banner { font-size: .85rem; padding: .4rem .8rem; }
+  .pp-nav { width: 100%; min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .pp-nav ul { flex-wrap: nowrap; white-space: nowrap; }
+  .pp-hero { padding-top: 1rem; gap: 1.2rem; }
+  .pp-hero h1 { font-size: 1.85rem; }
+  body.pp .pp-lede { display: none; }
+  .pp-stack li { margin: .2rem 0; line-height: 1.4; }
+  body.pp #checkout .pp-btn, body.pp .pp-cta-mid .pp-btn { display: block; text-align: center; }
+  .pp-sticky:not([hidden]) { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; align-items: center; justify-content: space-between; gap: .6rem; padding: .55rem .8rem calc(.55rem + env(safe-area-inset-bottom)); background: #fff; border-top: 2px solid var(--pp-gold); box-shadow: 0 -4px 14px rgba(20,48,79,.15); }
+  .pp-sticky-text { margin: 0; display: flex; flex-direction: column; font-size: .88rem; line-height: 1.25; color: var(--pp-ink); }
+  .pp-sticky-btn { padding: .6rem 1rem; white-space: nowrap; }
+  body.pp.pp-has-sticky { padding-bottom: 4.6rem; }
+}

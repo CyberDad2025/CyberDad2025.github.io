@@ -162,11 +162,11 @@ for n, pth in (("sales", "index.html"), ("bundle", "bundle/index.html")):
 check("client_reference_id" in js and "UTM_KEYS" in js and all(k in js for k in ("utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term")), "JS appends client_reference_id and the five utm_* keys")
 check("window.addEventListener('click'" in js and js.count("window.addEventListener('click'") == 2 and "}, true);" in js, "JS uses a window capture listener (before GA) and a window bubble listener (after GA)")
 check("'qa_'" in js and "cdk_qa" in js and "document.cookie" not in js and "sessionStorage" not in js and "localStorage.setItem" not in js, "JS prefixes qa_ from the existing cdk_qa flag and stores nothing")
-check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
+check("gtag('set', { client_reference_id: ref, pp_suspect: suspect || 'none' })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
 
 # ---- checkout clarity 1127: (A) source page in the ref, (B) QA clicks never open Stripe, (C+D) one checkout line, no thank-you links
-check("function sourcePage()" in js and all(f"return '{c}';" in js for c in ("home", "sales", "bundle", "sample", "other")) and "(qa ? 'qa_' : 'pp_') + sourcePage() + '_' + hex" in js,
-      "(A) client_reference_id is <pp|qa>_<home|sales|bundle|sample|other>_<24 hex> (max 34 chars of [a-z0-9_], inside Stripe's 200-char limit)")
+check("function sourcePage()" in js and all(f"return '{c}';" in js for c in ("home", "sales", "bundle", "sample", "other")) and "(qa ? 'qa_' : 'pp_') + sourcePage() + '_' + (suspect ? 'ax_' : '') + hex" in js,
+      "(A) client_reference_id is <pp|qa>_<home|sales|bundle|sample|other>_[ax_]<24 hex> (max 37 chars of [a-z0-9_], inside Stripe's 200-char limit)")
 check(js.count("e.preventDefault()") == 2 and js.count("if (ref.indexOf('qa_') === 0) e.preventDefault();") == 1 and "qaNotice(a, ref);" in js and "role', 'status'" in js,
       "(B) preventDefault appears only behind the qa_ check (capture and bubble), and QA shows a role=status notice")
 PRICE_LINE_D = "$14.99 launch price through December 31, 2026, then $19.99. Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only. Nothing is shipped."

@@ -1,0 +1,23 @@
+---
+layout: null
+sitemap: false
+permalink: /planner/
+---
+{%- comment -%} Checkout audit 1127 (CoS 6:30 PM): short spoken and on-screen path for Shorts. getcyberdadkit.com/planner/ sends the visitor
+to the Paycheck Planner page with YouTube spoken_url tags, so GA can count people who typed it. noindex, canonical to the planner page.
+GitHub Pages has no server redirects, so this is the same meta refresh plus location.replace shape as _layouts/redirect.html.
+The /planner/2027/ pages are separate and unchanged. {%- endcomment -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paycheck Planner | CyberDadKit</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://getcyberdadkit.com/paycheck-planner/">
+<meta http-equiv="refresh" content="0; url=/paycheck-planner/?utm_source=youtube&amp;utm_medium=organic&amp;utm_campaign=paycheck_planner_launch&amp;utm_content=spoken_url">
+<script>location.replace("/paycheck-planner/?utm_source=youtube&utm_medium=organic&utm_campaign=paycheck_planner_launch&utm_content=spoken_url");</script>
+</head>
+<body>
+<p>Taking you to the <a href="/paycheck-planner/?utm_source=youtube&amp;utm_medium=organic&amp;utm_campaign=paycheck_planner_launch&amp;utm_content=spoken_url">Paycheck Planner</a>.</p>
+</body>
+</html>
