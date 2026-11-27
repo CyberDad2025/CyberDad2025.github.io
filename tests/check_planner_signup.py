@@ -77,7 +77,7 @@ check("Get the free Paycheck-to-Bills Mini Sheet" not in inc, "wrapper does not 
 check("A free sample you can use on your next payday, plus occasional planning tips. For people in the US and Canada." in inc, "wrapper body is Growth's Mini Sheet and tips line")
 check("You'll get a confirmation email first." not in inc, "old confirmation-email note is gone")
 check('href="/privacy/"' in inc and "Privacy Policy" in inc, "wrapper still links /privacy/")
-check("Yes, email me paycheck planning tips. Unsubscribe anytime." in inc, "wrapper has the consent line")
+check("By signing up, you agree to get paycheck planning tips by email. Unsubscribe anytime." in inc, "wrapper has the consent line")
 check('id="pp-signup-consent"' in inc and 'See the <a href="/privacy/">Privacy Policy</a>.' in inc, "consent line links Privacy Policy")
 check("pp-signup-privacy" not in inc, "standalone privacy-only line is folded into the consent line")
 check("We use your email only to send the sample and planner tips" not in inc, "wrapper does not repeat the embed privacy sentence")
