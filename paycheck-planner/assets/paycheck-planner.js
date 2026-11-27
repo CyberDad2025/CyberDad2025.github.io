@@ -1,7 +1,7 @@
 /* Paycheck Planner pages: GA4 events (the site's existing GA4 tag only, via window.gtag from _includes/ga4.html).
    buy_click and begin_checkout on Buy buttons are sent by the site-wide listener in _includes/ga4.html for every
    a[href^="https://buy.stripe.com/"], so every Buy button here is a plain Stripe link. This file adds:
-   view_item (sales and bundle pages) and sign_up (sample page). It does not rewrite links on load. On click only, section 1b appends client_reference_id and the page's utm_* to the Stripe link.
+   view_item (sales and bundle pages), sign_up (sample page), and generate_lead (sales and bundle signup). It does not rewrite links on load. On click only, section 1b appends client_reference_id and the page's utm_* to the Stripe link.
    There is no purchase event: Stripe's hosted confirmation screen never returns to this site, so nothing here can see a purchase. No other scripts, no cookies. */
 (function () {
   'use strict';
@@ -122,23 +122,46 @@
     window.setTimeout(function () { a.setAttribute('href', base); }, 1500);
   }, false);
 
-  // 2. sign_up on the free sample page: fires once when MailerLite reports a successful signup.
-  if (page === 'sample') {
+  // 2. sign_up on the free sample page, and generate_lead on the sales and bundle pages:
+  // both fire once when MailerLite reports a successful signup.
+  if (page === 'sample' || page === 'sales' || page === 'bundle') {
     var signed = false;
     var fireSignUp = function () {
       if (signed) return; signed = true;
-      send('sign_up', { method: 'mailerlite_embed', content_id: 'paycheck-planner-sample', transport_type: 'beacon' });
-      var ok = document.getElementById('pp-sample-success'); if (ok) ok.classList.add('pp-show');
+      if (page === 'sample') {
+        send('sign_up', { method: 'mailerlite_embed', content_id: 'paycheck-planner-sample', transport_type: 'beacon' });
+        var ok = document.getElementById('pp-sample-success'); if (ok) ok.classList.add('pp-show');
+      } else {
+        send('generate_lead', { form_id: 'planner_leads', method: 'mailerlite_embed', transport_type: 'beacon' });
+      }
     };
     window.cdkPaycheckSampleSignup = fireSignUp;
-    var formId = document.body.getAttribute('data-pp-form-id') || '';
-    if (/^\d+$/.test(formId)) window['ml_webform_success_' + formId] = fireSignUp;
-    var box = document.querySelector('.ml-embedded');
-    if (box && window.MutationObserver) {
+    var signup = document.getElementById('pp-signup');
+    var formId = document.body.getAttribute('data-pp-form-id') || (signup && signup.getAttribute('data-pp-form-id')) || '';
+    var hookName = /^\d+$/.test(formId) ? ('ml_webform_success_' + formId) : '';
+    var attachHook = function () {
+      if (!hookName) return;
+      var prev = window[hookName];
+      if (prev && prev.__ppLead) return;
+      var wrapped = function () {
+        fireSignUp();
+        if (typeof prev === 'function' && prev !== wrapped && !prev.__ppLead) {
+          try { prev(); } catch (err) {}
+        }
+      };
+      wrapped.__ppLead = true;
+      window[hookName] = wrapped;
+    };
+    attachHook();
+    var root = signup || document.body;
+    if (root && window.MutationObserver) {
       new MutationObserver(function () {
-        var done = box.querySelector('.ml-form-successBody, .row-success');
-        if (done && done.offsetParent !== null) fireSignUp();
-      }).observe(box, { childList: true, subtree: true, attributes: true });
+        attachHook();
+        var boxNow = (signup && signup.querySelector('.ml-embedded')) || document.querySelector('.ml-embedded');
+        if (!boxNow) return;
+        var done = boxNow.querySelector('.ml-form-successBody, .row-success');
+        if (done && (done.offsetParent !== null || done.getClientRects().length)) fireSignUp();
+      }).observe(root, { childList: true, subtree: true, attributes: true });
     }
   }
 
