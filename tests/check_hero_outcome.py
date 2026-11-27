@@ -154,6 +154,15 @@ def main() -> int:
             f"{label}: {{% include %}} tags are byte-identical to {MAIN}",
         )
         foot_now, foot_old = first(current, FOOTER_RE), first(previous, FOOTER_RE)
+        # /sites/ footer: the two em dashes become a colon and a comma; no other words change.
+        if label == "/sites/" and foot_old:
+            foot_old = foot_old.replace(
+                "</strong> — fixed prices, handled by email.",
+                "</strong>: fixed prices, handled by email.",
+            ).replace(
+                "Example designs use fictional businesses — not real companies or client work.",
+                "Example designs use fictional businesses, not real companies or client work.",
+            )
         check(foot_now == foot_old and foot_now != "", f"{label}: footer markup is byte-identical to {MAIN}")
         addr_now, addr_old = ADDRESS_RE.findall(current), ADDRESS_RE.findall(previous)
         check(addr_now == addr_old and addr_now != [], f"{label}: address lines are byte-identical to {MAIN}")
