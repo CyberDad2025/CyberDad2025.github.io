@@ -292,7 +292,7 @@ check("a[href^=\"https://buy.stripe.com/\"]" in ga and "'buy_click'" in ga and "
 check(ga.count("G-5B1LNCPB56") >= 3, "ga4.html keeps the one G-5B1LNCPB56 tag")
 check("navigator.sendBeacon" in ga and "https://www.google-analytics.com/g/collect" in ga, "ga4.html sendBeacon fallback to the GA4 collect endpoint is present")
 check("preventDefault" not in ga and "setTimeout" not in ga, "planner GA listener still does not delay or cancel the Stripe click")
-for ev in ("view_item", "sign_up"):
+for ev in ("view_item", "sign_up", "generate_lead"):
     check(f"'{ev}'" in js, f"planner JS sends {ev}")
 # Marketing pass 1125: the click-time attribution reads ONLY the existing cdk_qa flag from localStorage to prefix qa_ (no writes).
 check("'purchase'" not in js and "session_id" not in js and "localStorage.setItem" not in js and "localStorage.removeItem" not in js, "planner JS has no purchase event (hosted Stripe confirmation never returns to the site)")
@@ -302,6 +302,7 @@ check("sessionStorage" not in js and "document.cookie" not in js and 'a[data-pp-
 check(not re.search(r"fetch\(|XMLHttpRequest|sendBeacon|document\.cookie|createElement\(.script", js), "planner JS makes no network calls of its own and sets no cookies")
 check(not re.search(r"G-5B1LNCPB56|gtag\('config'|gtag\('js'", js), "planner JS adds no GA config (uses the existing tag)")
 check('data-pp-page="sales"' in html["sales"] and 'data-pp-page="bundle"' in html["bundle"] and 'data-pp-page="sample"' in html["sample"], "page types wire view_item, sign_up")
+check("form_id: 'planner_leads'" in js and "generate_lead" in js, "sales and bundle signup fires generate_lead with form_id planner_leads")
 embed_inc = (ROOT / "_includes" / "paycheck-planner-ml-embed.html").read_text(encoding="utf-8") if (ROOT / "_includes" / "paycheck-planner-ml-embed.html").is_file() else ""
 check("data-pp-form-id" in html["sample"] and '{% include paycheck-planner-ml-embed.html %}' in html["sample"],
       "[sample] has the form-id hook and the shared official MailerLite embed include")
