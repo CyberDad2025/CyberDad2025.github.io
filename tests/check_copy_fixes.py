@@ -107,6 +107,10 @@ ALLOWED_PRICE_ADDITIONS = {
     "holiday/host-kit/index.html": None,
     # One-page shop: the ta-crosslink $4.99, travel-adventure and table-set entries
     # are on main now (the product pages became redirect stubs), so they were dropped.
+    # M-S65 sign-off pack: FAQ and Sites refund pages repeat already-live prices.
+    # $1 is PRICE_RE's match on $1,499 (the comma cuts the token). No product price changed.
+    "faq/index.html": Counter({"$14.99": 1, "$19.99": 1, "$39": 1, "$499": 1, "$799": 1, "$1": 1, "$49": 1, "$89": 1, "$149": 1}),
+    "sites/refund/index.html": Counter({"$149": 1}),
 }
 ONE_PAGE_STUBS = {
     "shop/index.html",
@@ -420,6 +424,9 @@ def checkout_drift() -> tuple[list[str], list[str], list[str]]:
             elif STRIPE_RE.findall(new):
                 stripe_bad.append(name)
             planner_prices = {"$14.99", "$19.99", "$39"}
+            # Sales-page demo aria-label already has $1,406.60, $1,321.60 and $200;
+            # PRICE_RE also matches $1 from $1,406.60. Allow tokens already on origin/main.
+            planner_prices = planner_prices | set(PRICE_RE.findall(old_raw or ""))
             if set(PRICE_RE.findall(new)) - planner_prices:
                 price_bad.append(name)
             if name != "paycheck-planner/sample/index.html" and FORM_RE.findall(new):

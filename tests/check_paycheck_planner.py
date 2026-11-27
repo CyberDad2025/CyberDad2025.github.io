@@ -383,6 +383,13 @@ try:
         "tests/check_planner_home_hero.py",
         "tests/check_holiday_storefront.py",
         "tests/check_planner_seo.py",
+        # M-S65 sign-off pack publishes refund/FAQ pages in the same commit as the planner refund sentence.
+        "faq/index.html",
+        "support/index.html",
+        "contact.md",
+        "sites/refund/index.html",
+        "sites/index.html",
+        "screen-free/refund/index.html",
     }
     # Product files only. A later PR that edits this test, or the shared
     # homepage, must not retrigger the paycheck-only allowlist.
