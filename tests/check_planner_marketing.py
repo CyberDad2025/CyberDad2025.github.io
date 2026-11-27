@@ -159,11 +159,13 @@ check("window.addEventListener('click'" in js and js.count("window.addEventListe
 check("'qa_'" in js and "cdk_qa" in js and "document.cookie" not in js and "sessionStorage" not in js and "localStorage.setItem" not in js, "JS prefixes qa_ from the existing cdk_qa flag and stores nothing")
 check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
 
-# ---- yml and GA are out of scope for this page-demo patch
+# ---- yml is out of scope. ga4.html may add the production hostname allowlist; event and cdk_qa behavior stay pinned.
 d_yml = subprocess.run(["git", "diff", BASE, "--", "_data/paycheck_planner.yml"], cwd=ROOT, capture_output=True, text=True).stdout
-d_ga = subprocess.run(["git", "diff", BASE, "--", "_includes/ga4.html"], cwd=ROOT, capture_output=True, text=True).stdout
 check(not d_yml.strip(), "paycheck_planner.yml is unchanged vs the merge base with origin/main")
-check(not d_ga.strip(), "ga4.html is unchanged vs the merge base with origin/main")
+check("var PROD_HOSTS = { 'getcyberdadkit.com': 1 };" in ga and "location.hostname" in ga, "ga4.html gates gtag.js behind a production hostname allowlist")
+check("if (!onProd) return;" in ga and "window.gtag = function () {};" in ga, "ga4.html makes gtag and the sendBeacon fallback no-ops off production")
+check("if (qa) { gtag('config', 'G-5B1LNCPB56', { traffic_type: 'internal' }); } else { gtag('config', 'G-5B1LNCPB56'); }" in ga, "ga4.html production config still honors cdk_qa / traffic_type=internal")
+check("sendCollect('buy_click'" in ga and "sendCollect('begin_checkout'" in ga and "if (qa) q.push('tt=internal');" in ga, "ga4.html still sends buy_click and begin_checkout on the fallback path, with tt=internal when cdk_qa is set")
 
 # ---- no dashes in anything added or touched
 for n, h in (("sales", sales), ("bundle", bundle), ("sample", sample), ("delivered", delivered)):
