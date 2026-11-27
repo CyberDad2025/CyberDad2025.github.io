@@ -56,7 +56,7 @@ layout: default
   <div class="related-posts">
     <h3>🔗 Related Security Guides</h3>
     <div class="related-grid">
-      {% assign related_posts = site.posts | where_exp: "post", "post.categories contains page.categories.first" | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
+      {% assign related_posts = site.posts | where_exp: "post", "post.categories contains page.categories.first" | where_exp: "post", "post.url != page.url" | where_exp: "post", "post.redirect_to == nil" | slice: 0, 3 %}
       {% for post in related_posts %}
         {% unless post.url == page.url %}
           <a href="{{ post.url }}" class="related-link">
@@ -71,8 +71,10 @@ layout: default
   <!-- MORE GUIDES (latest, de-duplicated by title, excluding this page; no popularity claim) -->
   <div class="popular-posts">
     <h3>📚 More guides</h3>
+    {%- comment -%} blog-slug-1127: skip redirect stubs (layout: redirect, redirect_to set), so the list shows real guides. {%- endcomment -%}
+    {%- assign cdk_live = site.posts | where_exp: "post", "post.redirect_to == nil" -%}
     {%- assign cdk_seen = "" -%}{%- assign cdk_n = 0 -%}
-    {%- for post in site.posts limit: 40 -%}
+    {%- for post in cdk_live limit: 40 -%}
       {%- if cdk_n < 5 and post.url != page.url -%}
         {%- capture cdk_key -%}|{{ post.title }}|{%- endcapture -%}
         {%- unless cdk_seen contains cdk_key -%}

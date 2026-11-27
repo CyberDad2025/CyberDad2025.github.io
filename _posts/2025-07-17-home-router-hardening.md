@@ -1,29 +1,10 @@
 ---
-layout: post
-title: "Daily Cybersecurity Tips for Families"
+layout: redirect
+title: "Home Router Hardening"
 date: 2025-07-17 11:20:31 -0500
-categories: [cybersecurity]
-tags: [security, tips, family]
+redirect_to: /2025/07/22/home-router-security-in-5-minutes.html
+redirect_title: "Home Router Security: A Step-by-Step Guide"
+noindex: true
+sitemap: false
+slug_audit: "blog-slug-1127: served the post titled Daily Cybersecurity Tips for Families, not this topic; redirected to the matching guide"
 ---
-
-# Daily Cybersecurity Tips for Families
-
-Here are important security tips to keep your family safe online:
-
-## Password Security
-- Use unique passwords for each account
-- Enable two-factor authentication
-- Consider using a password manager
-
-## Safe Browsing
-- Verify URLs before clicking
-- Keep software updated
-- Use reputable antivirus software
-
-## Family Education
-- Teach children about online safety
-- Review privacy settings regularly
-- Stay informed about current threats
-
-Stay safe online!
-*- CyberDad*

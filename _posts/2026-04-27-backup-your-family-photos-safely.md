@@ -1,19 +1,19 @@
 ---
 layout: post
-title: "Backup Your Family Photos Safely"
+title: "Back Up Your Family Photos Safely"
 date: 2026-04-27 15:43:15 -0500
 categories: [cybersecurity, family-safety, security-guide]
 tags: [security, family, guide, protection, cybersecurity]
 author: CyberDad
-description: "Learn backup your family photos safely with simple steps anyone can follow."
+description: "Learn how to back up your family photos safely with simple steps anyone can follow."
 reading_time: "5 minutes"
 difficulty: "Super Easy"
 age_appropriate: "For the whole family"
 ---
 
-# Backup Your Family Photos Safely
+# Back Up Your Family Photos Safely
 
-🔒 **Quick Summary:** Learn how to backup your family photos safely with simple steps anyone can follow.
+🔒 **Quick Summary:** Learn how to back up your family photos safely with simple steps anyone can follow.
 
 ⏱️ **Takes 5 minutes to read** 📚 **Super Easy** 🔒 **Perfect for the whole family**
 
@@ -40,7 +40,7 @@ Here are the essential steps every family needs to know:
 ### Step 3: Ongoing Protection
 - Regular security checkups
 - Stay informed about new threats
-- Backup important family data
+- Back up important family data
 
 ## 🛡️ More Tips for Families
 

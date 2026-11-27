@@ -1,4 +1,23 @@
-exports.handler = async (event, context) => {
+// DISABLED (blog-generator-off-1127, follow-up to blog-slug-1127, Nov 27 2026).
+// This generator picked the post slug at random from 15 topics and, separately, the article from
+// 3 templates, so most posts it wrote served the wrong article under their URL (see the
+// blog-slug-1127 audit). The exported handler now returns 410 before any
+// GitHub API call, token read or post generation. The old handler is kept below, renamed and not
+// exported, for reference only. Re-enabling needs a fix that ties the slug to the article, plus
+// Ruel's yes.
+exports.handler = async () => ({
+  statusCode: 410,
+  headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+  body: JSON.stringify({
+    success: false,
+    disabled: true,
+    message: "generate-blog is disabled (blog-slug-1127). No post was created."
+  })
+});
+
+// Not exported. Kept unchanged for reference; nothing calls it.
+// eslint-disable-next-line no-unused-vars
+const legacyGenerateBlogHandler = async (event, context) => {
   const { Octokit } = require("@octokit/rest");
   
   try {

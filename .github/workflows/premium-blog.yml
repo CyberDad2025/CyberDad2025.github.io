@@ -1,8 +1,9 @@
 name: Generate Premium Cybersecurity Content
 
 on:
-  schedule:
-    - cron: '0 15 * * *'  # 11:00 AM EST (once daily for premium content)
+  # Schedule disabled 2026-11-27: this workflow commits unreviewed generated posts. Run it by hand only (blog-cron-off-1127).
+  # schedule:
+  #   - cron: '0 15 * * *'  # 11:00 AM EST (once daily for premium content)
   workflow_dispatch:      # Allow manual triggering
 
 jobs:
