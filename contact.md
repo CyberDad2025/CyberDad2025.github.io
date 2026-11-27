@@ -2,7 +2,7 @@
 layout: default
 no_ads: true
 title: "Contact"
-description: "Contact CyberDadKit by email at ruel@getcyberdadkit.com or by mail at CyberDadKit, PO Box 940061, Maitland, FL 32794."
+description: "Contact CyberDadKit by email at ruel@getcyberdadkit.com or by mail at CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794."
 permalink: /contact/
 ---
 
@@ -14,7 +14,7 @@ For holiday printables, see [Support](/support/), the [FAQ](/faq/), and the [Ref
 
 ## Mailing address
 
-CyberDadKit, PO Box 940061, Maitland, FL 32794
+CyberDad Kit LLC, PO Box 940061, Maitland, FL 32794
 
 ## Helpful pages
 
