@@ -38,8 +38,6 @@ Teach your children these essential safety rules:
 
 **Take Action Today:** Download our free family security checklist and start protecting your loved ones immediately.
 
-If you want a simple way to plan each paycheck, try the [Paycheck Planner](/paycheck-planner/).
-
 ## 🔒 Get FREE Cybersecurity Alerts
 
 **Join other families getting alerts about threats affecting their devices.**
