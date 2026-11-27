@@ -1,7 +1,7 @@
 // DISABLED (blog-generator-off-1127, follow-up to blog-slug-1127, Nov 27 2026).
 // This generator picked the post slug at random from 15 topics and, separately, the article from
-// 3 templates, so most posts it wrote served the wrong article under their URL (see
-// /workspace/cdk/ops/blog-slug-audit-1127.md). The exported handler now returns 410 before any
+// 3 templates, so most posts it wrote served the wrong article under their URL (see the
+// blog-slug-1127 audit). The exported handler now returns 410 before any
 // GitHub API call, token read or post generation. The old handler is kept below, renamed and not
 // exported, for reference only. Re-enabling needs a fix that ties the slug to the article, plus
 // Ruel's yes.

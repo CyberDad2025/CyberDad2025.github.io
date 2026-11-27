@@ -10,7 +10,7 @@
 3. _layouts/redirect.html escapes the target: only a site path ("/...") is accepted, it is
    uri_escape'd, HTML-escaped in the refresh, canonical and href, and written with jsonify in
    the script. With --site, every built stub prints one target, the same in all four places, with
-   no raw quote or angle bracket. With --escape-fixture SITE, the 8 hostile fixture stubs built
+   no raw quote or angle bracket. With --escape-fixture SITE, the 12 hostile fixture stubs built
    from tests/fixtures (see TEST-EVIDENCE) render escaped or fall back to "/".
 Run: python3 tests/check_blog_generator_off.py [--site /path/to/_site] [--escape-fixture /path/to/fixture_site]
 Stdlib only. Never requests anything live.
@@ -63,6 +63,7 @@ def check_generator() -> None:
     for bad in ("octokit", "Octokit", "GITHUB_TOKEN", "createOrUpdateFileContents", "generateSlug", "generateUltraReadablePost", "require("):
         check(bad not in h, f"exported handler does not use {bad}")
     check("blog-slug-1127" in src[: src.find("exports.handler")], "disable comment points to blog-slug-1127")
+    check("/workspace" not in src, "no workspace path in the function source")
     check(not re.search(r"exports\.(config|schedule)|schedule\(", src), "no schedule config in the function")
     node = shutil.which("node")
     if node:
@@ -160,6 +161,7 @@ def check_redirect_source() -> None:
     check('content="0; url={{ cdk_to | escape }}"' in src and 'href="{{ cdk_to | escape }}"' in src, "redirect.html: refresh and href HTML-escaped")
     check('href="{{ cdk_canonical | escape }}"' in src, "redirect.html: canonical HTML-escaped")
     check('cdk_c1 != "/"' in src and 'cdk_c2 == "/"' in src, "redirect.html: only a site path is accepted")
+    check("| url_decode | url_decode" in src and "cdk_chk | slice: 0, 1" in src, "redirect.html: site-path check runs on the URL-decoded target")
     raw = [l for l in src.splitlines() if "page.redirect_to" in l and "{{" in l]
     check(not raw, "redirect.html: page.redirect_to is never printed raw")
 
@@ -208,6 +210,11 @@ FIXTURE_EXPECT = {
     "fx-https": "/",
     "fx-backslash": "/",
     "fx-scriptclose": "/p%3C/script%3E%3Cscript%3Ealert(2)%3C/script%3E",
+    # encoded forms of "//host" and "/\\host": the site-path check runs on the decoded value
+    "fx-enc-slash": "/",
+    "fx-enc-backslash": "/",
+    "fx-dbl-enc": "/",
+    "fx-tab": "/",
 }
 
 

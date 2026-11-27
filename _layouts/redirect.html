@@ -8,10 +8,13 @@ are not valid in a URL (quotes, angle brackets, spaces); escape then HTML-escape
 jsonify writes it as a JSON string literal for the script.
 Only a site path is accepted as the target.
 {%- endcomment -%}
-{%- comment -%} Only a site path is allowed ("/..."), never a scheme (javascript:, data:, https://other) or "//host". Anything else goes to "/". {%- endcomment -%}
+{%- comment -%} Only a site path is allowed ("/..."), never a scheme (javascript:, data:, https://other) or "//host". Anything else goes to "/".
+The check runs on the URL-decoded target (decoded twice, tabs and newlines removed, as browsers drop them), so /%2f%2fhost,
+/%5Chost and double-encoded forms also fall back to "/". The printed target is still the original value, escaped below. {%- endcomment -%}
 {%- assign cdk_raw = page.redirect_to | default: "/" | strip -%}
-{%- assign cdk_c1 = cdk_raw | slice: 0, 1 -%}
-{%- assign cdk_c2 = cdk_raw | slice: 1, 1 -%}
+{%- assign cdk_chk = cdk_raw | url_decode | url_decode | strip_newlines | remove: "	" | strip -%}
+{%- assign cdk_c1 = cdk_chk | slice: 0, 1 -%}
+{%- assign cdk_c2 = cdk_chk | slice: 1, 1 -%}
 {%- if cdk_c1 != "/" or cdk_c2 == "/" or cdk_c2 == "\" -%}{%- assign cdk_raw = "/" -%}{%- endif -%}
 {%- assign cdk_to = cdk_raw | relative_url | uri_escape -%}
 {%- assign cdk_canonical = cdk_raw | absolute_url | uri_escape -%}
