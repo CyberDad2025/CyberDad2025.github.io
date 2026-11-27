@@ -1,13 +1,14 @@
 name: Pinterest Traffic Blitz
 
 on:
-  schedule:
+  # Schedule disabled 2026-11-27: this workflow posts AI pins outside the review gate and daily cap. Run it by hand only (pinterest-blitz-cron-off-1127).
+  # schedule:
     # Run 5 times daily at strategic hours (EST)
-    - cron: '0 11 * * *'  # 7 AM EST - Morning parents
-    - cron: '0 16 * * *'  # 12 PM EST - Lunch break  
-    - cron: '0 20 * * *'  # 4 PM EST - After school
-    - cron: '0 23 * * *'  # 7 PM EST - Family time
-    - cron: '0 2 * * *'   # 10 PM EST - Evening planning
+  #   - cron: '0 11 * * *'  # 7 AM EST - Morning parents
+  #   - cron: '0 16 * * *'  # 12 PM EST - Lunch break  
+  #   - cron: '0 20 * * *'  # 4 PM EST - After school
+  #   - cron: '0 23 * * *'  # 7 PM EST - Family time
+  #   - cron: '0 2 * * *'   # 10 PM EST - Evening planning
   workflow_dispatch: # Allow manual trigger
 
 jobs:

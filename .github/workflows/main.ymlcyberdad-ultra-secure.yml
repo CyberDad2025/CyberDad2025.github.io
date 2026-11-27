@@ -1,9 +1,10 @@
 name: CyberDad Ultra-Secure CTI Generator
 
 on:
-  schedule:
+  # Schedule disabled 2026-11-27: this workflow commits unreviewed generated posts. Run it by hand only (blog-cron-off-1127).
+  # schedule:
     # Runs 1 time daily: 9 AM EST
-   - cron: '0 14 * * 1'
+  #  - cron: '0 14 * * 1'
     
   workflow_dispatch:      # Allow manual trigger
 
