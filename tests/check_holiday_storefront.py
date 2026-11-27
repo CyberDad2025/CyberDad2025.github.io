@@ -1132,7 +1132,7 @@ def main() -> int:
     if hit_files & SERVED_ADSENSE_FILES:
         check("AdSense" in policy_html, "privacy policy keeps the AdSense claim while served pages load AdSense")
         check("Some pages on this site show ads served by Google AdSense" in policy_html, "AdSense claim sentence unchanged")
-        check("Last updated: November 3, 2026" in policy_html, "privacy policy date unchanged while the claim stays")
+        check("Last updated: November 27, 2026" in policy_html, "privacy policy date matches the checkout consent update")
     else:
         check("AdSense" not in policy_html, "privacy policy contains no AdSense")
 
