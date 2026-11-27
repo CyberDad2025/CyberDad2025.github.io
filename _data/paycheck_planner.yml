@@ -14,3 +14,11 @@ stripe_url_bundle: "https://buy.stripe.com/aFacN42620DS5et8Efds40k"
 mailerlite_form_slug: "IW0v9B"
 mailerlite_form_id: "205066869153990151"
 # Optional sales and bundle signup include uses this same official IW0v9B embed (reCAPTCHA included).
+
+# Offer prices for Product JSON-LD on /paycheck-planner/ and /paycheck-planner/bundle/.
+# Visible Buy-button copy on the pages is unchanged in this patch and still states the same amounts.
+# The later 19.99 change is a separate PR covering copy, data-price, JSON-LD and the Payment Link.
+# Do not add Stripe URLs here beyond the two Payment Links above.
+price_planner: "14.99"
+price_bundle: "39.00"
+price_currency: "USD"

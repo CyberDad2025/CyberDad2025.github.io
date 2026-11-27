@@ -147,11 +147,16 @@ check(not others and "/delivered/" not in "".join(rd(DIR / p) for p in ("index.h
 check("<h1" in delivered and "Download now" in delivered and "Google Drive" in delivered and "Stripe receipt" in delivered, "[delivered] has the save-your-files tips")
 
 BASE = subprocess.run(["git", "merge-base", "HEAD", "origin/main"], cwd=ROOT, capture_output=True, text=True).stdout.strip() or "origin/main"
-# ---- head: this patch makes no <head> edits on the planner pages (title, description, og, schema and nav belong to the SEO PR)
-for n, p in (("sales", "index.html"), ("bundle", "bundle/index.html"), ("sample", "sample/index.html")):
-    d = subprocess.run(["git", "diff", BASE, "--", f"paycheck-planner/{p}"], cwd=ROOT, capture_output=True, text=True).stdout
+# ---- head: SEO may update title, description, og, twitter and Product JSON-LD on the sales and bundle pages.
+# The sample page head, and the shared nav on all three pages, stay unchanged here.
+for n, pth in (("sample", "sample/index.html"),):
+    d = subprocess.run(["git", "diff", BASE, "--", f"paycheck-planner/{pth}"], cwd=ROOT, capture_output=True, text=True).stdout
     touched = [l for l in d.splitlines() if l[:1] in "+-" and l[:3] not in ("+++", "---") and re.search(r"<(title|meta|link|script type=\"application/ld\+json)|pp-nav|<li><a href=\"/(?:paycheck-planner/[^\"]*|contact/)\">(?:Paycheck Planner|Free sample|Plus Bundle|FAQ|Refund|Contact)</a></li>", l)]
     check(not touched, f"[{n}] no head, meta, schema or nav lines changed vs the merge base with origin/main ({touched[:2]})")
+for n, pth in (("sales", "index.html"), ("bundle", "bundle/index.html")):
+    d = subprocess.run(["git", "diff", BASE, "--", f"paycheck-planner/{pth}"], cwd=ROOT, capture_output=True, text=True).stdout
+    nav_touched = [l for l in d.splitlines() if l[:1] in "+-" and l[:3] not in ("+++", "---") and re.search(r"pp-nav|<li><a href=\"/(?:paycheck-planner/[^\"]*|contact/)\">(?:Paycheck Planner|Free sample|Plus Bundle|FAQ|Refund|Contact)</a></li>", l)]
+    check(not nav_touched, f"[{n}] nav lines unchanged vs the merge base with origin/main ({nav_touched[:2]})")
 
 # ---- attribution wiring (source level; tests/check_planner_marketing_browser.py proves the behavior)
 check("client_reference_id" in js and "UTM_KEYS" in js and all(k in js for k in ("utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term")), "JS appends client_reference_id and the five utm_* keys")
@@ -159,9 +164,12 @@ check("window.addEventListener('click'" in js and js.count("window.addEventListe
 check("'qa_'" in js and "cdk_qa" in js and "document.cookie" not in js and "sessionStorage" not in js and "localStorage.setItem" not in js, "JS prefixes qa_ from the existing cdk_qa flag and stores nothing")
 check("gtag('set', { client_reference_id: ref })" in js and "client_reference_id" not in ga and "a.href.split('/').pop()" in ga, "client_reference_id reaches GA via gtag set from the planner JS; ga4.html still does not name it (holiday tests pin the gtag event lines)")
 
-# ---- yml is out of scope. ga4.html may add the production hostname allowlist; event and cdk_qa behavior stay pinned.
-d_yml = subprocess.run(["git", "diff", BASE, "--", "_data/paycheck_planner.yml"], cwd=ROOT, capture_output=True, text=True).stdout
-check(not d_yml.strip(), "paycheck_planner.yml is unchanged vs the merge base with origin/main")
+# ---- Stripe and MailerLite keys in paycheck_planner.yml stay the same. SEO may add offer-price keys for JSON-LD.
+# ga4.html may add the production hostname allowlist; event and cdk_qa behavior stay pinned.
+check('stripe_url_planner: "https://buy.stripe.com/bJe28qaCyfyMeP33jVds40j"' in yml, "stripe_url_planner is unchanged")
+check('stripe_url_bundle: "https://buy.stripe.com/aFacN42620DS5et8Efds40k"' in yml, "stripe_url_bundle is unchanged")
+check('mailerlite_form_slug: "IW0v9B"' in yml and 'mailerlite_form_id: "205066869153990151"' in yml, "MailerLite form ids are unchanged")
+check(len(re.findall(r"https://buy\.stripe\.com/[A-Za-z0-9]+", yml)) == 2, "yml still has exactly two Stripe Payment Links")
 check("var PROD_HOSTS = { 'getcyberdadkit.com': 1 };" in ga and "location.hostname" in ga, "ga4.html gates gtag.js behind a production hostname allowlist")
 check("if (!onProd) return;" in ga and "window.gtag = function () {};" in ga, "ga4.html makes gtag and the sendBeacon fallback no-ops off production")
 check("if (qa) { gtag('config', 'G-5B1LNCPB56', { traffic_type: 'internal' }); } else { gtag('config', 'G-5B1LNCPB56'); }" in ga, "ga4.html production config still honors cdk_qa / traffic_type=internal")
