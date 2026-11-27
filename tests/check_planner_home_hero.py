@@ -104,7 +104,7 @@ if "--site" in sys.argv:
                 pg.close(); pg = ctx.new_page(); pg.goto(BASE + "/?utm_source=pinterest&utm_medium=social&utm_campaign=bio&utm_content=a&utm_term=b&other=1", wait_until="load")
                 pg.evaluate(HOOK); pg.click("#pp-home-buy-planner"); pg.wait_for_timeout(200)
                 u = pg.evaluate("() => window.__clicks")
-                check(len(u) == 1 and re.fullmatch(re.escape(URL) + r"\?client_reference_id=pp_[0-9a-f]{24}&utm_source=pinterest&utm_medium=social&utm_campaign=bio&utm_content=a&utm_term=b", u[0]) is not None, "[home] click adds client_reference_id (pp_) and the five utm_* only; plain href at load")
+                check(len(u) == 1 and re.fullmatch(re.escape(URL) + r"\?client_reference_id=pp_home_[0-9a-f]{24}&utm_source=pinterest&utm_medium=social&utm_campaign=bio&utm_content=a&utm_term=b", u[0]) is not None, "[home] click adds client_reference_id (pp_home_) and the five utm_* only; plain href at load")
                 dl = pg.evaluate("() => (window.dataLayer||[]).map(a => Array.prototype.slice.call(a))")
                 sets = [i for i, e in enumerate(dl) if e[0] == "set" and isinstance(e[1], dict) and "client_reference_id" in e[1]]
                 evs = [i for i, e in enumerate(dl) if e[0] == "event" and e[1] in ("buy_click", "begin_checkout")]

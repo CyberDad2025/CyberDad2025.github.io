@@ -206,7 +206,7 @@ check(prices(html["sales"]) == {"$14.99", "$19.99", "$39"}, f"[sales] prices are
 check(prices(html["bundle"]) == {"$39"}, f"[bundle] only price is $39: {sorted(prices(html['bundle']))}")
 check(prices(html["sample"]) == {"$14.99", "$19.99"}, f"[sample] prices are the $14.99 intro and $19.99 regular: {sorted(prices(html['sample']))}")
 check(prices(html["refund"]) == set(), "[refund] shows no prices")
-check(LAUNCH_PRICE + ". Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only." in sales_vis, "[sales] hero states $14.99 launch price through December 31, 2026, then $19.99")
+check(LAUNCH_PRICE + ". Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only. Nothing is shipped." in sales_vis, "[sales] hero states $14.99 launch price through December 31, 2026, then $19.99")
 check(LAUNCH_PRICE in visible_text(html["sales"]) and html["sales"].count(LAUNCH_PRICE) >= 2, "[sales] launch-price line is in the hero and in What's inside")
 check("Get the Paycheck Planner, $14.99" in html["sales"] and "Get the Plus Bundle, $39" in html["sales"], "[sales] both Buy labels carry their price")
 check("not financial, tax or legal advice" in sales_vis.lower() and "planning tool" in sales_vis, "[sales] says planning tool, not financial advice")

@@ -73,7 +73,8 @@ def handler(route):
         return route.fulfill(status=404, body="nf")
     other.append(u); return route.abort()
 
-HOOK = '''() => { window.__clicks = []; window.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href^="https://buy.stripe.com/"]'); if (a) { window.__clicks.push(a.href); e.preventDefault(); } }, false); }'''
+HOOK = '''() => { window.__clicks = []; window.__prevented = []; window.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href^="https://buy.stripe.com/"]'); if (a) { window.__clicks.push(a.href); window.__prevented.push(e.defaultPrevented); e.preventDefault(); } }, false); }'''
+SRC = {"sales": "sales", "bundle": "bundle", "sample": "sample"}
 PAGES = [("sales", "/paycheck-planner/", ["#pp-buy-planner"], "planner"), ("bundle", "/paycheck-planner/bundle/", ["#pp-buy-bundle"], "bundle"),
          ("sample", "/paycheck-planner/sample/", ["#pp-buy-planner"], "planner"), ("refund", "/paycheck-planner/refund/", [], None),
          ("delivered", "/paycheck-planner/delivered/", [], None)]
@@ -109,8 +110,19 @@ with sync_playwright() as p:
             new = pg.evaluate("() => window.__clicks")
             check(len(new) == 1, f"[{name} qa={qa}] one click recorded; navigation prevented by the test hook (Stripe never contacted)")
             u = new[0] if new else ""
-            m = re.match(re.escape(URL[key]) + r"\?client_reference_id=((?:qa|pp)_[0-9a-f]{24})&utm_source=pinterest&utm_medium=social&utm_campaign=pp-test&utm_content=pin1&utm_term=budget$", u)
+            m = re.match(re.escape(URL[key]) + r"\?client_reference_id=((?:qa|pp)_(?:home|sales|bundle|sample|other)_[0-9a-f]{24})&utm_source=pinterest&utm_medium=social&utm_campaign=pp-test&utm_content=pin1&utm_term=budget$", u)
             check(bool(m) and m.group(1).startswith("qa_" if qa else "pp_") and "other=" not in u, f"[{name} qa={qa}] URL has client_reference_id ({'qa_' if qa else 'pp_'} prefix) and the five utm_* only: {re.sub(r'[0-9a-f]{24}', 'X'*24, u).replace(URL[key], '<yml>')}")
+            check(bool(m) and m.group(1).startswith(("qa_" if qa else "pp_") + SRC[name] + "_") and re.fullmatch(r"[A-Za-z0-9_-]{1,200}", m.group(1)) is not None,
+                  f"[{name} qa={qa}] client_reference_id names the source page ({SRC[name]}) and fits Stripe's limit (<=200, alphanumeric, dash, underscore)")
+            prevented = pg.evaluate("() => window.__prevented")
+            note = pg.evaluate("() => { var n = document.querySelector('[data-pp-qa-note]'); return n ? {role: n.getAttribute('role'), text: n.textContent, vis: !!(n.offsetWidth || n.offsetHeight)} : null; }")
+            if qa:
+                check(prevented == [True], f"[{name} qa={qa}] QA mode: the page itself cancels the Buy navigation (defaultPrevented before the test hook: {prevented})")
+                check(bool(note) and note["role"] == "status" and note["vis"] and "QA mode" in note["text"] and "not opened" in note["text"] and (m.group(1) if m else "@@") in note["text"],
+                      f"[{name} qa={qa}] QA-only notice shown next to Buy with the qa_ id ({note and re.sub(r'[0-9a-f]{24}', 'X'*24, note['text'])})")
+            else:
+                check(prevented == [False], f"[{name} qa={qa}] real visitor: the page does not cancel the Buy navigation (only the test hook does) ({prevented})")
+                check(note is None, f"[{name} qa={qa}] real visitor: no QA notice")
             dl = pg.evaluate("() => (window.dataLayer||[]).map(a => Array.prototype.slice.call(a))")
             sets = [i for i, e in enumerate(dl) if e[0] == "set" and isinstance(e[1], dict) and "client_reference_id" in e[1]]
             evi = [i for i, e in enumerate(dl) if e[0] == "event" and e[1] in ("buy_click", "begin_checkout")]
