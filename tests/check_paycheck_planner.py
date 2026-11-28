@@ -404,7 +404,7 @@ try:
     if pay_touched:
         # Checkout audit 1127: planner/index.html is the /planner/ short path that redirects to /paycheck-planner/.
         # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in pay_names or f == "planner/index.html" or f.startswith("tests/__pycache__/"))]
+        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("assets/paycheck-planner/") or f.startswith("guides/") or f in pay_names or f == "planner/index.html" or f.startswith("tests/__pycache__/"))]
         check(not stray, f"change touches only planner files ({stray[:5]})")
     else:
         print("skip scope check (no paycheck-planner files in the diff)")
