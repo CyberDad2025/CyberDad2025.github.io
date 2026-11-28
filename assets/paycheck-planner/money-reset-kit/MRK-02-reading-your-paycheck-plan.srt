@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:04,500
+Until you type your payday, Auto shows this sample plan.
+
+2
+00:00:04,500 --> 00:00:13,000
+This Paycheck is made for your phone. It shows the next payday, the bills that check pays, and Left after bills.
+
+3
+00:00:13,000 --> 00:00:20,500
+The Dashboard shows the same next check, Left after bills, and a per-day figure.
+
+4
+00:00:20,500 --> 00:00:28,000
+This sample check pays rent, car insurance, streaming and the car payment.
+
+5
+00:00:28,000 --> 00:00:37,500
+Left after bills is what remains after bills, one-time costs and living money. Below zero means SHORT.
+
+6
+00:00:37,500 --> 00:00:45,000
+Per day until next payday spreads that leftover across the days the check has to cover.
+
+7
+00:00:45,000 --> 00:00:52,500
+The heads-up line names the next short check, so you can fix it early.
+
+8
+00:00:52,500 --> 00:01:00,000
+The leftover chart of your next 12 checks. SHORT bars sit below zero.
+
+9
+00:01:00,000 --> 00:01:05,500
+Your next 6 checks, at a glance.
+
+10
+00:01:05,500 --> 00:01:13,000
+Paycheck Plan looks ahead up to 52 paychecks. Each row is one check.
+
+11
+00:01:13,000 --> 00:01:20,500
+Check Detail lists every bill one check pays. Type any check number from 1 to 52.
+
+12
+00:01:20,500 --> 00:01:28,000
+Bill Calendar lays bills, paydays and one-time costs on a month grid. Nothing to type.
+
+13
+00:01:28,000 --> 00:01:33,000
+Next chapter: fixing a short check.

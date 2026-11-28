@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:05,500
+This chapter compares two common payoff methods. The yellow cells ship with sample rows. Replace them with yours.
+
+2
+00:00:05,500 --> 00:00:12,000
+The Debt Payoff tab compares two common methods using your own debts.
+
+3
+00:00:12,000 --> 00:00:20,500
+List each debt with its balance, interest rate (APR) and minimum payment.
+
+4
+00:00:20,500 --> 00:00:29,000
+Type the total you can pay toward debt each month. Check says OK when it covers the minimums.
+
+5
+00:00:29,000 --> 00:00:38,500
+Snowball clears a debt sooner. Avalanche usually means less interest overall.
+
+6
+00:00:38,500 --> 00:00:47,000
+Results show months to pay off and total interest for each method, side by side.
+
+7
+00:00:47,000 --> 00:00:56,500
+In this sample, avalanche shows less interest, and snowball pays off the medical bill much sooner.
+
+8
+00:00:56,500 --> 00:01:05,000
+Pick the method you will stick with. It is a planning estimate; real lenders may compute interest daily or charge fees.
+
+9
+00:01:05,000 --> 00:01:12,500
+Then put every minimum on Bills, plus the extra payment for your target debt, so your plan counts it.
+
+10
+00:01:12,500 --> 00:01:17,500
+Next chapter: sinking funds and savings goals.

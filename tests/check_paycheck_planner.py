@@ -202,7 +202,26 @@ def prices(t: str) -> set[str]:
     return set(re.findall(r"\$\d[\d,]*(?:\.\d{2})?", visible_text(t)))
 
 sales_vis = visible_text(html["sales"])
-check(prices(html["sales"]) == {"$14.99", "$19.99", "$39"}, f"[sales] prices are exactly $14.99, $19.99 and $39: {sorted(prices(html['sales']))}")
+check(prices(html["sales"]) == {"$14.99", "$19.99", "$39"}, f"[sales] published prices are $14.99, $19.99 and $39: {sorted(prices(html['sales']))}")
+check("$79" not in sales_vis, "[sales] published visible text has no $79 (kit section is a hidden draft)")
+kit_m = re.search(r'(?s)<section class="pp-section" id="money-reset-kit".*?</section>', html["sales"])
+check(bool(kit_m), "[sales] Money Reset Kit section is present")
+kit_draft = re.search(r'(?s)\{%-?\s*comment\s*-?%\}.*?id="money-reset-kit".*?\{%-?\s*endcomment\s*-?%\}', html["sales"])
+check(bool(kit_draft), "[sales] Money Reset Kit section is a hidden draft (Liquid comment, not published)")
+if kit_m:
+    kit_html = kit_m.group(0)
+    open_tag = re.search(r'<section\b[^>]*id="money-reset-kit"[^>]*>', html["sales"])
+    check(bool(open_tag) and re.search(r"\bhidden\b", open_tag.group(0)), "[sales] Money Reset Kit section has the hidden attribute")
+    check(prices(kit_html) == {"$79"}, f"[sales] kit draft prices are only $79: {sorted(prices(kit_html))}")
+    outside_draft = html["sales"].replace(kit_draft.group(0), "") if kit_draft else html["sales"]
+    check("$79" not in outside_draft, "[sales] $79 appears only in the hidden Money Reset Kit draft")
+    check('id="pp-buy-kit" href="#pp-buy-kit-payment-link-pending"' in kit_html, "[sales] kit Buy href is the marked placeholder (no Payment Link URL was in the kit folder)")
+    check("Get the Money Reset Kit, $79" in kit_html, "[sales] kit Buy label is exact")
+    check("$79 one-time. Google Sheets and Excel, PDFs and video links. Instant download. US and Canada customers only." in visible_text(kit_html), "[sales] kit price line is exact")
+    check("The Money Reset Kit: 30 days to map every paycheck" in kit_html, "[sales] kit headline is exact")
+    check("This policy applies only to Money Reset Kit and does not limit your statutory rights." in visible_text(kit_html), "[sales] kit refund wording is present")
+    check("US and Canada customers only." in visible_text(kit_html), "[sales] kit section has US and Canada customers only")
+    check(not re.search(r"[—–]", kit_html) and "guarantee" not in kit_html.lower(), "[sales] kit section has no em or en dashes and no guarantee")
 check(prices(html["bundle"]) == {"$39"}, f"[bundle] only price is $39: {sorted(prices(html['bundle']))}")
 check(prices(html["sample"]) == {"$14.99", "$19.99"}, f"[sample] prices are the $14.99 intro and $19.99 regular: {sorted(prices(html['sample']))}")
 check(prices(html["refund"]) == set(), "[refund] shows no prices")
@@ -286,8 +305,13 @@ check("Paycheck Planner is a budgeting tool, not financial advice." in visible_t
       "[sales] NFA footnote is unchanged")
 
 # ---------- Buy buttons ----------
+def without_comments(t: str) -> str:
+    t = re.sub(r"\{%-?\s*comment.*?endcomment\s*-?%\}", " ", t, flags=re.S)
+    t = re.sub(r"<!--.*?-->", " ", t, flags=re.S)
+    return t
+
 for name, expect in (("sales", {"planner": 4, "bundle": 1}), ("bundle", {"planner": 0, "bundle": 1}), ("sample", {"planner": 1}), ("refund", {})):
-    buttons = re.findall(r"<a [^>]*data-price=[^>]*>", html[name])
+    buttons = re.findall(r"<a [^>]*data-price=[^>]*>", without_comments(html[name]))
     planner = [b for b in buttons if "pp.stripe_url_planner" in b]
     bundle = [b for b in buttons if "pp.stripe_url_bundle" in b]
     check(len(planner) == expect.get("planner", 0) and len(bundle) == expect.get("bundle", 0) and len(buttons) == len(planner) + len(bundle),
@@ -410,6 +434,38 @@ try:
         print("skip scope check (no paycheck-planner files in the diff)")
 except Exception as exc:  # shallow clone or no origin/main
     print(f"skip scope check ({exc.__class__.__name__})")
+
+# ---------- Money Reset Kit hosted files (not under paycheck-planner/, not linked from the page)
+KIT_ASSETS = ROOT / "assets" / "paycheck-planner" / "money-reset-kit"
+KIT_FILES = {
+    "CyberDadKit-Paycheck-Planner-Setup-Walkthrough.mp4": "f60fb26696110020c8865c79bc345c49f3a36ba5400cfb93c8b6d6bbc57e6f1c",
+    "MRK-01-start-and-setup.mp4": "6ff2a1f30a913936686e8f6406ac6e9d6e3252317dd9a94d15c28cc3edf8d01f",
+    "MRK-01-start-and-setup.srt": "fa0ff82e09c93e67b9270f752fbafe0bfff4f25d009136d692c82a090c118812",
+    "MRK-02-reading-your-paycheck-plan.mp4": "5980047cf8cfb2d646e8610e92a5cd75fd9af1a417c25afedb53e214f394bdef",
+    "MRK-02-reading-your-paycheck-plan.srt": "b261a24cf19b2747eb06309cf96d4375bc0e463a4b5c4178318fbd89f522b06e",
+    "MRK-04-debt-payoff.mp4": "6d64d7444652d733ad7f0eb98a4712286b5e14412e0c86c27045bddbe5c92049",
+    "MRK-04-debt-payoff.srt": "0279e538ed367aad76ea42af2f6bf20837aa36246ac5533f7b27bb4d458c7eed",
+}
+KIT_HELD = (
+    "CyberDadKit-30-Day-Money-Reset-Plan.pdf",
+    "MRK-03-fixing-a-short-check.mp4",
+    "MRK-03-fixing-a-short-check.srt",
+    "MRK-05-sinking-funds-and-savings-goals.mp4",
+    "MRK-05-sinking-funds-and-savings-goals.srt",
+    "CyberDadKit-Money-Reset-Printable-Checklists.pdf",
+    "START-HERE.md",
+)
+import hashlib
+for name, exp in KIT_FILES.items():
+    fp = KIT_ASSETS / name
+    got = hashlib.sha256(fp.read_bytes()).hexdigest() if fp.is_file() else ""
+    check(fp.is_file() and got == exp, f"kit asset {name} sha256 matches {exp[:8]}...")
+for name in KIT_HELD:
+    check(not (KIT_ASSETS / name).is_file(), f"held kit file {name} is not hosted")
+present = sorted(p.name for p in KIT_ASSETS.iterdir() if p.is_file()) if KIT_ASSETS.is_dir() else []
+check(present == sorted(KIT_FILES), f"kit assets are only the released files: {present}")
+check(not any(KIT_ASSETS.glob("*.xlsx")), "kit xlsx is not hosted in the repo assets")
+check("/assets/paycheck-planner/money-reset-kit/" not in html["sales"], "[sales] page does not link the hosted kit files")
 
 if failed:
     print(f"FAILED {len(failed)} check(s); {len(flags)} placeholder flag(s)")
