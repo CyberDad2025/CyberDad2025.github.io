@@ -4,7 +4,7 @@ sitemap: true
 ---
 {%- assign pp = site.data.paycheck_planner -%}
 <!doctype html>
-<html lang="en">
+<html lang="en" class="pp-bright">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,8 +40,9 @@ sitemap: true
 {"@type":"Question","name":"Who can buy it?","acceptedAnswer":{"@type":"Answer","text":"It is available to customers located in the United States and Canada."}}
 ]}
 </script>
-<meta name="theme-color" content="#14304f">
+<meta name="theme-color" content="#2d1048">
 <link rel="stylesheet" href="/paycheck-planner/assets/paycheck-planner.css">
+<link rel="stylesheet" href="/paycheck-planner/assets/paycheck-planner-bright.css">
 {% include ga4.html %}
 </head>
 <body class="pp" data-pp-page="sales">
@@ -101,6 +102,7 @@ sitemap: true
       <p>Sample numbers are already filled in, so you can see how it works before you type anything.</p>
     </div>
   </section>
+  <figure class="pp-photo pp-photo-wide" id="pp-photo-kitchen"><img src="/paycheck-planner/assets/pp-photo-kitchen-coffee-960.webp" width="960" height="640" loading="lazy" decoding="async" alt=""></figure>
   <section class="pp-section" id="pp-page-demo" aria-labelledby="pp-demo-title">
     <h2 id="pp-demo-title">See a paycheck update</h2>
     <p>A silent loop of the Paycheck Planner with sample numbers. Take-home pay is entered on Settings, the Paycheck Plan shows what is left, a phone bill is added, and what is left on the second paycheck updates. The second paycheck includes a one-time column.</p>
@@ -132,6 +134,7 @@ sitemap: true
   </section>
   <section class="pp-section" id="what-it-does" aria-labelledby="does-title">
     <h2 id="does-title">What it does for you</h2>
+    <figure class="pp-photo pp-photo-side" id="pp-photo-phone"><img src="/paycheck-planner/assets/pp-photo-phone-342.webp" width="342" height="660" loading="lazy" decoding="async" alt=""></figure>
     <ul class="pp-list">
       <li><strong>See your next paycheck's job before it hits.</strong> The Dashboard names the bills it has to pay and the amount left after.</li>
       <li><strong>Catch a short check weeks ahead.</strong> A red SHORT flag and a heads-up line tell you which check will not stretch, so you can move a due date or set money aside while there is still time.</li>
@@ -178,6 +181,7 @@ sitemap: true
   {% include paycheck-planner-signup.html %}
   <section class="pp-section" id="who" aria-labelledby="who-title">
     <h2 id="who-title">Who it is for</h2>
+    <figure class="pp-photo pp-photo-side" id="pp-photo-reading"><img src="/paycheck-planner/assets/pp-photo-reading-400.webp" width="400" height="600" loading="lazy" decoding="async" alt=""></figure>
     <ul class="pp-list">
       <li>You get paid every 2 weeks, weekly, twice a month or monthly</li>
       <li>You know roughly what you make and what you owe, but not which check pays what</li>
