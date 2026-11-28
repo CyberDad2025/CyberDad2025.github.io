@@ -286,7 +286,7 @@ check("Paycheck Planner is a budgeting tool, not financial advice." in visible_t
       "[sales] NFA footnote is unchanged")
 
 # ---------- Buy buttons ----------
-for name, expect in (("sales", {"planner": 1, "bundle": 1}), ("bundle", {"planner": 0, "bundle": 1}), ("sample", {"planner": 1}), ("refund", {})):
+for name, expect in (("sales", {"planner": 4, "bundle": 1}), ("bundle", {"planner": 0, "bundle": 1}), ("sample", {"planner": 1}), ("refund", {})):
     buttons = re.findall(r"<a [^>]*data-price=[^>]*>", html[name])
     planner = [b for b in buttons if "pp.stripe_url_planner" in b]
     bundle = [b for b in buttons if "pp.stripe_url_bundle" in b]
@@ -402,8 +402,9 @@ try:
         for f in changed + untracked
     )
     if pay_touched:
+        # Checkout audit 1127: planner/index.html is the /planner/ short path that redirects to /paycheck-planner/.
         # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in pay_names or f.startswith("tests/__pycache__/"))]
+        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("guides/") or f in pay_names or f == "planner/index.html" or f.startswith("tests/__pycache__/"))]
         check(not stray, f"change touches only planner files ({stray[:5]})")
     else:
         print("skip scope check (no paycheck-planner files in the diff)")

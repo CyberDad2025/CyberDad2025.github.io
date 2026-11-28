@@ -63,13 +63,22 @@ sitemap: true
 </header>
 <main id="main" class="pp-main">
   <section class="pp-hero" aria-labelledby="product-title">
-    <div>
+    <div class="pp-hero-copy">
       <h1 id="product-title">Know which bills your next paycheck covers.</h1>
       <p class="pp-lede">Type your paychecks and bills once. See what each check has to pay, what is left after, and whether you can afford the next thing on your list, before you buy it.</p>
+      <ul class="pp-stack" id="pp-value-stack" aria-label="What you get">
+        <li><strong>See what is left after bills</strong> on every paycheck.</li>
+        <li><strong>Catch a short check weeks ahead.</strong> A red SHORT flag tells you which check will not stretch.</li>
+        <li><strong>Instant download</strong> right after you pay. Google Sheets and Excel.</li>
+        <li><strong>Open it on your phone</strong> in the free Google Sheets app.</li>
+        <li><strong>One payment, no subscription.</strong> Nothing links to your bank.</li>
+      </ul>
+      <p class="pp-urgency" id="pp-urgency">Set it up before your next payday. Start 2027 knowing which bills each check covers.</p>
       <div id="checkout">
         <a class="pp-btn" id="pp-buy-planner" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get the Paycheck Planner, $14.99</a>
       </div>
       <p class="pp-small pp-checkout-line" id="pp-checkout-line">Checkout asks for your email and card details.</p>
+      <p class="pp-refund-line" id="pp-refund-line">You may request a full refund for any reason within 7 days of your purchase date. <a href="/paycheck-planner/refund/">See the refund policy</a>.</p>
       <p class="pp-price-note">$14.99 launch price through December 31, 2026, then $19.99. Prices in USD. Google Sheets and Excel. Instant download. US and Canada customers only. Nothing is shipped.</p>
       <ul class="pp-trust" id="pp-trust" aria-label="Why you can buy with confidence">
         <li>Built by a Marine Corps veteran with Security+ certification</li>
@@ -82,6 +91,15 @@ sitemap: true
       <div class="pp-shot-frame"><span class="pp-badge">Sample numbers</span><picture><img src="/paycheck-planner/assets/paycheck-planner-dashboard-600.webp" srcset="/paycheck-planner/assets/paycheck-planner-dashboard-600.webp 600w, /paycheck-planner/assets/paycheck-planner-dashboard-1000.webp 1000w" sizes="(min-width: 760px) 420px, 92vw" width="600" height="606" alt="The Paycheck Planner Dashboard showing the next paycheck, the bills it has to pay, and what is left on this check, with made-up sample numbers." fetchpriority="high" decoding="async"></picture></div>
       <figcaption class="pp-small">The Dashboard, with made-up sample numbers.</figcaption>
     </figure>
+    <div class="pp-how" id="how" aria-labelledby="how-title">
+      <h2 id="how-title">How it works (about 10 minutes)</h2>
+      <ol class="pp-list">
+        <li><strong>Enter your pay.</strong> Next payday, how often, and the usual amount. Type the real amount on any check that is different.</li>
+        <li><strong>List your bills.</strong> Name, amount and the day of the month it is due.</li>
+        <li><strong>Read your plan.</strong> Each paycheck shows the bills it covers, one-time costs, Living money, what is left, and a Covered or SHORT status.</li>
+      </ol>
+      <p>Sample numbers are already filled in, so you can see how it works before you type anything.</p>
+    </div>
   </section>
   <section class="pp-section" id="pp-page-demo" aria-labelledby="pp-demo-title">
     <h2 id="pp-demo-title">See a paycheck update</h2>
@@ -103,6 +121,8 @@ sitemap: true
       <figure class="pp-shot pp-preview"><img src="/paycheck-planner/assets/paycheck-planner-still-3-sinking-funds.webp" width="1600" height="659" loading="lazy" decoding="async" alt="The Sinking Funds sheet: yearly costs with when each is due, money saved so far and the amount to set aside per paycheck, with made-up sample numbers."><figcaption class="pp-small">Sinking Funds (Paycheck Planner Plus Bundle), sample numbers.</figcaption></figure>
       <figure class="pp-shot pp-preview"><img src="/paycheck-planner/assets/paycheck-planner-still-4-savings-goals.webp" width="1600" height="854" loading="lazy" decoding="async" alt="The Savings Goals sheet: each goal with its target, target date, money saved, paychecks left and the amount to set aside per paycheck, with made-up sample numbers."><figcaption class="pp-small">Savings Goals (Paycheck Planner Plus Bundle), sample numbers.</figcaption></figure>
     </div>
+    <p class="pp-cta pp-cta-mid"><a class="pp-btn" id="pp-buy-planner-2" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner-previews" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get the Paycheck Planner, $14.99</a></p>
+    <p class="pp-small pp-cta-note">Instant download. You may request a full refund for any reason within 7 days of your purchase date.</p>
   </section>
   <section class="pp-section" id="problem" aria-labelledby="problem-title">
     <h2 id="problem-title">Why the month looks fine and one week does not</h2>
@@ -120,15 +140,6 @@ sitemap: true
       <li><strong>Plan the whole year in one place.</strong> 52 paychecks ahead, with a running balance after each one.</li>
     </ul>
   </section>
-  <section class="pp-section" id="how" aria-labelledby="how-title">
-    <h2 id="how-title">How it works (about 10 minutes)</h2>
-    <ol class="pp-list">
-      <li><strong>Enter your pay.</strong> Next payday, how often, and the usual amount. Type the real amount on any check that is different.</li>
-      <li><strong>List your bills.</strong> Name, amount and the day of the month it is due.</li>
-      <li><strong>Read your plan.</strong> Each paycheck shows the bills it covers, one-time costs, Living money, what is left, and a Covered or SHORT status.</li>
-    </ol>
-    <p>Sample numbers are already filled in, so you can see how it works before you type anything.</p>
-  </section>
   <section class="pp-section" id="inside" aria-labelledby="inside-title">
     <h2 id="inside-title">What is inside</h2>
     <div class="pp-card">
@@ -145,6 +156,8 @@ sitemap: true
         <li>Delivered as a Google Sheets copy link and an Excel (.xlsx) file</li>
       </ul>
     </div>
+    <p class="pp-cta pp-cta-mid"><a class="pp-btn" id="pp-buy-planner-3" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner-inside" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get the Paycheck Planner, $14.99</a></p>
+    <p class="pp-small pp-cta-note">Instant download. You may request a full refund for any reason within 7 days of your purchase date.</p>
     <p class="pp-small pp-lost" id="pp-lost">Lost your files? Email <a href="mailto:ruel@getcyberdadkit.com">ruel@getcyberdadkit.com</a> with your receipt and we'll resend them.</p>
   </section>
   <section class="pp-section" id="bundle" aria-labelledby="bundle-title">
@@ -223,6 +236,10 @@ sitemap: true
     <p class="pp-small"><a href="/guides/">All paycheck budget guides</a></p>
   </section>
   </main>
+<div class="pp-sticky" id="pp-sticky" hidden>
+  <p class="pp-sticky-text"><strong>Paycheck Planner</strong><span>Instant download. Full refund within 7 days.</span></p>
+  <a class="pp-btn pp-sticky-btn" id="pp-buy-sticky" href="{{ pp.stripe_url_planner }}" data-list-id="paycheck-planner-sticky" data-product="Paycheck Planner" data-price="14.99" data-pp-ref="planner">Get it, $14.99</a>
+</div>
 <div class="pp-footnote"><p>Available to customers located in the United States and Canada. Digital download only; nothing is shipped. Paycheck Planner is a budgeting tool, not financial advice.</p></div>
 {% include paycheck-planner-footer.html %}
 <script src="/paycheck-planner/assets/paycheck-planner.js" defer></script>

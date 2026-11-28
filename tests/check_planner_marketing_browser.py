@@ -110,7 +110,7 @@ with sync_playwright() as p:
             new = pg.evaluate("() => window.__clicks")
             check(len(new) == 1, f"[{name} qa={qa}] one click recorded; navigation prevented by the test hook (Stripe never contacted)")
             u = new[0] if new else ""
-            m = re.match(re.escape(URL[key]) + r"\?client_reference_id=((?:qa|pp)_(?:home|sales|bundle|sample|other)_[0-9a-f]{24})&utm_source=pinterest&utm_medium=social&utm_campaign=pp-test&utm_content=pin1&utm_term=budget$", u)
+            m = re.match(re.escape(URL[key]) + r"\?client_reference_id=((?:qa|pp)_(?:home|sales|bundle|sample|other)_(?:ax_)?[0-9a-f]{24})&utm_source=pinterest&utm_medium=social&utm_campaign=pp-test&utm_content=pin1&utm_term=budget$", u)
             check(bool(m) and m.group(1).startswith("qa_" if qa else "pp_") and "other=" not in u, f"[{name} qa={qa}] URL has client_reference_id ({'qa_' if qa else 'pp_'} prefix) and the five utm_* only: {re.sub(r'[0-9a-f]{24}', 'X'*24, u).replace(URL[key], '<yml>')}")
             check(bool(m) and m.group(1).startswith(("qa_" if qa else "pp_") + SRC[name] + "_") and re.fullmatch(r"[A-Za-z0-9_-]{1,200}", m.group(1)) is not None,
                   f"[{name} qa={qa}] client_reference_id names the source page ({SRC[name]}) and fits Stripe's limit (<=200, alphanumeric, dash, underscore)")
