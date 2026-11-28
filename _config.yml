@@ -75,6 +75,26 @@ defaults:
       path: ""
     values:
       layout: "default"
+  # Money Reset Kit START-HERE.md is hosted as a static .md for buyers.
+  # jekyll-optional-front-matter also turns that file into a Page. Jekyll 3 still
+  # writes Pages even when published is false (Page#write? is always true), so we
+  # neutralize the sibling HTML: a noindex-plain layout with no ads or site chrome, and sitemap.xml
+  # already skips /assets/paycheck-planner/money-reset-kit/. Scope paths are listed
+  # with and without a leading slash because plugin-created pages may use either.
+  - scope:
+      path: "assets/paycheck-planner/money-reset-kit"
+    values:
+      layout: noindex-plain
+      sitemap: false
+      noindex: true
+      no_ads: true
+  - scope:
+      path: "/assets/paycheck-planner/money-reset-kit"
+    values:
+      layout: noindex-plain
+      sitemap: false
+      noindex: true
+      no_ads: true
 
 # Pagination
 paginate: 25

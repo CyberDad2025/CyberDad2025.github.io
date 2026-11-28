@@ -1,0 +1,43 @@
+1
+00:00:00,000 --> 00:00:04,500
+These tabs ship with sample rows in their yellow cells. Replace them with yours.
+
+2
+00:00:04,500 --> 00:00:12,000
+Sinking funds set aside a little each check for costs you know are coming.
+
+3
+00:00:12,000 --> 00:00:20,500
+Type each fund's yearly cost, when it is due, and what is saved so far.
+
+4
+00:00:20,500 --> 00:00:28,000
+The sheet shows how much to set aside per check and how ready each fund is.
+
+5
+00:00:28,000 --> 00:00:37,500
+The total is not taken out of your plan for you. Compare it with Left after bills on the Dashboard.
+
+6
+00:00:37,500 --> 00:00:44,000
+Savings Goals works the same way for one-time targets.
+
+7
+00:00:44,000 --> 00:00:51,500
+Type a target, a target date and what is saved so far.
+
+8
+00:00:51,500 --> 00:00:59,000
+It counts the paychecks left and shows how much to set aside from each one.
+
+9
+00:00:59,000 --> 00:01:07,500
+The 2027 Overview tab shows your year by month. 3-paycheck months stand out.
+
+10
+00:01:07,500 --> 00:01:15,000
+Then keep the plan current with the weekly 15-minute checkup.
+
+11
+00:01:15,000 --> 00:01:21,000
+Thanks for watching. A budgeting tool, not financial advice. Not tax or legal advice either.

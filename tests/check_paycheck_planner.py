@@ -409,12 +409,15 @@ try:
         "tests/check_planner_seo.py",
         "tests/check_no_dashes.py",
         "tests/check_hero_outcome.py",
+        "sitemap.xml",
+        "_config.yml",
         "start/index.html",
         "_includes/what-buyers-say.html",
         "_data/what_buyers_say.yml",
         "tests/check_what_buyers_say.py",
         "tests/render_what_buyers_say.rb",
         "tests/check_start_page.py",
+        "_layouts/noindex-plain.html",
         # M-S65 sign-off pack publishes refund/FAQ pages in the same commit as the planner refund sentence.
         "faq/index.html",
         "support/index.html",
@@ -449,17 +452,18 @@ KIT_FILES = {
     "MRK-01-start-and-setup.srt": "fa0ff82e09c93e67b9270f752fbafe0bfff4f25d009136d692c82a090c118812",
     "MRK-02-reading-your-paycheck-plan.mp4": "5980047cf8cfb2d646e8610e92a5cd75fd9af1a417c25afedb53e214f394bdef",
     "MRK-02-reading-your-paycheck-plan.srt": "b261a24cf19b2747eb06309cf96d4375bc0e463a4b5c4178318fbd89f522b06e",
+    "MRK-03-fixing-a-short-check.mp4": "e01b8f194a5172429b984d3bfa8ecab8bfe28f261961cb39f53d4b99acaec000",
+    "MRK-03-fixing-a-short-check.srt": "baea9c6ee3c637306dc74845a9a07300cb67c26087b89a25b0d9c623260257f3",
     "MRK-04-debt-payoff.mp4": "6d64d7444652d733ad7f0eb98a4712286b5e14412e0c86c27045bddbe5c92049",
     "MRK-04-debt-payoff.srt": "0279e538ed367aad76ea42af2f6bf20837aa36246ac5533f7b27bb4d458c7eed",
+    "MRK-05-sinking-funds-and-savings-goals.mp4": "22c4d6b0f0489983bd037c20c678dd92625aef7d57a8d2666e175b7ae1487e36",
+    "MRK-05-sinking-funds-and-savings-goals.srt": "a24ab7f0c02cc0978a901ae88607df730a6775317259d5e82bfc4a1bcc73c238",
+    "CyberDadKit-30-Day-Money-Reset-Plan.pdf": "15100da70e40c0417998017747a65cda83c28b3e6a0f2dc07ff0da077bb82f86",
+    "CyberDadKit-Money-Reset-Printable-Checklists.pdf": "0de21de29cbd59f5d5a26531492a05a7a653d17a4373b6c5c4b0faf184be71ce",
+    "START-HERE.md": "f0da05e2c1f523c5b40a714bafb1ffb5adb8284a7f0e4b782c861e994922ffe0",
 }
 KIT_HELD = (
-    "CyberDadKit-30-Day-Money-Reset-Plan.pdf",
-    "MRK-03-fixing-a-short-check.mp4",
-    "MRK-03-fixing-a-short-check.srt",
-    "MRK-05-sinking-funds-and-savings-goals.mp4",
-    "MRK-05-sinking-funds-and-savings-goals.srt",
-    "CyberDadKit-Money-Reset-Printable-Checklists.pdf",
-    "START-HERE.md",
+    "CyberDadKit-Money-Reset-Kit-Planner.xlsx",
 )
 import hashlib
 for name, exp in KIT_FILES.items():
@@ -472,6 +476,12 @@ present = sorted(p.name for p in KIT_ASSETS.iterdir() if p.is_file()) if KIT_ASS
 check(present == sorted(KIT_FILES), f"kit assets are only the released files: {present}")
 check(not any(KIT_ASSETS.glob("*.xlsx")), "kit xlsx is not hosted in the repo assets")
 check("/assets/paycheck-planner/money-reset-kit/" not in html["sales"], "[sales] page does not link the hosted kit files")
+
+sitemap_src = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+check('page_url contains "/assets/paycheck-planner/money-reset-kit/"' in sitemap_src, "sitemap template skips Money Reset Kit pages")
+check('kit_file contains "/assets/paycheck-planner/money-reset-kit/"' in sitemap_src, "sitemap template skips Money Reset Kit static files")
+cfg = (ROOT / "_config.yml").read_text(encoding="utf-8")
+check("path: \"assets/paycheck-planner/money-reset-kit\"" in cfg and "layout: noindex-plain" in cfg, "config defaults neutralize START-HERE HTML with noindex-plain")
 
 if failed:
     print(f"FAILED {len(failed)} check(s); {len(flags)} placeholder flag(s)")
