@@ -275,7 +275,7 @@ check('poster="/paycheck-planner/assets/page-paycheck-planner-demo-poster.webp"'
 check('data-src="/paycheck-planner/assets/page-paycheck-planner-demo.mp4"' in va and re.search(r"\ssrc=", va) is None, "[sales] MP4 is lazy (data-src, no src)")
 check('width="1920"' in va and 'height="1080"' in va, "[sales] video width and height are 1920x1080")
 check(f'aria-label="{DEMO_ARIA}"' in va, "[sales] aria-label describes the exact sheet and sample leftover change")
-check(f'alt="{DEMO_ARIA}"' in vi and "page-paycheck-planner-demo-poster.png" in vi, "[sales] poster img fallback alt matches the aria-label")
+check(f'alt="{DEMO_ARIA}"' in vi and "page-paycheck-planner-demo-poster.webp" in vi, "[sales] poster img fallback alt matches the aria-label")
 check(html["sales"].index('id="pp-buy-planner"') < html["sales"].index("paycheck-planner-dashboard-600.webp") < html["sales"].index('id="pp-page-demo-video"') < html["sales"].index('id="previews"'),
       "[sales] demo video sits below the hero image and above the preview stills")
 check("IntersectionObserver" in js and "prefers-reduced-motion: reduce" in js, "planner JS lazy-loads video and honors reduced motion")

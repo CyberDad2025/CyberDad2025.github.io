@@ -94,7 +94,7 @@ check('data-src="/paycheck-planner/assets/page-paycheck-planner-demo.mp4"' in va
       "[sales] MP4 is in data-src only (no src), so the poster can paint first")
 check('width="1920"' in vattrs and 'height="1080"' in vattrs, "[sales] video has explicit 1920x1080 to avoid layout shift")
 check(f'aria-label="{DEMO_ARIA}"' in vattrs, "[sales] video aria-label describes the sheet, sample numbers and leftover update")
-check(f'<img src="/paycheck-planner/assets/page-paycheck-planner-demo-poster.png" width="1920" height="1080" alt="{DEMO_ARIA}">' in vinner,
+check(f'<img src="/paycheck-planner/assets/page-paycheck-planner-demo-poster.webp" width="1920" height="1080" alt="{DEMO_ARIA}">' in vinner,
       "[sales] PNG poster fallback uses the same descriptive alt")
 demo = sales[sales.index('id="pp-page-demo"'):sales.index('id="previews"')]
 hero_img_at = sales.index('paycheck-planner-dashboard-600.webp')
