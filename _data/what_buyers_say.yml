@@ -1,0 +1,9 @@
+# What buyers say. Ships EMPTY: the include renders nothing (no heading, no box)
+# unless at least one entry has permission: true.
+# Add ONLY real quotes, with the buyer's written permission, exactly as they wrote them.
+# Never invent quotes, names, results or counts. No ages or family details. No employer names.
+# Format (example shown commented out on purpose; do not uncomment with made-up text):
+# - quote: "..."
+#   name: "First name + last initial, or leave blank"
+#   permission: true
+[]

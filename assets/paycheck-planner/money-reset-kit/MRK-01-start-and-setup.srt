@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:05,500
+This walkthrough uses the sample file. Every figure you see is a sample number.
+
+2
+00:00:05,500 --> 00:00:13,000
+Start Here has three steps: Settings, Bills, then This Paycheck or the Dashboard.
+
+3
+00:00:13,000 --> 00:00:20,500
+The Days 1-30 tab gives you one short task a day. Click a tab name to jump there.
+
+4
+00:00:20,500 --> 00:00:27,000
+Type Yes in Done when a day is finished. The counter at the top keeps track.
+
+5
+00:00:27,000 --> 00:00:35,500
+Yellow cells on Settings start empty. Type your own next payday, pay schedule and take-home pay.
+
+6
+00:00:35,500 --> 00:00:44,000
+Pick USD or CAD and a date style. Leave Numbers to use on Auto.
+
+7
+00:00:44,000 --> 00:00:52,500
+The example lives on the Sample tab. Look, but do not type there. It is never erased.
+
+8
+00:00:52,500 --> 00:01:00,000
+Type your bills on the Bills tab, in the empty yellow cells. Do not copy over the Sample tab.
+
+9
+00:01:00,000 --> 00:01:07,500
+Day 5, One-Time: add costs that are not monthly, each with a date and an amount. These cells start empty too.
+
+10
+00:01:07,500 --> 00:01:13,500
+Next chapter: reading your paycheck plan.

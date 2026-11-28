@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:04,500
+This chapter walks through one fix in the sample file.
+
+2
+00:00:04,500 --> 00:00:12,000
+In the sample, the first check is SHORT by $21.99.
+
+3
+00:00:12,000 --> 00:00:19,500
+Check Detail shows why: four bills land on that one check.
+
+4
+00:00:19,500 --> 00:00:29,000
+Pick the fix that fits. Write it on the Short-Check Fix sheet in the PDF.
+
+5
+00:00:29,000 --> 00:00:38,500
+Here the sample bills have been typed onto Bills, the way you would type yours. The car payment is due on the 8th.
+
+6
+00:00:38,500 --> 00:00:46,000
+Once a new date is confirmed, change the due day on Bills. Do not edit the Sample tab.
+
+7
+00:00:46,000 --> 00:00:54,500
+The first check now shows Covered. The car payment moved to the next check, which has room.
+
+8
+00:00:54,500 --> 00:01:02,000
+The leftover chart now shows the first check above zero. A later short bar is still there to work on.
+
+9
+00:01:02,000 --> 00:01:09,500
+Check the next 6 checks too. A fix should not create a new SHORT.
+
+10
+00:01:09,500 --> 00:01:17,000
+The heads-up line now points to the next short check to work on.
+
+11
+00:01:17,000 --> 00:01:25,500
+Before a big purchase, type a price in the quick check on the Dashboard, or open Can I Afford It.
+
+12
+00:01:25,500 --> 00:01:34,000
+The answer is YES, YES using your cushion, NOT YET with the first check where it fits, or NOT IN THIS PLAN.
+
+13
+00:01:34,000 --> 00:01:39,000
+Next chapter: debt payoff.

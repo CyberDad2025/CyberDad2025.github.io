@@ -1,0 +1,126 @@
+/* Paycheck Planner SALES page visual refresh (preview). Loaded only by /paycheck-planner/ and scoped to html.pp-bright body.pp,
+   so the bundle, sample, refund, delivered and guide pages that share paycheck-planner.css are not affected.
+   Bright and energetic: hot pink Buy buttons, sunny yellow highlights, deep plum text, warm cream background.
+   System fonts only. Every text and button pair below is at least WCAG AA (4.5:1); ratios are listed in PR-BODY.md.
+   Rollback: remove the link tag and the pp-bright class on the html element in paycheck-planner/index.html, or delete this file. */
+html.pp-bright body.pp {
+  --pp-navy: #2d1048;       /* deep plum, main ink for headings */
+  --pp-navy-2: #5b1f99;     /* link violet */
+  --pp-green: #00705e;      /* deep teal for money-left moments */
+  --pp-green-bg: #dcf7ee;
+  --pp-gold: #d9246f;       /* Buy button pink */
+  --pp-gold-hover: #b8165c;
+  --pp-warm: #fff6e5;       /* page cream */
+  --pp-warm-2: #fff0b8;     /* sunny panel */
+  --pp-ink: #231433;
+  --pp-muted: #4a3b5c;
+  --pp-line: #2d1048;
+  --pp-yellow: #ffd23f;
+  --pp-coral: #ff6b4a;
+  --pp-pink-soft: #ffe0ec;
+  background: var(--pp-warm);
+  color: var(--pp-ink);
+}
+.pp-bright a { color: var(--pp-navy-2); text-underline-offset: .15em; }
+.pp-bright .pp-skip { color: var(--pp-navy); }
+
+/* Top banner and header */
+.pp-bright .pp-banner { background: var(--pp-navy); color: #fff; border-bottom: 3px solid var(--pp-yellow); }
+.pp-bright .pp-header { background: #fff; border-bottom: 4px solid var(--pp-gold); }
+.pp-bright .pp-brand { font-weight: 900; font-size: 1.35rem; letter-spacing: -.01em; color: var(--pp-navy) !important; }
+.pp-bright .pp-brand-name::after { width: .7rem; height: .7rem; background: var(--pp-gold); box-shadow: .35rem .2rem 0 -.08rem var(--pp-yellow); }
+.pp-bright .pp-nav a { color: var(--pp-navy-2); font-weight: 600; }
+
+/* Hero: solid sunny panel, big confident headline */
+.pp-bright .pp-hero { background: var(--pp-warm-2); border: 3px solid var(--pp-navy); border-radius: 1.4rem; padding: 1.6rem; margin: 1.2rem 0 .4rem; box-shadow: 7px 7px 0 var(--pp-coral); gap: 1.8rem; }
+.pp-bright .pp-hero h1 { font-size: clamp(2.1rem, 5.4vw, 3.05rem); font-weight: 900; line-height: 1.05; letter-spacing: -.02em; color: var(--pp-navy);
+  text-decoration: underline; text-decoration-color: var(--pp-yellow); text-decoration-thickness: .2em; text-underline-offset: -.04em; text-decoration-skip-ink: none; }
+.pp-bright .pp-lede { font-size: 1.15rem; color: var(--pp-ink); }
+.pp-bright .pp-stack li::before { border-color: var(--pp-green); }
+.pp-bright .pp-urgency { color: var(--pp-navy); font-weight: 700; }
+.pp-bright .pp-refund-line { color: var(--pp-green); font-weight: 700; }
+.pp-bright .pp-refund-line a { color: var(--pp-navy-2); }
+.pp-bright .pp-trust { color: var(--pp-ink); }
+.pp-bright .pp-trust li::before { background: var(--pp-gold); }
+.pp-bright .pp-small, .pp-bright .pp-footnote, .pp-bright .pp-crumbs { color: var(--pp-muted); }
+.pp-bright .pp-hero .pp-how { border-top: 3px dashed var(--pp-navy); }
+.pp-bright .pp-how h2 { color: var(--pp-navy); }
+
+/* Buy buttons: solid hot pink, white text, big tap target, same ids and hrefs */
+html.pp-bright body.pp .pp-btn { background: var(--pp-gold); color: #fff !important; border: 3px solid var(--pp-navy); border-radius: 999px; min-height: 56px; padding: .95rem 1.8rem; font-size: 1.15rem; font-weight: 900; letter-spacing: .005em; text-align: center; line-height: 1.25; box-shadow: 0 5px 0 var(--pp-navy); transition: transform .08s ease, box-shadow .08s ease, background-color .12s ease; }
+html.pp-bright body.pp .pp-btn:hover, html.pp-bright body.pp .pp-btn:focus-visible { background: var(--pp-gold-hover); transform: translateY(2px); box-shadow: 0 3px 0 var(--pp-navy); }
+html.pp-bright body.pp .pp-btn:active { transform: translateY(5px); box-shadow: 0 0 0 var(--pp-navy); }
+html.pp-bright body.pp .pp-btn-alt { background: #fff; color: var(--pp-navy) !important; }
+html.pp-bright body.pp .pp-btn-alt:hover, html.pp-bright body.pp .pp-btn-alt:focus-visible { background: var(--pp-yellow); }
+html.pp-bright body.pp .pp-btn:focus-visible, .pp-bright a:focus-visible { outline: 4px solid var(--pp-navy); outline-offset: 3px; }
+.pp-bright .pp-cta-note { margin-top: .9rem; }
+
+/* Screenshots and the Sample numbers badge */
+html.pp-bright body.pp .pp-shot img { border: 3px solid var(--pp-navy); border-radius: 1rem; box-shadow: 5px 5px 0 var(--pp-gold); }
+.pp-bright .pp-badge { background: var(--pp-yellow); color: var(--pp-navy); border: 2px solid var(--pp-navy); font-weight: 800; }
+html.pp-bright body.pp #pp-page-demo .pp-demo-video { border: 3px solid var(--pp-navy); border-radius: 1rem; box-shadow: 5px 5px 0 var(--pp-gold); }
+
+/* Sections become bold cards */
+.pp-bright .pp-section { background: #fff; border: 3px solid var(--pp-navy); border-radius: 1.3rem; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 6px 6px 0 var(--pp-yellow); }
+.pp-bright .pp-section:nth-of-type(even) { box-shadow: 6px 6px 0 var(--pp-coral); }
+.pp-bright .pp-section h2 { font-size: clamp(1.7rem, 4.4vw, 2.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -.015em; color: var(--pp-navy); margin: 0 0 .8rem; }
+.pp-bright .pp-section h2::after { content: ""; display: block; width: 3.2rem; height: .38rem; margin-top: .45rem; border-radius: 999px; background: var(--pp-gold); }
+.pp-bright .pp-card { background: var(--pp-warm-2); border: 2px solid var(--pp-navy); border-radius: 1rem; }
+.pp-bright .pp-section .pp-card h2::after { background: var(--pp-coral); }
+.pp-bright .pp-grid h3, .pp-bright .pp-card h3, .pp-bright .pp-faq dt { color: var(--pp-navy); font-weight: 800; }
+.pp-bright .pp-bundle { background: var(--pp-pink-soft); border: 3px solid var(--pp-gold); border-radius: 1rem; }
+.pp-bright .pp-bundle h2::after { background: var(--pp-navy); }
+.pp-bright .pp-afford { color: var(--pp-green); }
+.pp-bright .pp-faq dt { font-size: 1.08rem; }
+.pp-bright .pp-success { border-color: var(--pp-green); }
+.pp-bright .pp-sample-note { border-left-color: var(--pp-gold); }
+.pp-bright .pp-list li::marker { color: var(--pp-gold-hover); font-weight: 800; }
+
+/* Lifestyle photos (free-license stock, lazy loaded, decorative so alt is empty) */
+.pp-bright .pp-photo { margin: 0; }
+.pp-bright .pp-photo img { display: block; width: 100%; height: auto; border: 3px solid var(--pp-navy); border-radius: 1.1rem; box-shadow: 6px 6px 0 var(--pp-gold); background: var(--pp-warm-2); }
+.pp-bright .pp-photo-wide { margin: 1.6rem 0 .4rem; }
+.pp-bright .pp-photo-wide img { aspect-ratio: 3 / 2; object-fit: cover; max-height: 26rem; object-position: center 14%; }
+.pp-bright .pp-photo-side img { aspect-ratio: auto; }
+
+/* Footer and sticky bar */
+html.pp-bright body.pp .cd-site-footer { background: var(--pp-navy); border-top: 6px solid var(--pp-yellow) !important; }
+html.pp-bright body.pp .cd-site-footer a { color: #fff; }
+.pp-bright .pp-footnote { font-weight: 600; }
+
+@media (min-width: 760px) {
+  .pp-bright .pp-hero { padding: 1.5rem 2rem 1.8rem; margin-top: 1.1rem; grid-template-columns: 1.3fr .7fr; align-items: start; gap: 1.2rem 2rem; }
+  .pp-bright .pp-hero .pp-shot { align-self: start; margin-top: .4rem; }
+  .pp-bright .pp-section { padding: 2rem 2.2rem; }
+  .pp-bright .pp-photo-side { float: right; width: 15.5rem; margin: .2rem 0 1rem 1.8rem; }
+  .pp-bright .pp-photo-side + * { margin-top: 0; }
+  .pp-bright .pp-section::after { content: ""; display: block; clear: both; }
+  html.pp-bright body.pp .pp-hero .pp-btn { font-size: 1.25rem; padding: 1.05rem 2.1rem; }
+}
+
+@media (max-width: 759px) {
+  /* Keep the #1105 first screen: no extra vertical padding in the hero, only slightly larger headline. */
+  .pp-bright .pp-banner { font-size: .8rem; padding: .28rem .7rem; border-bottom-width: 0; }
+  .pp-bright .pp-header { border-bottom-width: 3px; }
+  .pp-bright .pp-brand { font-size: 1.1rem; }
+  .pp-bright .pp-hero { padding: .1rem .5rem .4rem; margin: .3rem 0 0; border-width: 2px; border-radius: 1rem; box-shadow: 3px 3px 0 var(--pp-coral); gap: .28rem; }
+  .pp-bright .pp-hero h1 { font-size: 1.5rem; line-height: 1.08; }
+  .pp-bright .pp-hero .pp-how { border-top: 0; }
+  html.pp-bright body.pp .pp-hero .pp-shot img { box-shadow: 3px 3px 0 var(--pp-gold); border-width: 2px; }
+  html.pp-bright body.pp .pp-hero .pp-badge { font-size: .72rem; }
+  html.pp-bright body.pp #checkout .pp-btn { min-height: 52px; padding: .6rem .5rem; font-size: 1.02rem; box-shadow: 0 3px 0 var(--pp-navy); }
+  .pp-bright .pp-section { padding: 1.1rem 1rem; margin: 1.2rem 0; border-radius: 1.1rem; box-shadow: 4px 4px 0 var(--pp-yellow); }
+  .pp-bright .pp-section:nth-of-type(even) { box-shadow: 4px 4px 0 var(--pp-coral); }
+  .pp-bright .pp-photo-side { margin: .2rem 0 1rem; }
+  .pp-bright .pp-photo-side img { height: 11rem; object-fit: cover; }
+  #pp-photo-phone img { object-position: center 50%; }
+  #pp-photo-reading img { object-position: center 22%; }
+  .pp-bright .pp-photo-wide { margin: 1.2rem 0 .2rem; }
+  .pp-bright .pp-photo-wide img { aspect-ratio: 16 / 10; }
+  .pp-bright .pp-sticky:not([hidden]) { background: #fff; border-top: 4px solid var(--pp-gold); box-shadow: 0 -4px 14px rgba(45,16,72,.25); }
+  .pp-bright .pp-sticky-text { color: var(--pp-ink); }
+  html.pp-bright body.pp .pp-sticky-btn { min-height: 48px; padding: .6rem 1.1rem; font-size: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.pp-bright body.pp .pp-btn { transition: none; }
+}
