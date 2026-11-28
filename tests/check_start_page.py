@@ -173,21 +173,15 @@ def main() -> int:
         if sm.is_file():
             sitemap = sm.read_text(encoding="utf-8")
             check("https://getcyberdadkit.com/start/" in sitemap or "https://getcyberdadkit.com/start/index.html" in sitemap, "built sitemap includes /start/")
-            check("money-reset-kit" not in sitemap and "START-HERE" not in sitemap, "built sitemap omits hosted Money Reset Kit files")
+            check("money-reset-kit" not in sitemap, "built sitemap omits hosted Money Reset Kit files")
         else:
             print("note  sitemap.xml not in --site dir")
         kit_dir = SITE / "assets" / "paycheck-planner" / "money-reset-kit"
-        check((kit_dir / "START-HERE.md").is_file(), "built site hosts START-HERE.md as a static file")
-        html_sib = kit_dir / "START-HERE.html"
-        if html_sib.is_file():
-            h = html_sib.read_text(encoding="utf-8")
-            check("adsbygoogle" not in h and "googlesyndication" not in h and "pagead2" not in h, "START-HERE HTML sibling has no AdSense")
-            check("noindex" in h, "START-HERE HTML sibling is noindex")
-            print("note  Jekyll 3 still writes a START-HERE.html sibling for Pages (Page#write? is always true); it is noindex, has no ads, and is omitted from the sitemap")
-        else:
-            print("ok    built site does not render START-HERE.md as an HTML page")
+        check(not any(kit_dir.glob("*.pdf")), "built kit folder has no PDFs")
+        check(not any(kit_dir.glob("*.md")), "built kit folder has no markdown files")
+        check(not any(kit_dir.glob("*.html")), "built kit folder has no HTML sibling pages")
     else:
-        print("note  pass --site DIR after a jekyll build to assert the public /start/ page and kit sitemap skip")
+        print("note  pass --site DIR after a jekyll build to assert the public /start/ page")
 
     if failed:
         print(f"FAILED {len(failed)} check(s)")

@@ -458,9 +458,6 @@ KIT_FILES = {
     "MRK-04-debt-payoff.srt": "0279e538ed367aad76ea42af2f6bf20837aa36246ac5533f7b27bb4d458c7eed",
     "MRK-05-sinking-funds-and-savings-goals.mp4": "22c4d6b0f0489983bd037c20c678dd92625aef7d57a8d2666e175b7ae1487e36",
     "MRK-05-sinking-funds-and-savings-goals.srt": "a24ab7f0c02cc0978a901ae88607df730a6775317259d5e82bfc4a1bcc73c238",
-    "CyberDadKit-30-Day-Money-Reset-Plan.pdf": "15100da70e40c0417998017747a65cda83c28b3e6a0f2dc07ff0da077bb82f86",
-    "CyberDadKit-Money-Reset-Printable-Checklists.pdf": "0de21de29cbd59f5d5a26531492a05a7a653d17a4373b6c5c4b0faf184be71ce",
-    "START-HERE.md": "f0da05e2c1f523c5b40a714bafb1ffb5adb8284a7f0e4b782c861e994922ffe0",
 }
 KIT_HELD = (
     "CyberDadKit-Money-Reset-Kit-Planner.xlsx",
@@ -476,12 +473,13 @@ present = sorted(p.name for p in KIT_ASSETS.iterdir() if p.is_file()) if KIT_ASS
 check(present == sorted(KIT_FILES), f"kit assets are only the released files: {present}")
 check(not any(KIT_ASSETS.glob("*.xlsx")), "kit xlsx is not hosted in the repo assets")
 check("/assets/paycheck-planner/money-reset-kit/" not in html["sales"], "[sales] page does not link the hosted kit files")
+check(not any(KIT_ASSETS.glob("*.pdf")) and not any(KIT_ASSETS.glob("*.md")), "kit PDFs and markdown are not hosted")
+check(not (ROOT / "_layouts" / "noindex-plain.html").is_file(), "noindex-plain layout is gone (it served only the removed markdown page)")
 
 sitemap_src = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
-check('page_url contains "/assets/paycheck-planner/money-reset-kit/"' in sitemap_src, "sitemap template skips Money Reset Kit pages")
-check('kit_file contains "/assets/paycheck-planner/money-reset-kit/"' in sitemap_src, "sitemap template skips Money Reset Kit static files")
+check("/assets/paycheck-planner/money-reset-kit/" not in sitemap_src, "sitemap template has no Money Reset Kit path (paid files are not hosted)")
 cfg = (ROOT / "_config.yml").read_text(encoding="utf-8")
-check("path: \"assets/paycheck-planner/money-reset-kit\"" in cfg and "layout: noindex-plain" in cfg, "config defaults neutralize START-HERE HTML with noindex-plain")
+check("money-reset-kit" not in cfg and "noindex-plain" not in cfg, "config has no kit noindex-plain defaults")
 
 if failed:
     print(f"FAILED {len(failed)} check(s); {len(flags)} placeholder flag(s)")
