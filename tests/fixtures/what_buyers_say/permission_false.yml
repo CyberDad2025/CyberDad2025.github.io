@@ -1,0 +1,3 @@
+- quote: "This quote must not render because permission is false."
+  name: "C. D."
+  permission: false

@@ -170,6 +170,18 @@
     if (ref.indexOf('qa_') === 0) e.preventDefault();
   }, true);
   window.addEventListener('click', function (e) {
+    if (page === 'start') {
+      var hub = e.target && e.target.closest ? e.target.closest('a[data-pp-hub]') : null;
+      if (hub) {
+        send('select_content', {
+          content_type: 'hub',
+          item_id: hub.getAttribute('data-pp-hub') || '',
+          link_url: hub.getAttribute('href') || '',
+          transport_type: 'beacon'
+        });
+        return;
+      }
+    }
     var a = buyAnchor(e);
     if (!a) return;
     var base = a.getAttribute('data-pp-base') || a.getAttribute('href');

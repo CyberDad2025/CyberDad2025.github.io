@@ -1,0 +1,23 @@
+{%- comment -%} What buyers say. Renders nothing (no heading, no box, no comment in the output) unless _data/what_buyers_say.yml has at least one entry with permission: true. Never invent quotes. {%- endcomment -%}
+{%- assign wbs_quotes = site.data.what_buyers_say -%}
+{%- assign wbs_has_permitted = false -%}
+{%- for wbs_t in wbs_quotes -%}
+  {%- if wbs_t.permission == true -%}
+    {%- assign wbs_has_permitted = true -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if wbs_has_permitted -%}
+<section class="pp-section" id="what-buyers-say" aria-labelledby="what-buyers-say-title">
+  <h2 id="what-buyers-say-title">What buyers say</h2>
+  {%- for wbs_t in wbs_quotes -%}
+    {%- if wbs_t.permission == true -%}
+    <figure class="pp-buyer-quote">
+      <blockquote>{{ wbs_t.quote | escape }}</blockquote>
+      {%- if wbs_t.name and wbs_t.name != "" -%}
+      <figcaption>{{ wbs_t.name | escape }}</figcaption>
+      {%- endif -%}
+    </figure>
+    {%- endif -%}
+  {%- endfor -%}
+</section>
+{%- endif -%}

@@ -409,6 +409,12 @@ try:
         "tests/check_planner_seo.py",
         "tests/check_no_dashes.py",
         "tests/check_hero_outcome.py",
+        "start/index.html",
+        "_includes/what-buyers-say.html",
+        "_data/what_buyers_say.yml",
+        "tests/check_what_buyers_say.py",
+        "tests/render_what_buyers_say.rb",
+        "tests/check_start_page.py",
         # M-S65 sign-off pack publishes refund/FAQ pages in the same commit as the planner refund sentence.
         "faq/index.html",
         "support/index.html",
@@ -428,7 +434,7 @@ try:
     if pay_touched:
         # Checkout audit 1127: planner/index.html is the /planner/ short path that redirects to /paycheck-planner/.
         # PR #1070 also edits tests/check_home_sections.py (holiday cards). Allow it so a combined merge does not fail this scope check.
-        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("assets/paycheck-planner/") or f.startswith("guides/") or f in pay_names or f == "planner/index.html" or f.startswith("tests/__pycache__/"))]
+        stray = [f for f in changed + untracked if not (f.startswith("paycheck-planner/") or f.startswith("assets/paycheck-planner/") or f.startswith("guides/") or f in pay_names or f == "planner/index.html" or f.startswith("tests/__pycache__/") or f.startswith("tests/fixtures/what_buyers_say/"))]
         check(not stray, f"change touches only planner files ({stray[:5]})")
     else:
         print("skip scope check (no paycheck-planner files in the diff)")
